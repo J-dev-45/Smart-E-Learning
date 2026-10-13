@@ -56,14 +56,15 @@
             </div>
 
             {{-- MODULES --}}
-            <pretest-modules
+            <quiz-modules
             :user-modules='@json($user_modules)'
             :answered-questions='@json($answered_questions)'
             :modules='@json($modules)'
+            :topics='@json($topics)'
             :questions='@json($questions)'
             subject-id="{{$subject_id}}"
             subject-name="{{$subject}}"
-            ></pretest-modules>
+            ></quiz-modules>
 
         </main>
     </div>

@@ -7,55 +7,100 @@
             class="w-full h-auto min-h-[calc(100dvh-100px)] rounded-xl shrink-0 p-3 text-white my-5"
         >
 
-            <div class="flex items-center justify-between">
-
+            <div class="flex items-center justify-between gap-4 flex-wrap">
                 <h1 class="font-bold text-3xl">
                     {{ subject.subject_name }}
                 </h1>
 
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-3">
 
-                    <button
-                        type="button"
-                        class="shrink-0 w-9 h-9 flex items-center justify-center rounded-md border-[1.5px] border-[#CECBF6]/15 text-gray-300
-                        hover:bg-[#CECBF6]/10 hover:border-[#CECBF6]/30 hover:text-white
-                        active:scale-95 transition-all cursor-pointer"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
-                        </svg>
-                    </button>
+                    <!-- ACTION GROUP: edit + delete -->
+                    <div class="flex items-center gap-2">
+                        <!-- EDIT SUBJECT -->
+                        <button
+                            type="button"
+                            title="Edit subject"
+                            class="shrink-0 w-9 h-9 flex items-center justify-center rounded-md border-[1.5px] border-[#CECBF6]/15 text-gray-300
+                            hover:bg-[#CECBF6]/10 hover:border-[#CECBF6]/30 hover:text-white
+                            active:scale-95 transition-all cursor-pointer"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-4"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125"
+                                />
+                            </svg>
+                        </button>
 
-                    <button
-                        type="button"
-                        class="shrink-0 w-9 h-9 flex items-center justify-center rounded-md border-[1.5px] border-red-500/20 text-red-400
-                        hover:bg-red-500/10 hover:border-red-500/35 hover:text-red-300
-                        active:scale-95 transition-all cursor-pointer"
-                    >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                        </svg>
-                    </button>
+                        <!-- DELETE SUBJECT -->
+                        <button
+                            type="button"
+                            title="Delete subject"
+                            class="shrink-0 w-9 h-9 flex items-center justify-center rounded-md border-[1.5px] border-red-500/20 text-red-400
+                            hover:bg-red-500/10 hover:border-red-500/35 hover:text-red-300
+                            active:scale-95 transition-all cursor-pointer"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke-width="1.5"
+                                stroke="currentColor"
+                                class="size-4"
+                            >
+                                <path
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12-.562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                                />
+                            </svg>
+                        </button>
+                    </div>
 
-                    <div class="w-[1px] h-6 bg-[#CECBF6]/15 mx-1"></div>
+                    <!-- SEPARATOR -->
+                    <div class="w-px h-6 bg-[#CECBF6]/15"></div>
 
+                    <!-- VIEW ALL QUESTIONS -->
                     <a
-                        :href="`/questions/${subject.subject_name.toLowerCase().replace(/\s+/g, '-')}/All/${subject.id}`"
-                        class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium
-                        bg-[#8B5CF6]/20 border-[1.5px] border-[#8B5CF6]/35 text-[#CECBF6]
-                        hover:bg-[#8B5CF6]/30 hover:border-[#8B5CF6]/50
-                        active:scale-95 transition-all cursor-pointer"
+                        :href="`/questions/view-subject-questions/${subject.subject_name.toLowerCase().replace(/\s+/g, '-')}/${subject.id}/none/0/none`"
+                        title="View all questions"
+                        class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-[#8B5CF6]/10 border-[1.5px] border-[#8B5CF6]/25 text-[#CECBF6] hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/40 active:scale-95 transition-all cursor-pointer whitespace-nowrap"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="2"
+                            stroke="currentColor"
+                            class="size-3.5"
+                        >
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
+                            />
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                            />
                         </svg>
-                        View All Questions
+
+                        <span>View All Questions</span>
                     </a>
-
                 </div>
-
             </div>
+
+            <!-- SEPARATOR -->
+            <div class="w-full h-[1px] bg-[#CECBF6]/10 mt-4"></div>
 
             <div class="w-full py-2 ps-2 flex gap-3 text-gray-400 font-semibold">
 
@@ -186,6 +231,14 @@
                                 <div v-for="topic in localTopics.filter(Tid => Tid.module_id === module.id)" :ker="topic.order" class="flex items-center justify-between px-1.5 py-1.5 rounded-sm hover:bg-[#CECBF6]/5">
                                     <span class="text-xs text-gray-300 truncate">{{ topic.topic_name }}</span>
                                     <div class="flex items-center gap-1 shrink-0">
+
+                                        <a :href="`/questions/view-topic-questions/${subject.subject_name.toLowerCase().replace(/\s+/g, '-')}/${subject.id}/${module.module_name.toLowerCase().replace(/\s+/g, '-')}/${module.id}/${topic.id}`" 
+                                            class="shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-gray-400 hover:bg-[#CECBF6]/10 hover:text-white active:scale-95 transition-all cursor-pointer">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </a>
                                         
                                         <button type="button" class="shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-gray-400 hover:bg-[#CECBF6]/10 hover:text-white active:scale-95 transition-all cursor-pointer">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
@@ -210,7 +263,7 @@
                         <div class="flex items-center gap-2">
 
 
-                            <a    :href="`/questions/none/${subject.subject_name.toLowerCase().replace(/\s+/g, '-')}/${module.module_name.toLowerCase().replace(/\s+/g, '-')}/${module.id}`"
+                            <a    :href="`/questions/view-module-questions/${subject.subject_name.toLowerCase().replace(/\s+/g, '-')}/${subject.id}/${module.module_name.toLowerCase().replace(/\s+/g, '-')}/${module.id}/none`"
                                 class="flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold px-2.5 py-2 rounded-md
                                 bg-[#8B5CF6]/15 border border-[#8B5CF6]/30 text-[#CECBF6]
                                 hover:bg-[#8B5CF6]/25 hover:border-[#8B5CF6]/45

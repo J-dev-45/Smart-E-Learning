@@ -1,6 +1,5 @@
 <div class="mt-10" id="topic-logic">
 
-
     {{-- TOPIC --}}
     <h2 class="text-2xl font-bold">
         1. Logic
@@ -452,5 +451,9 @@
 
     </div>
 
+    {{-- <topic-pretest 
+        :questions='@json($questions)'
+        :topic-progress='@json($topic_progress)'
+    ></topic-pretest> --}}
 
 </div>

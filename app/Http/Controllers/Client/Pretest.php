@@ -6,13 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\AnsweredQuestions;
 use App\Models\Choices;
 use App\Models\Leaderboard;
+use App\Models\ModulePretest;
 use App\Models\Modules;
 use App\Models\PretestSavedCodes;
 use App\Models\Questions;
 use App\Models\Subjects;
 use App\Models\TemporaryPoints;
 use App\Models\TestCase;
-use App\Models\UserPretest;
 use App\Models\UserScoreboard;
 use Illuminate\Http\Request;
 
@@ -26,7 +26,7 @@ class Pretest extends Controller
             ->orderBy('order', 'asc')
             ->get();
 
-        $existingModuleIds = UserPretest::where('user_id', auth()->id())
+        $existingModuleIds = ModulePretest::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->pluck('module_id');
 
@@ -35,15 +35,15 @@ class Pretest extends Controller
             ->orderBy('order', 'asc')
             ->get();
 
-        $hasCurrentModule = UserPretest::where('user_id', auth()->id())
+        $hasOpenModule = ModulePretest::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
-            ->where('status', 'current')
+            ->where('status', 'open')
             ->exists();        
 
         foreach ($modules_to_add as $index => $module) {
-            $status = (!$hasCurrentModule && $index === 0) ? 'current' : 'locked';
+            $status = (!$hasOpenModule && $index === 0) ? 'open' : 'locked';
 
-            UserPretest::create([
+            ModulePretest::create([
                 'user_id' => auth()->id(),
                 'subject_id' => $request->subject_id,
                 'module_id' => $module->id,
@@ -51,15 +51,15 @@ class Pretest extends Controller
                 'scored' => 0,
             ]);
 
-            if ($status === 'current') {
-                $hasCurrentModule = true;
+            if ($status === 'open') {
+                $hasOpenModule = true;
             }
         }
 
-        $user_modules = UserPretest::select('user_pretest.*')
-            ->join('modules', 'user_pretest.module_id', '=', 'modules.id')
-            ->where('user_pretest.user_id', auth()->id())
-            ->where('user_pretest.subject_id', $request->subject_id)
+        $user_modules = ModulePretest::select('module_pretest.*')
+            ->join('modules', 'module_pretest.module_id', '=', 'modules.id')
+            ->where('module_pretest.user_id', auth()->id())
+            ->where('module_pretest.subject_id', $request->subject_id)
             ->orderBy('modules.order', 'asc')
             ->get();
 
@@ -98,28 +98,28 @@ class Pretest extends Controller
 
     public function takingPretest(Request $request)
     {
-        $user_pretest = UserPretest::where('user_id', auth()->id())
+        $module_pretest = ModulePretest::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->where('module_id', $request->module_id)
             ->first();
         
         $module = Modules::findOrFail($request->module_id);
 
-        if (!$user_pretest) {
+        if (!$module_pretest) {
             return redirect()->route('home');
         }
 
-        if ($user_pretest->status === 'passed') {
+        if ($module_pretest->status === 'passed') {
             return redirect()->route('home');
         }
 
-        if ($user_pretest->status === 'locked') {
+        if ($module_pretest->status === 'locked') {
             return redirect()->route('home');
         }
 
-        if ($user_pretest->status === 'failed') {
-            $user_pretest->update([
-                'status' => 'current'
+        if ($module_pretest->status === 'failed') {
+            $module_pretest->update([
+                'status' => 'open'
             ]);
         }
 
@@ -151,7 +151,7 @@ class Pretest extends Controller
         $module_name = Modules::where('id', $module_id)
             ->value('module_name');
 
-        $score = UserPretest::where('user_id', auth()->id())
+        $score = ModulePretest::where('user_id', auth()->id())
             ->where('subject_id', $subject_id)
             ->where('module_id', $module_id)
             ->value('scored');
@@ -239,7 +239,7 @@ class Pretest extends Controller
             ], 404);
         }
 
-        $score = UserPretest::where('user_id', auth()->id())
+        $score = ModulePretest::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->where('module_id', $request->module_id)
             ->first();
@@ -297,13 +297,13 @@ class Pretest extends Controller
         ]);
 
         $correct = 'no'; 
-        $current_temporary_points = TemporaryPoints::where('user_id', auth()->id())->value('points') ?? 0;
+        $open_temporary_points = TemporaryPoints::where('user_id', auth()->id())->value('points') ?? 0;
 
         if ($correct_answer === $student_answer) {
 
             TemporaryPoints::updateOrCreate(
                 ['user_id' => auth()->id()],
-                ['points' => $current_temporary_points + $question->points]
+                ['points' => $open_temporary_points + $question->points]
             );
 
             $score->increment('scored');
@@ -329,18 +329,18 @@ class Pretest extends Controller
 
     public function resultPretest(Request $request)
     {
-        $user_pretest = UserPretest::where('user_id', auth()->id())
+        $module_pretest = ModulePretest::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->where('module_id', $request->module_id)
             ->first();
 
         $module = Modules::findOrFail($request->module_id);
 
-        if (!$user_pretest) {
+        if (!$module_pretest) {
             return redirect()->route('home');
         }
 
-        if ($user_pretest->status === 'passed') {
+        if ($module_pretest->status === 'passed') {
             return redirect()->route('home');
         }
 
@@ -426,30 +426,30 @@ class Pretest extends Controller
         if ($status === 'Passed') {
 
             if ($request->type === 'coding') {
-                $user_pretest->update([
+                $module_pretest->update([
                     'coding_passed' => true
                 ]);
             } else {
-                $user_pretest->update([
+                $module_pretest->update([
                     'questions_type_passed' => true
                 ]);
             }
 
-            $user_pretest->refresh();
+            $module_pretest->refresh();
             $module_passed = false;
 
             if ($module->has_question_type && $module->has_coding) {
-                if ($user_pretest->questions_type_passed &&$user_pretest->coding_passed){
+                if ($module_pretest->questions_type_passed &&$module_pretest->coding_passed){
                     $module_passed = true;
                 }
 
             } elseif ($module->has_question_type && !$module->has_coding) {
-                if ($user_pretest->questions_type_passed) {
+                if ($module_pretest->questions_type_passed) {
                     $module_passed = true;
                 }
 
             } elseif (!$module->has_question_type && $module->has_coding) {
-                if ($user_pretest->coding_passed) {
+                if ($module_pretest->coding_passed) {
                     $module_passed = true;
                 }
             }
@@ -461,10 +461,10 @@ class Pretest extends Controller
 
                 UserScoreboard::updateOrCreate(
                     ['user_id' => auth()->id()],
-                    ['total_score' => $user_scoreboard + (int) $user_pretest->scored]
+                    ['total_score' => $user_scoreboard + (int) $module_pretest->scored]
                 );
 
-                $user_pretest->update([
+                $module_pretest->update([
                     'status' => 'passed',
                     'scored' => 0
                 ]);
@@ -483,7 +483,7 @@ class Pretest extends Controller
                     $temporary_points->delete();
                 }
 
-                $nextmodule = UserPretest::where('user_id', auth()->id())
+                $nextmodule = ModulePretest::where('user_id', auth()->id())
                     ->where('subject_id', $request->subject_id)
                     ->where('module_id', '>', $module->id)
                     ->orderBy('module_id', 'asc')
@@ -491,13 +491,13 @@ class Pretest extends Controller
 
                 if ($nextmodule) {
                     $nextmodule->update([
-                        'status' => 'current'
+                        'status' => 'open'
                     ]);
                 }
             }
         } else {
 
-            $user_pretest->update([
+            $module_pretest->update([
                 'scored' => 0
             ]);
 

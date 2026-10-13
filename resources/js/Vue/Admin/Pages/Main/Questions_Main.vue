@@ -10,19 +10,8 @@
                 href="/subjects"
                 class="cursor-pointer group text-gray-400 hover:text-white flex items-center gap-1.5 transition-colors"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-5 transition-transform group-hover:-translate-x-0.5"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M15.75 19.5 8.25 12l7.5-7.5"
-                    />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 transition-transform group-hover:-translate-x-0.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
 
                 <span class="text-sm font-medium">Go Back</span>
@@ -35,8 +24,8 @@
         </header>
 
         <!-- TITLE & TOPIC -->
-        <div class="text-white px-7 pt-6 pb-2 flex flex-col gap-2">
-            <div class="w-full flex items-center justify-between">
+        <div class="text-white px-7 pt-6 pb-2 flex flex-col gap-3">
+            <div class="w-full flex items-center justify-between gap-3 flex-wrap">
                 <!-- SUBJECT NAME -->
                 <span class="text-2xl font-bold tracking-tight">
                     {{ subjectName }}
@@ -53,35 +42,58 @@
                     active:scale-95
                     focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CECBF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="2.5"
-                        stroke="currentColor"
-                        class="size-3.5 shrink-0"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            d="M12 4.5v15m7.5-7.5h-15"
-                        />
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-3.5 shrink-0">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                     </svg>
 
                     <span class="hidden sm:inline">Add Question</span>
                 </button>
             </div>
 
-            <div class="flex items-center gap-2">
-                <span class="text-sm font-semibold text-gray-300">
-                    Module
-                </span>
+            <!-- MODULE (left) & TOPIC (right) -->
+            <div class="w-full flex items-center gap-3 flex-wrap text-sm">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold">Module</span>
+                    <span class="px-2.5 py-0.5 rounded-full border border-white/20 text-xs">
+                        {{ props.moduleName }}
+                    </span>
+                </div>
 
-                <span
-                    class="text-sm text-[#CECBF6] bg-[#CECBF6]/10 border border-[#CECBF6]/20 px-2.5 py-0.5 rounded-full"
+                <!-- SEPARATOR -->
+                <div class="w-px h-4 bg-white/20 shrink-0"></div>
+
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold">Topic</span>
+                    <span class="px-2.5 py-0.5 rounded-full border border-white/20 text-xs">
+                        {{ props.topicName }}
+                    </span>
+                </div>
+            </div>
+
+            <!-- SEARCH -->
+            <div class="relative w-full">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-500 pointer-events-none">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+
+                <input
+                    v-model="searchQuery"
+                    type="text"
+                    placeholder="Search by question..."
+                    class="w-full pl-11 pr-10 py-3 rounded-lg border border-white/10 bg-[#150022]/60 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#CECBF6]/40 transition-colors"
+                />
+
+                <button
+                    v-if="searchQuery"
+                    type="button"
+                    @click="searchQuery = ''"
+                    title="Clear search"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-gray-500 hover:text-white transition-colors cursor-pointer"
                 >
-                    {{ module_name }}
-                </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
             </div>
         </div>
 
@@ -92,7 +104,7 @@
             >
                 <!-- Table Header -->
                 <div
-                    class="grid md:grid-cols-[80px_1fr_0.5fr_120px_150px] grid-cols-[80px_1.5fr_120px] px-4 py-2.5 border-b border-[#CECBF6]/15 text-xs font-semibold text-gray-400"
+                    class="grid md:grid-cols-[80px_1fr_0.5fr_120px_150px] grid-cols-[60px_1fr_100px] px-4 py-2.5 border-b border-[#CECBF6]/15 text-xs font-semibold text-gray-400"
                 >
                     <span>ID</span>
                     <span>Question</span>
@@ -106,7 +118,7 @@
                     <li
                         v-for="(question, index) in filteredQuestions"
                         :key="question.id"
-                        class="grid md:grid-cols-[80px_1fr_0.5fr_120px_150px] grid-cols-[80px_1.5fr_120px] items-center px-4 py-3 border-b border-[#CECBF6]/10 hover:bg-[#CECBF6]/5 transition-colors"
+                        class="grid md:grid-cols-[80px_1fr_0.5fr_120px_150px] grid-cols-[60px_1fr_100px] items-center px-4 py-3 border-b border-[#CECBF6]/10 hover:bg-[#CECBF6]/5 transition-colors"
                     >
                         <span class="text-xs text-gray-400 font-mono">
                             #{{ String(index + 1).padStart(3, '0') }}
@@ -131,51 +143,31 @@
                             <span
                                 class="inline-flex px-2 py-1 rounded-md text-[11px] font-medium text-gray-400"
                             >
-                                {{ 
-                                  question.question_type === 'multipleChoice' ? 'Multiple Choice' : '' || 
-                                  question.question_type === 'TorF' ? 'True or False' : '' || 
-                                  question.question_type === 'identification' ? 'Identification' : '' ||
-                                  question.question_type === 'coding' ? 'Coding' : ''
-                                }}
+                                {{ questionTypeLabel(question.question_type) }}
                             </span>
                         </span>
 
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1.5 sm:gap-2">
                             <!-- VIEW -->
                             <button
                                 type="button"
                                 @click="openViewModal(question)"
-                                class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-[#8B5CF6]/10 border-[1.5px] border-[#8B5CF6]/25 text-[#CECBF6] hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/40 active:scale-95 transition-all cursor-pointer"
+                                title="View"
+                                class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-md text-xs font-medium bg-[#8B5CF6]/10 border-[1.5px] border-[#8B5CF6]/25 text-[#CECBF6] hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/40 active:scale-95 transition-all cursor-pointer"
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="2"
-                                    stroke="currentColor"
-                                    class="size-3.5"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z"
-                                    />
-
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-                                    />
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5 shrink-0" >
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                 </svg>
-
-                                <span class="md:flex hidden">View</span>
+                                <span class="hidden md:inline">View</span>
                             </button>
 
                             <!-- EDIT -->
                             <button
                                 type="button"
                                 @click="editQuestionOpen(question.id)"
-                                class="flex items-center justify-center px-2.5 py-1.5 rounded-md border-[1.5px] border-[#CECBF6]/15 text-gray-300 hover:bg-[#CECBF6]/10 hover:border-[#CECBF6]/30 hover:text-white active:scale-95 transition-all cursor-pointer"
+                                title="Edit"
+                                class="flex items-center justify-center px-2 sm:px-2.5 py-1.5 rounded-md border-[1.5px] border-[#CECBF6]/15 text-gray-300 hover:bg-[#CECBF6]/10 hover:border-[#CECBF6]/30 hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -197,7 +189,8 @@
                             <button
                                 type="button"
                                 @click="deleteQuestionOpen(question.id)"
-                                class="flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium bg-red-500/10 border-[1.5px] border-red-500/25 text-red-300 hover:bg-red-500 hover:border-red-500 hover:text-white active:scale-95 transition-all cursor-pointer"
+                                title="Delete"
+                                class="flex items-center justify-center px-2 sm:px-2.5 py-1.5 rounded-md text-xs font-medium bg-red-500/10 border-[1.5px] border-red-500/25 text-red-300 hover:bg-red-500 hover:border-red-500 hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -239,10 +232,16 @@
     <Add_Question
         :show-add-question="showAddQuestion"
         :module-name="module_name"
+        :module-id="props.moduleId"
+        :topic-name="props.topicName"
+        :topic-id="props.topicId"
+        :modules="props.modules"
+        :topics="props.topics"
         :subject-name="subjectName"
+        :subject-id="subject_id"
         @close-add="closeAddQuestionModal"
         @questions-added="questionsAdded"
-        :module-id="props.moduleId"
+        
     />
 
     <!-- EDIT QUESTION MODAL -->
@@ -271,17 +270,19 @@
 import View_Question from '../../Modal/View_Question.vue';
 import Edit_Question from '../../Modal/Edit_Question.vue';
 import Delete_Question from '../../Modal/Delete_Question.vue';
-
 import Add_Question from '../../Modal/Add_Question.vue';
-
 import { ref, computed } from 'vue';
 
 const props = defineProps({
-    moduleId: { type: String, required: true },
+    moduleId: { type: [String, Number], default: '0' },
+    topicId: { type: [String, Number], default: '0' },
     subjectName: { type: String, default: '' },
+    moduleName: { type: String, default: 'All' },
+    topicName: { type: String, default: 'All' },
     subjects: { type: Array, required: true },
-    questions: { type: Array, required: true },
     modules: { type: Array, required: true },
+    topics: { type: Array, required: true },
+    questions: { type: Array, required: true },
     choices: { type: Array, required: true }
 });
 
@@ -296,33 +297,108 @@ const selectedQuestion = ref(null);
 const question = ref(null);
 const delete_question = ref(null);
 
-
 const localQuestions = ref([...props.questions]);
 
+const searchQuery = ref('');
+
+const QUESTION_TYPE_LABELS = {
+    multipleChoice: 'Multiple Choice',
+    TorF: 'True or False',
+    identification: 'Identification',
+    coding: 'Coding'
+};
+
+function questionTypeLabel(type) {
+    return QUESTION_TYPE_LABELS[type] || '';
+}
+
+/*
+|--------------------------------------------------------------------------
+| ADD QUESTIONS
+|--------------------------------------------------------------------------
+*/
 function questionsAdded(newQuestions) {
     if (!Array.isArray(newQuestions)) {
         return;
     }
 
     const existingIds = new Set(
-        localQuestions.value.map(q => q.id)
+        localQuestions.value.map(q => String(q.id))
     );
 
-    const questionsToAdd = newQuestions.filter(
-        q => !existingIds.has(q.id)
-    );
+    const questionsToAdd = newQuestions.filter(q => {
+        if (!q?.id) {
+            return false;
+        }
+
+        if (existingIds.has(String(q.id))) {
+            return false;
+        }
+
+        return belongsToCurrentFilter(q);
+    });
 
     localQuestions.value.push(...questionsToAdd);
 }
 
-function questionsDeleted(newQuestions) {
-    if (!Array.isArray(newQuestions)) {
+/*
+|--------------------------------------------------------------------------
+| CHECK IF QUESTION BELONGS TO CURRENT MODULE/TOPIC
+|--------------------------------------------------------------------------
+*/
+function belongsToCurrentFilter(q) {
+    const moduleMatches =
+        String(props.moduleId) === '0' ||
+        String(q.module_id) === String(props.moduleId);
+
+    const topicMatches =
+        String(props.topicId) === '0' ||
+        String(q.topic_id) === String(props.topicId);
+
+    return moduleMatches && topicMatches;
+}
+
+/*
+|--------------------------------------------------------------------------
+| DELETE QUESTION
+|--------------------------------------------------------------------------
+| IMPORTANT:
+| Do NOT replace localQuestions with data.questions.
+| The backend may return ALL questions.
+| Remove only the question that was deleted.
+|--------------------------------------------------------------------------
+*/
+function questionsDeleted(deletedQuestion) {
+    if (!deletedQuestion) {
         return;
     }
 
-    localQuestions.value = newQuestions;
+    let deletedId = null;
+
+    if (typeof deletedQuestion === 'string' || typeof deletedQuestion === 'number') {
+        deletedId = String(deletedQuestion);
+    } else if (deletedQuestion.id) {
+        deletedId = String(deletedQuestion.id);
+    } else if (delete_question.value?.id) {
+        deletedId = String(delete_question.value.id);
+    }
+
+    if (!deletedId) {
+        return;
+    }
+
+    localQuestions.value = localQuestions.value.filter(
+        q => String(q.id) !== deletedId
+    );
+
+    delete_question.value = null;
 }
 
+/*
+|--------------------------------------------------------------------------
+| CHOICES
+|--------------------------------------------------------------------------
+*/
 const q_choices = ref({
     choice_A: '',
     choice_B: '',
@@ -330,43 +406,67 @@ const q_choices = ref({
     choice_D: ''
 });
 
+/*
+|--------------------------------------------------------------------------
+| MODULE NAME
+|--------------------------------------------------------------------------
+*/
 const module_name = computed(() => {
     if (String(props.moduleId) === '0') {
         return 'All';
     }
 
     return props.modules.find(
-        t => String(t.id) === String(props.moduleId)
+        m => String(m.id) === String(props.moduleId)
     )?.module_name || 'N/A';
 });
 
+/*
+|--------------------------------------------------------------------------
+| SUBJECT ID
+|--------------------------------------------------------------------------
+*/
 const subject_id = computed(() => {
     return props.subjects.find(
         s => s.subject_name === props.subjectName
     )?.id || 0;
 });
 
-const module_ids = computed(() => {
-    return props.modules
-        .filter(t => t.subject_id === subject_id.value)
-        .map(t => t.id);
-});
-
+/*
+|--------------------------------------------------------------------------
+| FILTER QUESTIONS
+|--------------------------------------------------------------------------
+| Filters using BOTH module_id and topic_id, plus the search query
+| against the question text.
+|--------------------------------------------------------------------------
+*/
 const filteredQuestions = computed(() => {
-    if (String(props.moduleId) === '0') {
-        return localQuestions.value.filter(q =>
-            module_ids.value.some(id => String(id) === String(q.module_id))
-        );
-    }
+    const query = searchQuery.value.trim().toLowerCase();
 
-    return localQuestions.value.filter(q =>
-        String(q.module_id) === String(props.moduleId)
-    );
+    return localQuestions.value.filter(q => {
+        const moduleMatches =
+            String(props.moduleId) === '0' ||
+            String(q.module_id) === String(props.moduleId);
+
+        const topicMatches =
+            String(props.topicId) === '0' ||
+            String(q.topic_id) === String(props.topicId);
+
+        const searchMatches =
+            !query || (q.question || '').toLowerCase().includes(query);
+
+        return moduleMatches && topicMatches && searchMatches;
+    });
 });
 
+/*
+|--------------------------------------------------------------------------
+| VIEW
+|--------------------------------------------------------------------------
+*/
 function openViewModal(question) {
     const choice = props.choices.find(
-        ch => ch.question_id === question.id
+        ch => String(ch.question_id) === String(question.id)
     );
 
     selectedQuestion.value = {
@@ -389,6 +489,11 @@ function closeViewModal() {
     selectedQuestion.value = null;
 }
 
+/*
+|--------------------------------------------------------------------------
+| ADD
+|--------------------------------------------------------------------------
+*/
 function openAddQuestionModal() {
     showAddQuestion.value = true;
 }
@@ -398,14 +503,23 @@ function closeAddQuestionModal() {
     selectedQuestion.value = null;
 }
 
+/*
+|--------------------------------------------------------------------------
+| EDIT
+|--------------------------------------------------------------------------
+*/
 function editQuestionOpen(id) {
     question.value = localQuestions.value.find(
-        q => q.id === id
+        q => String(q.id) === String(id)
     );
 
-    if (question.value?.question_type === 'multipleChoice') {
+    if (!question.value) {
+        return;
+    }
+
+    if (question.value.question_type === 'multipleChoice') {
         q_choices.value = props.choices.find(
-            c => c.question_id === id
+            c => String(c.question_id) === String(id)
         ) || {
             choice_A: '',
             choice_B: '',
@@ -425,8 +539,12 @@ function editQuestionOpen(id) {
 }
 
 function updateQuestionInTable(updatedQuestion) {
+    if (!updatedQuestion?.id) {
+        return;
+    }
+
     const index = localQuestions.value.findIndex(
-        q => q.id === updatedQuestion.id
+        q => String(q.id) === String(updatedQuestion.id)
     );
 
     if (index === -1) {
@@ -435,13 +553,13 @@ function updateQuestionInTable(updatedQuestion) {
 
     localQuestions.value[index] = {
         ...localQuestions.value[index],
-        question: updatedQuestion.question,
-        answer: updatedQuestion.answer
+        ...updatedQuestion
     };
 }
 
 function closeEditQuestionModal() {
     showEditQuestion.value = false;
+
     question.value = null;
 
     q_choices.value = {
@@ -452,18 +570,26 @@ function closeEditQuestionModal() {
     };
 }
 
+/*
+|--------------------------------------------------------------------------
+| DELETE
+|--------------------------------------------------------------------------
+*/
 function deleteQuestionOpen(id) {
-    showDeleteQuestion.value = true;
-
-    delete_question.value = localQuestions.value.find(
-        q => q.id === id
+    const foundQuestion = localQuestions.value.find(
+        q => String(q.id) === String(id)
     );
+
+    if (!foundQuestion) {
+        return;
+    }
+
+    delete_question.value = foundQuestion;
+    showDeleteQuestion.value = true;
 }
 
 function closeDeleteQuestionModal() {
     showDeleteQuestion.value = false;
     delete_question.value = null;
 }
-
-
 </script>

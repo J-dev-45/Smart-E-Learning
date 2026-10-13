@@ -11,32 +11,35 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_pretest', function (Blueprint $table) {
+        Schema::create('module_progress', function (Blueprint $table) {
             $table->id();
+
             $table->foreignId('user_id')
                 ->constrained('users')
                 ->onDelete('cascade');
+
             $table->foreignUuid('subject_id')
                 ->constrained('subjects')
                 ->onDelete('cascade');
+
             $table->foreignUuid('module_id')
                 ->constrained('modules')
                 ->onDelete('cascade');
-            $table->enum('status', ['current', 'passed', 'locked'])
+
+            $table->double('progress')
+                ->default(0);
+
+            $table->enum('status', ['open', 'locked', 'passed'])
                 ->default('locked');
-            $table->Boolean('coding_passed')->default(false);
-            $table->Boolean('questions_type_passed')->default(false);
-            $table->integer('scored')->default(0);
+
+            $table->boolean('has_passed')
+                ->default(false);
+
             $table->timestamps();
 
-            $table->index(
+            $table->unique(
                 ['user_id', 'module_id'],
-                'user_pretest_user_module_index'
-            );
-
-            $table->index(
-                ['user_id', 'subject_id'],
-                'user_pretest_user_subject_index'
+                'module_progress_user_module_unique'
             );
         });
     }
@@ -46,6 +49,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_pretest');
+        Schema::dropIfExists('module_progress');
     }
 };

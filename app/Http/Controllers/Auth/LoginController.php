@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
-// use App\Models\User;
+use App\Http\Controllers\Controller;
 use App\Services\MailerService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class Login extends Controller
+class LoginController extends Controller
 {
     public function login(Request $request, MailerService $mailerService)
     {
@@ -67,7 +67,4 @@ class Login extends Controller
             'url' => route('home')
         ]);
     }
-
-    
-
 }

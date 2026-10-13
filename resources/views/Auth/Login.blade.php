@@ -83,7 +83,7 @@
                     <h5 class="font-semibold m-0 leading-none text-[#CECBF6]/65"
                         style="font-size:clamp(0.8rem,1.4vw,1.15rem)">Review Smarter, Quiz Better.</h5>
                     <h6 class="font-medium m-0 mt-2 leading-none text-gray-400"
-                        style="font-size:clamp(0.65rem,0.9vw,0.8rem)">Nueva Vizcaya State University</h6>
+                        style="font-size:clamp(0.65rem,0.9vw,0.8rem)">Information Technology & Computer Related Course</h6>
                 </div>
             </div>
 

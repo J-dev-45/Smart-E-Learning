@@ -24,7 +24,7 @@
 
         <main class="h-full main-bg w-[calc(100%-280px)] h-full flex flex-col ml-[280px] p-5 overflow-hidden">
             {{-- CARDS --}}
-            <div class="grid grid-cols-3 gap-6 pb-5">
+            <div class="shrink-0 grid grid-cols-3 gap-6 pb-5">
 
                 {{-- TOTAL USERS --}}
                 <div class="group relative p-5 rounded-xl border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 overflow-hidden flex items-center justify-between transition-all duration-300 hover:border-[#CECBF6]/40 hover:bg-[#CECBF6]/10">
@@ -66,14 +66,17 @@
                     </div>
                     <div class="w-9 h-9 shrink-0 bg-emerald-400/15 border border-[#CECBF6]/15 text-emerald-300 flex items-center justify-center rounded-md relative transition-transform duration-200 group-hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 21 12Z" />
                         </svg>
                     </div>
                 </div>
 
             </div>
 
-            <feedbacks-page></feedbacks-page>
+            {{-- FEEDBACKS PAGE now stretches to fill remaining vertical space --}}
+            <div class="flex-1 min-h-0">
+                <feedbacks-page></feedbacks-page>
+            </div>
         </main>
 
     </div>

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\MailerService;
 use Carbon\Carbon;
@@ -10,7 +11,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
-class Register extends Controller
+class RegisterController extends Controller
 {
     public function register(Request $request, MailerService $mailerService){
         $validated_data = $request->validate([
@@ -48,6 +49,9 @@ class Register extends Controller
             ]
         ]);
 
-        return redirect()->route('account_verification');
+        return response()->json([
+            'success' => true,
+            'url' => route('account_verification')
+        ]);
     }
 }

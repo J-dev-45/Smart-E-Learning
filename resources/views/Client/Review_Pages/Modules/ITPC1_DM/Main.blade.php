@@ -1,5 +1,3 @@
-
-
 {{-- MODULE --}}
 <div class="w-full max-w-5xl mx-auto">
 
@@ -21,29 +19,27 @@
             artificial intelligence, and many other areas of computing.
         </p>
     </div>
+    
 
-    @php
-        $module_topics = $topics->where('module_id', $module->id);
-    @endphp
 
     {{-- ================= TOPICS ================= --}}
-    @foreach($module_topics as $topic)
+    @foreach($topics as $topic)
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
                 @case('topic-logic')
                     {{-- LOGIC --}}
-                    @include('Client.Review_Pages.Discrete_Mathematics.Module1.Logic')
+                    @include('Client.Review_Pages.Modules.ITPC1_DM.Logic')
                     @break
 
                 @case('topic-sets-and-set-operations')
                     {{-- SETS AND SET OPERATION --}}
-                    @include('Client.Review_Pages.Discrete_Mathematics.Module1.Sets_And_Set_Operation')
+                    @include('Client.Review_Pages.Modules.ITPC1_DM.Sets_And_Set_Operation')
                     @break
 
                 @case('topic-properties-of-set')
                     {{-- PROPERTIES OF SET --}}
-                    @include('Client.Review_Pages.Discrete_Mathematics.Module1.Properties_Of_Set')
+                    @include('Client.Review_Pages.Modules.ITPC1_DM.Properties_Of_Set')
                     @break
 
             @endswitch
@@ -141,4 +137,6 @@
         </div>
 
     </div>
+
+    
 </div>

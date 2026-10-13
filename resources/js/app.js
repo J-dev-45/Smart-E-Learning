@@ -63,7 +63,7 @@ import Subjects_Cards from './Vue/Client/Components/Subjects_Cards.vue';
 import Modules_Topics_Navigation from './Vue/Client/Components/Modules_Topics_Navigation.vue';
 import Pretest_Form from './Vue/Client/Pages/Pretest_Form.vue';
 import Client_Navigation from './Vue/Client/Components/Client_Navigation.vue';
-import Pretest_Modules from './Vue/Client/Pages/Pretest_Modules.vue';
+import Quiz_Modules from './Vue/Client/Pages/Quiz_Modules.vue';
 import Choose_Pretest_Topic_Header from './Vue/Client/Components/Choose_Pretest_Topic_Header.vue';
 import Taking_Pretest_Header from './Vue/Client/Components/Taking_Pretest_Header.vue';
 import Pretest_Result from './Vue/Client/Pages/Pretest_Result.vue';
@@ -72,12 +72,13 @@ import Compiler from './Vue/Client/Pages/Compiler.vue';
 import Pretest_Compiler from './Vue/Client/Pages/Pretest_Compiler.vue';
 import Learn_Header from './Vue/Client/Components/Learn_Header.vue';
 import Leaderboard from './Vue/Client/Pages/Leaderboard.vue';
+import Topic_Pretest from './Vue/Client/Pages/Topic_Pretest.vue';
 
 app.component('subjects-card', Subjects_Cards);
 app.component('modules-topics-navigation', Modules_Topics_Navigation);
 app.component('pretest-form', Pretest_Form);
 app.component('client-navigation', Client_Navigation);
-app.component('pretest-modules', Pretest_Modules);
+app.component('quiz-modules', Quiz_Modules);
 app.component('choose-topic-header-pretest', Choose_Pretest_Topic_Header);
 app.component('taking-pretest-header', Taking_Pretest_Header);
 app.component('pretest-result', Pretest_Result);
@@ -86,16 +87,19 @@ app.component('compiler', Compiler);
 app.component('pretest-compiler', Pretest_Compiler)
 app.component('learn-header', Learn_Header)
 app.component('leaderboard', Leaderboard);
+app.component('topic-pretest', Topic_Pretest);
 
-// ===================================================================================================|AUTH
-// ===================================================================================================|AUTH
-// ===================================================================================================|AUTH
+// | AUTH |===================================================================================================
+// | AUTH |===================================================================================================
+// | AUTH |===================================================================================================
 
 import Mobile_Login from './Vue/Auth/Mobile_Login.vue';
 import Desktop_Login from './Vue/Auth/Desktop_Login.vue';
+import Desktop_Register from './Vue/Auth/Desktop_Register.vue';
 
 app.component('mobile-login', Mobile_Login);
 app.component('desktop-login', Desktop_Login);
+app.component('desktop-register', Desktop_Register);
 
 // ===================================================================================================|GLOBAL
 // ===================================================================================================|GLOBAL

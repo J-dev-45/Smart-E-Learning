@@ -1,29 +1,31 @@
 <?php
 
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\CodePretestController;
-use App\Http\Controllers\Client\LearnSubject;
+use App\Http\Controllers\Client\LearnController;
 use App\Http\Controllers\Client\Pretest;
+use App\Http\Controllers\Client\ProgressController;
 use App\Http\Controllers\CompilerController;
-use App\Http\Controllers\Login;
 use App\Http\Controllers\Logout;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\Pages\QuestionsPage;
 use App\Http\Controllers\PracticeCompilerController;
 use App\Http\Controllers\Question;
 use App\Http\Controllers\QuestionImport;
-use App\Http\Controllers\Register;
 use App\Http\Controllers\Subject;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyOTP;
 use App\Models\Leaderboard;
+use App\Models\ModuleQuiz;
 use App\Models\Modules;
 use App\Models\Questions;
 use App\Models\RecentActivity;
 use App\Models\Subjects;
+use App\Models\SubjectStarted;
 use App\Models\Topics;
 use App\Models\User;
-use App\Models\UserPretest;
 use Illuminate\Support\Facades\Route;
 
 
@@ -52,8 +54,8 @@ Route::middleware(['guest'])->group(function(){
     })->name('account_verification');
 
 
-    Route::post('/login',[Login::class, 'login'])->middleware('throttle:3,1');
-    Route::post('/register', [Register::class, 'register'])->middleware('throttle:3,1');
+    Route::post('/login',[LoginController::class, 'login'])->middleware('throttle:3,1');
+    Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:3,1');
     Route::post('/verify_otp', [VerifyOTP::class, 'verify'])->middleware('throttle:2,1');
 
 });
@@ -76,9 +78,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/home', function () {
         $subjects = Subjects::all();
         $modules = Modules::all();
-        $questions = Questions::all();
-        $user_pretests = UserPretest::where('user_id', auth()->user()->id)->get();
+        $module_pretests = ModuleQuiz::where('user_id', auth()->user()->id)->get();
 
+        $subjects_started = SubjectStarted::where('user_id', auth()->id())->get();
 
         $leaderboard = Leaderboard::orderBy('points', 'DESC')
             ->take(20)
@@ -88,13 +90,15 @@ Route::middleware(['auth'])->group(function(){
             ->select('id', 'name', 'profile_color', 'profile_picture')
             ->get()
             ->keyBy('id');
+
+        
         return view('Client.Pages.Home', compact(
             'subjects',
             'modules',
-            'questions',
-            'user_pretests',
+            'module_pretests',
             'leaderboard',
-            'users'
+            'users',
+            'subjects_started'
         ));
     })->name('home');
 
@@ -117,7 +121,12 @@ Route::middleware(['auth'])->group(function(){
     // ===========================================================
     // ===========================================================
 
-    Route::get('/learn/{subject_name}/{subject_id}', [LearnSubject::class, 'subjectLearn']);
+    Route::get('/review/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']);
+
+    Route::get('/learn/{subject_name}/{subject_id}', [LearnController::class, 'learn']);
+    Route::put('/topic-progress', [ProgressController::class, 'scrollProgress']);
+    Route::post('/submit-topic-pretest', [ProgressController::class, 'topicPretest']);
+
     Route::get('/result/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'resultPretest']);
 
     Route::post('/submitAnswer', [Pretest::class, 'submitAnswer']);
@@ -217,7 +226,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     Route::post('/extractQuestions', [QuestionImport::class, 'extractQuestions']);
     Route::post('/importQuestions', [QuestionImport::class, 'importQuestions']); 
 
-    Route::get('/questions/{topic}/{subject_name}/{module_name}/{module_id}',[QuestionsPage::class, 'questions']);
+    Route::get('/questions/{to_view}/{subject_name}/{subject_id}/{module_name}/{module_id}/{topic_id}',[QuestionsPage::class, 'questions']);
 
 
     // MODULES

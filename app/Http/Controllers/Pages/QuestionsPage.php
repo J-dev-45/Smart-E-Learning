@@ -7,100 +7,106 @@ use App\Models\Choices;
 use App\Models\Modules;
 use App\Models\Questions;
 use App\Models\Subjects;
+use App\Models\Topics;
 use Illuminate\Http\Request;
-// use App\Models\Topics;
 
 class QuestionsPage extends Controller
 {
     public function questions(Request $request)
     {
-        $topic = $request->topic;
-        $subject_name = $request->subject_name;
-        $module_name = $request->module_name;
-        $module_id = $request->module_id;
-
         $questionColumns = [
             'id',
             'module_id',
+            'topic_id',
             'question',
             'question_type',
             'answer',
             'explanation',
         ];
 
-        if ($module_name === 'All') {
+        $toView = $request->to_view;
+        $subjectId = $request->subject_id;
+        $moduleId = $request->module_id;
+        $topicId = $request->topic_id;
 
-            $subject_id = $module_id;
+        $subject_name = Subjects::where('id', $request->subject_id)->value('subject_name');
 
-            $module_ids = Modules::where('subject_id', $subject_id)
-                ->pluck('id');
+        $module_name = 'All';
+        $topic_name = 'All';
 
-            $questionsQuery = Questions::whereIn('module_id', $module_ids);
+        $subjects = Subjects::select([ 'id', 'subject_name', 'slug', ])->get();
 
-            if ($topic !== 'none') {
-                $questionsQuery->where('topic_id', $topic);
-            }
+        $modules = Modules::select([ 'id', 'order', 'subject_id', 'module_name', ])->get();
+        $topics = Topics::select(['id', 'order', 'module_id', 'topic_name'])->get();
 
-            $questions = $questionsQuery
-                ->select($questionColumns)
-                ->get();
+        $questionsQuery = Questions::select($questionColumns);
 
-            $module_id = '';
+        switch ($toView) {
+            case 'view-subject-questions':
+                $moduleIds = Modules::where( 'subject_id', $subjectId )->pluck('id');
 
-        } else {
+                $questionsQuery->whereIn( 'module_id', $moduleIds );
 
-            $subject_id = Modules::where('id', $module_id)
-                ->value('subject_id');
+                $moduleId = '0';
+                $topic_Id = '0';
+                $module_name = 'All';
+                $topic_name = 'All';
+                break;
 
-            $questionsQuery = Questions::where('module_id', $module_id);
+            case 'view-module-questions':
+                $module = Modules::select([ 'id', 'module_name', ])->find($moduleId);
 
-            if ($topic !== 'none') {
-                $questionsQuery->where('topic_id', $topic);
-            }
+                if ($module) {
+                    $module_name = $module->module_name;
+                }
 
-            $questions = $questionsQuery
-                ->select($questionColumns)
-                ->get();
+                $questionsQuery->where( 'module_id', $moduleId );
+
+                $topic_name = 'All';
+                $topic_Id = '0';
+                break;
+
+            case 'view-topic-questions':
+                $module = Modules::select([ 'id', 'module_name', ])->find($moduleId);
+                $topic = Topics::select([ 'id', 'topic_name', ])->find($topicId);
+
+                if ($module) {
+                    $module_name = $module->module_name;
+                }
+
+                if ($topic) {
+                    $topic_name = $topic->topic_name;
+                }
+
+                $questionsQuery->where( 'topic_id', $topicId );
+                $topic_Id = $topicId;
+                break;
+
+            default:
+                $questionsQuery->whereRaw('1 = 0');
+                break;
         }
 
-        $subject_name = Subjects::where('id', $subject_id)
-            ->value('subject_name');
+        $questions = $questionsQuery->get();
 
-        $subjects = Subjects::select(
-            'id',
-            'subject_name'
-        )->get();
-
-        $modules = Modules::where('subject_id', $subject_id)
-            ->select(
-                'id',
-                'subject_id',
-                'module_name'
-            )
-            ->get();
-
-        $question_ids = $questions->pluck('id');
-
-        $choices = $question_ids->isEmpty()
-            ? collect()
-            : Choices::whereIn('question_id', $question_ids)
-                ->select(
-                    'id',
-                    'question_id',
-                    'choice_A',
-                    'choice_B',
-                    'choice_C',
-                    'choice_D'
-                )
-                ->get();
+        $choices = $questions->isNotEmpty()
+            ? Choices::whereIn(
+                'question_id',
+                $questions->pluck('id')
+            )->get()
+            : collect();
 
         return view('Admin.Pages.Questions', compact(
+            'moduleId',
+            'topic_Id',
+            'subject_name',
+            'module_name',
+            'topic_name',
             'subjects',
             'modules',
+            'topics',
             'questions',
-            'choices',
-            'module_id',
-            'subject_name'
+            'choices'
         ));
     }
 }

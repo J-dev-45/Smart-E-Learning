@@ -1,22 +1,15 @@
 <template>
     <div class="w-[86%] sm:w-[94%] md:w-[88%] lg:w-[70%] mx-auto">
-        <!-- Added dark:bg-gray-900 -->
-        <div class="rounded-xl sm:rounded-2xl overflow-hidden bg-white dark:bg-gray-900 shadow-[0_20px_60px_-15px_rgba(139,92,246,0.35)] transition-colors duration-300">
+        <div class="rounded-xl sm:rounded-2xl overflow-hidden bg-white shadow-[0_20px_60px_-15px_rgba(139,92,246,0.35)]">
 
-<<<<<<< HEAD
             <!-- Header -->
             <div class="flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-200 bg-gray-50">
-=======
-            <!-- Header: Added dark:bg-gray-800 and dark:border-gray-700 -->
-            <div class="flex items-center justify-between gap-2 px-3 sm:px-4 py-2.5 sm:py-3 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 transition-colors duration-300">
->>>>>>> origin/main
                 <div class="flex items-center gap-2 sm:gap-3 min-w-0">
                     <div class="flex items-center justify-center shrink-0 w-8 h-8 sm:w-9 sm:h-9 rounded-md bg-[#F89820]/15 border border-[#F89820]/30">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 sm:size-5 text-[#B44D12]">
                             <path d="M8.851 18.56s-.917.534.653.714c1.902.218 2.874.187 4.969-.211 0 0 .552.346 1.321.646-4.699 2.013-10.633-.118-6.943-1.149M8.276 15.933s-1.028.762.542.924c2.032.209 3.636.227 6.413-.308 0 0 .384.389.987.602-5.679 1.661-12.007.13-7.942-1.218M13.116 11.475c1.158 1.333-.304 2.533-.304 2.533s2.939-1.518 1.589-3.418c-1.261-1.772-2.228-2.652 3.006-5.688 0 0-8.216 2.051-4.291 6.573M19.33 20.504s.679.559-.747.991c-2.712.822-11.288 1.069-13.669.033-.856-.373.75-.89 1.254-.998.527-.114.828-.093.828-.093-.953-.671-6.156 1.317-2.643 1.887 9.58 1.553 17.462-.7 14.977-1.82M9.292 13.21s-4.362 1.036-1.544 1.412c1.189.159 3.561.123 5.77-.062 1.806-.152 3.618-.477 3.618-.477s-.637.273-1.098.587c-4.429 1.166-12.986.623-10.522-.568 2.082-1.006 3.776-.892 3.776-.892M17.116 17.584c4.503-2.34 2.421-4.589.968-4.285-.355.074-.515.138-.515.138s.132-.207.385-.297c2.875-1.011 5.086 2.981-.928 4.562 0 0 .07-.063.09-.118M14.401 23.802c4.323.276 10.966-.153 11.122-2.2 0 0-.302.775-3.573 1.391-3.688.694-8.238.613-10.933.168 0 0 .552.456 3.384.641"/>
                         </svg>
                     </div>
-<<<<<<< HEAD
 
                     <span class="text-sm font-semibold text-gray-800 truncate">
                         Main.java
@@ -34,45 +27,23 @@
                     </span>
                 </div>
 
-=======
-                    <!-- Added dark:text-gray-200 -->
-                    <span class="text-xs sm:text-sm font-medium text-gray-700 dark:text-gray-200 truncate">Main.java</span>
-                </div>
-
-                <div class="flex items-center gap-2 sm:gap-3">
-                    <!-- NEW: Theme Toggle Button -->
-                    <button 
-                        @click="toggleTheme" 
-                        class="p-1.5 sm:p-2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-md transition-colors"
-                        title="Toggle Dark Mode"
-                    >
-                        <svg v-if="!isDark" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
-                        </svg>
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
-                        </svg>
-                    </button>
-
-                    <!-- Run Button (Kept original colors) -->
-                    <button
-                        @click="runCode"
-                        :disabled="isRunning"
-                        class="flex items-center shrink-0 gap-1.5 text-xs font-semibold text-white bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] px-2.5 sm:px-3.5 py-1.5 rounded-md hover:brightness-110 transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer min-w-[60px] sm:min-w-[72px] justify-center"
-                    >
-                        <svg
-                            v-if="isRunning" class="animate-spin size-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                        </svg>
-                        <svg
-                            v-else xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="size-3.5" >
-                            <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
-                        </svg>
-                        {{ isRunning ? 'Running' : 'Run' }}
-                    </button>
-                </div>
->>>>>>> origin/main
+                <!-- Run Button -->
+                <button
+                    @click="runCode"
+                    :disabled="isRunning"
+                    class="flex items-center shrink-0 gap-1.5 text-xs font-semibold text-white bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] px-2.5 sm:px-3.5 py-1.5 rounded-md hover:brightness-110 transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer min-w-[60px] sm:min-w-[72px] justify-center"
+                >
+                    <svg
+                        v-if="isRunning" class="animate-spin size-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    <svg
+                        v-else xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" class="size-3.5" >
+                        <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
+                    </svg>
+                    {{ isRunning ? 'Running' : 'Run' }}
+                </button>
             </div>
 
             <!-- Editor -->
@@ -81,7 +52,6 @@
                 class="w-full h-[280px] sm:h-[360px] md:h-[350px] lg:h-[200px]"
             ></div>
 
-<<<<<<< HEAD
             <!-- Input -->
             <div
                 ref="inputSection"
@@ -139,41 +109,6 @@
                         : 'border-gray-200 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'"
                     @input="showInputWarning = false"
                 ></textarea>
-
-                <div class="mt-2.5 flex justify-end">
-                    <button
-                        @click="runCode"
-                        :disabled="isRunning"
-                        class="flex items-center shrink-0 gap-1.5 text-xs font-semibold text-white bg-gradient-to-r from-[#8B5CF6] to-[#6D28D9] px-4 py-2 rounded-md hover:brightness-110 transition disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer w-full sm:w-auto sm:min-w-[96px] justify-center"
-                    >
-                        <svg
-                            v-if="isRunning"
-                            class="animate-spin size-3.5"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                        >
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
-                        </svg>
-
-                        <svg
-                            v-else
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="currentColor"
-                            viewBox="0 0 24 24"
-                            class="size-3.5"
-                        >
-                            <path
-                                fill-rule="evenodd"
-                                d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.348c1.295.712 1.295 2.573 0 3.285L7.28 19.991c-1.25.687-2.779-.217-2.779-1.643V5.653Z"
-                                clip-rule="evenodd"
-                            />
-                        </svg>
-
-                        {{ isRunning ? 'Running' : 'Run' }}
-                    </button>
-                </div>
             </div>
 
             <!-- Output -->
@@ -196,21 +131,6 @@
                 <p
                     v-if="error && ranOutOfInput"
                     class="mt-2 rounded-md border border-amber-300 bg-amber-50 px-2.5 py-2 text-[12px] sm:text-[13px] text-amber-900"
-=======
-            <!-- Footer: Added dark:bg-gray-800 and dark:border-gray-700 -->
-            <div class="border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-3 sm:px-4 py-2.5 sm:py-3 transition-colors duration-300">
-                <p class="text-[10px] sm:text-[11px] uppercase tracking-wider font-semibold text-gray-400 dark:text-gray-500 pb-1.5">Output</p>
-                <p
-                    v-if="output"
-                    class="text-[12px] sm:text-[13px] font-mono text-emerald-600 dark:text-emerald-400 whitespace-pre-wrap break-words"
-                >
-                    {{ output }}
-                </p>
-
-                <p
-                    v-if="error"
-                    class="text-[12px] sm:text-[13px] font-mono text-red-500 dark:text-red-400 whitespace-pre-wrap break-words"
->>>>>>> origin/main
                 >
                     Your program asked for more input than you provided. Add the missing values
                     in the Input box (one per line), then run it again.
@@ -221,13 +141,8 @@
                 </p>
 
                 <p
-<<<<<<< HEAD
                     v-if="!output && !error && !isRunning"
                     class="text-[13px] sm:text-sm font-mono text-gray-600"
-=======
-                    v-if="isRunning"
-                    class="text-[12px] sm:text-[13px] font-mono text-gray-500 dark:text-gray-400"
->>>>>>> origin/main
                 >
                     Program output will appear here.
                 </p>
@@ -238,11 +153,7 @@
 </template>
 
 <script setup>
-<<<<<<< HEAD
 import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-=======
-import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
->>>>>>> origin/main
 import * as monaco from 'monaco-editor'
 
 let editor = null
@@ -262,7 +173,6 @@ const error = ref('')
 const isRunning = ref(false)
 const showInputWarning = ref(false)
 
-<<<<<<< HEAD
 // Does the code read from the keyboard? Ignore comments so
 // "// Scanner example" doesn't trigger the hint.
 const usesInput = computed(() => {
@@ -280,32 +190,6 @@ const inputLineCount = computed(() => input.value.trim().split(/\r?\n/).length)
 const ranOutOfInput = computed(() =>
     /NoSuchElementException|InputMismatchException|NullPointerException/.test(error.value)
 )
-=======
-// --- New Dark Mode Logic ---
-const isDark = ref(false)
-
-const toggleTheme = () => {
-    isDark.value = !isDark.value
-}
-
-// Watch for changes to the theme toggle
-watch(isDark, (newVal) => {
-    // 1. Toggle Tailwind HTML class
-    if (newVal) {
-        document.documentElement.classList.add('dark')
-        localStorage.setItem('theme', 'dark')
-    } else {
-        document.documentElement.classList.remove('dark')
-        localStorage.setItem('theme', 'light')
-    }
-    
-    // 2. Toggle Monaco Editor theme
-    if (editor) {
-        monaco.editor.setTheme(newVal ? 'vs-dark' : 'vs')
-    }
-})
-// ---------------------------
->>>>>>> origin/main
 
 const runCode = async () => {
     // Stop early and guide the user instead of running a program that will crash
@@ -353,13 +237,6 @@ const runCode = async () => {
 }
 
 onMounted(() => {
-    // Check local storage for saved theme preference on load
-    const savedTheme = localStorage.getItem('theme')
-    if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        isDark.value = true
-        document.documentElement.classList.add('dark')
-    }
-
     const isSmallScreen = window.innerWidth < 640
 
     self.MonacoEnvironment = {
@@ -384,7 +261,7 @@ onMounted(() => {
     editor = monaco.editor.create(editorContainer.value, {
         value: code.value,
         language: 'java',
-        theme: isDark.value ? 'vs-dark' : 'vs', // Inject initial theme dynamically
+        theme: 'vs',
         automaticLayout: true,
         fontSize: isSmallScreen ? 12 : 13,
         lineHeight: isSmallScreen ? 18 : 20,

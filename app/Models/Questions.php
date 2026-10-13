@@ -12,6 +12,7 @@ class Questions extends Model
     protected $table = 'questions';
     protected $fillable = [
         'module_id',
+        'topic_id',
         'question',
         'question_type',
         'answer',

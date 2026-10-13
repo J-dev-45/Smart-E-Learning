@@ -6,7 +6,7 @@
             style="font-size:clamp(1rem,2.5dvh,1.3rem)">WELCOME BACK</h4>
         <p class="text-gray-500 mt-1 mb-[clamp(0.8rem,2.5dvh,1.4rem)]"
         style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
-            Log in to review and ace your entrance exam
+            Log in to continue learning, practice your skills, and track your progress.
         </p>
         <!-- ERROR -->
         <div v-if="loginErrors.length">

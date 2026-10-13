@@ -131,11 +131,13 @@ async function deleteQuestionForm(Sname, Tname){
 
         const data = await response.json();
 
-        if(data.success){
-            showToast.value = true
+        if (data.success) {
+            showToast.value = true;
             message.value = data.message;
+
             emit('close-delete');
-            emit('question-deleted', data.questions);
+
+            emit('question-deleted', props.questionData.id);
         }
     }finally{
         isSubmitting.value = false

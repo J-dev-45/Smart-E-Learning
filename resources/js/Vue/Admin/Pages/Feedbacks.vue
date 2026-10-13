@@ -1,9 +1,25 @@
 <template>
-    <div class="w-full flex flex-col gap-4">
+    <div class="w-full h-full flex flex-col gap-4 min-h-0">
 
-        <!-- SEARCH -->
-        <div class="w-full flex items-center justify-between">
-            <div class="relative w-full sm:w-[320px]">
+        <div class="w-full flex flex-col sm:flex-row sm:items-center gap-3">
+
+            <!-- STATUS FILTER TABS -->
+            <div class="flex items-center gap-1 p-1 rounded-md border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 w-fit overflow-x-auto">
+                <button
+                    v-for="tab in statusTabs"
+                    :key="tab"
+                    @click="activeTab = tab"
+                    class="px-3 py-1.5 rounded-md text-xs font-medium whitespace-nowrap transition-all cursor-pointer"
+                    :class="activeTab === tab
+                        ? 'bg-[#8B5CF6] text-white'
+                        : 'text-gray-400 hover:text-white hover:bg-[#CECBF6]/10'"
+                >
+                    {{ tab }}
+                </button>
+            </div>
+
+            <!-- SEARCH -->
+            <div class="relative w-full sm:w-[320px] shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
                     class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
@@ -19,14 +35,15 @@
                            focus:border-[#CECBF6]/30 focus:bg-[#CECBF6]/10 transition-all"
                 >
             </div>
-            <span class="hidden sm:block text-xs text-gray-400">{{ filteredFeedbacks.length }} feedbacks</span>
+
+            
         </div>
 
         <!-- TABLE -->
-        <div class="w-full border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm rounded-md overflow-hidden">
+        <div class="w-full flex-1 min-h-0 flex flex-col border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm rounded-md overflow-hidden">
 
             <!-- header -->
-            <div class="grid grid-cols-[90px_1fr_1fr_110px_100px_170px] px-4 py-2.5 border-b border-[#CECBF6]/15
+            <div class="shrink-0 min-w-[720px] grid grid-cols-[90px_1fr_1fr_110px_100px_170px] px-4 py-3 border-b border-[#CECBF6]/15
                         text-xs font-semibold text-gray-400">
                 <span>ID</span>
                 <span>Name</span>
@@ -37,9 +54,9 @@
             </div>
 
             <!-- rows -->
-            <ul class="overflow-y-scroll max-h-[290px] scrollbar-thin">
+            <ul class="min-w-[720px] flex-1 min-h-0 overflow-y-scroll scrollbar-thin">
                 <li v-for="feedback in filteredFeedbacks" :key="feedback.id"
-                    class="grid grid-cols-[90px_1fr_1fr_110px_100px_170px] items-center px-4 py-3
+                    class="grid grid-cols-[90px_1fr_1fr_110px_100px_170px] items-center px-4 py-3.5
                            border-b border-[#CECBF6]/10 last:border-b-0
                            hover:bg-[#CECBF6]/5 transition-colors">
 
@@ -131,6 +148,9 @@
 
     const search = ref('')
 
+    const statusTabs = ['All', 'New', 'Unread', 'Done']
+    const activeTab = ref('All')
+
     const feedbacks = [
         { id: 1, feedbackName: "Jimwell Raza", repliedBy: "Admin - Jared Marinas", status: "Done", date: "08-12-26" },
         { id: 2, feedbackName: "Jayson Layola", repliedBy: "Admin - Jimwell Raza", status: "Done", date: "08-12-26" },
@@ -145,11 +165,15 @@
 
     const filteredFeedbacks = computed(() => {
         const q = search.value.trim().toLowerCase()
-        if (!q) return feedbacks
-        return feedbacks.filter(f =>
-            f.feedbackName.toLowerCase().includes(q) ||
-            String(f.id).includes(q)
-        )
+
+        return feedbacks.filter(f => {
+            const matchesTab = activeTab.value === 'All' || f.status === activeTab.value
+            const matchesSearch = !q ||
+                f.feedbackName.toLowerCase().includes(q) ||
+                String(f.id).includes(q)
+
+            return matchesTab && matchesSearch
+        })
     })
 
     function initials(name) {

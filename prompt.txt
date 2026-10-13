@@ -30,7 +30,7 @@ Create a question bank for **Computer Programming 1** using the **DOCX file I up
 
 ### Question requirements:
 
-* Create **at least 30 questions**.
+* Create **at least 50 questions**.
 * Use the question types available in the uploaded template:
 
   * Multiple Choice

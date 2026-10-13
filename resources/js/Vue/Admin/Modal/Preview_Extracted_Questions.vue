@@ -43,9 +43,11 @@
               <span class="py-1 px-2.5 text-xs font-semibold shrink-0 text-blue-600 rounded-md border border-blue-200 bg-blue-50">
                 {{ subjectName }}
               </span>
+
               <span class="py-1 px-2.5 text-xs font-semibold shrink-0 text-yellow-600 rounded-md border border-yellow-200 bg-yellow-50">
                 {{ moduleName }}
               </span>
+
               <span class="py-1 px-2.5 text-xs font-semibold shrink-0 text-[#6D28D9] rounded-md border border-violet-200 bg-violet-50 ml-auto">
                 {{ editableQuestions.length }} question{{ editableQuestions.length === 1 ? '' : 's' }}
               </span>
@@ -77,6 +79,7 @@
                   <span class="flex items-center justify-center w-6 h-6 shrink-0 rounded-md bg-gray-100 text-xs font-semibold text-gray-500">
                     {{ index + 1 }}
                   </span>
+
                   <span :class="typeBadgeClass(q.question_type)">
                     {{ typeLabel(q.question_type) }}
                   </span>
@@ -92,6 +95,7 @@
                     <svg v-if="!q._editing" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                     </svg>
+
                     <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                     </svg>
@@ -104,7 +108,7 @@
                     class="p-1.5 rounded-md border border-red-200 text-red-500 bg-red-50 hover:bg-red-100 hover:border-red-300 transition-colors cursor-pointer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                     </svg>
                   </button>
                 </div>
@@ -136,8 +140,18 @@
                     >
                       {{ letter }}
                     </span>
+
                     <span class="truncate">{{ q.choices?.[letter] || '—' }}</span>
-                    <svg v-if="q.correct_choice === letter" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5 ml-auto shrink-0">
+
+                    <svg
+                      v-if="q.correct_choice === letter"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke-width="2"
+                      stroke="currentColor"
+                      class="size-3.5 ml-auto shrink-0"
+                    >
                       <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                     </svg>
                   </div>
@@ -159,7 +173,10 @@
                   </span>
                 </div>
 
-                <p v-if="q.explanation" class="text-xs text-gray-400 italic border-t border-gray-100 pt-2 mt-1">
+                <p
+                  v-if="q.explanation"
+                  class="text-xs text-gray-400 italic border-t border-gray-100 pt-2 mt-1"
+                >
                   {{ q.explanation }}
                 </p>
               </template>
@@ -185,9 +202,16 @@
                     <label
                       class="relative flex items-center justify-center w-8 h-8 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 has-[:checked]:bg-[#8B5CF6] has-[:checked]:text-white has-[:checked]:border-[#8B5CF6]"
                     >
-                      <input v-model="q.correct_choice" type="radio" :name="`correct_choice_${index}`" :value="letter" class="sr-only">
+                      <input
+                        v-model="q.correct_choice"
+                        type="radio"
+                        :name="`correct_choice_${index}`"
+                        :value="letter"
+                        class="sr-only"
+                      >
                       {{ letter }}
                     </label>
+
                     <input
                       v-model="q.choices[letter]"
                       type="text"
@@ -202,13 +226,26 @@
                   <label
                     class="relative flex items-center justify-center h-10 rounded-lg border cursor-pointer select-none transition-colors text-sm font-medium border-gray-300 text-gray-700 hover:border-gray-400 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:text-violet-700"
                   >
-                    <input v-model="q.correct_answer" type="radio" :name="`correct_answer_${index}`" value="True" class="sr-only">
+                    <input
+                      v-model="q.correct_answer"
+                      type="radio"
+                      :name="`correct_answer_${index}`"
+                      value="True"
+                      class="sr-only"
+                    >
                     True
                   </label>
+
                   <label
                     class="relative flex items-center justify-center h-10 rounded-lg border cursor-pointer select-none transition-colors text-sm font-medium border-gray-300 text-gray-700 hover:border-gray-400 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:text-violet-700"
                   >
-                    <input v-model="q.correct_answer" type="radio" :name="`correct_answer_${index}`" value="False" class="sr-only">
+                    <input
+                      v-model="q.correct_answer"
+                      type="radio"
+                      :name="`correct_answer_${index}`"
+                      value="False"
+                      class="sr-only"
+                    >
                     False
                   </label>
                 </div>
@@ -253,10 +290,17 @@
               :disabled="isSubmitting || editableQuestions.length === 0"
               class="w-2/3 py-2.5 rounded-md text-sm font-medium text-white bg-[#8B5CF6] hover:bg-[#7C3AED] active:bg-[#6D28D9] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
-              <svg v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg
+                v-if="isSubmitting"
+                class="animate-spin size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z"></path>
               </svg>
+
               {{ isSubmitting ? 'Saving...' : `Save ${editableQuestions.length} Question${editableQuestions.length === 1 ? '' : 's'}` }}
             </button>
           </div>
@@ -270,12 +314,10 @@
     :message="message"
     @close="showToast = false"
   />
-
 </template>
 
 <script setup>
 import { ref, watch } from 'vue';
-
 import Toast from '../components/Toast.vue';
 
 const props = defineProps({
@@ -291,43 +333,52 @@ const props = defineProps({
     type: String,
     default: 'N/A'
   },
+  moduleId: {
+    type: String,
+    default: ''
+  },
+  topicName: {
+    type: String,
+    default: 'N/A'
+  },
+  topicId: {
+    type: String,
+    default: ''
+  },
   subjectName: {
     type: String,
     default: 'N/A'
   },
-  moduleId: {
+  subjectId: {
     type: String,
-    required: true
+    default: ''
   }
 });
 
 const showToast = ref(false);
 const message = ref('');
-
 const emit = defineEmits(['close-preview', 'saved', 'questions-added']);
-
 const isSubmitting = ref(false);
 const editableQuestions = ref([]);
-
 let keyCounter = 0;
 
 watch(
   () => props.questions,
   (list) => {
     editableQuestions.value = (list || []).map((q) => ({
-        question: q.question ?? '',
-        question_type: q.question_type ?? 'multipleChoice',
-        correct_choice: q.question_type === 'multipleChoice' ? (q.answer ?? '') : '',
-        correct_answer: q.question_type !== 'multipleChoice' ? (q.answer ?? '') : '',
-        choices: {
-            A: q.choices?.A ?? q.choice_A ?? '',
-            B: q.choices?.B ?? q.choice_B ?? '',
-            C: q.choices?.C ?? q.choice_C ?? '',
-            D: q.choices?.D ?? q.choice_D ?? ''
-        },
-        explanation: q.explanation ?? '',
-        _editing: false,
-        _key: keyCounter++
+      question: q.question ?? '',
+      question_type: q.question_type ?? 'multipleChoice',
+      correct_choice: q.question_type === 'multipleChoice' ? (q.answer ?? '') : '',
+      correct_answer: q.question_type !== 'multipleChoice' ? (q.answer ?? '') : '',
+      choices: {
+        A: q.choices?.A ?? q.choice_A ?? '',
+        B: q.choices?.B ?? q.choice_B ?? '',
+        C: q.choices?.C ?? q.choice_C ?? '',
+        D: q.choices?.D ?? q.choice_D ?? ''
+      },
+      explanation: q.explanation ?? '',
+      _editing: false,
+      _key: keyCounter++
     }));
   },
   { immediate: true }
@@ -342,14 +393,25 @@ function typeLabel(type) {
 
 function typeBadgeClass(type) {
   const base = 'py-1 px-2 text-[11px] font-semibold rounded-md border';
-  if (type === 'multipleChoice') return `${base} text-blue-600 border-blue-200 bg-blue-50`;
-  if (type === 'TorF') return `${base} text-yellow-600 border-yellow-200 bg-yellow-50`;
-  if (type === 'identification') return `${base} text-emerald-600 border-emerald-200 bg-emerald-50`;
+
+  if (type === 'multipleChoice') {
+    return `${base} text-blue-600 border-blue-200 bg-blue-50`;
+  }
+
+  if (type === 'TorF') {
+    return `${base} text-yellow-600 border-yellow-200 bg-yellow-50`;
+  }
+
+  if (type === 'identification') {
+    return `${base} text-emerald-600 border-emerald-200 bg-emerald-50`;
+  }
+
   return `${base} text-gray-500 border-gray-200 bg-gray-50`;
 }
 
 function toggleEdit(index) {
-  editableQuestions.value[index]._editing = !editableQuestions.value[index]._editing;
+  editableQuestions.value[index]._editing =
+    !editableQuestions.value[index]._editing;
 }
 
 function removeQuestion(index) {
@@ -363,7 +425,21 @@ function closeModal() {
 async function confirmSave() {
   if (isSubmitting.value || editableQuestions.value.length === 0) return;
 
-  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+  if (!props.moduleId) {
+    message.value = 'Module is required.';
+    showToast.value = true;
+    return;
+  }
+
+  if (!props.topicId) {
+    message.value = 'Topic is required.';
+    showToast.value = true;
+    return;
+  }
+
+  const csrfToken = document
+    .querySelector('meta[name="csrf-token"]')
+    ?.getAttribute('content');
 
   isSubmitting.value = true;
 
@@ -371,7 +447,7 @@ async function confirmSave() {
 
   try {
     const response = await fetch('/importQuestions', {
-      method: "POST",
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'X-CSRF-TOKEN': csrfToken,
@@ -379,25 +455,42 @@ async function confirmSave() {
       },
       body: JSON.stringify({
         module_id: props.moduleId,
+        topic_id: props.topicId,
+        subject_name: props.subjectName,
+        module_name: props.moduleName,
+        topic_name: props.topicName,
         questions: payload
-    })
+      })
     });
 
     const data = await response.json();
 
     if (!response.ok) {
-      console.log('Server errors:', data);
+      console.error('Import validation/server errors:', data);
+
+      if (data.errors) {
+        const firstError = Object.values(data.errors).flat()[0];
+        message.value = firstError || data.message || 'Failed to import questions.';
+      } else {
+        message.value = data.message || 'Failed to import questions.';
+      }
+
+      showToast.value = true;
       return;
     }
 
     if (data.success) {
+      message.value = data.message || 'Questions imported successfully!';
       showToast.value = true;
-      message.value = data.message;
+
       emit('saved', data);
-      emit('questions-added', data.new_questions);
+      emit('questions-added', data.new_questions || []);
       emit('close-preview');
     }
-
+  } catch (error) {
+    console.error('Import error:', error);
+    message.value = error.message || 'Failed to import questions.';
+    showToast.value = true;
   } finally {
     isSubmitting.value = false;
   }
@@ -407,24 +500,27 @@ async function confirmSave() {
 <style scoped>
 .modal-fade-enter-active,
 .modal-fade-leave-active {
-    transition: opacity 0.15s ease;
+  transition: opacity 0.15s ease;
 }
+
 .modal-fade-enter-from,
 .modal-fade-leave-to {
-    opacity: 0;
+  opacity: 0;
 }
 
 .modal-scale-enter-active {
-    transition: opacity 0.15s ease, transform 0.15s ease;
+  transition: opacity 0.15s ease, transform 0.15s ease;
 }
+
 .modal-scale-enter-from {
-    opacity: 0;
-    transform: scale(0.96) translateY(4px);
+  opacity: 0;
+  transform: scale(0.96) translateY(4px);
 }
 
 .scrollbar-thin::-webkit-scrollbar {
   width: 6px;
 }
+
 .scrollbar-thin::-webkit-scrollbar-thumb {
   background-color: #d1d5db;
   border-radius: 9999px;

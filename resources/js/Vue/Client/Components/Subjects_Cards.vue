@@ -20,17 +20,19 @@
             </div>
         </div>
         <div class="flex flex-col gap-1">
-            <span class="text-[10px] font-bold tracking-widest text-[#CECBF6]/50">{{ acronym(subject.subject_name) }}</span>
+            <span class="text-[10px] font-bold tracking-widest text-[#CECBF6]/50">
+                <!-- {{ acronym(subject.subject_name) }} -->
+                  Subject Code
+            </span>
             <h3 class="text-base font-bold leading-snug">{{ subject.subject_name }}</h3>
             <p class="text-xs font-semibold text-gray-500">{{ getAvailableModulesCount(subject.id) }} quizzes available</p>
         </div>
         <div  class="flex items-center gap-2 pt-1">
             
-            <a :href="`/learn/${url(subject.subject_name)}/${subject.id}`" class="flex-1 text-center text-xs font-bold text-[#CECBF6] border-[1.5px] border-[#CECBF6]/30 rounded-lg py-2.5 transition-colors hover:bg-[#CECBF6]/10 hover:border-[#CECBF6]/50">
-                Learn
-            </a>
-            <a :href="`/pretest/${url(subject.subject_name)}/${subject.id}`" class="flex-1 text-center text-xs font-bold text-[#090014] bg-[#CECBF6] rounded-lg py-2.5 transition-colors hover:bg-[#CECBF6]/85">
-                Quiz
+
+            <a :href="`/learn/${url(subject.subject_name)}/${subject.id}`" 
+                class="flex-1 text-center text-xs font-bold text-[#090014]  rounded-lg py-2.5 transition-colors bg-[#CECBF6]/85 border-[1.5px]">
+                  Learn
             </a>
         </div>
     </div>
@@ -43,8 +45,8 @@
 const props = defineProps({
     subjectsData: { type: Array, required: true },
     modulesData: { type: Array, required: true },
-    questionsData: { type: Array, required: true },
-    pretestData: { type: Array, required: true }
+    pretestData: { type: Array, required: true },
+    subjectsStarted: {type: Array, required:true}
 })
 const icons = [
     {subject: 'Discrete Mathematics', d: 'M12 5 5 17M12 5l7 12M5 17h14M12 5v7M5 17l7-5M19 17l-7-5M10.7 5a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 1 0-2.6 0M3.7 17a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 1 0-2.6 0M17.7 17a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 1 0-2.6 0M10.7 12a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 1 0-2.6 0'},
@@ -55,13 +57,20 @@ const icons = [
 
 ]
 
-function getModulessCount(Sid){
-    return props.modulesData.filter(Tdata=> Tdata.subject_id === Sid).length
-}  
+// function getModulessCount(Sid){
+//     return props.modulesData.filter(Tdata=> Tdata.subject_id === Sid).length
+// }  
 function getAvailableModulesCount(Sid) {
     return props.modulesData.filter(
         Mdata => Mdata.subject_id === Sid && Mdata.status != 'current'
     ).length;
+}
+
+function getSubjectStarted(Sid){
+    return props.subjectsStarted.find(
+        SS => SS.subject_id === Sid
+    )
+
 }
 
 

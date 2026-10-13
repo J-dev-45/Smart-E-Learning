@@ -7,23 +7,23 @@ use App\Models\Modules;
 use App\Models\Questions;
 use App\Models\RecentActivity;
 use App\Models\TestCase;
+use App\Models\Topics;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class Question extends Controller
 {
-
     // ADD QUESTION
-    // EDIT QUESTIO
-    // DELETE QUESTION
-
     public function addQuestion(Request $request)
     {
         $input = $request->validate([
             'question' => 'required|string|max:6000',
-            'explanation' => 'exclude_if:question_type,coding|string|max:6000',
+            'explanation' => 'exclude_if:question_type,coding|nullable|string|max:6000',
             'question_type' => 'required|string|in:multipleChoice,TorF,identification,coding',
+
             'module_id' => 'required|uuid|exists:modules,id',
+            'topic_id' => 'required|uuid|exists:topics,id',
 
             'choice_A' => 'required_if:question_type,multipleChoice|nullable|string|max:2000',
             'choice_B' => 'required_if:question_type,multipleChoice|nullable|string|max:2000',
@@ -31,131 +31,161 @@ class Question extends Controller
             'choice_D' => 'required_if:question_type,multipleChoice|nullable|string|max:2000',
 
             'correct_choice' => 'exclude_unless:question_type,multipleChoice|required|string|in:A,B,C,D',
-            'correct_answer' => 'exclude_if:question_type,coding|string|max:6000',
+            'correct_answer' => 'exclude_if:question_type,coding|nullable|string|max:6000',
 
-            'test_cases' => 'required_if:question_type,coding|array|min:1',
+            // Only validate test cases for coding questions
+            'test_cases' => 'exclude_unless:question_type,coding|required|array|min:1',
             'test_cases.*.scanner_input' => 'nullable|string|max:6000',
             'test_cases.*.expected_output' => 'required|string|max:6000',
             'test_cases.*.test_case_order' => 'required|integer|min:1',
             'test_cases.*.is_hidden' => 'boolean',
         ]);
 
-        if ($input['question_type'] === 'multipleChoice') {
+        $topicBelongsToModule = Topics::where('id', $input['topic_id'])
+            ->where('module_id', $input['module_id'])
+            ->exists();
 
-            $correct_answer = '';
-
-            if ($input['correct_choice'] === 'A') {
-                $correct_answer = $input['choice_A'];
-            } elseif ($input['correct_choice'] === 'B') {
-                $correct_answer = $input['choice_B'];
-            } elseif ($input['correct_choice'] === 'C') {
-                $correct_answer = $input['choice_C'];
-            } elseif ($input['correct_choice'] === 'D') {
-                $correct_answer = $input['choice_D'];
-            }
-
-            $question = Questions::create([
-                'module_id' => $input['module_id'],
-                'question' => $input['question'],
-                'question_type' => $input['question_type'],
-                'answer' => $correct_answer,
-                'explanation' => $input['explanation'],
-                'points' => 3
-            ]);
-
-            Choices::create([
-                'question_id' => $question->id,
-                'choice_A' => $input['choice_A'],
-                'choice_B' => $input['choice_B'],
-                'choice_C' => $input['choice_C'],
-                'choice_D' => $input['choice_D'],
-            ]);
-
-            Modules::where('id', $input['module_id'])
-                ->update([
-                    'has_question_type' => true
-                ]);
-
-        } elseif ($input['question_type'] === 'TorF') {
-
-            Questions::create([
-                'module_id' => $input['module_id'],
-                'question' => $input['question'],
-                'question_type' => $input['question_type'],
-                'answer' => $input['correct_answer'],
-                'explanation' => $input['explanation'],
-                'points' => 3
-            ]);
-
-            Modules::where('id', $input['module_id'])
-                ->update([
-                    'has_question_type' => true
-                ]);
-
-        } elseif ($input['question_type'] === 'identification') {
-
-            Questions::create([
-                'module_id' => $input['module_id'],
-                'question' => $input['question'],
-                'question_type' => $input['question_type'],
-                'answer' => $input['correct_answer'],
-                'explanation' => $input['explanation'],
-                'points' => 5
-            ]);
-
-            Modules::where('id', $input['module_id'])
-                ->update([
-                    'has_question_type' => true
-                ]);
-
-        } elseif ($input['question_type'] === 'coding') {
-
-            $question = Questions::create([
-                'module_id' => $input['module_id'],
-                'question' => $input['question'],
-                'question_type' => $input['question_type'],
-                'points' => 10
-            ]);
-
-            foreach ($input['test_cases'] as $testCase) {
-                TestCase::create([
-                    'question_id' => $question->id,
-                    'scanner_input' => $testCase['scanner_input'] ?? null,
-                    'expected_output' => $testCase['expected_output'],
-                    'test_case_order' => $testCase['test_case_order'],
-                    'is_hidden' => $testCase['is_hidden'] ?? false,
-                ]);
-            }
-
-            Modules::where('id', $input['module_id'])
-                ->update([
-                    'has_coding' => true
-                ]);
+        if (!$topicBelongsToModule) {
+            return response()->json([
+                'success' => false,
+                'message' => 'The selected topic does not belong to the selected module.',
+            ], 422);
         }
 
-        $questions = Questions::where('module_id', $input['module_id'])
-            ->select('id', 'module_id', 'question', 'question_type', 'answer')
-            ->get();
+        try {
+            $question = DB::transaction(function () use ($input) {
+                $questionType = $input['question_type'];
 
-        RecentActivity::create([
-            'name' => auth()->user()->name,
-            'action' => 'added_question',
-            'subject' => $request->subject_name,
-            'module' => $request->module_name
-        ]);
+                if ($questionType === 'multipleChoice') {
+                    $correctAnswer = match ($input['correct_choice']) {
+                        'A' => $input['choice_A'],
+                        'B' => $input['choice_B'],
+                        'C' => $input['choice_C'],
+                        'D' => $input['choice_D'],
+                    };
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Question added successfully!',
-            'new_questions' => $questions,
-        ]);
+                    $question = Questions::create([
+                        'module_id' => $input['module_id'],
+                        'topic_id' => $input['topic_id'],
+                        'question' => $input['question'],
+                        'question_type' => $questionType,
+                        'answer' => $correctAnswer,
+                        'explanation' => $input['explanation'] ?? null,
+                        'points' => 3,
+                    ]);
+
+                    Choices::create([
+                        'question_id' => $question->id,
+                        'choice_A' => $input['choice_A'],
+                        'choice_B' => $input['choice_B'],
+                        'choice_C' => $input['choice_C'],
+                        'choice_D' => $input['choice_D'],
+                    ]);
+
+                    Modules::where('id', $input['module_id'])
+                        ->update([
+                            'has_question_type' => true,
+                        ]);
+                } elseif ($questionType === 'TorF') {
+                    $question = Questions::create([
+                        'module_id' => $input['module_id'],
+                        'topic_id' => $input['topic_id'],
+                        'question' => $input['question'],
+                        'question_type' => $questionType,
+                        'answer' => $input['correct_answer'],
+                        'explanation' => $input['explanation'] ?? null,
+                        'points' => 3,
+                    ]);
+
+                    Modules::where('id', $input['module_id'])
+                        ->update([
+                            'has_question_type' => true,
+                        ]);
+                } elseif ($questionType === 'identification') {
+                    $question = Questions::create([
+                        'module_id' => $input['module_id'],
+                        'topic_id' => $input['topic_id'],
+                        'question' => $input['question'],
+                        'question_type' => $questionType,
+                        'answer' => $input['correct_answer'],
+                        'explanation' => $input['explanation'] ?? null,
+                        'points' => 5,
+                    ]);
+
+                    Modules::where('id', $input['module_id'])
+                        ->update([
+                            'has_question_type' => true,
+                        ]);
+                } else {
+                    $question = Questions::create([
+                        'module_id' => $input['module_id'],
+                        'topic_id' => $input['topic_id'],
+                        'question' => $input['question'],
+                        'question_type' => $questionType,
+                        'answer' => null,
+                        'explanation' => null,
+                        'points' => 10,
+                    ]);
+
+                    foreach ($input['test_cases'] as $testCase) {
+                        TestCase::create([
+                            'question_id' => $question->id,
+                            'scanner_input' => $testCase['scanner_input'] ?? null,
+                            'expected_output' => $testCase['expected_output'],
+                            'test_case_order' => $testCase['test_case_order'],
+                            'is_hidden' => $testCase['is_hidden'] ?? false,
+                        ]);
+                    }
+
+                    Modules::where('id', $input['module_id'])
+                        ->update([
+                            'has_coding' => true,
+                        ]);
+                }
+
+                return $question;
+            });
+
+            $question = $question->fresh();
+
+            RecentActivity::create([
+                'name' => auth()->user()->name,
+                'action' => 'added_question',
+                'subject' => $request->subject_name,
+                'module' => $request->module_name,
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Question added successfully!',
+                'new_questions' => [$question],
+            ]);
+        } catch (\Throwable $e) {
+            \Log::error('ADD QUESTION ERROR', [
+                'message' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to add question.',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 
-
-
+    // EDIT QUESTION
     public function editQuestion(Request $request)
     {
         $question = Questions::find($request->question_id);
+
+        if (!$question) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Question not found.',
+            ], 404);
+        }
 
         if ($request->question_type === 'multipleChoice') {
             $data = $request->validate([
@@ -213,73 +243,81 @@ class Question extends Controller
             'name' => auth()->user()->name,
             'action' => 'edited_question',
             'subject' => $request->subject_name,
-            'module' => $request->module_name
+            'module' => $request->module_name,
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Question updated successfully'
+            'message' => 'Question updated successfully',
         ]);
     }
 
-
-
-    public function deleteQuestion(Request $request){
+    // DELETE QUESTION
+    public function deleteQuestion(Request $request)
+    {
         $data = $request->validate([
-            'question_id' => 'required|uuid'
+            'question_id' => 'required|uuid',
         ]);
 
         $question = Questions::find($data['question_id']);
 
-        if(!$question){
+        if (!$question) {
             return response()->json([
-                'message' => 'Question not found'
+                'message' => 'Question not found',
             ], 404);
         }
 
-        $module_id = $question->module_id;
-        $question_type = $question->question_type;
+        $moduleId = $question->module_id;
+        $questionType = $question->question_type;
 
         RecentActivity::create([
             'name' => auth()->user()->name,
             'action' => 'deleted_question',
             'subject' => $request->subject_name,
-            'module' => $request->module_name
+            'module' => $request->module_name,
         ]);
 
         $question->delete();
 
-        if($question_type === 'coding'){
-            $hasCoding = Questions::where('module_id', $module_id)
+        if ($questionType === 'coding') {
+            $hasCoding = Questions::where('module_id', $moduleId)
                 ->where('question_type', 'coding')
                 ->exists();
 
-            Modules::where('id', $module_id)
+            Modules::where('id', $moduleId)
                 ->update([
-                    'has_coding' => $hasCoding
+                    'has_coding' => $hasCoding,
                 ]);
-        }else{
-            $hasQuestionType = Questions::where('module_id', $module_id)
+        } else {
+            $hasQuestionType = Questions::where('module_id', $moduleId)
                 ->whereIn('question_type', [
                     'multipleChoice',
                     'identification',
-                    'TorF'
+                    'TorF',
                 ])
                 ->exists();
-                Modules::where('id', $module_id)
+
+            Modules::where('id', $moduleId)
                 ->update([
-                    'has_question_type' => $hasQuestionType
+                    'has_question_type' => $hasQuestionType,
                 ]);
         }
 
-        $questions = Questions::where('module_id', $module_id)->get();
+        $questions = Questions::where('module_id', $moduleId)
+            ->select(
+                'id',
+                'module_id',
+                'topic_id',
+                'question',
+                'question_type',
+                'answer'
+            )
+            ->get();
 
         return response()->json([
             'success' => true,
             'message' => 'Question Deleted Successfully!',
-            'questions' => $questions
+            'questions' => $questions,
         ]);
     }
-
-
 }

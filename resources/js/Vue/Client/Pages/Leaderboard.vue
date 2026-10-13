@@ -57,7 +57,11 @@
                     class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover"
                 />
 
-                <span class="text-sm sm:text-base font-semibold text-center leading-tight">{{ getTop(leaderboard[1]?.user_id)?.name }}</span>
+                <span class="text-sm sm:text-base font-semibold text-center leading-tight"
+                    :class="getTop(leaderboard[1]?.user_id)?.id === myId ? 'text-green-500' : ''"
+                >
+                    {{ getTop(leaderboard[1]?.user_id)?.name }} {{ getTop(leaderboard[1]?.user_id)?.id === myId ? ' (You)' : '' }}
+                </span>
                 <div class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5">
                     <span class="text-xl sm:text-2xl font-bold text-white/70">2nd</span>
                     <span class="text-[10px] sm:text-xs font-medium text-white/40">
@@ -90,7 +94,11 @@
                     class="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover ring-4 ring-yellow-300"
                 />
 
-                <span class="text-base sm:text-lg font-bold text-center leading-tight">{{ getTop(leaderboard[0]?.user_id)?.name }}</span>
+                <span class="text-base sm:text-lg font-bold text-center leading-tight"
+                    :class="getTop(leaderboard[0]?.user_id)?.id === myId ? 'text-green-500' : ''"
+                >
+                    {{ getTop(leaderboard[0]?.user_id)?.name }} {{ getTop(leaderboard[0]?.user_id)?.id === myId ? ' (You)' : '' }}
+                </span>
                 <div class="w-32 sm:w-36 h-28 sm:h-32 rounded-t-xl border border-[#FFD558]/30 bg-[#FFD558]/[0.06] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5">
                     <span class="text-2xl sm:text-3xl font-bold text-[#FFD558]">1st</span>
                     <span class="text-xs sm:text-sm font-medium text-[#FFD558]/60">
@@ -128,7 +136,11 @@
                     class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover"
                 />
 
-                <span class="text-sm sm:text-base font-semibold text-center leading-tight">{{ getTop(leaderboard[2]?.user_id)?.name }}</span>
+                <span class="text-sm sm:text-base font-semibold text-center leading-tight"
+                    :class="getTop(leaderboard[2]?.user_id)?.id === myId ? 'text-green-500' : ''"
+                >
+                    {{ getTop(leaderboard[2]?.user_id)?.name }} {{ getTop(leaderboard[2]?.user_id)?.id === myId ? ' (You)' : '' }}
+                </span>
                 <div class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5">
                     <span class="text-xl sm:text-2xl font-bold text-white/70">3rd</span>
                     <span class="text-[10px] sm:text-xs font-medium text-white/40">
@@ -156,7 +168,11 @@
                 <div v-for="(lb, index) in leaderboard.slice(3)" :key="lb.id"
                     class="flex items-center px-5 py-3.5 border-b border-[#CECBF6]/10 last:border-b-0 hover:bg-white/[0.02] transition-colors duration-200">
                     <span class="w-12 text-sm font-semibold text-white/60">{{ ordinal(index + 4) }}</span>
-                    <span class="flex-1 text-sm font-medium">{{ getName(lb.user_id) }}</span>
+                    <span class="flex-1 text-sm font-medium"
+                        :class="getTop(lb.user_id)?.id === myId ? 'text-green-500' : ''"
+                    >
+                        {{ getName(lb.user_id) }} {{ getTop(lb.user_id)?.id === myId ? ' (You)' : '' }}
+                    </span>
                     <span class="text-sm font-bold text-white/70">{{ lb.points }} pts</span>
                 </div>
 
@@ -171,7 +187,8 @@
 
 const props = defineProps({
     users: { type: Object, required: true },
-    leaderboard: { type: Array, required: true }
+    leaderboard: { type: Array, required: true },
+    myId: { type: Number, required: true}
 })
 
 const getTop = (Uid) => props.users[Uid];
