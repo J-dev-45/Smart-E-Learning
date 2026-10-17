@@ -29,17 +29,17 @@
 
                 @case('topic-logic')
                     {{-- LOGIC --}}
-                    @include('Client.Review_Pages.Modules.ITPC1_DM.Logic')
+                    @include('Client.Review_Pages.Modules.ITPC1_DM.M1_Introduction.Logic')
                     @break
 
                 @case('topic-sets-and-set-operations')
                     {{-- SETS AND SET OPERATION --}}
-                    @include('Client.Review_Pages.Modules.ITPC1_DM.Sets_And_Set_Operation')
+                    @include('Client.Review_Pages.Modules.ITPC1_DM.M1_Introduction.Sets_And_Set_Operation')
                     @break
 
                 @case('topic-properties-of-set')
                     {{-- PROPERTIES OF SET --}}
-                    @include('Client.Review_Pages.Modules.ITPC1_DM.Properties_Of_Set')
+                    @include('Client.Review_Pages.Modules.ITPC1_DM.M1_Introduction.Properties_Of_Set')
                     @break
 
             @endswitch
@@ -137,6 +137,44 @@
         </div>
 
     </div>
+
+    <module-activity 
+        :questions='@json($activity_questions)'
+        :module-progress='@json($module_progress)'
+        :module='@json($module)'
+        :failed='@json($failed)'
+        :answered-module-questions='@json($answered_module_questions)'
+        :answered-questions='@json($answered_questions)'
+        :score='@json($score)'
+    ></module-activity>
+
+        {{-- Warning --}}
+    <div class="flex items-start gap-3 mt-10 p-4 rounded-xl border border-amber-400/30 border-l-4 border-l-amber-400 bg-amber-400/5">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-5 shrink-0 text-amber-400 mt-0.5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
+        </svg>
+        <div class="flex flex-col gap-0.5">
+            <span class="text-sm font-bold text-amber-300">Pass the activity to continue</span>
+            <p class="text-sm text-gray-400 leading-relaxed">
+                You must pass the activity above to unlock the 
+                <span class="text-white">Quiz</span> 
+                @if($module->has_coding)
+                and 
+                <span class="text-white">Coding</span> 
+                @endif
+                assessments.
+            </p>
+        </div>
+    </div>
+
+
+    <module-quiz-buttons
+        :subject='@json($subject)'
+        :module='@json($module)'
+        :module-progress='@json($module_progress)'
+        :module-quiz='@json($module_quiz)'
+    >
+    </module-quiz-buttons>
 
     
 </div>

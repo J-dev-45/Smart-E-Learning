@@ -82,7 +82,7 @@
 
                     <div class="flex flex-wrap gap-2 md:justify-end md:shrink-0">
 
-                        <a :href="`/review/${url(subjectName)}/${subjectId}/${url(moduleName(userModule.module_id))}/${userModule.module_id}/`" 
+                        <a :href="`/learning/${url(subjectName)}/${subjectId}/${url(moduleName(userModule.module_id))}/${userModule.module_id}/`" 
                             class="w-full md:w-auto text-center text-xs sm:text-sm font-bold text-[#090014] bg-[#CECBF6] rounded-full py-2.5 px-4 sm:px-6 transition-colors hover:bg-[#CECBF6]/85 whitespace-nowrap">
                             Start
                         </a>

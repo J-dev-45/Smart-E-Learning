@@ -18,8 +18,12 @@
             {{-- HEADER (stays visible while scrolling) --}}
             <div class="sticky top-0 z-20 shrink-0 bg-[#12081F]">
                 <learn-header
-                    profile-color="{{ auth()->user()->profile_color }}"
-                    home-url="{{ route('home') }}"
+                    :profile-color='@json(auth()->user()->profile_color)'
+                    :module='@json($module)'
+                    :topic-count="{{ count($topics) }}"
+                    :answered-count="0"
+                    :initial-progress="{{ (float) ($module_progress->progress ?? 0) }}"
+                    :subject-id='@json((string) $subject->id)'
                 ></learn-header>
             </div>
 
@@ -31,11 +35,34 @@
                 @switch($module->module_name)
 
                     @case('Introduction to Discrete Mathematics')
-                        @include('Client.Review_Pages.Modules.ITPC1_DM.Main')
+                        @include('Client.Review_Pages.Modules.ITPC1_DM.M1_Introduction.Main')
                         @break
 
                     @case('Functions')
+                        @include('Client.Review_Pages.Modules.ITPC1_DM.M2_Functions.Main')
                         @break
+
+                    @case('Relation')
+                        @include('Client.Review_Pages.Modules.ITPC1_DM.M3_Relation.Main')
+                        @break
+
+                    @case('Recursion')
+                        @include('Client.Review_Pages.Modules.ITPC1_DM.M4_Recursion.Main')
+                        @break
+
+                    @case('Propositional Logic')
+                        @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Main')
+                        @break
+                    
+                    @case('Probability')
+                        @include('Client.Review_Pages.Modules.ITPC1_DM.M6_Probability.Main')
+                        @break
+                    
+                    @case('Graphs and Tress')
+                        @include('Client.Review_Pages.Modules.ITPC1_DM.M7_Graphs_And_Trees.Main')
+                        @break
+
+
                     @default
                         
                 @endswitch
@@ -46,10 +73,6 @@
 
     @vite(['resources/js/app.js'])
 
-    <script>
-        const module = @json($module);
-        console.log("Module ID: " ,module.id)
-        console.log("Module Name: " ,module.module_name)
-    </script>
+   
 </body>
 </html>

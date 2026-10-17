@@ -301,7 +301,7 @@ async function submitAnswer(id) {
     isSubmitting.value = true
 
     try {
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
         const response = await fetch('/submitAnswer', {
             method: "POST",
             headers: {

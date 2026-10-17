@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\AnsweredQuestions;
 use App\Models\Choices;
 use App\Models\Leaderboard;
-use App\Models\ModulePretest;
+use App\Models\ModuleQuiz;
 use App\Models\Modules;
 use App\Models\PretestSavedCodes;
 use App\Models\Questions;
@@ -26,7 +26,7 @@ class Pretest extends Controller
             ->orderBy('order', 'asc')
             ->get();
 
-        $existingModuleIds = ModulePretest::where('user_id', auth()->id())
+        $existingModuleIds = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->pluck('module_id');
 
@@ -35,7 +35,7 @@ class Pretest extends Controller
             ->orderBy('order', 'asc')
             ->get();
 
-        $hasOpenModule = ModulePretest::where('user_id', auth()->id())
+        $hasOpenModule = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->where('status', 'open')
             ->exists();        
@@ -43,7 +43,7 @@ class Pretest extends Controller
         foreach ($modules_to_add as $index => $module) {
             $status = (!$hasOpenModule && $index === 0) ? 'open' : 'locked';
 
-            ModulePretest::create([
+            ModuleQuiz::create([
                 'user_id' => auth()->id(),
                 'subject_id' => $request->subject_id,
                 'module_id' => $module->id,
@@ -56,7 +56,7 @@ class Pretest extends Controller
             }
         }
 
-        $user_modules = ModulePretest::select('module_pretest.*')
+        $user_modules = ModuleQuiz::select('module_pretest.*')
             ->join('modules', 'module_pretest.module_id', '=', 'modules.id')
             ->where('module_pretest.user_id', auth()->id())
             ->where('module_pretest.subject_id', $request->subject_id)
@@ -98,7 +98,7 @@ class Pretest extends Controller
 
     public function takingPretest(Request $request)
     {
-        $module_pretest = ModulePretest::where('user_id', auth()->id())
+        $module_pretest = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->where('module_id', $request->module_id)
             ->first();
@@ -151,7 +151,7 @@ class Pretest extends Controller
         $module_name = Modules::where('id', $module_id)
             ->value('module_name');
 
-        $score = ModulePretest::where('user_id', auth()->id())
+        $score = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $subject_id)
             ->where('module_id', $module_id)
             ->value('scored');
@@ -239,7 +239,7 @@ class Pretest extends Controller
             ], 404);
         }
 
-        $score = ModulePretest::where('user_id', auth()->id())
+        $score = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->where('module_id', $request->module_id)
             ->first();
@@ -329,7 +329,7 @@ class Pretest extends Controller
 
     public function resultPretest(Request $request)
     {
-        $module_pretest = ModulePretest::where('user_id', auth()->id())
+        $module_pretest = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $request->subject_id)
             ->where('module_id', $request->module_id)
             ->first();
@@ -483,7 +483,7 @@ class Pretest extends Controller
                     $temporary_points->delete();
                 }
 
-                $nextmodule = ModulePretest::where('user_id', auth()->id())
+                $nextmodule = ModuleQuiz::where('user_id', auth()->id())
                     ->where('subject_id', $request->subject_id)
                     ->where('module_id', '>', $module->id)
                     ->orderBy('module_id', 'asc')

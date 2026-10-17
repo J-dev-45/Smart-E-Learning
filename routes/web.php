@@ -121,10 +121,13 @@ Route::middleware(['auth'])->group(function(){
     // ===========================================================
     // ===========================================================
 
-    Route::get('/review/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']);
-
     Route::get('/learn/{subject_name}/{subject_id}', [LearnController::class, 'learn']);
-    Route::put('/topic-progress', [ProgressController::class, 'scrollProgress']);
+    Route::get('/learning/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']);
+    Route::put('/module-progress', [LearnController::class, 'scrollModuleProgress']);
+    Route::post('/submit-module-activity', [LearnController::class, 'submitModuleActivity']);
+    Route::post('/retake-activity', [LearnController::class, 'retakeActivity']);
+
+    
     Route::post('/submit-topic-pretest', [ProgressController::class, 'topicPretest']);
 
     Route::get('/result/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'resultPretest']);

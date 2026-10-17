@@ -10,10 +10,11 @@
 <body class="w-screen bg-gray-50 overflow-x-hidden">
     <div id="app" class="w-screen h-screen flex flex-col overflow-hidden">
         <taking-pretest-header
-        subject-name="{{$subject_name}}"
+            subject-name="{{$subject_name}}"
+            module-name="{{$module_name}}"
         ></taking-pretest-header>
 
-        <main class="w-full h-[calc(100%-80px)] flex items-start justify-center pt-[30px] px-4 overflow-y-auto scrollbar-thin">
+        <main class="w-full h-[calc(100%-56px)] flex items-start justify-center pt-[30px] px-4 overflow-y-auto scrollbar-thin">
             <pretest-form 
                 :questions-data='@json($questions)'
                 :choices-data='@json($choices)'

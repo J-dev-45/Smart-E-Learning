@@ -60,11 +60,10 @@ app.component('questions-main', Questions_Main);
 // ===================================================================================================|CLIENT
 
 import Subjects_Cards from './Vue/Client/Components/Subjects_Cards.vue';
-import Modules_Topics_Navigation from './Vue/Client/Components/Modules_Topics_Navigation.vue';
 import Pretest_Form from './Vue/Client/Pages/Pretest_Form.vue';
 import Client_Navigation from './Vue/Client/Components/Client_Navigation.vue';
 import Quiz_Modules from './Vue/Client/Pages/Quiz_Modules.vue';
-import Choose_Pretest_Topic_Header from './Vue/Client/Components/Choose_Pretest_Topic_Header.vue';
+import Choose_Module_Header from './Vue/Client/Components/Choose_Module_Header.vue';
 import Taking_Pretest_Header from './Vue/Client/Components/Taking_Pretest_Header.vue';
 import Pretest_Result from './Vue/Client/Pages/Pretest_Result.vue';
 import User_Menu from './Vue/Client/Components/User_Menu.vue';
@@ -72,14 +71,14 @@ import Compiler from './Vue/Client/Pages/Compiler.vue';
 import Pretest_Compiler from './Vue/Client/Pages/Pretest_Compiler.vue';
 import Learn_Header from './Vue/Client/Components/Learn_Header.vue';
 import Leaderboard from './Vue/Client/Pages/Leaderboard.vue';
-import Topic_Pretest from './Vue/Client/Pages/Topic_Pretest.vue';
+import Module_Activity from './Vue/Client/Pages/Module_Activity.vue';
+import Module_Quiz_Buttons from './Vue/Client/Components/Module_Quiz_Buttons.vue';
 
 app.component('subjects-card', Subjects_Cards);
-app.component('modules-topics-navigation', Modules_Topics_Navigation);
 app.component('pretest-form', Pretest_Form);
 app.component('client-navigation', Client_Navigation);
 app.component('quiz-modules', Quiz_Modules);
-app.component('choose-topic-header-pretest', Choose_Pretest_Topic_Header);
+app.component('choose-module-header', Choose_Module_Header);
 app.component('taking-pretest-header', Taking_Pretest_Header);
 app.component('pretest-result', Pretest_Result);
 app.component('user-menu', User_Menu);
@@ -87,7 +86,8 @@ app.component('compiler', Compiler);
 app.component('pretest-compiler', Pretest_Compiler)
 app.component('learn-header', Learn_Header)
 app.component('leaderboard', Leaderboard);
-app.component('topic-pretest', Topic_Pretest);
+app.component('module-activity', Module_Activity);
+app.component('module-quiz-buttons', Module_Quiz_Buttons);
 
 // | AUTH |===================================================================================================
 // | AUTH |===================================================================================================

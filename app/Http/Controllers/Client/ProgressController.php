@@ -12,45 +12,49 @@ use Illuminate\Http\Request;
 
 class ProgressController extends Controller
 {
-    public function scrollProgress(Request $request)
+    
+    public function scrollModuleProgress(Request $request)
     {
         $request->validate([
             'subject_id' => 'required',
             'module_id' => 'required',
-            'topic_id' => 'required',
-            'topic_percent' => 'required|numeric|min:0|max:80',
+            'module_percent' => 'required|numeric|min:0|max:85',
         ]);
 
-        $topicProgress = TopicProgress::where('user_id', auth()->id())
-            ->where('subject_id', $request->subject_id)
-            ->where('module_id', $request->module_id)
-            ->where('topic_id', $request->topic_id)
-            ->first();
+        $modulePercent = (float) $request->module_percent;
 
-        if (!$topicProgress) {
+        if ($modulePercent % 5 !== 0) {
             return response()->json([
                 'success' => false,
-                'message' => 'Topic progress record not found.'
+                'message' => 'Progress must use 5% increments.'
+            ], 422);
+        }
+
+        $module_progress = ModuleProgress::where('user_id', auth()->id())
+            ->where('subject_id', $request->subject_id)
+            ->where('module_id', $request->module_id)
+            ->first();
+
+        if (!$module_progress) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Module progress record not found.'
             ], 404);
         }
 
-        $currentDatabaseProgress = (float) ($topicProgress->scroll_progress ?? 0);
-        $currentTopicPercent = (float) $request->topic_percent;
+        $currentProgress = (float) ($module_progress->progress ?? 0);
 
-        $databaseMilestone = floor($currentDatabaseProgress / 5) * 5;
-        $topicMilestone = floor($currentTopicPercent / 5) * 5;
-
-        if ($topicMilestone > $databaseMilestone) {
-            $topicProgress->scroll_progress = $topicMilestone;
-            $topicProgress->progress = $topicMilestone;
-            $topicProgress->save();
+        if ($modulePercent > $currentProgress) {
+            $module_progress->progress = $modulePercent;
+            $module_progress->save();
         }
 
         return response()->json([
             'success' => true,
-            'topic_progress' => $topicProgress->fresh()
+            'module_progress' => $module_progress->fresh()
         ]);
     }
+
 
 
 

@@ -31,8 +31,12 @@
             
 
             <a :href="`/learn/${url(subject.subject_name)}/${subject.id}`" 
-                class="flex-1 text-center text-xs font-bold text-[#090014]  rounded-lg py-2.5 transition-colors bg-[#CECBF6]/85 border-[1.5px]">
-                  Learn
+                class="flex-1 text-center text-xs font-bold   rounded-lg py-2.5 transition-colors "
+                :class="getSubjectStarted(subject.id) 
+                    ? 'text-[#CECBF6]/85 border-[1.5px] border-[#CECBF6]/85 bg-transparent hover:text-[#090014] hover:bg-[#CECBF6]/85' 
+                    : 'text-[#090014] bg-[#CECBF6]/85 '"
+            >
+                  {{ getSubjectStarted(subject.id) ? 'Continue Learning' : 'Learn' }}
             </a>
         </div>
     </div>

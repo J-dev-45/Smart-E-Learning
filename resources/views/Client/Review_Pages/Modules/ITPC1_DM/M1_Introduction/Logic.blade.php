@@ -451,9 +451,6 @@
 
     </div>
 
-    {{-- <topic-pretest 
-        :questions='@json($questions)'
-        :topic-progress='@json($topic_progress)'
-    ></topic-pretest> --}}
+    
 
 </div>

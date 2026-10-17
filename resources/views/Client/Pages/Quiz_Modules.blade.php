@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Select Module for a Quiz — Discrete Mathematics</title>
+    <title>Select Module to Learn — Discrete Mathematics</title>
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
 </head>
@@ -12,8 +12,10 @@
     <div id="app" class="flex flex-col overflow-x-hidden text-white">
 
         {{-- Header --}}
-        <choose-topic-header-pretest>
-        </choose-topic-header-pretest>
+        <choose-module-header 
+        
+        >
+        </choose-module-header>
 
         <main class="w-full pt-[70px] md:pt-[100px] pb-10 px-4 flex flex-col items-center">
 
@@ -63,7 +65,7 @@
             :topics='@json($topics)'
             :questions='@json($questions)'
             subject-id="{{$subject_id}}"
-            subject-name="{{$subject}}"
+            subject-name="{{$subject->subject_name}}"
             ></quiz-modules>
 
         </main>
