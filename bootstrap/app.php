@@ -1,3 +1,4 @@
+
 <?php
 
 use App\Http\Middleware\AdminMiddleware;
@@ -15,6 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'Admin' => AdminMiddleware::class,
         ]);
+
+        $middleware->trustProxies(at: '*');
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

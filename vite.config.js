@@ -1,3 +1,4 @@
+
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
 import vue from '@vitejs/plugin-vue'
@@ -10,6 +11,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/Auth.js',
+                'resources/js/monaco.worker.js',
             ],
             refresh: true,
         }),
@@ -32,12 +34,5 @@ export default defineConfig({
         outDir: 'public/build',
         emptyOutDir: true,
         manifest: 'manifest.json',
-
-        rollupOptions: {
-            input: {
-                app: 'resources/js/app.js',
-                monacoWorker: 'resources/js/monaco.worker.js',
-            },
-        },
     },
 })
