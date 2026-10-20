@@ -141,7 +141,7 @@ class LearnController extends Controller
     {
         $subject = Subjects::where('id', $request->subject_id)->firstOrFail();
         $module = Modules::where('id', $request->module_id)->firstOrFail();
-        $topics = Topics::where('module_id', $module->id)->get();
+        $topics = Topics::where('module_id', $module->id)->orderBy('order', 'ASC')->get();
 
         $module_already_started = ModuleStarted::where('user_id', auth()->id())
             ->where('module_id', $module->id)
@@ -210,15 +210,34 @@ class LearnController extends Controller
             }
         }
 
+        $viewData = compact(
+            'module',
+            'topics',
+            'subject',
+            'module_progress',
+            'module_quiz',
+            'activity_questions',
+            'answered_questions',
+            'failed',
+            'score',
+            'answered_module_questions'
+        );
+
         switch ($subject->subject_name) {
             case "Discrete Mathematics":
                 return view(
-                    'Client.Review_Pages.Discrete_Mathematics',
-                    compact(
-                        'module', 'topics', 'subject', 'module_progress', 'module_quiz', 
-                        'activity_questions', 'answered_questions', 'failed', 'score', 'answered_module_questions'
-                    )
-                );
+                    'Client.Review_Pages.Discrete_Mathematics',$viewData);
+                break;
+            
+            case "Data Structures and Algorithms":
+                return view(
+                    'Client.Review_Pages.Data_Structures_And_Algorithms',$viewData);
+                break;
+            
+            case "Introduction to Computing":
+                return view(
+                    'Client.Review_Pages.Introduction_To_Computing',$viewData);
+                break;
         }
     }
 

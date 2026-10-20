@@ -14,7 +14,7 @@
 
         <div class="flex flex-col items-center justify-center min-w-0 px-2 text-center">
             <span class="text-sm sm:text-lg font-bold leading-tight text-white truncate max-w-[40vw] sm:max-w-md">
-                Discrete Mathematics
+                {{ subjectName }}
             </span>
             <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#CECBF6]/60 truncate max-w-[40vw] sm:max-w-none">
                 {{ module.module_name }}
@@ -57,7 +57,8 @@ const props = defineProps({
     topicCount: { type: Number, default: 0 },
     answeredCount: { type: Number, default: 0 },
     initialProgress: { type: Number, default: 0 },
-    subjectId: { type: String, required: true }
+    subjectId: { type: String, required: true },
+    subjectName: { type:String, required: true}
 });
 
 const userMenu = ref(false);

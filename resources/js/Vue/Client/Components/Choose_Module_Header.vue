@@ -33,6 +33,11 @@
 </template>
 
 <script setup>
+
+const props = defineProps({
+    
+})
+
 function goBack(){
     window.history.back();
 }

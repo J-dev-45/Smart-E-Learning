@@ -7,6 +7,22 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['\\(', '\\)'], ['$', '$']],
+                displayMath: [['\\[', '\\]'], ['$$', '$$']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+            },
+            startup: {
+                typeset: true
+            }
+        };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
 </head>
 <body class="w-screen h-screen overflow-hidden bg-[#12081F]">
@@ -24,6 +40,7 @@
                     :answered-count="0"
                     :initial-progress="{{ (float) ($module_progress->progress ?? 0) }}"
                     :subject-id='@json((string) $subject->id)'
+                    :subject-name='@json((string) $subject->subject_name)'
                 ></learn-header>
             </div>
 
@@ -58,7 +75,7 @@
                         @include('Client.Review_Pages.Modules.ITPC1_DM.M6_Probability.Main')
                         @break
                     
-                    @case('Graphs and Tress')
+                    @case('Graphs and Trees')
                         @include('Client.Review_Pages.Modules.ITPC1_DM.M7_Graphs_And_Trees.Main')
                         @break
 
@@ -72,6 +89,35 @@
     </div>
 
     @vite(['resources/js/app.js'])
+    <script>
+        (() => {
+            let queued = false;
+            const app = document.getElementById('app') || document.body;
+            const observer = new MutationObserver(() => queueTypeset());
+            const observe = () => observer.observe(app, {
+                childList: true,
+                subtree: true,
+                characterData: true
+            });
+            const typeset = () => {
+                queued = false;
+                observer.disconnect();
+                if (window.MathJax && window.MathJax.typesetPromise) {
+                    window.MathJax.typesetPromise().catch(() => {}).finally(observe);
+                } else {
+                    observe();
+                }
+            };
+            const queueTypeset = () => {
+                if (queued) return;
+                queued = true;
+                window.setTimeout(typeset, 100);
+            };
+            document.addEventListener('DOMContentLoaded', queueTypeset);
+            observe();
+            window.typesetLearningMath = queueTypeset;
+        })();
+    </script>
 
    
 </body>

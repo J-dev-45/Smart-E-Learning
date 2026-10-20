@@ -152,7 +152,7 @@
 
 </div>
 
-<div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30">
+<div class="mt-10 mb-20 rounded-2xl ">
 
     <module-activity 
         :questions='@json($activity_questions)'
@@ -163,7 +163,7 @@
         :answered-questions='@json($answered_questions)'
         :score='@json($score)'
     ></module-activity>
-
+                                                        
     {{-- Warning --}}
     <div class="flex items-start gap-3 mt-10 p-4 rounded-xl border border-amber-400/30 border-l-4 border-l-amber-400 bg-amber-400/5">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-5 shrink-0 text-amber-400 mt-0.5">
