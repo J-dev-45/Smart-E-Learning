@@ -18,7 +18,7 @@ class MailerService
         $htmlContent = "
             <div style='font-family: Arial; text-align:center; padding:20px;'>
                 <div style='margin-bottom:20px;'>
-                    <img src='https://smart-e-learning.up.railway.app/images/components/Logo.png' width='100'>
+                    <img src='https://smart-e-learning.up.railway.app/images/Components/Logo.png' width='100'>
                 </div>
                 <h2 style='color:#26AF5A; margin-bottom:10px;'> Smart E-Learning </h2>
                 <h2 style='color:#128C40;'>Email Verification</h2>
