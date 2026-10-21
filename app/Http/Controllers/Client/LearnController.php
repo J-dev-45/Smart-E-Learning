@@ -119,6 +119,17 @@ class LearnController extends Controller
         $answered_questions = AnsweredQuestions::where('user_id', auth()->id())
             ->get();
 
+        $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $subject->id)
+            ->get();
+
+        $exam_open = $module_quizzes->isNotEmpty()
+            && $module_quizzes->every(fn($quiz) => $quiz->has_passed === true);
+
+        $modules_started = ModuleStarted::where('user_id', auth()->id())
+            ->whereIn('module_id', $modules->pluck('id'))
+            ->get();
+
         return view(
             'Client.Pages.Quiz_Modules',
             compact(
@@ -128,7 +139,9 @@ class LearnController extends Controller
                 'topics',
                 'subject_id',
                 'answered_questions',
-                'questions'
+                'questions',
+                'exam_open',
+                'modules_started'
             )
         );
     }

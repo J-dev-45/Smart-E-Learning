@@ -66,6 +66,8 @@
             :questions='@json($questions)'
             subject-id="{{$subject_id}}"
             subject-name="{{$subject->subject_name}}"
+            :exam-open='@json($exam_open)'
+            :modules-started='@json($modules_started)'
             ></quiz-modules>
 
         </main>
