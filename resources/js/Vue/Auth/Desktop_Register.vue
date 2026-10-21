@@ -128,7 +128,7 @@
         <div class="flex justify-center items-center gap-2 text-sm
                     mt-[clamp(0.75rem,2vh,1.25rem)]">
             <span class="text-gray-500">Already have an Account?</span>
-            <a href="{{ route('login') }}" class="text-[#4C1D95] font-semibold hover:underline">Log in</a>
+            <a :href="logIn" class="text-[#4C1D95] font-semibold hover:underline">Log in</a>
         </div>
 
     </form>
@@ -143,6 +143,10 @@
 <script setup>
 import { ref } from 'vue';
 import Loading_Screen from '../Global/Loading_Screen.vue';
+
+const props = defineProps({
+    logIn: {type: String, required: true}
+})
 
 const name = ref('');
 const email = ref('');
