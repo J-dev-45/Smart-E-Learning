@@ -57,19 +57,12 @@
                 >
                   {{ effectiveModuleName }}
                 </span>
-
-                <span
-                  v-if="effectiveTopicName"
-                  class="py-1 px-2.5 text-xs font-semibold shrink-0 text-yellow-600 rounded-md border border-yellow-200 bg-yellow-50"
-                >
-                  {{ effectiveTopicName }}
-                </span>
               </div>
             </div>
 
             <!-- MODE SWITCHER -->
             <div
-              v-if="hasModuleAndTopic"
+              v-if="hasModule"
               class="w-full flex items-center gap-1 mt-3 p-1 rounded-lg bg-gray-100"
             >
               <button
@@ -106,8 +99,8 @@
             </div>
           </div>
 
-          <!-- MODULE / TOPIC PICKER -->
-          <div v-if="!hasModuleAndTopic" class="w-full flex flex-col gap-4">
+          <!-- MODULE PICKER -->
+          <div v-if="!hasModule" class="w-full flex flex-col gap-4">
 
             <!-- MODULE SELECT -->
             <div v-if="String(moduleId) === '0'" class="flex flex-col gap-1.5">
@@ -119,7 +112,6 @@
                 <select
                   id="moduleSelect"
                   v-model="selected_module_id"
-                  @change="selected_topic_id = ''"
                   class="w-full appearance-none rounded-md border border-gray-300 bg-white py-2 pl-3 pr-9 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]/40 focus:border-[#8B5CF6] hover:border-gray-400 transition-colors cursor-pointer"
                 >
                   <option value="" disabled>Select a module for your question</option>
@@ -138,49 +130,10 @@
                 </svg>
               </div>
             </div>
-
-            <!-- TOPIC SELECT -->
-            <div v-if="String(topicId) === '0'" class="flex flex-col gap-1.5">
-              <label for="topicSelect" class="text-sm font-medium text-gray-700">
-                Topic
-              </label>
-
-              <div class="relative">
-                <select
-                  id="topicSelect"
-                  v-model="selected_topic_id"
-                  :disabled="!selected_module_id"
-                  class="w-full appearance-none rounded-md border border-gray-300 bg-white py-2 pl-3 pr-9 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]/40 focus:border-[#8B5CF6] hover:border-gray-400 transition-colors cursor-pointer disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed disabled:hover:border-gray-300"
-                >
-                  <option value="" disabled>
-                    {{ selected_module_id ? 'Select a topic for your question' : 'Select a module first' }}
-                  </option>
-
-                  <option
-                    v-for="topic in filteredTopics"
-                    :key="topic.id"
-                    :value="topic.id"
-                  >
-                    {{ topic.topic_name }}
-                  </option>
-                </select>
-
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                </svg>
-              </div>
-
-              <span
-                v-if="selected_module_id && filteredTopics.length === 0"
-                class="text-xs text-gray-400"
-              >
-                This module has no topics yet.
-              </span>
-            </div>
           </div>
 
           <div
-            v-if="hasModuleAndTopic"
+            v-if="hasModule"
             id="whiteBG"
             class="w-full flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-6 -mr-6"
           >
@@ -741,15 +694,13 @@
     :subject-name="subjectName"
     :module-name="effectiveModuleName"
     :module-id="effectiveModuleId"
-    :topic-name="effectiveTopicName"
-    :topic-id="effectiveTopicId"
     @close-preview="showPreview = false"
     @questions-added="handleQuestionsAdded"
   />
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
+import { ref, computed } from 'vue';
 import Toast from '../components/Toast.vue';
 import Preview_Extracted_Questions from './Preview_Extracted_Questions.vue';
 
@@ -757,12 +708,9 @@ const props = defineProps({
   showAddQuestion: { type: Boolean, default: false },
   moduleName: { type: String, default: 'All' },
   moduleId: { type: String, default: '0' },
-  topicName: { type: String, default: 'All' },
-  topicId: { type: String, default: '0' },
   subjectName: { type: String, required: true },
   subjectId: { type: String, required: true },
   modules: { type: Array, required: true },
-  topics: { type: Array, required: true }
 });
 
 const emit = defineEmits(['close-add', 'questions-added']);
@@ -786,12 +734,6 @@ const emptyChoices = ref({
 const selected_module_id = ref(
   String(props.moduleId) !== '0'
     ? String(props.moduleId)
-    : ''
-);
-
-const selected_topic_id = ref(
-  String(props.topicId) !== '0'
-    ? String(props.topicId)
     : ''
 );
 
@@ -819,30 +761,12 @@ const subject_modules = computed(() => {
   });
 });
 
-const filteredTopics = computed(() => {
-  if (!selected_module_id.value) {
-    return [];
-  }
-
-  return props.topics.filter(
-    topic => String(topic.module_id) === String(selected_module_id.value)
-  );
-});
-
 const effectiveModuleId = computed(() => {
   if (String(props.moduleId) !== '0') {
     return String(props.moduleId);
   }
 
   return selected_module_id.value;
-});
-
-const effectiveTopicId = computed(() => {
-  if (String(props.topicId) !== '0') {
-    return String(props.topicId);
-  }
-
-  return selected_topic_id.value;
 });
 
 const effectiveModuleName = computed(() => {
@@ -859,31 +783,8 @@ const effectiveModuleName = computed(() => {
   return found?.module_name || '';
 });
 
-const effectiveTopicName = computed(() => {
-  if (String(props.topicId) !== '0') {
-    return props.topicName !== 'All'
-      ? props.topicName
-      : '';
-  }
-
-  const found = props.topics.find(
-    topic => String(topic.id) === String(selected_topic_id.value)
-  );
-
-  return found?.topic_name || '';
-});
-
-const hasModuleAndTopic = computed(() => {
-  return Boolean(
-    effectiveModuleId.value &&
-    effectiveTopicId.value
-  );
-});
-
-watch(selected_module_id, () => {
-  if (String(props.moduleId) === '0') {
-    selected_topic_id.value = '';
-  }
+const hasModule = computed(() => {
+  return Boolean(effectiveModuleId.value);
 });
 
 function handleQuestionsAdded(newQuestions) {
@@ -1001,12 +902,6 @@ async function addQuestionForm(Mname, Sname) {
     return;
   }
 
-  if (!effectiveTopicId.value) {
-    message.value = 'Please select a topic.';
-    showToast.value = true;
-    return;
-  }
-
   if (!selected_questionType.value) {
     message.value = 'Please select a question type.';
     showToast.value = true;
@@ -1087,7 +982,6 @@ async function addQuestionForm(Mname, Sname) {
         choice_D: choices.value.D,
 
         module_id: effectiveModuleId.value,
-        topic_id: effectiveTopicId.value,
 
         test_cases: selected_questionType.value === 'coding'
           ? testCases.value.map((testCase, index) => ({
@@ -1099,8 +993,7 @@ async function addQuestionForm(Mname, Sname) {
           : [],
 
         subject_name: Sname,
-        module_name: Mname,
-        topic_name: effectiveTopicName.value
+        module_name: Mname
       })
     });
 
@@ -1141,12 +1034,6 @@ async function extractQuestionsForm() {
     return;
   }
 
-  if (!effectiveTopicId.value) {
-    message.value = 'Please select a topic.';
-    showToast.value = true;
-    return;
-  }
-
   const csrfToken = document
     .querySelector('meta[name="csrf-token"]')
     ?.getAttribute('content');
@@ -1167,7 +1054,6 @@ async function extractQuestionsForm() {
 
   formData.append('file', selectedFile.value);
   formData.append('module_id', effectiveModuleId.value);
-  formData.append('topic_id', effectiveTopicId.value);
 
   try {
     const response = await fetch('/extractQuestions', {

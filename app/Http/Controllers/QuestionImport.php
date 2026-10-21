@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Choices;
 use App\Models\Modules;
 use App\Models\Questions;
-use App\Models\Topics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Smalot\PdfParser\Parser;
@@ -20,19 +19,8 @@ class QuestionImport extends Controller
         $request->validate([
             'file' => 'required|file|extensions:docx,pdf|max:10240',
             'module_id' => 'required|uuid|exists:modules,id',
-            'topic_id' => 'required|uuid|exists:topics,id',
         ]);
 
-        $topicBelongsToModule = Topics::where('id', $request->topic_id)
-            ->where('module_id', $request->module_id)
-            ->exists();
-
-        if (!$topicBelongsToModule) {
-            return response()->json([
-                'success' => false,
-                'message' => 'The selected topic does not belong to the selected module.',
-            ], 422);
-        }
 
         $file = $request->file('file');
         $extension = strtolower($file->getClientOriginalExtension());
@@ -72,7 +60,6 @@ class QuestionImport extends Controller
     {
         $request->validate([
             'module_id' => 'required|uuid|exists:modules,id',
-            'topic_id' => 'required|uuid|exists:topics,id',
 
             'questions' => 'required|array|min:1',
 
@@ -91,20 +78,9 @@ class QuestionImport extends Controller
         ]);
 
         $moduleId = $request->module_id;
-        $topicId = $request->topic_id;
         $questions = $request->questions;
         $errors = [];
 
-        $topicBelongsToModule = Topics::where('id', $topicId)
-            ->where('module_id', $moduleId)
-            ->exists();
-
-        if (!$topicBelongsToModule) {
-            return response()->json([
-                'success' => false,
-                'message' => 'The selected topic does not belong to the selected module.',
-            ], 422);
-        }
 
         foreach ($questions as $index => $question) {
             $number = $index + 1;
@@ -167,7 +143,6 @@ class QuestionImport extends Controller
             DB::transaction(function () use (
                 $questions,
                 $moduleId,
-                $topicId,
                 &$newQuestions
             ) {
                 foreach ($questions as $question) {
@@ -207,7 +182,6 @@ class QuestionImport extends Controller
 
                     $newQuestion = Questions::create([
                         'module_id' => $moduleId,
-                        'topic_id' => $topicId,
                         'question' => trim($question['question']),
                         'question_type' => $type,
                         'answer' => $answer,

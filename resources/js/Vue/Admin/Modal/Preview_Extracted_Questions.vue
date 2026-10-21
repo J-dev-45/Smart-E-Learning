@@ -337,14 +337,6 @@ const props = defineProps({
     type: String,
     default: ''
   },
-  topicName: {
-    type: String,
-    default: 'N/A'
-  },
-  topicId: {
-    type: String,
-    default: ''
-  },
   subjectName: {
     type: String,
     default: 'N/A'
@@ -431,12 +423,6 @@ async function confirmSave() {
     return;
   }
 
-  if (!props.topicId) {
-    message.value = 'Topic is required.';
-    showToast.value = true;
-    return;
-  }
-
   const csrfToken = document
     .querySelector('meta[name="csrf-token"]')
     ?.getAttribute('content');
@@ -455,10 +441,8 @@ async function confirmSave() {
       },
       body: JSON.stringify({
         module_id: props.moduleId,
-        topic_id: props.topicId,
         subject_name: props.subjectName,
         module_name: props.moduleName,
-        topic_name: props.topicName,
         questions: payload
       })
     });

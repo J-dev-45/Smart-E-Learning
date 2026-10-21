@@ -7,7 +7,7 @@
         >
             <Transition name="modal-scale" appear>
                 <form
-                    @submit.prevent="deleteQuestionForm(subjectName, topicName)"
+                    @submit.prevent="deleteQuestionForm(subjectName)"
                     class="relative w-[30%] min-w-[380px] max-w-lg bg-white rounded-xl shadow-2xl shadow-black/30 flex flex-col p-6 gap-5"
                 >
                     <!-- CLOSE BUTTON -->
@@ -40,10 +40,6 @@
                         <div class="w-full flex items-center gap-1.5">
                             <span class="text-xs font-medium uppercase tracking-wide text-gray-400">Subject</span>
                             <span id="subject_name" class="text-xs text-gray-700">{{ subjectName }}</span>
-                        </div>
-                        <div class="w-full flex items-center gap-1.5">
-                            <span class="text-xs font-medium uppercase tracking-wide text-gray-400">Topic</span>
-                            <span id="topic_name" class="text-xs text-gray-700">{{ topicName }}</span>
                         </div>
                         <div class="w-full flex flex-col gap-1 border-t border-gray-200 pt-2 mt-1">
                             <span class="text-xs font-medium uppercase tracking-wide text-gray-400">Question</span>
@@ -105,7 +101,6 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
-    topicName: { type: String, default: 'undefined' },
     subjectName: { type: String, default: 'undefined' }
 })
 
@@ -125,7 +120,6 @@ async function deleteQuestionForm(Sname, Tname){
             body: JSON.stringify({
                 question_id : props.questionData.id,
                 subject_name : Sname,
-                topic_name: Tname
             })
         })
 

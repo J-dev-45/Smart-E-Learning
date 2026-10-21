@@ -59,15 +59,6 @@
                     </span>
                 </div>
 
-                <!-- SEPARATOR -->
-                <div class="w-px h-4 bg-white/20 shrink-0"></div>
-
-                <div class="flex items-center gap-2">
-                    <span class="font-semibold">Topic</span>
-                    <span class="px-2.5 py-0.5 rounded-full border border-white/20 text-xs">
-                        {{ props.topicName }}
-                    </span>
-                </div>
             </div>
 
             <!-- SEARCH -->
@@ -233,10 +224,7 @@
         :show-add-question="showAddQuestion"
         :module-name="module_name"
         :module-id="props.moduleId"
-        :topic-name="props.topicName"
-        :topic-id="props.topicId"
         :modules="props.modules"
-        :topics="props.topics"
         :subject-name="subjectName"
         :subject-id="subject_id"
         @close-add="closeAddQuestionModal"
@@ -259,7 +247,6 @@
     <Delete_Question
         :show-delete-question="showDeleteQuestion"
         :subject-name="subjectName"
-        :topic-name="module_name"
         :question-data="delete_question"
         @close-delete="closeDeleteQuestionModal"
         @question-deleted="questionsDeleted"
@@ -275,13 +262,10 @@ import { ref, computed } from 'vue';
 
 const props = defineProps({
     moduleId: { type: [String, Number], default: '0' },
-    topicId: { type: [String, Number], default: '0' },
     subjectName: { type: String, default: '' },
     moduleName: { type: String, default: 'All' },
-    topicName: { type: String, default: 'All' },
     subjects: { type: Array, required: true },
     modules: { type: Array, required: true },
-    topics: { type: Array, required: true },
     questions: { type: Array, required: true },
     choices: { type: Array, required: true }
 });
@@ -351,11 +335,7 @@ function belongsToCurrentFilter(q) {
         String(props.moduleId) === '0' ||
         String(q.module_id) === String(props.moduleId);
 
-    const topicMatches =
-        String(props.topicId) === '0' ||
-        String(q.topic_id) === String(props.topicId);
-
-    return moduleMatches && topicMatches;
+    return moduleMatches;
 }
 
 /*
@@ -448,14 +428,10 @@ const filteredQuestions = computed(() => {
             String(props.moduleId) === '0' ||
             String(q.module_id) === String(props.moduleId);
 
-        const topicMatches =
-            String(props.topicId) === '0' ||
-            String(q.topic_id) === String(props.topicId);
-
         const searchMatches =
             !query || (q.question || '').toLowerCase().includes(query);
 
-        return moduleMatches && topicMatches && searchMatches;
+        return moduleMatches && searchMatches;
     });
 });
 

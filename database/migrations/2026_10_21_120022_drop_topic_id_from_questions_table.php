@@ -1,3 +1,4 @@
+
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -9,19 +10,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->foreignUuid('topic_id')
-                ->after('module_id')
-                ->references('id')
-                ->on('topics')
-                ->onDelete('cascade');
+            $table->dropForeign(['topic_id']);
+            $table->dropColumn('topic_id');
         });
     }
 
     public function down(): void
     {
         Schema::table('questions', function (Blueprint $table) {
-            $table->dropForeign(['topic_id']);
-            $table->dropColumn('topic_id');
+            $table->foreignUuid('topic_id')
+                ->references('id')
+                ->on('topics')
+                ->onDelete('cascade');
         });
     }
 };

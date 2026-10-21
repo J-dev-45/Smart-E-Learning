@@ -7,7 +7,6 @@ use App\Models\Modules;
 use App\Models\Questions;
 use App\Models\RecentActivity;
 use App\Models\TestCase;
-use App\Models\Topics;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +22,6 @@ class Question extends Controller
             'question_type' => 'required|string|in:multipleChoice,TorF,identification,coding',
 
             'module_id' => 'required|uuid|exists:modules,id',
-            'topic_id' => 'required|uuid|exists:topics,id',
 
             'choice_A' => 'required_if:question_type,multipleChoice|nullable|string|max:2000',
             'choice_B' => 'required_if:question_type,multipleChoice|nullable|string|max:2000',
@@ -41,16 +39,7 @@ class Question extends Controller
             'test_cases.*.is_hidden' => 'boolean',
         ]);
 
-        $topicBelongsToModule = Topics::where('id', $input['topic_id'])
-            ->where('module_id', $input['module_id'])
-            ->exists();
-
-        if (!$topicBelongsToModule) {
-            return response()->json([
-                'success' => false,
-                'message' => 'The selected topic does not belong to the selected module.',
-            ], 422);
-        }
+    
 
         try {
             $question = DB::transaction(function () use ($input) {
@@ -66,7 +55,6 @@ class Question extends Controller
 
                     $question = Questions::create([
                         'module_id' => $input['module_id'],
-                        'topic_id' => $input['topic_id'],
                         'question' => $input['question'],
                         'question_type' => $questionType,
                         'answer' => $correctAnswer,
@@ -89,7 +77,6 @@ class Question extends Controller
                 } elseif ($questionType === 'TorF') {
                     $question = Questions::create([
                         'module_id' => $input['module_id'],
-                        'topic_id' => $input['topic_id'],
                         'question' => $input['question'],
                         'question_type' => $questionType,
                         'answer' => $input['correct_answer'],
@@ -104,7 +91,6 @@ class Question extends Controller
                 } elseif ($questionType === 'identification') {
                     $question = Questions::create([
                         'module_id' => $input['module_id'],
-                        'topic_id' => $input['topic_id'],
                         'question' => $input['question'],
                         'question_type' => $questionType,
                         'answer' => $input['correct_answer'],
@@ -119,7 +105,6 @@ class Question extends Controller
                 } else {
                     $question = Questions::create([
                         'module_id' => $input['module_id'],
-                        'topic_id' => $input['topic_id'],
                         'question' => $input['question'],
                         'question_type' => $questionType,
                         'answer' => null,
@@ -307,7 +292,6 @@ class Question extends Controller
             ->select(
                 'id',
                 'module_id',
-                'topic_id',
                 'question',
                 'question_type',
                 'answer'

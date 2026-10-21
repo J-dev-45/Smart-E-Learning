@@ -62,12 +62,6 @@ Route::middleware(['guest'])->group(function(){
 
 
 
-// Route::middleware('auth:sanctum')->group(function () {
-//     Route::post('/compiler/runPretest', [CompilerController::class, 'runPretest']);
-//     Route::post('/compiler/save', [CompilerController::class, 'save']);
-// });
-
-
 // CLIENT ------------------------------------------------------------------------------------------------------------------------------------------------
 // CLIENT ------------------------------------------------------------------------------------------------------------------------------------------------
 // CLIENT ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -229,7 +223,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     Route::post('/extractQuestions', [QuestionImport::class, 'extractQuestions']);
     Route::post('/importQuestions', [QuestionImport::class, 'importQuestions']); 
 
-    Route::get('/questions/{to_view}/{subject_name}/{subject_id}/{module_name}/{module_id}/{topic_id}',[QuestionsPage::class, 'questions']);
+    Route::get('/questions/{to_view}/{subject_name}/{subject_id}/{module_name}/{module_id}',[QuestionsPage::class, 'questions']);
 
 
     // MODULES
