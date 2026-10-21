@@ -55,7 +55,7 @@
 
                 {{-- MOBILE FORM --}}
                 <mobile-login
-                    :sign-up="{{route('register')}}"
+                    sign-up="{{route('register')}}"
                 ></mobile-login>
 
             </div>
