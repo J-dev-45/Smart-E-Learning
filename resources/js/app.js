@@ -96,10 +96,12 @@ app.component('module-quiz-buttons', Module_Quiz_Buttons);
 import Mobile_Login from './Vue/Auth/Mobile_Login.vue';
 import Desktop_Login from './Vue/Auth/Desktop_Login.vue';
 import Desktop_Register from './Vue/Auth/Desktop_Register.vue';
+import Mobile_Register from './Vue/Auth/Mobile_Register.vue';
 
 app.component('mobile-login', Mobile_Login);
 app.component('desktop-login', Desktop_Login);
 app.component('desktop-register', Desktop_Register);
+app.component('mobile-register', Mobile_Register);
 
 // ===================================================================================================|GLOBAL
 // ===================================================================================================|GLOBAL
