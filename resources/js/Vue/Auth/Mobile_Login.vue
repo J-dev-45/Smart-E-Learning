@@ -96,7 +96,7 @@
                         pt-[clamp(0.1rem,0.8dvh,0.4rem)]"
                     style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
                 <span class="text-gray-500">Don't have an account?</span>
-                <a href="" class="text-[#4C1D95] font-semibold hover:underline">
+                <a :href="signUp" class="text-[#4C1D95] font-semibold hover:underline">
                     Sign up
                 </a>
             </div>
@@ -109,7 +109,8 @@
 import { ref } from 'vue';
 
 defineProps({
-    errors: { type: Array, default: ()=>[]}
+    errors: { type: Array, default: ()=>[]},
+    signUp: {type: String, required: true}
 })
 
 const email = ref('');

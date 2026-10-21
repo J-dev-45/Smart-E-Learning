@@ -217,7 +217,9 @@
             {{-- Right panel --}}
             <div class="custom-scroll w-1/2 h-full flex items-center justify-start px-8 lg:px-16 overflow-y-auto py-8">
 
-                <desktop-register/>
+                <desktop-register>
+
+                </desktop-register>
             </div>
         </div>
     </div>
