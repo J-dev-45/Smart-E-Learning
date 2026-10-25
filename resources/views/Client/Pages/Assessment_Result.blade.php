@@ -9,11 +9,12 @@
     @vite(['resources/css/app.css'])
 </head>
 <body class="w-screen bg-gray-50 overflow-x-hidden">
+    @vite(['resources/js/app.js'])
     <div id="app" class="w-screen h-screen flex flex-col overflow-hidden">
 
         <main class="w-full h-full flex items-center justify-center bg-gradient-to-br from-[#090014] via-[#1A0B2E] to-[#4C1D95] px-4">
 
-            <pretest-result
+            <assessment-result
                 subject-name="{{ $subject_name }}"
                 module-name="{{ $module_name }}"
                 subject-id="{{$subject_id}}"
@@ -21,12 +22,13 @@
                 :score-percent="{{ $score_percent }}"
                 message="{{ $message }}"
                 status="{{ $status }}"
+                assessment-type="{{ $type_of_assessment }}"
                 home-url="{{ route('home') }}"
-            ></pretest-result>
+            ></assessment-result>
 
         </main>
     </div>
 
-    @vite(['resources/js/app.js'])
+    
 </body>
 </html>

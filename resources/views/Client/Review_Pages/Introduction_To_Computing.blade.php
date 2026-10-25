@@ -10,6 +10,7 @@
 
 </head>
 <body class="w-screen h-screen overflow-hidden bg-[#12081F]">
+    @vite(['resources/js/app.js'])
     <div id="app" class="flex flex-col h-screen w-screen overflow-hidden">
 
 
@@ -64,7 +65,7 @@
         </main>
     </div>
 
-    @vite(['resources/js/app.js'])
+    
 
    
 </body>

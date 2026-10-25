@@ -115,7 +115,8 @@
             </li>
 
             <!-- COMPREHENSIVE EXAM: OPEN -->
-            <li v-if="examOpen" class="relative flex items-start md:items-center gap-3 sm:gap-4 z-10">
+             <!-- v-if="examOpen" -->
+            <li  class="relative flex items-start md:items-center gap-3 sm:gap-4 z-10">
                 <div class="relative size-10 sm:size-14 shrink-0 flex items-center justify-center rounded-full bg-[#090014] border-2 border-dashed border-[#CECBF6]/60">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-6 text-[#CECBF6]">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
@@ -130,7 +131,8 @@
                     </div>
 
                     <div class="flex flex-wrap gap-2 md:justify-end md:shrink-0">
-                        <a href="#"
+                        <a 
+                            :href="`/assessment/exam/question_type/${url(subjectName)}/${subjectId}/none/0`"
                             class="w-full md:w-auto text-center text-xs sm:text-sm font-bold text-[#090014] bg-[#CECBF6] rounded-full py-2.5 px-4 sm:px-6 transition-colors hover:bg-[#CECBF6]/85 whitespace-nowrap">
                             Take Exam
                         </a>
@@ -139,7 +141,7 @@
             </li>
 
              <!-- COMPREHENSIVE EXAM: LOCKED -->
-            <li v-else class="relative flex items-start md:items-center gap-3 sm:gap-4 z-10">
+            <li class="relative flex items-start md:items-center gap-3 sm:gap-4 z-10">
                 <div class="relative size-10 sm:size-14 shrink-0 flex items-center justify-center rounded-full bg-[#090014] border-[1.5px] border-dashed border-[#CECBF6]/10">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5 text-gray-500">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />

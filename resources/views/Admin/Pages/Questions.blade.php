@@ -22,9 +22,9 @@
 
         <questions-main
             module-id="{{ $moduleId }}"
+            :subject-id='@json($subject_id)'
             :subject-name='@json($subject_name)'
             :module-name='@json($module_name)'
-            :subjects='@json($subjects)'
             :modules='@json($modules)'
             :questions='@json($questions)'
             :choices='@json($choices)'

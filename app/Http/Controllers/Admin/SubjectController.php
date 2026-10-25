@@ -1,14 +1,39 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
+use App\Models\Modules;
+use App\Models\Questions;
 use App\Models\RecentActivity;
 use App\Models\Subjects;
+use App\Models\Topics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class Subject extends Controller
+class SubjectController extends Controller
 {
+
+    public function subjectPage(Request $request){
+        $subject = Subjects::find($request->subject_id);
+
+        $subject_id = $subject->id;
+        $subject_name = $subject->subject_name;
+
+        $modules = Modules::where('subject_id', $subject->id)->get();
+        $topics = Topics::whereIn('module_id', $modules->pluck('id'))->get();
+        $questions = Questions::whereIn('module_id', $modules->pluck('id'))->get();
+
+        return view('Admin.Pages.Modules', compact(
+            'subject_id',
+            'subject_name',
+            'modules',
+            'topics',
+            'questions'
+        ));
+
+    }
+
     public function addSubject(Request $request){
 
         $validated = $request->validate([

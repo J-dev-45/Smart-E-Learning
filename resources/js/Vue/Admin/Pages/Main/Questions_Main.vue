@@ -7,14 +7,14 @@
             class="sticky top-0 shrink-0 z-10 w-full h-[60px] flex items-center justify-between text-white px-6 border-b border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm"
         >
             <a
-                href="/subjects"
+                :href="`/subject/${url(props.subjectName)}/${props.subjectId}`"
                 class="cursor-pointer group text-gray-400 hover:text-white flex items-center gap-1.5 transition-colors"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 transition-transform group-hover:-translate-x-0.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
 
-                <span class="text-sm font-medium">Go Back</span>
+                <span class="text-sm font-medium">Back To Modules</span>
             </a>
 
             <div class="text-xs text-gray-400">
@@ -226,7 +226,7 @@
         :module-id="props.moduleId"
         :modules="props.modules"
         :subject-name="subjectName"
-        :subject-id="subject_id"
+        :subject-id="props.subjectId"
         @close-add="closeAddQuestionModal"
         @questions-added="questionsAdded"
         
@@ -262,9 +262,9 @@ import { ref, computed } from 'vue';
 
 const props = defineProps({
     moduleId: { type: [String, Number], default: '0' },
+    subjectId: { type: [String, Number], default: '0' },
     subjectName: { type: String, default: '' },
     moduleName: { type: String, default: 'All' },
-    subjects: { type: Array, required: true },
     modules: { type: Array, required: true },
     questions: { type: Array, required: true },
     choices: { type: Array, required: true }
@@ -401,16 +401,6 @@ const module_name = computed(() => {
     )?.module_name || 'N/A';
 });
 
-/*
-|--------------------------------------------------------------------------
-| SUBJECT ID
-|--------------------------------------------------------------------------
-*/
-const subject_id = computed(() => {
-    return props.subjects.find(
-        s => s.subject_name === props.subjectName
-    )?.id || 0;
-});
 
 /*
 |--------------------------------------------------------------------------
@@ -567,5 +557,13 @@ function deleteQuestionOpen(id) {
 function closeDeleteQuestionModal() {
     showDeleteQuestion.value = false;
     delete_question.value = null;
+}
+
+
+
+
+
+function url(url_name) {
+    return url_name.replace(/\s+/g, "_");
 }
 </script>

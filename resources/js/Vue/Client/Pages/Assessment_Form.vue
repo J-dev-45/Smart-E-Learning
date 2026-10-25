@@ -7,14 +7,17 @@
                         Question <span class="text-[#4C1D95]">{{ question_number + answered_count }}</span>
                         <span class="text-gray-400 font-normal">/ {{ questionsData.length + answered_count }}</span>
                     </span>
-                    <span class="text-xs font-medium text-[#4C1D95] bg-[#CECBF6]/25 px-2.5 py-1 rounded-full">
-                        {{ Math.round(((answered_count + question_number - 1) / (questionsData.length + answered_count)) * 100) }}% complete
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#4C1D95] bg-[#CECBF6]/25 px-2.5 py-1 rounded-full tabular-nums">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {{ formattedTime }} left
                     </span>
                 </div>
 
                 <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] rounded-full transition-all duration-300"
-                        :style="{ width: `${Math.min(((answered_count + question_number - 1) / (questionsData.length + answered_count)) * 100, 100)}%` }">
+                    <div class="h-full bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] rounded-full transition-all duration-1000 ease-linear"
+                        :style="{ width: `${Math.min((timeLeft / TOTAL_SECONDS) * 100, 100)}%` }">
                     </div>
                 </div>
             </div>
@@ -27,7 +30,11 @@
             </div>
 
             <div class="bg-[#4C1D95]/[0.04] border border-[#CECBF6]/40 p-4 rounded-xl">
-                <span class="text-gray-800 leading-relaxed">{{ question.question }}</span>
+                <span
+                    @copy.prevent
+                    @cut.prevent
+                    @contextmenu.prevent
+                    class="text-gray-800 leading-relaxed">{{ question.question }}</span>
             </div>
 
             <div v-if="question.question_type === 'multipleChoice'" class="flex flex-col gap-2.5">
@@ -181,7 +188,7 @@
                     Next Question
                 </button>
 
-                <a v-else :href="`/result/question_type/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}`"
+                <a v-else :href="`/result/${assessmentType}/question_type/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}`"
                     class="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] hover:opacity-90 transition-opacity shadow-sm shadow-[#4C1D95]/30">
                     Finish
                 </a>
@@ -195,7 +202,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
     questionsData: { type: Array, required: true },
@@ -206,8 +213,12 @@ const props = defineProps({
     answeredQuestions: { type: Array, required: true },
     subjectName: { type: String, required: true },
     moduleName: { type: String, required: true },
-    score: { type: Number, default: 0 }
+    score: { type: Number, default: 0 },
+    remainingSeconds: { type: Number, required: true },
+    totalSeconds: { type: Number, default: 60 * 60 },
+    assessmentType: { type: String, required:true}
 })
+
 
 function url(url_name) {
     return url_name.replace(/\s+/g, "_");
@@ -227,6 +238,31 @@ const answered_count = ref(props.answeredCount)
 const correctAnswer = computed(() => question.value?.answer)
 const total_questions = props.questionsData.length + answered_count.value
 const passing_score = 75
+
+// ===== Timer =====
+const TOTAL_SECONDS = props.totalSeconds
+const timeLeft = ref(Math.max(0, Math.floor(props.remainingSeconds)))
+const deadline = Date.now() + timeLeft.value * 1000
+let timerId = null
+
+const formattedTime = computed(() => {
+    const m = Math.floor(timeLeft.value / 60)
+    const s = timeLeft.value % 60
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+})
+
+onMounted(() => {
+    timerId = setInterval(() => {
+        timeLeft.value = Math.max(0, Math.ceil((deadline - Date.now()) / 1000))
+
+        if (timeLeft.value === 0) {
+            clearInterval(timerId)
+        }
+    }, 1000)
+})
+
+onUnmounted(() => clearInterval(timerId))
+// ===== End Timer =====
 
 const percentage = computed(() => {
     if (total_questions <= 0) {
@@ -313,7 +349,8 @@ async function submitAnswer(id) {
                 question_id: id,
                 student_answer: selected_answer.value.toLowerCase().trim(),
                 subject_id: props.subjectId,
-                module_id: props.moduleId
+                module_id: props.moduleId,
+                type_of_assessment : props.assessmentType
             })
         })
 

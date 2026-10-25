@@ -41,8 +41,10 @@ import Bottom_Navigation from './Vue/Admin/components/Bottom_Navigation.vue';
 import Left_Navigation from './Vue/Admin/components/Left_Navigation.vue';
 import Subjects_Navigation from './Vue/Admin/components/Subjects_Navigation.vue';
 import Feedbacks from './Vue/Admin/Pages/Feedbacks.vue';
+import Modules from './Vue/Admin/Pages/Modules.vue';
 import Modules_Main from './Vue/Admin/Pages/Main/Modules_Main.vue';
 import Questions_Main from './Vue/Admin/Pages/Main/Questions_Main.vue';
+import Subjects_Cards_Admin from './Vue/Admin/Pages/Subjects_Cards_Admin.vue';
 
 app.component('dashboard-cards', Dashboard_Cards);
 app.component('overview', Overview);
@@ -50,7 +52,9 @@ app.component('users-page', Users);
 app.component('bottom-navigation', Bottom_Navigation);
 app.component('left-navigation', Left_Navigation);
 app.component('subjects-navigation', Subjects_Navigation);
+app.component('subjects-cards-admin', Subjects_Cards_Admin);
 app.component('feedbacks-page', Feedbacks);
+app.component('modules', Modules);
 app.component('modules-main', Modules_Main);
 app.component('questions-main', Questions_Main);
 
@@ -60,12 +64,12 @@ app.component('questions-main', Questions_Main);
 // ===================================================================================================|CLIENT
 
 import Subjects_Cards from './Vue/Client/Components/Subjects_Cards.vue';
-import Pretest_Form from './Vue/Client/Pages/Pretest_Form.vue';
+import Assessment_Form from './Vue/Client/Pages/Assessment_Form.vue';
 import Client_Navigation from './Vue/Client/Components/Client_Navigation.vue';
 import Quiz_Modules from './Vue/Client/Pages/Quiz_Modules.vue';
 import Choose_Module_Header from './Vue/Client/Components/Choose_Module_Header.vue';
 import Taking_Pretest_Header from './Vue/Client/Components/Taking_Pretest_Header.vue';
-import Pretest_Result from './Vue/Client/Pages/Pretest_Result.vue';
+import Assessment_Result from './Vue/Client/Pages/Assessment_Result.vue';
 import User_Menu from './Vue/Client/Components/User_Menu.vue';
 import Compiler from './Vue/Client/Pages/Compiler.vue';
 import Pretest_Compiler from './Vue/Client/Pages/Pretest_Compiler.vue';
@@ -75,12 +79,12 @@ import Module_Activity from './Vue/Client/Pages/Module_Activity.vue';
 import Module_Quiz_Buttons from './Vue/Client/Components/Module_Quiz_Buttons.vue';
 
 app.component('subjects-card', Subjects_Cards);
-app.component('pretest-form', Pretest_Form);
+app.component('assessment-form', Assessment_Form);
 app.component('client-navigation', Client_Navigation);
 app.component('quiz-modules', Quiz_Modules);
 app.component('choose-module-header', Choose_Module_Header);
 app.component('taking-pretest-header', Taking_Pretest_Header);
-app.component('pretest-result', Pretest_Result);
+app.component('assessment-result', Assessment_Result);
 app.component('user-menu', User_Menu);
 app.component('compiler', Compiler);
 app.component('pretest-compiler', Pretest_Compiler)

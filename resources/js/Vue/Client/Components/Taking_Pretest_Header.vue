@@ -19,7 +19,7 @@
                 {{ subjectName }}
             </span>
             <span class="text-[#CECBF6]/60 text-[11px] leading-tight mt-0.5 tracking-wide truncate w-full text-center">
-                {{ moduleName }}
+                {{ assessmentType === 'exam' ? 'Summative Exam' : moduleName }}
             </span>
         </div>
 
@@ -47,7 +47,8 @@ import { ref } from 'vue'
 
 const props = defineProps({
     subjectName: { type:String, required: true},
-    moduleName: { type:String, required: true}
+    moduleName: { type:String, required: true},
+    assessmentType: { type: String, required: true}
 })
 
 const muted = ref(false)

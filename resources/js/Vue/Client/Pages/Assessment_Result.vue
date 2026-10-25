@@ -3,11 +3,11 @@
 
         <div class="w-full mb-6">
             <h2 class="text-gray-900 font-bold text-lg">{{ subjectName }}</h2>
-            <p class="text-gray-400 text-sm">{{ moduleName }}</p>
+            <p class="text-gray-500 font-semibold text-sm">{{ assessmentType === 'exam' ? 'Summative Exam' : moduleName }}</p>
         </div>
 
         <span :class="['inline-block px-3 py-1 rounded-full text-xs font-semibold mb-8', badgeBg, badgeText]">
-            Pretest Result
+            {{ assessmentType === 'exam' ? 'Summative Exam Result' : 'Quiz Result' }}
         </span>
 
         <div class="relative w-44 h-44 flex items-center justify-center">
@@ -87,6 +87,7 @@ const props = defineProps({
     scorePercent: { type: Number, required: true },
     message: { type: String, required: true },
     status: { type: String, required: true },
+    assessmentType: { type: String, required:true },
     homeUrl: { type: String, default: '/home' },
 });
 

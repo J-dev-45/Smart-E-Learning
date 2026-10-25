@@ -1,11 +1,12 @@
 <?php
 
+use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Client\AssessmentController;
 use App\Http\Controllers\Client\CodePretestController;
 use App\Http\Controllers\Client\LearnController;
 use App\Http\Controllers\Client\Pretest;
-use App\Http\Controllers\Client\ProgressController;
 use App\Http\Controllers\CompilerController;
 use App\Http\Controllers\Logout;
 use App\Http\Controllers\ModuleController;
@@ -13,18 +14,15 @@ use App\Http\Controllers\Pages\QuestionsPage;
 use App\Http\Controllers\PracticeCompilerController;
 use App\Http\Controllers\Question;
 use App\Http\Controllers\QuestionImport;
-use App\Http\Controllers\Subject;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyOTP;
 use App\Models\Leaderboard;
 use App\Models\ModuleQuiz;
 use App\Models\Modules;
-use App\Models\Questions;
 use App\Models\RecentActivity;
 use App\Models\Subjects;
 use App\Models\SubjectStarted;
-use App\Models\Topics;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -99,21 +97,6 @@ Route::middleware(['auth'])->group(function(){
 
     // ===========================================================
     // ===========================================================
-    Route::get('/discrete_mathematics', function() {
-        return view('Client.Review_Pages.DM');
-    })->name('discrete_math');
-
-    
-
-    // ===========================================================
-    // ===========================================================
-    Route::get('/quiz_discrete_math', function(){
-        return view('Client.Pages.Quiz_Pages.DM');
-    })->name('discrete_quiz');
-
-
-    // ===========================================================
-    // ===========================================================
 
     Route::get('/learn/{subject_name}/{subject_id}', [LearnController::class, 'learn']);
     Route::get('/learning/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']);
@@ -122,15 +105,14 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/retake-activity', [LearnController::class, 'retakeActivity']);
 
     
-    Route::post('/submit-topic-pretest', [ProgressController::class, 'topicPretest']);
 
-    Route::get('/result/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'resultPretest']);
+    Route::get('/result/{type_of_assessment}/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'resultPretest']);
 
     Route::post('/submitAnswer', [Pretest::class, 'submitAnswer']);
     Route::post('/submitCode', [CodePretestController::class, 'submitCodeAnswer']);
 
     Route::get('/pretest/{subject_name}/{subject_id}', [Pretest::class, 'pretestModules']);
-    Route::get('/takingPretest/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'takingPretest'])->name('pretest.taking');
+    Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('pretest.taking');
 
     Route::post('/practice-compiler/run', [PracticeCompilerController::class, 'run']);
     Route::post('/compiler/runPretest', [CompilerController::class, 'runPretest']);
@@ -176,22 +158,15 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     Route::get('/subjects', function(){
 
-        $subjects = Subjects::select('id', 'subject_name', 'slug')->get();
+        $subjects = Subjects::select('id', 'subject_name', 'slug', 'order')->get();
         $modules = Modules::select( 'id', 'order', 'subject_id', 'module_name' )
         ->orderBy('subject_id')
         ->orderBy('order', 'asc')
         ->get();
-        $questions = Questions::select('id', 'module_id')->get();
-        $topics = Topics::whereIn('module_id', $modules->pluck('id'))
-            ->orderBy('module_id')
-            ->orderBy('order', 'asc')
-            ->get();
 
         return view('Admin.Pages.Subjects', compact(
             'subjects',
             'modules',
-            'topics',
-            'questions',
         ));
     })->name('subjects_page');
 
@@ -213,7 +188,8 @@ Route::middleware(['auth','Admin'])->group(function(){
 
 
     // SUBJECTS
-    Route::post('/addSubject', [Subject::class, 'addSubject'])->name('addSubject');
+    Route::get('/subject/{subject_name}/{subject_id}', [SubjectController::class, 'subjectPage']);
+    Route::post('/addSubject', [SubjectController::class, 'addSubject'])->name('addSubject');
     
 
     // QUESTIONS

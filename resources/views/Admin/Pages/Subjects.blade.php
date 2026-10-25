@@ -9,6 +9,8 @@
     @vite(['resources/css/app.css'])
 </head>
 <body class="h-screen w-screen bg-gray-50 overflow-hidden">
+
+    @vite([ 'resources/js/app.js'])
     <div id="app" class="h-full">
 
 
@@ -20,27 +22,19 @@
         ></left-navigation>
 
         <main
-            class="w-full h-full main-bg md:w-[calc(100%-280px)] flex flex-col md:ml-[280px] ml-0 p-5 overflow-y-auto overflow-hidden scrollbar-thin scroll-smooth"
+            class="w-full h-full main-bg md:w-[calc(100%-280px)] grid grid-cols-3 content-start gap-6 md:ml-[280px] ml-0 p-5 overflow-y-auto overflow-hidden scrollbar-thin scroll-smooth"
         >
-            <subjects-navigation
-                :subjects="subjects"
-                @subject-added="handleSubjectAdded"
-            ></subjects-navigation>
 
-            <modules-main
-                :subjects="subjects"
-                :modules='@json($modules)'
-                :topics='@json($topics)'
-                :questions='@json($questions)'
-            ></modules-main>
+            <subjects-cards-admin
+                :subjects-data='@json($subjects)'
+                :modules-data='@json($modules)'
+            >
+
+            </subjects-cards-admin>
+
         </main>
 
     </div>
 
-    @vite([ 'resources/js/app.js'])
-
-    <script>
-        window.initialSubjects = @json($subjects);
-    </script>
 </body>
 </html>

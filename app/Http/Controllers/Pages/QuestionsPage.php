@@ -23,36 +23,24 @@ class QuestionsPage extends Controller
         ];
 
         $toView = $request->to_view;
-        $subjectId = $request->subject_id;
         $moduleId = $request->module_id;
 
-        $subject_name = Subjects::where('id', $subjectId)
-            ->value('subject_name');
+        $subject = Subjects::find($request->subject_id);
+
+        $subject_name = $subject->subject_name;
+        $subject_id = $subject->id;
 
         $module_name = 'All';
         $topic_name = 'All';
 
-        $subjects = Subjects::select([
-            'id',
-            'subject_name',
-            'slug',
-        ])->get();
-
-        $modules = Modules::select([
-            'id',
-            'order',
-            'subject_id',
-            'module_name',
-        ])->get();
+        $modules = Modules::where('subject_id', $subject->id)->get();
 
         $questionsQuery = Questions::select($questionColumns);
 
         switch ($toView) {
             case 'view-subject-questions':
-                $moduleIds = Modules::where('subject_id', $subjectId)
-                    ->pluck('id');
 
-                $questionsQuery->whereIn('module_id', $moduleIds);
+                $questionsQuery->whereIn('module_id', $modules->pluck('id'));
 
                 $moduleId = '0';
                 $module_name = 'All';
@@ -89,11 +77,11 @@ class QuestionsPage extends Controller
             : collect();
 
         return view('Admin.Pages.Questions', compact(
-            'moduleId',
+            'subject_id',
             'subject_name',
+            'moduleId',
             'module_name',
             'topic_name',
-            'subjects',
             'modules',
             'questions',
             'choices'
