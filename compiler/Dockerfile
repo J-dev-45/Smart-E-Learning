@@ -1,5 +1,8 @@
+
 FROM eclipse-temurin:21-jdk
 
-WORKDIR /app
+WORKDIR /app/Compiler-Service
 
-CMD ["sh"]
+COPY Compiler-Service/ ./
+
+CMD ["java", "CompilerServer"]
