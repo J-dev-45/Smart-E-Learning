@@ -22,7 +22,7 @@
         ></left-navigation>
 
         <main
-            class="w-full h-full main-bg md:w-[calc(100%-280px)] grid grid-cols-3 content-start gap-6 md:ml-[280px] ml-0 p-5 overflow-y-auto overflow-hidden scrollbar-thin scroll-smooth"
+            class="w-full h-full main-bg md:w-[calc(100%-280px)] grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] xl:grid-cols-3 content-start gap-6 md:ml-[280px] ml-0 p-5 overflow-y-auto scrollbar-thin scroll-smooth"
         >
 
             <subjects-cards-admin

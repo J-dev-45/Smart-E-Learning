@@ -31,45 +31,43 @@
     </div>
 
     <div
-        v-for="subject in subjectsData"
-        :key="subject.order"
-        class="group relative flex flex-col justify-between gap-5 overflow-hidden rounded-2xl border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 p-4 transition-all duration-300 hover:-translate-y-1 hover:border-[#CECBF6]/40 hover:bg-[#CECBF6]/10 hover:shadow-lg hover:shadow-[#CECBF6]/5 md:p-6">
+    v-for="subject in subjectsData"
+    :key="subject.order"
+    class="group relative flex min-w-0 flex-col justify-between gap-6 overflow-clip rounded-2xl border border-[#CECBF6]/15 bg-gradient-to-b from-[#CECBF6]/10 to-[#CECBF6]/[0.03] p-5 shadow-sm shadow-black/20 transition-colors duration-300 hover:border-[#CECBF6]/45 hover:from-[#CECBF6]/[0.16] hover:to-[#CECBF6]/[0.08] md:p-6">
 
-        <!-- Top accent line -->
-        <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#CECBF6]/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-
-        <!-- Icon -->
-        <div class="flex items-start justify-between">
-            <div class="rounded-xl border border-[#CECBF6]/15 bg-[#CECBF6]/10 p-3 transition-colors duration-300 group-hover:bg-[#CECBF6]/20">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-[#CECBF6]">
-                    <path stroke-linecap="round" stroke-linejoin="round" :d="icons.find(ic=>ic.subject === subject.subject_name)?.d" />
-                </svg>
-            </div>
+    <!-- Header: icon + module badge -->
+    <div class="flex items-start justify-between gap-3">
+        <div class="shrink-0 rounded-xl border border-[#CECBF6]/20 bg-[#CECBF6]/10 p-3 shadow-inner shadow-[#CECBF6]/5">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-[#CECBF6]">
+                <path stroke-linecap="round" stroke-linejoin="round" :d="icons.find(ic=>ic.subject === subject.subject_name)?.d" />
+            </svg>
         </div>
 
-        <!-- Info -->
-        <div class="flex flex-col gap-1.5">
-            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#CECBF6]/50">
-                Subject Code
-            </span>
-            <h3 class="text-base font-bold leading-snug text-white md:text-lg">{{ subject.subject_name }}</h3>
-            <p class="flex items-center gap-2 text-xs font-semibold text-[#CECBF6]/60">
-                <span class="size-1.5 rounded-full bg-[#CECBF6]/60"></span>
-                {{ getAvailableModulesCount(subject.id) }} Modules
-            </p>
-        </div>
-
-        <!-- Action -->
-        <div class="flex items-center gap-2 border-t border-[#CECBF6]/10 pt-4">
-            <a :href="`/subject/${url(subject.subject_name)}/${subject.id}`"
-                class="flex flex-1 items-center justify-center gap-2 rounded-lg bg-[#CECBF6]/85 py-2.5 text-center text-xs font-bold text-[#090014] transition-all duration-300 hover:bg-[#CECBF6] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CECBF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]">
-                View
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5 transition-transform duration-300 group-hover:translate-x-1">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                </svg>
-            </a>
-        </div>
+        <span class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[#CECBF6]/20 bg-[#CECBF6]/10 px-2.5 py-1 text-[11px] font-semibold text-[#CECBF6]/80">
+            <span class="size-1.5 rounded-full bg-[#CECBF6]"></span>
+            {{ getAvailableModulesCount(subject.id) }} Modules
+        </span>
     </div>
+
+    <!-- Info -->
+    <div class="flex min-w-0 flex-col gap-2">
+        <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#CECBF6]/50">
+            Subject Code
+        </span>
+        <h3 class="line-clamp-2 break-words text-base font-bold leading-snug text-white sm:min-h-[2.75rem] md:text-lg">{{ subject.subject_name }}</h3>
+    </div>
+
+    <!-- Action -->
+    <div class="border-t border-[#CECBF6]/10 pt-4">
+        <a :href="`/subject/${url(subject.subject_name)}/${subject.id}`"
+            class="flex w-full items-center justify-center gap-2 rounded-lg bg-[#CECBF6]/85 py-2.5 text-center text-xs font-bold text-[#090014] transition-all duration-300 hover:bg-[#CECBF6] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CECBF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]">
+            View
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5 transition-transform duration-300 group-hover:translate-x-1">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+            </svg>
+        </a>
+    </div>
+</div>
 
     <Add_Subject
         :show-add-subject="addSubject"
