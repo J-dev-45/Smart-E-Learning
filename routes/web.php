@@ -68,7 +68,7 @@ Route::middleware(['auth'])->group(function(){
     // ===========================================================
     // ===========================================================
     Route::get('/home', function () {
-        $subjects = Subjects::all();
+        $subjects = Subjects::orderBy('order', 'asc')->get();
         $modules = Modules::all();
         $module_pretests = ModuleQuiz::where('user_id', auth()->user()->id)->get();
 
@@ -158,7 +158,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     Route::get('/subjects', function(){
 
-        $subjects = Subjects::select('id', 'subject_name', 'slug', 'order')->get();
+        $subjects = Subjects::select('id', 'subject_name', 'subject_code', 'slug', 'order')->get();
         $modules = Modules::select( 'id', 'order', 'subject_id', 'module_name' )
         ->orderBy('subject_id')
         ->orderBy('order', 'asc')

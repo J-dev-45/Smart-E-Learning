@@ -21,17 +21,6 @@
             <span class="text-[10px]">Users</span>
         </a>
 
-        <div class="flex-1 flex flex-col items-center justify-center relative">
-            <a
-                href="#"
-                class="absolute -top-6 w-12 h-12 rounded-full flex items-center justify-center shadow-md shadow-[#1A0B2E]/30 bg-gradient-to-br from-[#1A0B2E] to-[#4C1D95]"
-            >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="white" class="size-[20px] shrink-0">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-            </a>
-        </div>
-
         <a
             href="#"
             class="flex-1 flex flex-col items-center justify-center gap-1 py-2 text-gray-600 font-medium hover:text-[#4C1D95]"
@@ -56,7 +45,5 @@
 </template>
 
 <script setup>
-// Pure UI — no props, no data, no routes.
-// Swap href="#" for router-link, and swap the hardcoded "Dashboard" active
-// state for a :class binding once you wire this up to match your sidebar's pattern.
+
 </script>

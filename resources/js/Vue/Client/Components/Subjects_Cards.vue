@@ -22,7 +22,7 @@
         <div class="flex flex-col gap-1">
             <span class="text-[10px] font-bold tracking-widest text-[#CECBF6]/50">
                 <!-- {{ acronym(subject.subject_name) }} -->
-                  Subject Code
+                  {{ subject.subject_code }}
             </span>
             <h3 class="text-base font-bold leading-snug">{{ subject.subject_name }}</h3>
             <p class="text-xs font-semibold text-gray-500">{{ getAvailableModulesCount(subject.id) }} quizzes available</p>

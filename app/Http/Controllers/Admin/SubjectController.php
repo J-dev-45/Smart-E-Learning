@@ -38,6 +38,7 @@ class SubjectController extends Controller
 
         $validated = $request->validate([
             'subject_name' => 'required|string|max:100',
+            'subject_code' => 'required|string|max:10',
         ]);
 
         $max_order = Subjects::max('order');
@@ -45,6 +46,7 @@ class SubjectController extends Controller
 
         $subjects = Subjects::create([
             'subject_name' => $validated['subject_name'],
+            'subject_code' => $validated['subject_code'],
             'slug' => Str::slug($validated['subject_name']),
             'order' => $next_order
         ]);
