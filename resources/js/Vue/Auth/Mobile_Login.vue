@@ -2,8 +2,15 @@
     <div class="bg-white flex flex-col justify-center
                 px-[clamp(1.25rem,5vw,2rem)] py-[clamp(1rem,3dvh,1.75rem)]">
 
+        <!-- BRAND ROW -->
+        <div class="flex items-center gap-3 mb-[clamp(1rem,3dvh,1.6rem)]">
+            <img :src="logo" alt="Smart E-Learning logo" class="size-11 shrink-0 object-contain">
+            <span class="font-extrabold text-[#4C1D95] tracking-wide leading-tight"
+                  style="font-size:clamp(1.05rem,2.6dvh,1.35rem)">Smart E-Learning</span>
+        </div>
+
         <h4 class="font-bold m-0 text-[#090014] tracking-wide"
-            style="font-size:clamp(1rem,2.5dvh,1.3rem)">WELCOME BACK</h4>
+            style="font-size:clamp(1rem,2.5dvh,1.3rem)">WELCOME!</h4>
         <p class="text-gray-500 mt-1 mb-[clamp(0.8rem,2.5dvh,1.4rem)]"
         style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
             Log in to continue learning, practice your skills, and track your progress.
@@ -18,7 +25,7 @@
             </p>
         </div>
         <form @submit.prevent="mobileLoginForm" class="flex flex-col gap-[clamp(0.6rem,1.8dvh,1rem)]">
-            
+
             <div class="flex flex-col gap-1">
                 <label class="ps-1 font-semibold text-gray-700"
                         style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">Email</label>
@@ -55,7 +62,7 @@
 
                 <svg
                     v-else
-                    @click="showPassword = false" 
+                    @click="showPassword = false"
                     xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="z-[100] size-6 absolute right-4 bottom-2 cursor-pointer text-gray-400"
                 >
                     <path d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18ZM22.676 12.553a11.249 11.249 0 0 1-2.631 4.31l-3.099-3.099a5.25 5.25 0 0 0-6.71-6.71L7.759 4.577a11.217 11.217 0 0 1 4.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113Z" />
@@ -110,7 +117,8 @@ import { ref } from 'vue';
 
 defineProps({
     errors: { type: Array, default: ()=>[]},
-    signUp: {type: String, required: true}
+    signUp: {type: String, required: true},
+    logo: { type: String, default: '/images/Components/Logo.png' }
 })
 
 const email = ref('');

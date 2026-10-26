@@ -5,7 +5,7 @@
         class="w-full max-w-[460px] bg-white border-[1.5px] border-white/40 rounded-3xl shadow-2xl
         flex flex-col px-[clamp(1.5rem,3vw,2.5rem)] py-[clamp(1.25rem,4vh,2.5rem)]">
         <h4 class="font-bold m-0 text-[#090014] tracking-wide"
-            style="font-size:clamp(1.2rem,2.2vw,1.75rem)">Welcome Back!</h4>
+            style="font-size:clamp(1.2rem,2.2vw,1.75rem)">Welcome!</h4>
         <p class="text-gray-500 mt-1.5 mb-[clamp(1rem,3vh,2rem)] text-sm">
             Log in to continue learning, practice your skills, and track your progress.
         </p>
