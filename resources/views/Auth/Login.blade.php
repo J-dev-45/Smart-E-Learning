@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,8 +9,6 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite('resources/css/app.css')
     <style>
-
-
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
             display: none;
@@ -19,39 +18,63 @@
         input[type="password"]::-webkit-textfield-decoration-container {
             display: none !important;
         }
+
+        html,
+        body {
+            min-height: 100%;
+        }
+
+        body {
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        @media (max-width: 767px) {
+            html,
+            body {
+                height: auto;
+                min-height: 100%;
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            #app {
+                min-height: 100vh;
+                min-height: 100dvh;
+                height: auto;
+            }
+        }
     </style>
 </head>
-<body class="w-screen h-screen overflow-hidden font-sans">
+<body class="w-full min-h-[100dvh] font-sans">
 
     @include('Global.Loading_Screen', ['logo' => asset('images/Components/Logo.png') ])
 
-    <div id="app" class="w-screen h-screen">
+    <div id="app" class="w-full min-h-[100dvh]">
+
         {{-- ══════════════════════════════════════ --}}
         {{-- MOBILE / TABLET  (hidden on md+)       --}}
         {{-- ══════════════════════════════════════ --}}
 
-        {{-- <loading-screen logo="{{ asset('images/Components/Logo.png') }}"></loading-screen> --}}
-
-        <div class="flex md:hidden w-full h-full items-center justify-center p-5">
+        <div class="flex md:hidden w-full min-h-[100dvh] items-center justify-center p-5 overflow-y-auto"
+             style="min-height: 100vh; min-height: 100dvh;">
 
             <div class="w-full max-w-[400px] flex flex-col rounded-3xl overflow-hidden shadow-2xl
-                        border-[1.5px] border-white/40"
-                style="max-height: calc(100dvh - 2.5rem)">
+                        border-[1.5px] border-white/40 shrink-0">
 
-                {{-- MOBILE FORM (logo + app name now live inside the form card) --}}
                 <mobile-login
-                    sign-up="{{route('register')}}"
+                    sign-up="{{ route('register') }}"
                     logo="{{ asset('images/Components/Logo.png') }}"
                 ></mobile-login>
 
             </div>
         </div>
 
-
         {{-- ══════════════════════════════════════ --}}
         {{-- DESKTOP  (hidden below md)             --}}
         {{-- ══════════════════════════════════════ --}}
-        <div class="hidden md:flex w-full h-full">
+
+        <div class="hidden md:flex w-full h-screen">
 
             {{-- Left panel --}}
             <div class="w-1/2 h-full flex flex-col items-center justify-center text-white px-8 gap-3">
@@ -81,8 +104,9 @@
                 {{-- DESKTOP FORM --}}
                 <desktop-login
                     logo="{{ asset('images/Components/Logo.png') }}"
-                    url="{{route('register')}}"
+                    url="{{ route('register') }}"
                 ></desktop-login>
+
             </div>
         </div>
     </div>
