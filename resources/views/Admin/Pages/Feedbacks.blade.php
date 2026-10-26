@@ -75,7 +75,9 @@
 
             {{-- FEEDBACKS PAGE now stretches to fill remaining vertical space --}}
             <div class="flex-1 min-h-0">
-                <feedbacks-page></feedbacks-page>
+                <feedbacks-page
+                    :feedbacks='@json($feedbacks)'
+                ></feedbacks-page>
             </div>
         </main>
 

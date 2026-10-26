@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite('resources/css/app.css')
     <style>
-        
+
 
         input[type="password"]::-ms-reveal,
         input[type="password"]::-ms-clear {
@@ -38,24 +38,10 @@
                         border-[1.5px] border-white/40"
                 style="max-height: calc(100dvh - 2.5rem)">
 
-                {{-- Header (glass, matches homepage cards) --}}
-                <div class="bg-[#CECBF6]/6 backdrop-blur-sm flex flex-col items-center justify-center text-white
-                            py-[clamp(1rem,3.5dvh,2rem)] px-6 shrink-0 gap-1
-                            border-b-[1.5px] border-b-[#CECBF6]/15">
-                    <img src="{{ asset('images/Components/Logo.png') }}" alt="Logo"
-                        class="object-contain mb-1 drop-shadow-lg"
-                        style="width:clamp(52px,8dvh,80px); height:clamp(52px,8dvh,80px)">
-                    <h1 class="font-bold leading-tight m-0 tracking-wide"
-                        style="font-size:clamp(1.2rem,3.5dvh,1.9rem)">Smart E-Learning</h1>
-
-                    <div class="w-20 h-[3px] bg-[#CECBF6] rounded-full my-1"></div>
-                    <p class="font-semibold m-0 text-[#CECBF6]/65 tracking-wide"
-                    style="font-size:clamp(0.65rem,1.6dvh,0.8rem)">Review Smarter, Quiz Better.</p>
-                </div>
-
-                {{-- MOBILE FORM --}}
+                {{-- MOBILE FORM (logo + app name now live inside the form card) --}}
                 <mobile-login
                     sign-up="{{route('register')}}"
+                    logo="{{ asset('images/Components/Logo.png') }}"
                 ></mobile-login>
 
             </div>
@@ -93,7 +79,7 @@
             <div class="w-1/2 h-full flex items-center justify-start px-8 lg:px-16">
 
                 {{-- DESKTOP FORM --}}
-                <desktop-login 
+                <desktop-login
                     logo="{{ asset('images/Components/Logo.png') }}"
                     url="{{route('register')}}"
                 ></desktop-login>

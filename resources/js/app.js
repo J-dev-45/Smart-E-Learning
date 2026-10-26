@@ -77,6 +77,7 @@ import Learn_Header from './Vue/Client/Components/Learn_Header.vue';
 import Leaderboard from './Vue/Client/Pages/Leaderboard.vue';
 import Module_Activity from './Vue/Client/Pages/Module_Activity.vue';
 import Module_Quiz_Buttons from './Vue/Client/Components/Module_Quiz_Buttons.vue';
+import Feedback_Form from './Vue/Client/Components/Feedback_Form.vue';
 
 app.component('subjects-card', Subjects_Cards);
 app.component('assessment-form', Assessment_Form);
@@ -92,6 +93,7 @@ app.component('learn-header', Learn_Header)
 app.component('leaderboard', Leaderboard);
 app.component('module-activity', Module_Activity);
 app.component('module-quiz-buttons', Module_Quiz_Buttons);
+app.component('feedback-form', Feedback_Form);
 
 // | AUTH |===================================================================================================
 // | AUTH |===================================================================================================

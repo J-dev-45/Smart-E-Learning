@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\QuestionImport;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyOTP;
+use App\Models\Feedback;
 use App\Models\Leaderboard;
 use App\Models\ModuleQuiz;
 use App\Models\Modules;
@@ -104,6 +106,8 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/submit-module-activity', [LearnController::class, 'submitModuleActivity']);
     Route::post('/retake-activity', [LearnController::class, 'retakeActivity']);
 
+    Route::post('/sendFeedback', [FeedbackController::class, 'sendFeedback'])->middleware('throttle:3,1');
+
     
 
     Route::get('/result/{type_of_assessment}/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'resultPretest']);
@@ -173,7 +177,11 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     // ===========================================================
     Route::get('/feedbacks', function(){
-        return view('Admin.Pages.Feedbacks');
+
+        $feedbacks = Feedback::select('id', 'student_name', 'replied_by', 'status', 'created_at')->get();
+        return view('Admin.Pages.Feedbacks', compact(
+            'feedbacks'
+        ));
     })->name('feedbacks_page');
 
 

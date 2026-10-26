@@ -9,6 +9,7 @@
     @vite(['resources/css/app.css'])
 </head>
 <body class="w-screen min-h-screen overflow-x-hidden bg-[#090014]">
+    @vite(['resources/js/app.js'])
     @include('Global.Skeleton_Loading.Client_Navigation')
     <div id="app" class="w-screen flex flex-col overflow-x-hidden min-h-screen relative">
 
@@ -26,6 +27,7 @@
 
         <main class="w-full text-white pt-[80px] md:pt-[120px] pb-16 px-4 flex flex-col">
 
+            <feedback-form></feedback-form>
             {{-- HERO SECTION --}}
             <section id="hero" class="w-full flex items-center justify-center flex-col gap-8 scroll-mt-24">
                 {{-- <div class="flex flex-col items-center justify-center w-full sm:w-[85%] md:w-[70%] lg:w-[55%] gap-4">
@@ -168,7 +170,7 @@
         </main>
     </div>
 
-    @vite(['resources/js/app.js'])
+    
 
 </body>
 </html>

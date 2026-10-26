@@ -1,3 +1,4 @@
+
 <template>
     <Transition
         enter-active-class="transition ease-out duration-150"
@@ -9,9 +10,8 @@
     >
         <div
             v-if="showUserMenu"
-            class="w-[290px] fixed md:top-3 top-[55px] right-0 z-100 p-3 flex flex-col bg-white rounded-xl shadow-lg ring-1 ring-black/5 gap-3"
+            class="w-[290px] fixed md:top-3 top-[55px] right-0 z-[100] p-3 flex flex-col bg-white rounded-xl shadow-lg ring-1 ring-black/5 gap-3"
         >
-            <!-- USER PROFILE -->
             <div class="w-full flex items-center gap-3 px-1">
                 <div
                     class="w-11 h-11 shrink-0 rounded-full flex items-center justify-center font-semibold text-sm"
@@ -29,7 +29,6 @@
                     </span>
                 </div>
 
-                <!-- CLOSE BUTTON -->
                 <button
                     type="button"
                     @click="closeMenu"
@@ -57,9 +56,8 @@
             <div class="h-px bg-gray-100" />
 
             <div class="flex flex-col gap-1">
-
-                <!-- CHANGE PASSWORD -->
                 <button
+                    type="button"
                     class="px-3 py-2 text-sm text-gray-700 rounded-lg flex items-center gap-2.5 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
                 >
                     <svg
@@ -79,8 +77,9 @@
                     <span>Change Password</span>
                 </button>
 
-                <!-- FEEDBACK -->
                 <button
+                    type="button"
+                    @click="openFeedback"
                     class="px-3 py-2 text-sm text-gray-700 rounded-lg flex items-center gap-2.5 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
                 >
                     <svg
@@ -104,8 +103,6 @@
             <div class="h-px bg-gray-100" />
 
             <div class="flex flex-col gap-1">
-
-                <!-- LOGOUT -->
                 <button
                     type="button"
                     @click="logout"
@@ -113,7 +110,6 @@
                     :aria-busy="isLoggingOut"
                     class="px-3 py-2 text-sm text-red-500 rounded-lg flex items-center gap-2.5 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-100 transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-transparent"
                 >
-                    <!-- Spinner (while logging out) -->
                     <svg
                         v-if="isLoggingOut"
                         xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +119,9 @@
                         aria-hidden="true"
                     >
                         <circle
-                            cx="12" cy="12" r="9"
+                            cx="12"
+                            cy="12"
+                            r="9"
                             stroke="currentColor"
                             stroke-width="2.5"
                             class="opacity-25"
@@ -136,7 +134,6 @@
                         />
                     </svg>
 
-                    <!-- Logout icon (idle) -->
                     <svg
                         v-else
                         xmlns="http://www.w3.org/2000/svg"
@@ -158,10 +155,18 @@
             </div>
         </div>
     </Transition>
+
+    <Feedback_Form
+        :show-feedback="showFeedback"
+        :user-id="props.userId"
+        :user-name="props.userName"
+        @close="showFeedback = false"
+    />
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
+import Feedback_Form from './Feedback_Form.vue'
 
 const props = defineProps({
     showUserMenu: { type: Boolean, default: true },
@@ -172,10 +177,12 @@ const props = defineProps({
 })
 
 const isLoggingOut = ref(false)
+const showFeedback = ref(false)
 
 const initials = computed(() =>
     props.userName
         .split(' ')
+        .filter(Boolean)
         .map(n => n[0])
         .join('')
         .slice(0, 2)
@@ -186,6 +193,11 @@ const emit = defineEmits(['close-user-menu'])
 
 function closeMenu() {
     emit('close-user-menu')
+}
+
+function openFeedback() {
+    showFeedback.value = true
+    closeMenu()
 }
 
 async function logoutForm() {

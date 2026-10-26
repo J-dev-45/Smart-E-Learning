@@ -51,47 +51,50 @@
 
             </ul>
 
-            <button v-if="userMenu"
-                type="button"
-                @click="openUserMenu"
-                class="py-2"
-            >
+            <div class="relative">
 
-                <span
-                    class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md"
-                    :class="profileColor"
+                <button v-if="userMenu"
+                    type="button"
+                    @click="openUserMenu"
+                    class="py-2"
                 >
-                    {{ initials(userName) }}
-                </span>
+                    <span
+                        class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md"
+                        :class="profileColor"
+                    >
+                        {{ initials(userName) }}
+                    </span>
+                </button>
 
-            </button>
-            <button
-                v-else
-                type="button"
-                @click="closeUserMenu"
-                class="py-2"
-            >
-
-                <span
-                    class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md"
-                    :class="profileColor"
+                <button
+                    v-else
+                    type="button"
+                    @click="closeUserMenu"
+                    class="py-2"
                 >
-                    {{ initials(userName) }}
-                </span>
+                    <span
+                        class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md"
+                        :class="profileColor"
+                    >
+                        {{ initials(userName) }}
+                    </span>
+                </button>
 
-            </button>
+                <User_Menu
+                    :show-user-menu="showUserMenu"
+                    :user-id="userId"
+                    :user-name="userName"
+                    :user-email="userEmail"
+                    @close-user-menu="closeUserMenu"
+                    :profile-color="profileColor"
+                />
+
+            </div>
 
 
     </nav>
 
-    <User_Menu
-        :show-user-menu="showUserMenu"
-        :user-id="userId"
-        :user-name="userName"
-        :user-email="userEmail"
-        @close-user-menu="closeUserMenu"
-        :profile-color="profileColor"
-    />
+    
 
 </template>
 

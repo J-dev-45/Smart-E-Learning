@@ -65,12 +65,12 @@
                     <div class="flex items-center gap-3 min-w-0 pr-2">
                         <div class="w-8 h-8 shrink-0 rounded-md flex items-center justify-center text-[11px] font-semibold
                                     bg-[#8B5CF6]/15 border border-[#CECBF6]/15 text-[#CECBF6]">
-                            {{ initials(feedback.feedbackName) }}
+                            {{ initials(feedback.student_name) }}
                         </div>
-                        <span class="text-sm text-white truncate">{{ feedback.feedbackName }}</span>
+                        <span class="text-sm text-white truncate">{{ feedback.student_name }}</span>
                     </div>
 
-                    <span class="text-xs text-gray-300 truncate pr-2">{{ feedback.repliedBy }}</span>
+                    <span class="text-xs text-gray-300 truncate pr-2">{{ feedback.replied_by }}</span>
 
                     <span>
                         <span class="inline-flex px-2 py-1 rounded-md text-[11px] font-medium border"
@@ -79,7 +79,7 @@
                         </span>
                     </span>
 
-                    <span class="text-xs text-gray-400">{{ feedback.date }}</span>
+                    <span class="text-xs text-gray-400">{{ formatDate(feedback.created_at) }}</span>
 
                     <div class="flex items-center gap-2">
                         <!-- VIEW / REPLY -->
@@ -122,74 +122,78 @@
 </template>
 
 <script setup>
-    import { ref, computed } from 'vue'
+import { ref, computed } from 'vue'
 
-    const deleteFeedbackModal = document.getElementById('deleteFeedbackModal');
-    const deleteFeedbackModalClose = document.querySelectorAll('.deleteFeedbackModalClose');
+const props = defineProps({
+    feedbacks: { type: Array, required: true},
+})
 
-    function deleteFeedbackModalOpen(){
-        localStorage.setItem('deleteFeedbackModal', 'true');
+const deleteFeedbackModal = document.getElementById('deleteFeedbackModal');
+const deleteFeedbackModalClose = document.querySelectorAll('.deleteFeedbackModalClose');
+
+function deleteFeedbackModalOpen(){
+    localStorage.setItem('deleteFeedbackModal', 'true');
+    deleteFeedbackModal.style.display = 'flex';
+}
+
+deleteFeedbackModalClose.forEach(closeModal => {
+    closeModal.addEventListener('click', () =>{
+        deleteFeedbackModal.style.display = 'none';
+        localStorage.setItem('deleteFeedbackModal', 'false');
+        console.log('clicked');
+    });
+});
+
+window.addEventListener('DOMContentLoaded', () =>{
+    if(localStorage.getItem('deleteFeedbackModal') === 'true'){
         deleteFeedbackModal.style.display = 'flex';
     }
+})
 
-    deleteFeedbackModalClose.forEach(closeModal => {
-        closeModal.addEventListener('click', () =>{
-            deleteFeedbackModal.style.display = 'none';
-            localStorage.setItem('deleteFeedbackModal', 'false');
-            console.log('clicked');
-        });
-    });
+const search = ref('')
 
-    window.addEventListener('DOMContentLoaded', () =>{
-        if(localStorage.getItem('deleteFeedbackModal') === 'true'){
-            deleteFeedbackModal.style.display = 'flex';
-        }
+const statusTabs = ['All', 'New', 'Unread', 'Done']
+const activeTab = ref('All')
+
+function formatDate(date) {
+    const d = new Date(date)
+
+    const month = String(d.getMonth() + 1).padStart(2, '0')
+    const day = String(d.getDate()).padStart(2, '0')
+    const year = String(d.getFullYear()).slice(-2)
+
+    return `${month}-${day}-${year}`
+}
+
+props.feedbacks.sort((a,b)=> new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
+
+const filteredFeedbacks = computed(() => {
+    const q = search.value.trim().toLowerCase()
+
+    return props.feedbacks.filter(f => {
+        const matchesTab = activeTab.value === 'All' || f.status === activeTab.value
+        const matchesSearch = !q ||
+            f.student_name.toLowerCase().includes(q) ||
+            String(f.id).includes(q)
+
+        return matchesTab && matchesSearch
     })
+})
 
-    const search = ref('')
+function initials(name) {
+    return name.split(' ').map(n => n[0]).slice(0, 2).join('')
+}
 
-    const statusTabs = ['All', 'New', 'Unread', 'Done']
-    const activeTab = ref('All')
-
-    const feedbacks = [
-        { id: 1, feedbackName: "Jimwell Raza", repliedBy: "Admin - Jared Marinas", status: "Done", date: "08-12-26" },
-        { id: 2, feedbackName: "Jayson Layola", repliedBy: "Admin - Jimwell Raza", status: "Done", date: "08-12-26" },
-        { id: 3, feedbackName: "Ailama Valmores", repliedBy: "Admin - Jayson Layola", status: "Done", date: "08-12-26" },
-        { id: 4, feedbackName: "Jared Marinas", repliedBy: " --- ", status: "New", date: "08-19-26" },
-        { id: 5, feedbackName: "Jimwell Raza", repliedBy: " --- ", status: "Unread", date: "08-18-26" },
-        { id: 6, feedbackName: "Jared Marinas", repliedBy: " --- ", status: "New", date: "08-19-26" },
-        { id: 7, feedbackName: "Jimwell Raza", repliedBy: " --- ", status: "Unread", date: "08-18-26" },
-    ]
-
-    feedbacks.sort((a,b)=> new Date(b.date).getTime() - new Date(a.date).getTime());
-
-    const filteredFeedbacks = computed(() => {
-        const q = search.value.trim().toLowerCase()
-
-        return feedbacks.filter(f => {
-            const matchesTab = activeTab.value === 'All' || f.status === activeTab.value
-            const matchesSearch = !q ||
-                f.feedbackName.toLowerCase().includes(q) ||
-                String(f.id).includes(q)
-
-            return matchesTab && matchesSearch
-        })
-    })
-
-    function initials(name) {
-        return name.split(' ').map(n => n[0]).slice(0, 2).join('')
+function statusStyle(status) {
+    switch (status) {
+        case 'Done':
+            return 'bg-emerald-500/10 border-emerald-500/25 text-emerald-300'
+        case 'New':
+            return 'bg-[#6366F1]/10 border-[#6366F1]/25 text-[#A5B4FC]'
+        case 'Unread':
+            return 'bg-rose-500/10 border-rose-500/25 text-rose-300'
+        default:
+            return 'bg-white/5 border-white/10 text-gray-300'
     }
-
-    function statusStyle(status) {
-        switch (status) {
-            case 'Done':
-                return 'bg-emerald-500/10 border-emerald-500/25 text-emerald-300'
-            case 'New':
-                return 'bg-[#6366F1]/10 border-[#6366F1]/25 text-[#A5B4FC]'
-            case 'Unread':
-                return 'bg-rose-500/10 border-rose-500/25 text-rose-300'
-            default:
-                return 'bg-white/5 border-white/10 text-gray-300'
-        }
-    }
+}
 </script>
