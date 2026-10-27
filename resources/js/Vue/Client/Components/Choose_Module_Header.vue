@@ -39,7 +39,7 @@ const props = defineProps({
 })
 
 function goBack(){
-    window.history.back();
+    window.location.href = '/home';
 }
 
 
