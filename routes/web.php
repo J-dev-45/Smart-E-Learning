@@ -18,6 +18,8 @@ use App\Http\Controllers\QuestionImport;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyOTP;
+use App\Models\AnsweredAssessmentQuestions;
+use App\Models\AnsweredModuleQuestions;
 use App\Models\Feedback;
 use App\Models\Leaderboard;
 use App\Models\ModuleQuiz;
@@ -85,6 +87,28 @@ Route::middleware(['auth'])->group(function(){
             ->get()
             ->keyBy('id');
 
+        $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())->get();
+        $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())->get();
+
+        // $total_answered_module = $answered_module_questions->count();
+        // $total_answered_assessment = $answered_assessment_questions->count();
+
+        $total_assessment_score = $answered_assessment_questions->where('is_correct', true)->count();
+
+        $score_count = 0;
+        foreach($answered_module_questions as $amq){
+            if(strtolower($amq->user_answer) === strtolower($amq->correct_answer)){
+                $score_count++;
+            }
+        }
+
+        $total_answered = $answered_assessment_questions->count() + $answered_module_questions->count();
+        $total_score = $total_assessment_score + $score_count;
+
+        $accuracy = $total_answered > 0
+            ? round(($total_score / $total_answered) * 100)
+            : 0;
+
         
         return view('Client.Pages.Home', compact(
             'subjects',
@@ -92,7 +116,9 @@ Route::middleware(['auth'])->group(function(){
             'module_pretests',
             'leaderboard',
             'users',
-            'subjects_started'
+            'subjects_started',
+            'total_score',
+            'accuracy'
         ));
     })->name('home');
 

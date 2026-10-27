@@ -68,7 +68,7 @@
                                 </svg>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-2xl font-bold leading-tight tabular-nums">0</span>
+                                <span class="text-2xl font-bold leading-tight tabular-nums">{{$total_score}}</span>
                                 <p class="text-xs font-medium text-white/45">Total score</p>
                             </div>
                         </div>
@@ -81,7 +81,7 @@
                                 </svg>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-2xl font-bold leading-tight tabular-nums">0%</span>
+                                <span class="text-2xl font-bold leading-tight tabular-nums">{{$accuracy}}%</span>
                                 <p class="text-xs font-medium text-white/45">Accuracy</p>
                             </div>
                         </div>
