@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\AnsweredAssessmentQuestions;
 use App\Models\AnsweredModuleQuestions;
 use App\Models\AnsweredQuestions;
 use App\Models\Leaderboard;
@@ -11,6 +12,7 @@ use App\Models\ModuleQuiz;
 use App\Models\Modules;
 use App\Models\ModuleStarted;
 use App\Models\Questions;
+use App\Models\StudentAttempts;
 use App\Models\Subjects;
 use App\Models\SubjectStarted;
 use App\Models\TemporaryPoints;
@@ -130,6 +132,31 @@ class LearnController extends Controller
             ->whereIn('module_id', $modules->pluck('id'))
             ->get();
 
+        $exam_started = StudentAttempts::where('user_id', auth()->id())
+            ->where('subject_id', $subject_id)
+            ->where('module_id', null)
+            ->exists();
+
+        $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+            ->where('subject_id', $subject_id)
+            ->where('module_id', null)
+            ->where('type_of_assessment', 'exam')
+            ->get();
+
+        $exam_passed = false;
+        if($answered_assessment_questions->count() === 40 ){
+            $exam_score = $answered_assessment_questions->where('is_correct', true)->count();
+            if($exam_score >= 30){
+                $exam_passed = true;
+            }else{
+                $exam_passed = false;
+            }
+        }
+
+        
+            
+        
+
         return view(
             'Client.Pages.Quiz_Modules',
             compact(
@@ -141,7 +168,9 @@ class LearnController extends Controller
                 'answered_questions',
                 'questions',
                 'exam_open',
-                'modules_started'
+                'modules_started',
+                'exam_started',
+                'exam_passed'
             )
         );
     }
