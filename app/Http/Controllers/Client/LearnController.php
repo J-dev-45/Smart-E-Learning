@@ -153,9 +153,15 @@ class LearnController extends Controller
             }
         }
 
-        
+        $remaining_modules = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $subject_id)
+            ->where('has_passed', false)
+            ->count(); 
             
-        
+        $modules_passed = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $subject_id)
+            ->where('has_passed', true)
+            ->count();
 
         return view(
             'Client.Pages.Quiz_Modules',
@@ -170,7 +176,9 @@ class LearnController extends Controller
                 'exam_open',
                 'modules_started',
                 'exam_started',
-                'exam_passed'
+                'exam_passed',
+                'remaining_modules',
+                'modules_passed'
             )
         );
     }
