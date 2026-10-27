@@ -20,8 +20,12 @@ class SubjectController extends Controller
         $subject_id = $subject->id;
         $subject_name = $subject->subject_name;
 
-        $modules = Modules::where('subject_id', $subject->id)->get();
-        $topics = Topics::whereIn('module_id', $modules->pluck('id'))->get();
+        $modules = Modules::where('subject_id', $subject->id)
+            ->orderBy('order', 'asc')
+            ->get();
+        $topics = Topics::whereIn('module_id', $modules->pluck('id'))
+            ->orderBy('order', 'asc')
+            ->get();
         $questions = Questions::whereIn('module_id', $modules->pluck('id'))->get();
 
         return view('Admin.Pages.Modules', compact(
