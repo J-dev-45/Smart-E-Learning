@@ -6,14 +6,14 @@
         <div class="flex items-center gap-3 mb-[clamp(1rem,3dvh,1.6rem)]">
             <img :src="logo" alt="Smart E-Learning logo" class="size-11 shrink-0 object-contain">
             <span class="font-extrabold text-[#4C1D95] tracking-wide leading-tight"
-                  style="font-size:1.1rem; font-size:clamp(1.05rem,2.6dvh,1.35rem)">Smart E-Learning</span>
+                  style="font-size:clamp(1.05rem,2.6dvh,1.35rem)">Smart E-Learning</span>
         </div>
 
         <h4 class="font-bold m-0 text-[#090014] tracking-wide"
-            style="font-size:1.1rem; font-size:clamp(1rem,2.5dvh,1.3rem)">WELCOME!</h4>
+            style="font-size:clamp(1rem,2.5dvh,1.3rem)">WELCOME!</h4>
 
         <p class="text-gray-500 mt-1 mb-[clamp(0.8rem,2.5dvh,1.4rem)]"
-           style="font-size:0.75rem; font-size:clamp(0.65rem,1.5dvh,0.78rem)">
+           style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
             Log in to continue learning, practice your skills, and track your progress.
         </p>
 
@@ -32,15 +32,13 @@
             <!-- EMAIL -->
             <div class="flex flex-col gap-1">
                 <label for="login-email" class="ps-1 font-semibold text-gray-700"
-                       style="font-size:0.8rem; font-size:clamp(0.7rem,1.7dvh,0.85rem)">Email</label>
+                       style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">Email</label>
 
-                <!-- font-size is at least 16px so iOS Safari does not auto-zoom on focus -->
                 <input id="login-email"
                        type="email"
                        placeholder="example@gmail.com"
                        name="email"
                        v-model="email"
-                       @click="$event.currentTarget.focus()"
                        autocomplete="username"
                        autocapitalize="none"
                        autocorrect="off"
@@ -48,34 +46,32 @@
                        inputmode="email"
                        class="border-[1.5px] border-gray-200 rounded-full ps-5 outline-none bg-gray-50
                               w-full text-[#090014] placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white
-                              transition-all duration-200 appearance-none"
-                       style="height:48px; height:clamp(40px,6dvh,52px); font-size:16px; -webkit-user-select:text; user-select:text; -webkit-touch-callout:default; touch-action:manipulation">
+                              transition-all duration-200"
+                       style="height:clamp(40px,6dvh,52px); font-size:16px">
             </div>
 
-            <!-- PASSWORD -->
+            <!-- PASSWORD (no clamp: fixed height and 16px font) -->
             <div class="flex flex-col gap-1">
                 <label for="login-password" class="ps-1 font-semibold text-gray-700"
-                       style="font-size:0.8rem; font-size:clamp(0.7rem,1.7dvh,0.85rem)">Password</label>
+                       style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">Password</label>
 
-                <!-- the wrapper only holds the input, so the eye button centers on the input itself -->
                 <div class="relative">
                     <input id="login-password"
                            :type="showPassword ? 'text' : 'password'"
                            placeholder="••••••••••••"
                            name="password"
                            v-model="password"
-                           @click="$event.currentTarget.focus()"
                            autocomplete="current-password"
                            autocapitalize="none"
                            autocorrect="off"
                            spellcheck="false"
-                           class="border-[1.5px] border-gray-200 rounded-full ps-5 pe-12 outline-none bg-gray-50
-                                  w-full text-[#090014] placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white
-                                  transition-all duration-200 appearance-none"
-                           style="height:48px; height:clamp(40px,6dvh,52px); font-size:16px; -webkit-user-select:text; user-select:text; -webkit-touch-callout:default; touch-action:manipulation">
+                           class="h-12 text-base select-text
+                                  border-[1.5px] border-gray-200 rounded-full ps-5 pe-12 outline-none bg-gray-50
+                                  w-full text-[#090014] placeholder:text-gray-400
+                                  focus:border-[#4C1D95]/50 focus:bg-white
+                                  transition-all duration-200">
 
-                    <!-- real button instead of a bare svg: reliable taps on iOS.
-                         @mousedown.prevent keeps focus in the input so the keyboard stays open. -->
+                    <!-- @mousedown.prevent keeps focus in the input so the keyboard stays open -->
                     <button type="button"
                             @mousedown.prevent
                             @click="showPassword = !showPassword"
@@ -108,13 +104,13 @@
 
             <div class="flex justify-between items-center px-1">
                 <label class="flex items-center gap-2 cursor-pointer text-gray-500"
-                       style="font-size:0.75rem; font-size:clamp(0.65rem,1.5dvh,0.78rem)">
+                       style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
                     <input type="checkbox" name="remember" class="w-3.5 h-3.5 accent-[#4C1D95]">
                     Remember me!
                 </label>
 
                 <a href="#" class="text-[#4C1D95] font-semibold hover:underline"
-                   style="font-size:0.75rem; font-size:clamp(0.65rem,1.5dvh,0.78rem)">
+                   style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
                     Forgot Password?
                 </a>
             </div>
@@ -126,7 +122,7 @@
                            transition-all duration-200 tracking-wide touch-manipulation
                            mt-[clamp(0.2rem,1dvh,0.6rem)]
                            flex items-center justify-center gap-2"
-                    style="height:48px; height:clamp(42px,6.5dvh,54px); font-size:0.95rem; font-size:clamp(0.85rem,2dvh,1rem)">
+                    style="height:clamp(42px,6.5dvh,54px); font-size:clamp(0.85rem,2dvh,1rem)">
 
                 <svg v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -138,7 +134,7 @@
 
             <div class="flex justify-center items-center gap-1.5
                         pt-[clamp(0.1rem,0.8dvh,0.4rem)]"
-                 style="font-size:0.75rem; font-size:clamp(0.65rem,1.5dvh,0.78rem)">
+                 style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
                 <span class="text-gray-500">Don't have an account?</span>
                 <a :href="signUp" class="text-[#4C1D95] font-semibold hover:underline">
                     Sign up
@@ -169,8 +165,8 @@ const loginErrors = ref([]);
 async function mobileLoginForm(event) {
     if (isSubmitting.value) return;
 
-    // iOS autofill (iCloud Keychain) can fill fields without firing the
-    // input event Vue listens to, so read the real DOM values at submit time.
+    // iOS autofill can fill fields without firing the input event Vue listens to,
+    // so read the real DOM values at submit time.
     const form = event.target;
     const emailValue = (form.elements['email']?.value || email.value || '').trim();
     const passwordValue = form.elements['password']?.value || password.value || '';

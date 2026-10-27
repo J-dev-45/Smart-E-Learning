@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,8 +13,7 @@
             display: none;
         }
 
-        input[type="password"]::-webkit-credentials-auto-fill-button,
-        input[type="password"]::-webkit-textfield-decoration-container {
+        input[type="password"]::-webkit-credentials-auto-fill-button {
             display: none !important;
         }
 
