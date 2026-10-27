@@ -9,11 +9,11 @@
     @vite(['resources/css/app.css'])
 
 </head>
-<body class="w-screen h-screen overflow-hidden bg-[#12081F]">
-    <div id="app" class="flex flex-col h-screen w-screen overflow-hidden">
+<body class="w-full h-[100dvh] overflow-hidden bg-[#12081F]">
+    <div id="app" class="flex flex-col h-[100dvh] w-full overflow-hidden">
 
 
-        <main class="main-bg w-full h-screen flex flex-col overflow-y-auto overflow-x-hidden scrollbar-thin">
+        <main class="main-bg w-full h-[100dvh] flex flex-col overflow-y-auto overflow-x-hidden scrollbar-thin">
 
             {{-- HEADER (stays visible while scrolling) --}}
             <div class="sticky top-0 z-20 shrink-0 bg-[#12081F]">
@@ -29,7 +29,7 @@
 
 
             <section
-                class="shrink-0 w-full text-white p-5 flex flex-col"
+                class="shrink-0 w-full text-white p-3 sm:p-5 flex flex-col"
             >
 
                 @switch($module->module_name)

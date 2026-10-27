@@ -1,7 +1,7 @@
-<div class="mt-10" id="topic-properties-of-set">
+<div class="mt-6 sm:mt-10" id="topic-properties-of-set">
 
     {{-- TOPIC --}}
-    <h2 class="text-2xl font-bold">
+    <h2 class="text-xl sm:text-2xl font-bold">
         3. Properties of Set
     </h2>
 
@@ -9,7 +9,7 @@
         <div class="bg-gray-600 w-full h-[1px]"></div>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-4 leading-relaxed">
+    <p class="text-md text-gray-400 px-0 sm:px-3 mt-4 leading-relaxed break-words">
         Properties of sets are mathematical rules that describe how
         sets behave when different set operations are performed.
         These properties help simplify set expressions and make it
@@ -17,11 +17,11 @@
         complements, and other set operations.
     </p>
 
-    <h3 class="text-xl font-bold mt-6">
+    <h3 class="text-lg sm:text-xl font-bold mt-6">
         Why Set Properties Are Important
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md text-gray-400 px-0 sm:px-3 mt-3 leading-relaxed break-words">
         Set properties provide rules that can be used to rewrite and
         simplify set expressions without changing their meaning.
         They are useful when solving mathematical problems, proving
@@ -31,13 +31,13 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Commutative Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 The order of the sets does not affect the result of
                 union or intersection.
             </p>
@@ -52,7 +52,7 @@
 
             <div class="mt-4 border-t border-[#3A2560] pt-3">
 
-                <p class="text-gray-400">
+                <p class="text-gray-400 break-words">
                     Example:
                 </p>
 
@@ -64,11 +64,11 @@
                     B = {3, 4, 5}
                 </p>
 
-                <p class="text-gray-400 mt-2">
+                <p class="text-gray-400 mt-2 break-words">
                     A ∪ B = {1, 2, 3, 4, 5}
                 </p>
 
-                <p class="text-gray-400 mt-1">
+                <p class="text-gray-400 mt-1 break-words">
                     B ∪ A = {1, 2, 3, 4, 5}
                 </p>
 
@@ -77,13 +77,13 @@
         </div>
 
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Associative Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 The grouping of sets does not affect the result of
                 union or intersection.
             </p>
@@ -98,7 +98,7 @@
 
             <div class="mt-4 border-t border-[#3A2560] pt-3">
 
-                <p class="text-gray-400">
+                <p class="text-gray-400 break-words">
                     Example:
                 </p>
 
@@ -114,11 +114,11 @@
                     C = {3, 4}
                 </p>
 
-                <p class="text-gray-400 mt-2">
+                <p class="text-gray-400 mt-2 break-words">
                     (A ∪ B) ∪ C = {1, 2, 3, 4}
                 </p>
 
-                <p class="text-gray-400 mt-1">
+                <p class="text-gray-400 mt-1 break-words">
                     A ∪ (B ∪ C) = {1, 2, 3, 4}
                 </p>
 
@@ -127,13 +127,13 @@
         </div>
 
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Distributive Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 Union and intersection can be distributed over each
                 other.
             </p>
@@ -148,7 +148,7 @@
 
             <div class="mt-4 border-t border-[#3A2560] pt-3">
 
-                <p class="text-gray-400">
+                <p class="text-gray-400 break-words">
                     Example:
                 </p>
 
@@ -164,11 +164,11 @@
                     C = {2, 4}
                 </p>
 
-                <p class="text-gray-400 mt-2">
+                <p class="text-gray-400 mt-2 break-words">
                     B ∩ C = {2}
                 </p>
 
-                <p class="text-gray-400 mt-1">
+                <p class="text-gray-400 mt-1 break-words">
                     A ∪ (B ∩ C) = {1, 2}
                 </p>
 
@@ -177,13 +177,13 @@
         </div>
 
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Identity Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 Combining a set with the empty set or universal set
                 follows specific rules.
             </p>
@@ -198,7 +198,7 @@
 
             <div class="mt-4 border-t border-[#3A2560] pt-3">
 
-                <p class="text-gray-400">
+                <p class="text-gray-400 break-words">
                     Example:
                 </p>
 
@@ -206,11 +206,11 @@
                     A = {1, 2, 3}
                 </p>
 
-                <p class="text-gray-400 mt-2">
+                <p class="text-gray-400 mt-2 break-words">
                     A ∪ ∅ = {1, 2, 3}
                 </p>
 
-                <p class="text-gray-400 mt-1">
+                <p class="text-gray-400 mt-1 break-words">
                     A ∩ U = {1, 2, 3}
                 </p>
 
@@ -224,13 +224,13 @@
         </div>
 
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Complement Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 A set and its complement have no elements in common,
                 and together they contain all elements of the
                 universal set.
@@ -246,7 +246,7 @@
 
             <div class="mt-4 border-t border-[#3A2560] pt-3">
 
-                <p class="text-gray-400">
+                <p class="text-gray-400 break-words">
                     Example:
                 </p>
 
@@ -262,11 +262,11 @@
                     A′ = {4, 5}
                 </p>
 
-                <p class="text-gray-400 mt-2">
+                <p class="text-gray-400 mt-2 break-words">
                     A ∩ A′ = ∅
                 </p>
 
-                <p class="text-gray-400 mt-1">
+                <p class="text-gray-400 mt-1 break-words">
                     A ∪ A′ = {1, 2, 3, 4, 5} = U
                 </p>
 
@@ -275,13 +275,13 @@
         </div>
 
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Idempotent Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 Combining a set with itself produces the same set.
             </p>
 
@@ -295,7 +295,7 @@
 
             <div class="mt-4 border-t border-[#3A2560] pt-3">
 
-                <p class="text-gray-400">
+                <p class="text-gray-400 break-words">
                     Example:
                 </p>
 
@@ -303,11 +303,11 @@
                     A = {1, 2, 3}
                 </p>
 
-                <p class="text-gray-400 mt-2">
+                <p class="text-gray-400 mt-2 break-words">
                     A ∪ A = {1, 2, 3}
                 </p>
 
-                <p class="text-gray-400 mt-1">
+                <p class="text-gray-400 mt-1 break-words">
                     A ∩ A = {1, 2, 3}
                 </p>
 
@@ -318,11 +318,11 @@
     </div>
 
 
-    <h3 class="text-xl font-bold mt-8">
+    <h3 class="text-lg sm:text-xl font-bold mt-8">
         Additional Set Properties
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md text-gray-400 px-0 sm:px-3 mt-3 leading-relaxed break-words">
         In addition to the properties above, several other rules are
         commonly used when simplifying set expressions.
     </p>
@@ -330,13 +330,13 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Domination Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 The universal set dominates union, while the empty
                 set dominates intersection.
             </p>
@@ -349,25 +349,25 @@
                 A ∩ ∅ = ∅
             </p>
 
-            <p class="text-gray-400 mt-3">
+            <p class="text-gray-400 mt-3 break-words">
                 Example:
                 A = {1, 2, 3}, U = {1, 2, 3, 4, 5}
             </p>
 
-            <p class="text-gray-400 mt-1">
+            <p class="text-gray-400 mt-1 break-words">
                 A ∪ U = U
             </p>
 
         </div>
 
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Double Complement Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 Taking the complement of a set twice returns the
                 original set.
             </p>
@@ -376,33 +376,33 @@
                 (A′)′ = A
             </p>
 
-            <p class="text-gray-400 mt-3">
+            <p class="text-gray-400 mt-3 break-words">
                 Example:
                 U = {1, 2, 3, 4, 5}
             </p>
 
-            <p class="text-gray-400 mt-1">
+            <p class="text-gray-400 mt-1 break-words">
                 A = {1, 2}
             </p>
 
-            <p class="text-gray-400 mt-1">
+            <p class="text-gray-400 mt-1 break-words">
                 A′ = {3, 4, 5}
             </p>
 
-            <p class="text-gray-400 mt-1">
+            <p class="text-gray-400 mt-1 break-words">
                 (A′)′ = {1, 2} = A
             </p>
 
         </div>
 
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 Absorption Property
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 A set combined with another set that already contains
                 it produces the original set.
             </p>
@@ -415,7 +415,7 @@
                 A ∩ (A ∪ B) = A
             </p>
 
-            <p class="text-gray-400 mt-3">
+            <p class="text-gray-400 mt-3 break-words">
                 These identities are useful when simplifying
                 complicated set expressions.
             </p>
@@ -423,13 +423,13 @@
         </div>
 
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5">
 
-            <h4 class="font-bold text-lg">
+            <h4 class="font-bold text-base sm:text-lg">
                 De Morgan's Laws
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="text-gray-400 mt-2 break-words">
                 De Morgan's Laws describe how complements interact
                 with union and intersection.
             </p>
@@ -442,7 +442,7 @@
                 (A ∩ B)′ = A′ ∪ B′
             </p>
 
-            <p class="text-gray-400 mt-3">
+            <p class="text-gray-400 mt-3 break-words">
                 These laws are also important in logic and computer
                 science because they allow expressions to be
                 transformed into equivalent forms.
@@ -453,24 +453,24 @@
     </div>
 
 
-    <h3 class="text-xl font-bold mt-8">
+    <h3 class="text-lg sm:text-xl font-bold mt-8">
         Example of Simplifying a Set Expression
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md text-gray-400 px-0 sm:px-3 mt-3 leading-relaxed break-words">
         Set properties can be used to simplify expressions step by
         step while preserving their meaning.
     </p>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-4">
+    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5 mt-4">
 
-        <p class="text-white text-lg">
+        <p class="text-white text-base sm:text-lg">
             A ∪ (A ∩ B)
         </p>
 
         <div class="mt-4 space-y-2">
 
-            <p class="text-gray-400">
+            <p class="text-gray-400 break-words">
                 Using the Absorption Property:
             </p>
 
@@ -478,11 +478,11 @@
                 A ∪ (A ∩ B) = A
             </p>
 
-            <p class="text-gray-400 mt-3">
+            <p class="text-gray-400 mt-3 break-words">
                 Therefore, the simplified expression is:
             </p>
 
-            <p class="text-white text-lg">
+            <p class="text-white text-base sm:text-lg">
                 A
             </p>
 
@@ -491,27 +491,27 @@
     </div>
 
 
-    <h3 class="text-xl font-bold mt-8">
+    <h3 class="text-lg sm:text-xl font-bold mt-8">
         Summary of Set Properties
     </h3>
 
     <div class="overflow-x-auto mt-4">
 
-        <table class="w-full border-collapse">
+        <table class="w-full border-collapse text-sm sm:text-base">
 
             <thead>
 
                 <tr class="bg-[#24123B]">
 
-                    <th class="border border-[#3A2560] p-3 text-left">
+                    <th class="border border-[#3A2560] p-2 sm:p-3 text-left">
                         Property
                     </th>
 
-                    <th class="border border-[#3A2560] p-3 text-left">
+                    <th class="border border-[#3A2560] p-2 sm:p-3 text-left">
                         Union
                     </th>
 
-                    <th class="border border-[#3A2560] p-3 text-left">
+                    <th class="border border-[#3A2560] p-2 sm:p-3 text-left">
                         Intersection
                     </th>
 
@@ -519,19 +519,19 @@
 
             </thead>
 
-            <tbody class="text-gray-400">
+            <tbody class="text-gray-400 break-words">
 
                 <tr>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border border-[#3A2560] p-2 sm:p-3">
                         Commutative
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         A ∪ B = B ∪ A
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         A ∩ B = B ∩ A
                     </td>
 
@@ -539,15 +539,15 @@
 
                 <tr>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border border-[#3A2560] p-2 sm:p-3">
                         Associative
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         (A ∪ B) ∪ C = A ∪ (B ∪ C)
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         (A ∩ B) ∩ C = A ∩ (B ∩ C)
                     </td>
 
@@ -555,15 +555,15 @@
 
                 <tr>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border border-[#3A2560] p-2 sm:p-3">
                         Identity
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         A ∪ ∅ = A
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         A ∩ U = A
                     </td>
 
@@ -571,15 +571,15 @@
 
                 <tr>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border border-[#3A2560] p-2 sm:p-3">
                         Idempotent
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         A ∪ A = A
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         A ∩ A = A
                     </td>
 
@@ -587,15 +587,15 @@
 
                 <tr>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border border-[#3A2560] p-2 sm:p-3">
                         Distributive
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         A ∪ (B ∩ C) = (A ∪ B) ∩ (A ∪ C)
                     </td>
 
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border border-[#3A2560] p-2 sm:p-3 text-white">
                         A ∩ (B ∪ C) = (A ∩ B) ∪ (A ∩ C)
                     </td>
 
@@ -608,24 +608,24 @@
     </div>
 
 
-    <h3 class="text-xl font-bold mt-8">
+    <h3 class="text-lg sm:text-xl font-bold mt-8">
         Applications of Set Properties in Information Technology
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md text-gray-400 px-0 sm:px-3 mt-3 leading-relaxed break-words">
         Set properties are useful in information technology because
         computers frequently work with collections of data. Sets can
         represent users, files, permissions, database records,
         search results, or other groups of information.
     </p>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-4">
+    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-3 sm:p-5 mt-4">
 
-        <h4 class="font-bold text-lg">
+        <h4 class="font-bold text-base sm:text-lg">
             Example: User Permissions
         </h4>
 
-        <p class="text-gray-400 mt-2">
+        <p class="text-gray-400 mt-2 break-words">
             Suppose A represents users who can access a system and B
             represents users who can edit files.
         </p>
@@ -634,7 +634,7 @@
             A ∩ B
         </p>
 
-        <p class="text-gray-400 mt-1">
+        <p class="text-gray-400 mt-1 break-words">
             represents users who can both access the system and edit
             files.
         </p>
@@ -643,20 +643,20 @@
             A ∪ B
         </p>
 
-        <p class="text-gray-400 mt-1">
+        <p class="text-gray-400 mt-1 break-words">
             represents users who belong to either group or both groups.
         </p>
 
     </div>
 
 
-    <div class="bg-[#24123B] border border-[#3A2560] rounded-xl p-5 mt-5">
+    <div class="bg-[#24123B] border border-[#3A2560] rounded-xl p-3 sm:p-5 mt-5">
 
-        <h4 class="font-bold text-lg">
+        <h4 class="font-bold text-base sm:text-lg">
             Key Idea
         </h4>
 
-        <p class="text-gray-300 mt-2 leading-relaxed">
+        <p class="text-gray-300 mt-2 leading-relaxed break-words">
             Set properties provide a collection of rules that allow
             sets and set expressions to be rearranged, simplified,
             compared, and analyzed without changing their meaning.
