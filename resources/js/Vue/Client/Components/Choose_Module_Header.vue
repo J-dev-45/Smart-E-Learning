@@ -16,7 +16,7 @@
 
         <div class="flex flex-col items-center justify-center min-w-0 px-2">
             <span class="font-bold text-base sm:text-xl leading-tight truncate max-w-[40vw] sm:max-w-none">
-                Discrete Mathematics
+                {{ subjectName }}
             </span>
             <span class="hidden md:block text-[#CECBF6]/60 text-xs tracking-wide truncate">
                 Work through each module in order. Pass a quiz to unlock the next one on the list.
@@ -35,7 +35,7 @@
 <script setup>
 
 const props = defineProps({
-    
+  subjectName: { type: String, default: ''}  
 })
 
 function goBack(){
