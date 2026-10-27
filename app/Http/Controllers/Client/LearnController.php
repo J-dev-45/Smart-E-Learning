@@ -163,6 +163,31 @@ class LearnController extends Controller
             ->where('has_passed', true)
             ->count();
 
+        $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+            ->where('subject_id', $subject_id)
+            ->get();
+        
+        $total_assessment_score = $answered_assessment_questions->where('is_correct', true)->count();
+
+        $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())
+            ->whereIn('module_id', $modules->pluck('id'))
+            ->get();
+
+        $score_count = 0;
+
+        foreach($answered_module_questions as $amq){
+            if(strtolower($amq->user_answer) === strtolower($amq->correct_answer)){
+                $score_count++;
+            }
+        }
+
+        $total_answered = $answered_assessment_questions->count() + $answered_module_questions->count();
+        $total_score = $total_assessment_score + $score_count;
+
+        $average_score = $total_answered > 0
+            ? round(($total_score / $total_answered) * 100)
+            : 0;
+
         return view(
             'Client.Pages.Quiz_Modules',
             compact(
@@ -178,7 +203,8 @@ class LearnController extends Controller
                 'exam_started',
                 'exam_passed',
                 'remaining_modules',
-                'modules_passed'
+                'modules_passed',
+                'average_score'
             )
         );
     }

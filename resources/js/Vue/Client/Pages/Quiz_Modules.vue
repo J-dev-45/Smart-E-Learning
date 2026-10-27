@@ -211,7 +211,6 @@ const props = defineProps({
     examPassed: { type: Boolean, default: false},
 });
 
-console.log(props.examPassed);
 
 const sorteduserModules = computed(() => {
     return [...props.userModules].sort((a, b) => {
