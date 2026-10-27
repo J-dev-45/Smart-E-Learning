@@ -8,14 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite('resources/css/app.css')
     <style>
-        input[type="password"]::-ms-reveal,
-        input[type="password"]::-ms-clear {
-            display: none;
-        }
-
-        input[type="password"]::-webkit-credentials-auto-fill-button {
-            display: none !important;
-        }
+        
 
         html,
         body {
