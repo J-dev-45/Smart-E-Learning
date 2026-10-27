@@ -188,7 +188,9 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     Route::get('/subjects', function(){
 
-        $subjects = Subjects::select('id', 'subject_name', 'subject_code', 'slug', 'order')->get();
+        $subjects = Subjects::select('id', 'subject_name', 'subject_code', 'slug', 'order')
+            ->orderBy('order', 'asc')
+            ->get();
         $modules = Modules::select( 'id', 'order', 'subject_id', 'module_name' )
         ->orderBy('subject_id')
         ->orderBy('order', 'asc')
