@@ -9,7 +9,6 @@
         <div
           class="relative w-[30%] min-w-[380px] max-w-lg bg-white rounded-xl shadow-2xl shadow-black/30 flex flex-col p-6 gap-5 max-h-[90vh] overflow-hidden"
         >
-          <!-- CLOSE BUTTON -->
           <button
             type="button"
             @click="closeModal"
@@ -57,10 +56,18 @@
                 >
                   {{ effectiveModuleName }}
                 </span>
+
+                <button
+                  v-if="hasModule && subject_modules.length > 1"
+                  type="button"
+                  @click="changeModule"
+                  class="py-1 px-2.5 text-xs font-semibold shrink-0 text-gray-600 rounded-md border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+                >
+                  Change Module
+                </button>
               </div>
             </div>
 
-            <!-- MODE SWITCHER -->
             <div
               v-if="hasModule"
               class="w-full flex items-center gap-1 mt-3 p-1 rounded-lg bg-gray-100"
@@ -99,11 +106,8 @@
             </div>
           </div>
 
-          <!-- MODULE PICKER -->
           <div v-if="!hasModule" class="w-full flex flex-col gap-4">
-
-            <!-- MODULE SELECT -->
-            <div v-if="String(moduleId) === '0'" class="flex flex-col gap-1.5">
+            <div class="flex flex-col gap-1.5">
               <label for="moduleSelect" class="text-sm font-medium text-gray-700">
                 Module
               </label>
@@ -112,6 +116,7 @@
                 <select
                   id="moduleSelect"
                   v-model="selected_module_id"
+                  @change="finishModuleChange"
                   class="w-full appearance-none rounded-md border border-gray-300 bg-white py-2 pl-3 pr-9 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]/40 focus:border-[#8B5CF6] hover:border-gray-400 transition-colors cursor-pointer"
                 >
                   <option value="" disabled>Select a module for your question</option>
@@ -119,7 +124,7 @@
                   <option
                     v-for="module in subject_modules"
                     :key="module.id"
-                    :value="module.id"
+                    :value="String(module.id)"
                   >
                     {{ module.module_name }}
                   </option>
@@ -129,6 +134,15 @@
                   <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
               </div>
+
+              <button
+                v-if="changingModule"
+                type="button"
+                @click="cancelModuleChange"
+                class="self-start text-xs font-medium text-gray-500 hover:text-gray-700 cursor-pointer mt-1"
+              >
+                Cancel module change
+              </button>
             </div>
           </div>
 
@@ -137,13 +151,11 @@
             id="whiteBG"
             class="w-full flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-6 -mr-6"
           >
-            <!-- ================= MANUAL ENTRY MODE ================= -->
             <form
               v-if="entryMode === 'manual'"
               @submit.prevent="addQuestionForm(effectiveModuleName, subjectName)"
               class="w-full flex flex-col gap-2"
             >
-              <!-- QUESTION -->
               <div class="w-full flex flex-col gap-2 mt-3">
                 <label for="question" class="text-sm font-medium text-gray-700">
                   Question
@@ -158,7 +170,6 @@
                 ></textarea>
               </div>
 
-              <!-- QUESTION TYPE -->
               <div class="flex flex-col gap-1.5 py-3">
                 <label for="quizType" class="text-sm font-medium text-gray-700">
                   Question Type
@@ -184,7 +195,6 @@
               </div>
 
               <Transition name="mc-slide">
-                <!-- MULTIPLE CHOICE -->
                 <div
                   v-if="mc"
                   class="w-full flex flex-col gap-2 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 p-4"
@@ -194,7 +204,6 @@
                     <span class="text-xs text-gray-400">Select the correct answer</span>
                   </div>
 
-                  <!-- A -->
                   <div class="w-full flex flex-col gap-1">
                     <div class="w-full flex items-center gap-2">
                       <label
@@ -232,7 +241,6 @@
                     </span>
                   </div>
 
-                  <!-- B -->
                   <div class="w-full flex flex-col gap-1">
                     <div class="w-full flex items-center gap-2">
                       <label
@@ -270,7 +278,6 @@
                     </span>
                   </div>
 
-                  <!-- C -->
                   <div class="w-full flex flex-col gap-1">
                     <div class="w-full flex items-center gap-2">
                       <label
@@ -308,7 +315,6 @@
                     </span>
                   </div>
 
-                  <!-- D -->
                   <div class="w-full flex flex-col gap-1">
                     <div class="w-full flex items-center gap-2">
                       <label
@@ -346,7 +352,6 @@
                     </span>
                   </div>
 
-                  <!-- EMPTY CORRECT ANSWER -->
                   <div
                     v-if="emptyChoiceAnswer"
                     class="w-full flex items-start gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2.5 mt-1"
@@ -366,7 +371,6 @@
                   </div>
                 </div>
 
-                <!-- TRUE OR FALSE -->
                 <div
                   v-else-if="torf"
                   class="w-full flex flex-col gap-2"
@@ -408,7 +412,6 @@
                   </div>
                 </div>
 
-                <!-- IDENTIFICATION -->
                 <div
                   v-else-if="identification"
                   class="w-full flex flex-col gap-2"
@@ -426,7 +429,6 @@
                   >
                 </div>
 
-                <!-- CODING -->
                 <div
                   v-else-if="selected_questionType === 'coding'"
                   class="w-full flex flex-col gap-2 mt-3"
@@ -485,7 +487,6 @@
                 </div>
               </Transition>
 
-              <!-- EXPLANATION -->
               <div
                 v-if="
                   selected_questionType === 'multipleChoice' ||
@@ -507,7 +508,6 @@
                 ></textarea>
               </div>
 
-              <!-- BUTTONS -->
               <div class="w-full flex gap-3 mt-4">
                 <button
                   type="button"
@@ -538,7 +538,6 @@
               </div>
             </form>
 
-            <!-- ================= UPLOAD FILE MODE ================= -->
             <form
               v-else
               @submit.prevent="extractQuestionsForm"
@@ -553,7 +552,6 @@
                   Accepts .docx, and .pdf files containing your questions.
                 </span>
 
-                <!-- DROPZONE -->
                 <div
                   v-if="!selectedFile"
                   @click="triggerFileInput"
@@ -592,7 +590,6 @@
                   >
                 </div>
 
-                <!-- SELECTED FILE -->
                 <div
                   v-else
                   class="w-full flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3"
@@ -625,7 +622,6 @@
                   </button>
                 </div>
 
-                <!-- NO FILE ERROR -->
                 <div
                   v-if="emptyFileError"
                   class="w-full flex items-start gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2.5 mt-1"
@@ -646,7 +642,6 @@
                 </div>
               </div>
 
-              <!-- BUTTONS -->
               <div class="w-full flex gap-3 mt-4">
                 <button
                   type="button"
@@ -722,6 +717,9 @@ const message = ref('');
 const isSubmitting = ref(false);
 const entryMode = ref('manual');
 
+const changingModule = ref(false);
+const moduleOverride = ref(false);
+
 const emptyChoiceAnswer = ref(false);
 
 const emptyChoices = ref({
@@ -740,7 +738,10 @@ const selected_module_id = ref(
 const subject_modules = computed(() => {
   let modules;
 
-  if (String(props.moduleId) !== '0') {
+  if (
+    String(props.moduleId) !== '0' &&
+    !moduleOverride.value
+  ) {
     modules = props.modules.filter(
       module => String(module.id) === String(props.moduleId)
     );
@@ -762,7 +763,10 @@ const subject_modules = computed(() => {
 });
 
 const effectiveModuleId = computed(() => {
-  if (String(props.moduleId) !== '0') {
+  if (
+    String(props.moduleId) !== '0' &&
+    !moduleOverride.value
+  ) {
     return String(props.moduleId);
   }
 
@@ -770,7 +774,10 @@ const effectiveModuleId = computed(() => {
 });
 
 const effectiveModuleName = computed(() => {
-  if (String(props.moduleId) !== '0') {
+  if (
+    String(props.moduleId) !== '0' &&
+    !moduleOverride.value
+  ) {
     return props.moduleName !== 'All'
       ? props.moduleName
       : '';
@@ -784,8 +791,32 @@ const effectiveModuleName = computed(() => {
 });
 
 const hasModule = computed(() => {
-  return Boolean(effectiveModuleId.value);
+  return Boolean(effectiveModuleId.value) && !changingModule.value;
 });
+
+function changeModule() {
+  moduleOverride.value = true;
+  changingModule.value = true;
+  selected_module_id.value = '';
+}
+
+function finishModuleChange() {
+  if (selected_module_id.value) {
+    changingModule.value = false;
+  }
+}
+
+function cancelModuleChange() {
+  changingModule.value = false;
+
+  if (String(props.moduleId) !== '0') {
+    moduleOverride.value = false;
+    selected_module_id.value = String(props.moduleId);
+  } else {
+    moduleOverride.value = false;
+    selected_module_id.value = '';
+  }
+}
 
 function handleQuestionsAdded(newQuestions) {
   emit('questions-added', newQuestions);
