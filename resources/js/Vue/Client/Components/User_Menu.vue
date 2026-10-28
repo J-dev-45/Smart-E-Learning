@@ -1,4 +1,3 @@
-
 <template>
     <Transition
         enter-active-class="transition ease-out duration-150"
@@ -58,6 +57,7 @@
             <div class="flex flex-col gap-1">
                 <button
                     type="button"
+                    @click="openChangePassword"
                     class="px-3 py-2 text-sm text-gray-700 rounded-lg flex items-center gap-2.5 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
                 >
                     <svg
@@ -162,11 +162,17 @@
         :user-name="props.userName"
         @close="showFeedback = false"
     />
+
+    <Change_Password
+        :show-change-password="showChangePassword"
+        @close="showChangePassword = false"
+    />
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import Feedback_Form from './Feedback_Form.vue'
+import Change_Password from './Change_Password.vue'
 
 const props = defineProps({
     showUserMenu: { type: Boolean, default: true },
@@ -178,6 +184,7 @@ const props = defineProps({
 
 const isLoggingOut = ref(false)
 const showFeedback = ref(false)
+const showChangePassword = ref(false)
 
 const initials = computed(() =>
     props.userName
@@ -197,6 +204,11 @@ function closeMenu() {
 
 function openFeedback() {
     showFeedback.value = true
+    closeMenu()
+}
+
+function openChangePassword() {
+    showChangePassword.value = true
     closeMenu()
 }
 

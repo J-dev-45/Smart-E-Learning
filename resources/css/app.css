@@ -12,12 +12,7 @@
 }
 
 body {
-  background: linear-gradient(
-    135deg,
-    #090014 0%,
-    #1A0B2E 50%,
-    #4C1D95 100%
-  );
+  background:#3b0764;
 }
 
 .main-body {

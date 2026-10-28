@@ -36,7 +36,9 @@
             <div class="flex flex-col gap-1.5 relative">
                 <label class="ps-2 font-semibold text-gray-700 text-sm">Password</label>
                 <input :type="showPassword ? 'text' : 'password'" placeholder="••••••••" v-model="password"
-                        class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
+                        class="[&::-ms-reveal]:hidden [&::-ms-clear]:hidden
+                        [&::-webkit-credentials-auto-fill-button]:hidden
+                        border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
                         placeholder:text-xl placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
                         style="height:clamp(44px,5.5vh,56px)">
 
@@ -74,7 +76,9 @@
             <div class="flex flex-col gap-1.5 relative">
                 <label class="ps-2 font-semibold text-gray-700 text-sm">Confirm Password</label>
                 <input :type="showConfirmPassword ? 'text' : 'password'" placeholder="••••••••" v-model="password_confirmation"
-                        class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
+                        class="[&::-ms-reveal]:hidden [&::-ms-clear]:hidden
+                        [&::-webkit-credentials-auto-fill-button]:hidden
+                        border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
                         placeholder:text-xl placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
                         style="height:clamp(44px,5.5vh,56px)">
 

@@ -9,16 +9,6 @@
     @vite('resources/css/app.css')
     <style>
 
-        input[type="password"]::-ms-reveal,
-        input[type="password"]::-ms-clear {
-            display: none;
-        }
-
-        input[type="password"]::-webkit-credentials-auto-fill-button,
-        input[type="password"]::-webkit-textfield-decoration-container {
-            display: none !important;
-        }
-
         .custom-scroll {
             scrollbar-width: thin;
             scrollbar-color: rgba(76, 29, 149, 0.35) transparent;

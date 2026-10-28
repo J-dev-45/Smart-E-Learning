@@ -1,9 +1,6 @@
 <template>
-    <div class="w-screen h-screen fixed inset-0 z-200 main-body flex items-center justify-center overflow-hidden"
-         style="background:
-            radial-gradient(circle at 22% 20%, rgba(76, 29, 149, 0.55) 0%, transparent 45%),
-            radial-gradient(circle at 78% 75%, rgba(76, 29, 149, 0.4) 0%, transparent 50%),
-            linear-gradient(160deg, #090014 0%, #1A0B2E 45%, #4C1D95 130%);">
+    <div class="w-screen h-screen fixed inset-0 z-200 main-body flex items-center justify-center overflow-hidden bg-[#1A0B2E]"
+         >
 
         <div class="flex flex-col items-center gap-6">
 

@@ -5,7 +5,7 @@
         <!-- BRAND ROW -->
         <div class="flex items-center gap-3 mb-[clamp(1rem,3dvh,1.6rem)]">
             <img :src="logo" alt="Smart E-Learning logo" class="size-11 shrink-0 object-contain">
-            <span class="font-extrabold text-[#4C1D95] tracking-wide leading-tight"
+            <span class="font-extrabold text-[#5b21b6] tracking-wide leading-tight"
                   style="font-size:clamp(1.05rem,2.6dvh,1.35rem)">Smart E-Learning</span>
         </div>
 
@@ -45,7 +45,7 @@
                        spellcheck="false"
                        inputmode="email"
                        class="border-[1.5px] border-gray-200 rounded-full ps-5 outline-none bg-gray-50
-                              w-full text-[#090014] placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white
+                              w-full text-[#090014] placeholder:text-gray-400 focus:border-[#3b0764]/50 focus:bg-white
                               transition-all duration-200"
                        style="height:clamp(40px,6dvh,52px); font-size:16px">
             </div>
@@ -57,19 +57,21 @@
 
                 <div class="relative">
                     <input id="login-password"
-                           :type="showPassword ? 'text' : 'password'"
-                           placeholder="••••••••••••"
-                           name="password"
-                           v-model="password"
-                           autocomplete="current-password"
-                           autocapitalize="none"
-                           autocorrect="off"
-                           spellcheck="false"
-                           class="h-12 text-base select-text
-                                  border-[1.5px] border-gray-200 rounded-full ps-5 pe-12 outline-none bg-gray-50
-                                  w-full text-[#090014] placeholder:text-gray-400
-                                  focus:border-[#4C1D95]/50 focus:bg-white
-                                  transition-all duration-200">
+                        :type="showPassword ? 'text' : 'password'"
+                        placeholder="••••••••••••"
+                        name="password"
+                        v-model="password"
+                        autocomplete="current-password"
+                        autocapitalize="none"
+                        autocorrect="off"
+                        spellcheck="false"
+                        class="h-12 text-base select-text
+                                [&::-ms-reveal]:hidden [&::-ms-clear]:hidden
+                                [&::-webkit-credentials-auto-fill-button]:hidden
+                                border-[1.5px] border-gray-200 rounded-full ps-5 pe-12 outline-none bg-gray-50
+                                w-full text-[#090014] placeholder:text-gray-400
+                                focus:border-[#2e1065]/50 focus:bg-white
+                                transition-all duration-200">
 
                     <!-- @mousedown.prevent keeps focus in the input so the keyboard stays open -->
                     <button type="button"
@@ -109,7 +111,7 @@
                     Remember me!
                 </label>
 
-                <a href="#" class="text-[#4C1D95] font-semibold hover:underline"
+                <a href="#" class="text-[#3b0764] font-semibold hover:underline"
                    style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
                     Forgot Password?
                 </a>
@@ -117,7 +119,7 @@
 
             <button type="submit"
                     :disabled="isSubmitting"
-                    class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85 disabled:opacity-60 disabled:cursor-not-allowed
+                    class="w-full bg-[#3b0764] hover:bg-[#3b0764]/85 disabled:opacity-60 disabled:cursor-not-allowed
                            text-white font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg
                            transition-all duration-200 tracking-wide touch-manipulation
                            mt-[clamp(0.2rem,1dvh,0.6rem)]
@@ -136,7 +138,7 @@
                         pt-[clamp(0.1rem,0.8dvh,0.4rem)]"
                  style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
                 <span class="text-gray-500">Don't have an account?</span>
-                <a :href="signUp" class="text-[#4C1D95] font-semibold hover:underline">
+                <a :href="signUp" class="text-[#3b0764] font-semibold hover:underline">
                     Sign up
                 </a>
             </div>

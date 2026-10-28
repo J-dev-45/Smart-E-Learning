@@ -21,7 +21,6 @@
                 </p>
             </div>
 
-            <!-- optional: pass a call to action from the parent -->
             <slot name="empty-action" />
         </div>
     </div>
