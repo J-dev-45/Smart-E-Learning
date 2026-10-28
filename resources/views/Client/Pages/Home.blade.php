@@ -13,9 +13,7 @@
     @include('Global.Skeleton_Loading.Client_Navigation')
     <div id="app" class="w-screen flex flex-col overflow-x-hidden min-h-screen relative">
 
-        <div class="fixed inset-0 -z-10 bg-gradient-to-b from-[#090014] via-[#1A0B2E] to-[#0D0620]"></div>
-        <div class="fixed top-[-10%] right-[-10%] -z-10 w-[600px] h-[600px] rounded-full bg-[#4C1D95]/25 blur-[120px]"></div>
-        <div class="fixed bottom-[-10%] left-[-10%] -z-10 w-[500px] h-[500px] rounded-full bg-[#CECBF6]/10 blur-[120px]"></div>
+     
 
         
         <client-navigation

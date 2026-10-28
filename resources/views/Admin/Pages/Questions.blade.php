@@ -9,7 +9,7 @@
     @vite(['resources/css/app.css'])
 </head>
 
-<body class="h-screen w-screen bg-gray-50 overflow-hidden">
+<body class="h-screen w-screen overflow-hidden">
 
     <div id="app" class="h-full">
 
