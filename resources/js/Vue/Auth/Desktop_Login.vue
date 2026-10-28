@@ -30,7 +30,9 @@
             <label class="ps-2 font-semibold text-gray-700 text-sm">Password</label>
             <input :type="showPassword ? 'text' : 'password'" v-model="password"
                 placeholder="••••••••" name="password"
-                class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
+                class="[&::-ms-reveal]:hidden [&::-ms-clear]:hidden
+                [&::-webkit-credentials-auto-fill-button]:hidden
+                border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
                 placeholder:text-xl placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
                 style="height:clamp(44px,5.5vh,56px)">
 
@@ -56,11 +58,11 @@
             <label class="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
                 <input type="checkbox" class="w-4 h-4 accent-[#4C1D95]"> Remember me
             </label>
-            <a href="#" class="text-sm text-[#1A0B2E] font-semibold hover:underline">Forgot Password?</a>
+            <a href="#" class="text-sm text-[#3b0764] font-semibold hover:underline">Forgot Password?</a>
         </div>
 
         <button type="submit" :disabled="isSubmitting"
-            class="w-full bg-[#1A0B2E] hover:bg-[#1A0B2E]/85 disabled:opacity-60 disabled:cursor-not-allowed
+            class="w-full bg-[#3b0764] hover:bg-[#3b0764]/85 disabled:opacity-60 disabled:cursor-not-allowed
                     text-white font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg
                     transition-all duration-200 tracking-wide mt-[clamp(0.2rem,1dvh,0.6rem)]
                     flex items-center justify-center gap-2"
@@ -75,7 +77,7 @@
 
         <div class="flex justify-center items-center gap-2 text-sm mt-[clamp(0.75rem,2vh,1.25rem)]">
             <span class="text-gray-500">Don't have an Account?</span>
-            <a :href="url" class="text-[#1A0B2E] font-semibold hover:underline">Sign Up</a>
+            <a :href="url" class="text-[#3b0764] font-semibold hover:underline">Sign Up</a>
         </div>
 
     </form>
