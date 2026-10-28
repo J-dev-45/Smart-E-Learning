@@ -56,11 +56,11 @@
             <label class="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
                 <input type="checkbox" class="w-4 h-4 accent-[#4C1D95]"> Remember me
             </label>
-            <a href="#" class="text-sm text-[#4C1D95] font-semibold hover:underline">Forgot Password?</a>
+            <a href="#" class="text-sm text-[#1A0B2E] font-semibold hover:underline">Forgot Password?</a>
         </div>
 
         <button type="submit" :disabled="isSubmitting"
-            class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85 disabled:opacity-60 disabled:cursor-not-allowed
+            class="w-full bg-[#1A0B2E] hover:bg-[#1A0B2E]/85 disabled:opacity-60 disabled:cursor-not-allowed
                     text-white font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg
                     transition-all duration-200 tracking-wide mt-[clamp(0.2rem,1dvh,0.6rem)]
                     flex items-center justify-center gap-2"
@@ -75,7 +75,7 @@
 
         <div class="flex justify-center items-center gap-2 text-sm mt-[clamp(0.75rem,2vh,1.25rem)]">
             <span class="text-gray-500">Don't have an Account?</span>
-            <a :href="url" class="text-[#4C1D95] font-semibold hover:underline">Sign Up</a>
+            <a :href="url" class="text-[#1A0B2E] font-semibold hover:underline">Sign Up</a>
         </div>
 
     </form>
