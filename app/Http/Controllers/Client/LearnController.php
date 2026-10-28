@@ -314,6 +314,17 @@ class LearnController extends Controller
                 return view(
                     'Client.Review_Pages.Introduction_To_Computing',$viewData);
                 break;
+
+            case "Computer Programming 1":
+                return view(
+                    'Client.Review_Pages.Computer_Programming_1',$viewData);
+                break;
+            
+            case "Computer Programming 2":
+                return view(
+                    'Client.Review_Pages.Computer_Programming_2',$viewData);
+                break;
+
         }
     }
 
