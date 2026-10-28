@@ -96,8 +96,8 @@ Route::middleware(['auth'])->group(function(){
         }
 
         
-
-        $leaderboard = Leaderboard::orderBy('points', 'DESC')
+        $leaderboard = Leaderboard::where('points', '>', 0)
+            ->orderBy('points', 'DESC')
             ->take(20)
             ->get();
 
