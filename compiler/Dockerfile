@@ -1,9 +1,5 @@
 FROM eclipse-temurin:21-jdk
 
-WORKDIR /app/Compiler-Service
+WORKDIR /app
 
-COPY Compiler-Service/ ./
-
-RUN javac CompilerServer.java
-
-CMD ["java", "CompilerServer"]
+CMD ["sh"]
