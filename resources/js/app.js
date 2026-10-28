@@ -71,8 +71,7 @@ import Choose_Module_Header from './Vue/Client/Components/Choose_Module_Header.v
 import Taking_Pretest_Header from './Vue/Client/Components/Taking_Pretest_Header.vue';
 import Assessment_Result from './Vue/Client/Pages/Assessment_Result.vue';
 import User_Menu from './Vue/Client/Components/User_Menu.vue';
-import Compiler from './Vue/Client/Pages/Compiler.vue';
-import Pretest_Compiler from './Vue/Client/Pages/Pretest_Compiler.vue';
+import CodePlayground from './Vue/Client/Pages/CodePlayground.vue';
 import Learn_Header from './Vue/Client/Components/Learn_Header.vue';
 import Leaderboard from './Vue/Client/Pages/Leaderboard.vue';
 import Module_Activity from './Vue/Client/Pages/Module_Activity.vue';
@@ -87,8 +86,7 @@ app.component('choose-module-header', Choose_Module_Header);
 app.component('taking-pretest-header', Taking_Pretest_Header);
 app.component('assessment-result', Assessment_Result);
 app.component('user-menu', User_Menu);
-app.component('compiler', Compiler);
-app.component('pretest-compiler', Pretest_Compiler)
+app.component('code-playground', CodePlayground);
 app.component('learn-header', Learn_Header)
 app.component('leaderboard', Leaderboard);
 app.component('module-activity', Module_Activity);

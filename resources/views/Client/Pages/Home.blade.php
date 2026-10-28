@@ -138,15 +138,15 @@
             <section id="code-playground" class="w-full pt-14 flex flex-col items-center justify-center gap-1 scroll-mt-24">
 
                 <div class="flex flex-col items-center gap-1.5 pb-8 text-center">
-                    <h2 class="font-bold text-2xl md:text-3xl tracking-tight">Practice Coding</h2>
-                    <p class="text-sm text-white/45">Write and test Java code right in your browser</p>
+                    <h2 class="font-bold text-2xl md:text-3xl tracking-tight">Code Playground</h2>
+                    <p class="text-sm text-white/45">Write and run code right in your browser</p>
                 </div>
 
-                <compiler></compiler>
+                <code-playground></code-playground>
 
             </section>
 
-             {{-- SEPARATOR --}}
+            {{-- SEPARATOR --}}
             <div class="w-full flex items-center justify-center pt-14">
                 <div class="w-[60%] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent"></div>
             </div>

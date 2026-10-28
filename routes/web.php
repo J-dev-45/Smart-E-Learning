@@ -8,11 +8,9 @@ use App\Http\Controllers\Client\AssessmentController;
 use App\Http\Controllers\Client\CodePretestController;
 use App\Http\Controllers\Client\LearnController;
 use App\Http\Controllers\Client\Pretest;
-use App\Http\Controllers\CompilerController;
 use App\Http\Controllers\Logout;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\Pages\QuestionsPage;
-use App\Http\Controllers\PracticeCompilerController;
 use App\Http\Controllers\Question;
 use App\Http\Controllers\QuestionImport;
 use App\Http\Controllers\TopicController;
@@ -29,9 +27,11 @@ use App\Models\Subjects;
 use App\Models\SubjectStarted;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CodeRunnerController;
 
 
-
+Route::post('/run-code', [CodeRunnerController::class, 'run'])
+    ->middleware(['throttle:20,1']);
 
 
 Route::middleware(['guest'])->group(function(){
@@ -143,10 +143,6 @@ Route::middleware(['auth'])->group(function(){
 
     Route::get('/pretest/{subject_name}/{subject_id}', [Pretest::class, 'pretestModules']);
     Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('pretest.taking');
-
-    Route::post('/practice-compiler/run', [PracticeCompilerController::class, 'run']);
-    Route::post('/compiler/runPretest', [CompilerController::class, 'runPretest']);
-    Route::post('/saveCode', [CompilerController::class, 'save']);
 
     Route::post('/logout_student', [Logout::class, 'logout']);
 

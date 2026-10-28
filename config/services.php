@@ -38,4 +38,8 @@ return [
         'api_key' => env('BREVO_API_KEY'),
     ],
 
+    'onlinecompiler' => [
+    'key' => env('ONLINECOMPILER_API_KEY'),
+    'url' => 'https://api.onlinecompiler.io/api/run-code-sync/',
+],
 ];
