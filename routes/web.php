@@ -8,6 +8,7 @@ use App\Http\Controllers\Client\AssessmentController;
 use App\Http\Controllers\Client\CodePretestController;
 use App\Http\Controllers\Client\LearnController;
 use App\Http\Controllers\Client\Pretest;
+use App\Http\Controllers\CodeRunnerController;
 use App\Http\Controllers\Logout;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\Pages\QuestionsPage;
@@ -26,8 +27,8 @@ use App\Models\RecentActivity;
 use App\Models\Subjects;
 use App\Models\SubjectStarted;
 use App\Models\User;
+use App\Models\UserScoreboard;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CodeRunnerController;
 
 
 Route::post('/run-code', [CodeRunnerController::class, 'run'])
@@ -77,6 +78,24 @@ Route::middleware(['auth'])->group(function(){
         $module_pretests = ModuleQuiz::where('user_id', auth()->user()->id)->get();
 
         $subjects_started = SubjectStarted::where('user_id', auth()->id())->get();
+
+        $user_leaderboard = Leaderboard::where('user_id', auth()->id())->exists();
+        $user_scoreboard = UserScoreboard::where('user_id', auth()->id())->exists();
+
+        if(!$user_leaderboard){
+            Leaderboard::create([
+                'user_id' => auth()->id(),
+            ]);
+        }
+
+        if(!$user_scoreboard){
+            UserScoreboard::create([
+                'user_id' => auth()->id(),
+                'total_score' => 0
+            ]);
+        }
+
+        
 
         $leaderboard = Leaderboard::orderBy('points', 'DESC')
             ->take(20)

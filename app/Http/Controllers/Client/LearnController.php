@@ -367,6 +367,7 @@ class LearnController extends Controller
     // SUBMIT MODULE ACTIVITY
     // =================================================================================================================================
     
+    
     public function submitModuleActivity(Request $request)
     {
         $validated = $request->validate([
@@ -380,6 +381,34 @@ class LearnController extends Controller
         $score = 0;
         $passing_percent = 80;
         $total_questions = count($validated['answers']);
+
+        $normalizeAnswer = static function ($answer) {
+            $answer = (string) ($answer ?? '');
+
+            if (class_exists(\Normalizer::class)) {
+                $normalized = \Normalizer::normalize($answer, \Normalizer::FORM_KC);
+
+                if ($normalized !== false) {
+                    $answer = $normalized;
+                }
+            }
+
+            $answer = mb_strtolower(trim($answer), 'UTF-8');
+
+            $answer = str_replace(
+                ["'", '’', '‘', '`', '´', 'ʻ', 'ʼ', '"', '“', '”', '„', '‟'],
+                '',
+                $answer
+            );
+
+            $answer = str_replace(
+                ['‐', '‑', '‒', '–', '—', '−'],
+                '-',
+                $answer
+            );
+
+            return preg_replace('/\s+/u', ' ', trim($answer)) ?? trim($answer);
+        };
 
         $temporary_points = TemporaryPoints::create([
             'user_id' => auth()->id(),
@@ -409,7 +438,7 @@ class LearnController extends Controller
                 'explanation' => $question->explanation,
             ]);
 
-            if ($answer === strtolower(trim($question->answer))) {
+            if ($normalizeAnswer($answer) === $normalizeAnswer($question->answer)) {
                 $score++;
 
                 $temporary_points->update([
@@ -457,6 +486,7 @@ class LearnController extends Controller
             'answers' => $answered_questions,
         ]);
     }
+
 
     // =================================================================================================================================
     // RETAKE
