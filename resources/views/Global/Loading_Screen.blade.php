@@ -1,10 +1,6 @@
 <div id="splash-loader"
-     class="w-screen h-screen fixed inset-0 z-200 main-body flex items-center justify-center overflow-hidden"
-     style="transition: opacity .4s ease;
-        background:
-        radial-gradient(circle at 22% 20%, rgba(76, 29, 149, 0.55) 0%, transparent 45%),
-        radial-gradient(circle at 78% 75%, rgba(76, 29, 149, 0.4) 0%, transparent 50%),
-        linear-gradient(160deg, #090014 0%, #1A0B2E 45%, #4C1D95 130%);">
+     class="w-screen h-screen fixed inset-0 z-200 main-body flex items-center justify-center overflow-hidden bg-[#1A0B2E]"
+     style="transition: opacity .4s ease;">
 
     <div class="flex flex-col items-center gap-6">
 
@@ -22,7 +18,6 @@
             </div>
         </div>
 
-        <!-- Wordmark -->
         <p class="text-[22px] font-bold tracking-tight text-[#F5F3FF] text-center m-0">
             Smart <span class="text-[#CECBF6]">E-Learning</span>
         </p>
@@ -59,7 +54,7 @@
         function show() {
             splash.style.display = 'flex';
             splash.style.pointerEvents = 'auto';
-            void splash.offsetWidth; // force reflow so the transition runs
+            void splash.offsetWidth; 
             splash.style.opacity = '1';
         }
 
@@ -71,17 +66,14 @@
             }, 400);
         }
 
-        // Page loading (first visit or refresh)
         if (document.readyState === 'complete') {
             hide();
         } else {
             window.addEventListener('load', hide);
         }
 
-        // Page is being refreshed or navigated away from
         window.addEventListener('beforeunload', show);
 
-        // Back/forward button restoring the page from cache
         window.addEventListener('pageshow', function (e) {
             if (e.persisted) hide();
         });

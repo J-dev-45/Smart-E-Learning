@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
 </head>
-<body class="w-screen min-h-screen overflow-x-hidden bg-[#090014]">
+<body class="w-screen min-h-screen overflow-x-hidden">
     @vite(['resources/js/app.js'])
     @include('Global.Skeleton_Loading.Client_Navigation')
     <div id="app" class="w-screen flex flex-col overflow-x-hidden min-h-screen relative">
