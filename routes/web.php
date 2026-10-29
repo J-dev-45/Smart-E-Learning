@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\AssessmentController;
 use App\Http\Controllers\Client\CodePretestController;
@@ -163,6 +164,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/pretest/{subject_name}/{subject_id}', [Pretest::class, 'pretestModules']);
     Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('pretest.taking');
 
+    Route::put('/change-password', [PasswordController::class, 'changePassword']);
     Route::post('/logout_student', [Logout::class, 'logout']);
 
 });
