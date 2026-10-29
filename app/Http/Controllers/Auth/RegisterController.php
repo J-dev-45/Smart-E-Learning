@@ -22,7 +22,7 @@ class RegisterController extends Controller
 
         $profile_colors = [
             'bg-green-600 text-white',
-            'bg-purple-800 text-white',
+            'bg-orange-800 text-white',
             'bg-blue-600 text-white'
         ];
 
