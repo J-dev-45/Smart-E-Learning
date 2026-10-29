@@ -176,7 +176,7 @@ class LearnController extends Controller
 
 
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())
-            ->whereIn('module_id', $modules_passed->pluck('id'))
+            ->whereIn('module_id', $modules_passed->pluck('module_id'))
             ->get();
 
         $score_count = 0;
