@@ -25,7 +25,6 @@
 
         <main class="w-full text-white pt-[80px] md:pt-[120px] pb-16 px-4 flex flex-col">
 
-            <feedback-form></feedback-form>
             {{-- HERO SECTION --}}
             <section id="hero" class="w-full flex items-center justify-center flex-col gap-8 scroll-mt-24">
                 {{-- <div class="flex flex-col items-center justify-center w-full sm:w-[85%] md:w-[70%] lg:w-[55%] gap-4">
@@ -38,6 +37,7 @@
                     </p>
                 </div> --}}
 
+                
                 <div class="flex flex-col items-center justify-center gap-4">
                     @if (auth()->user()->profile_picture === null)
                         <div class="w-40 h-40 rounded-full flex items-center justify-center {{auth()->user()->profile_color}} ring-4 ring-white/10 shadow-xl shadow-black/30">
