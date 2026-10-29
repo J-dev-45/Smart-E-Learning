@@ -22,7 +22,37 @@
                             </svg>
                         </button>
 
-                        <form @submit.prevent class="w-full flex flex-col gap-5">
+                        <!-- SUCCESS STATE -->
+                        <div v-if="isSuccess" class="w-full flex flex-col items-center text-center gap-4 py-4">
+                            <div class="w-14 h-14 rounded-full bg-green-100 flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-7 text-green-600">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                                </svg>
+                            </div>
+
+                            <div class="flex flex-col gap-1">
+                                <span class="text-lg font-semibold text-gray-900 leading-tight">
+                                    Password Updated
+                                </span>
+
+                                <span class="text-sm text-gray-500">
+                                    {{ successMessage }}
+                                </span>
+                            </div>
+
+                            <button
+                                type="button"
+                                @click="closeModal"
+                                class="w-full mt-2 py-2.5 rounded-lg text-sm font-medium text-white bg-[#8B5CF6]
+                                shadow-sm shadow-[#8B5CF6]/30
+                                hover:bg-[#7C3AED] active:bg-[#6D28D9] transition-colors cursor-pointer"
+                            >
+                                Done
+                            </button>
+                        </div>
+
+                        <!-- FORM STATE -->
+                        <form v-else @submit.prevent="changePassword" class="w-full flex flex-col gap-5">
                             <!-- HEADER -->
                             <div class="w-full flex items-start gap-3 pr-6">
                                 <div class="shrink-0 w-10 h-10 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center">
@@ -42,6 +72,17 @@
                                 </div>
                             </div>
 
+                            <!-- ERROR -->
+                            <div v-if="changePasswordErrors.length" class="w-full flex flex-col gap-1">
+                                <p
+                                    v-for="(error, index) in changePasswordErrors"
+                                    :key="index"
+                                    class="text-red-500 text-sm w-full flex items-center justify-center text-center m-0"
+                                >
+                                    {{ error }}
+                                </p>
+                            </div>
+
                             <!-- OLD PASSWORD -->
                             <div class="w-full flex flex-col gap-1.5">
                                 <label for="old_password" class="text-sm font-medium text-gray-700">
@@ -56,6 +97,7 @@
                                         placeholder="Enter your old password"
                                         autocomplete="current-password"
                                         class="w-full pl-3 pr-10 py-2.5 text-black/70 text-sm outline-none border border-gray-300 bg-gray-50 rounded-lg
+                                        [&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden
                                         placeholder:text-gray-400 transition-all duration-150
                                         hover:border-gray-400 focus:bg-white focus:border-[#8B5CF6] focus:ring-4 focus:ring-[#8B5CF6]/15"
                                     />
@@ -94,6 +136,7 @@
                                         placeholder="Enter your new password"
                                         autocomplete="new-password"
                                         class="w-full pl-3 pr-10 py-2.5 text-black/70 text-sm outline-none border border-gray-300 bg-gray-50 rounded-lg
+                                        [&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden
                                         placeholder:text-gray-400 transition-all duration-150
                                         hover:border-gray-400 focus:bg-white focus:border-[#8B5CF6] focus:ring-4 focus:ring-[#8B5CF6]/15"
                                     />
@@ -134,18 +177,19 @@
 
                             <!-- CONFIRM PASSWORD -->
                             <div class="w-full flex flex-col gap-1.5">
-                                <label for="confirm_password" class="text-sm font-medium text-gray-700">
+                                <label for="password_confirmation" class="text-sm font-medium text-gray-700">
                                     Confirm Password
                                 </label>
 
                                 <div class="relative w-full">
                                     <input
-                                        id="confirm_password"
+                                        id="password_confirmation"
                                         :type="showConfirmPassword ? 'text' : 'password'"
-                                        v-model="confirm_password"
+                                        v-model="password_confirmation"
                                         placeholder="Re-enter your new password"
                                         autocomplete="new-password"
                                         class="w-full pl-3 pr-10 py-2.5 text-black/70 text-sm outline-none border border-gray-300 bg-gray-50 rounded-lg
+                                        [&::-ms-reveal]:hidden [&::-ms-clear]:hidden [&::-webkit-credentials-auto-fill-button]:hidden
                                         placeholder:text-gray-400 transition-all duration-150
                                         hover:border-gray-400 focus:bg-white focus:border-[#8B5CF6] focus:ring-4 focus:ring-[#8B5CF6]/15"
                                     />
@@ -171,17 +215,17 @@
 
                                 <!-- Confirm password match hint -->
                                 <p
-                                    v-if="confirm_password.length > 0"
+                                    v-if="password_confirmation.length > 0"
                                     class="flex items-center gap-1.5 text-xs m-0 transition-all duration-200"
-                                    :class="new_password === confirm_password ? 'text-green-600' : 'text-red-500'"
+                                    :class="new_password === password_confirmation ? 'text-green-600' : 'text-red-500'"
                                 >
-                                    <svg v-if="new_password === confirm_password" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-3.5 shrink-0">
+                                    <svg v-if="new_password === password_confirmation" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-3.5 shrink-0">
                                         <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z" clip-rule="evenodd" />
                                     </svg>
                                     <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-3.5 shrink-0">
                                         <path fill-rule="evenodd" d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.169 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495ZM10 5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0v-3.5A.75.75 0 0 1 10 5Zm0 8a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
                                     </svg>
-                                    {{ new_password === confirm_password ? 'Passwords match' : "Passwords don't match" }}
+                                    {{ new_password === password_confirmation ? 'Passwords match' : "Passwords don't match" }}
                                 </p>
                             </div>
 
@@ -203,9 +247,14 @@
                                     shadow-sm shadow-[#8B5CF6]/30
                                     hover:bg-[#7C3AED] active:bg-[#6D28D9] transition-colors cursor-pointer
                                     disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#8B5CF6]
-                                    flex items-center justify-center gap-1.5"
+                                    flex items-center justify-center gap-2"
                                 >
-                                    Update Password
+                                    <svg v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg"
+                                         fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z"></path>
+                                    </svg>
+                                    <span>{{ isSubmitting ? 'Updating...' : 'Update Password' }}</span>
                                 </button>
                             </div>
                         </form>
@@ -230,31 +279,79 @@ const emit = defineEmits(['close'])
 
 const old_password = ref('')
 const new_password = ref('')
-const confirm_password = ref('')
+const password_confirmation = ref('')
 
 const showOldPassword = ref(false)
 const showNewPassword = ref(false)
 const showConfirmPassword = ref(false)
 
+const isSubmitting = ref(false)
+const isSuccess = ref(false)
+const successMessage = ref('Your password has been updated successfully.')
+const changePasswordErrors = ref([])
+
 const canSubmit = computed(() =>
+    !isSubmitting.value &&
     old_password.value.length > 0 &&
     new_password.value.length >= 8 &&
-    new_password.value === confirm_password.value
+    new_password.value === password_confirmation.value
 )
 
-// Reset to a fresh form every time the modal opens
 watch(
     () => props.showChangePassword,
     (open) => {
         if (!open) return
         old_password.value = ''
         new_password.value = ''
-        confirm_password.value = ''
+        password_confirmation.value = ''
         showOldPassword.value = false
         showNewPassword.value = false
         showConfirmPassword.value = false
+        changePasswordErrors.value = []
+        isSuccess.value = false
+        successMessage.value = 'Your password has been updated successfully.'
     }
 )
+
+async function changePassword() {
+    if (isSubmitting.value) return
+    isSubmitting.value = true
+    changePasswordErrors.value = []
+
+    try {
+        const response = await fetch('/change-password', {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content'),
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                old_password: old_password.value,
+                new_password: new_password.value,
+                password_confirmation: password_confirmation.value
+            })
+        })
+
+        const data = await response.json()
+
+        if (data.success) {
+            old_password.value = ''
+            new_password.value = ''
+            password_confirmation.value = ''
+            if (data.message) successMessage.value = data.message
+            isSuccess.value = true
+        } else if (data.errors) {
+            changePasswordErrors.value = Object.values(data.errors).flat()
+        } else if (data.message) {
+            changePasswordErrors.value = [data.message]
+        }
+    } catch (e) {
+        changePasswordErrors.value = ['Something went wrong. Please try again.']
+    } finally {
+        isSubmitting.value = false
+    }
+}
 
 function closeModal() {
     emit('close')
