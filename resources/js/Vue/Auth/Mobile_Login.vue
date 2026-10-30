@@ -1,3 +1,4 @@
+
 <template>
     <div class="bg-white flex flex-col justify-center
                 px-[clamp(1.25rem,5vw,2rem)] py-[clamp(1rem,3dvh,1.75rem)]">
@@ -50,7 +51,7 @@
                        style="height:clamp(40px,6dvh,52px); font-size:16px">
             </div>
 
-            <!-- PASSWORD (no clamp: fixed height and 16px font) -->
+            <!-- PASSWORD -->
             <div class="flex flex-col gap-1">
                 <label for="login-password" class="ps-1 font-semibold text-gray-700"
                        style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">Password</label>
@@ -107,7 +108,11 @@
             <div class="flex justify-between items-center px-1">
                 <label class="flex items-center gap-2 cursor-pointer text-gray-500"
                        style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
-                    <input type="checkbox" name="remember" class="w-3.5 h-3.5 accent-[#4C1D95]">
+                    <input
+                        type="checkbox"
+                        name="remember"
+                        v-model="remember"
+                        class="w-3.5 h-3.5 accent-[#4C1D95]">
                     Remember me!
                 </label>
 
@@ -158,6 +163,7 @@ defineProps({
 
 const email = ref('');
 const password = ref('');
+const remember = ref(false);
 
 const showPassword = ref(false);
 const isSubmitting = ref(false);
@@ -189,7 +195,8 @@ async function mobileLoginForm(event) {
             credentials: 'same-origin',
             body: JSON.stringify({
                 email: emailValue,
-                password: passwordValue
+                password: passwordValue,
+                remember: remember.value
             })
         });
 
