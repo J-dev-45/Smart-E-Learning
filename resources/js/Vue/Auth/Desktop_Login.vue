@@ -58,7 +58,7 @@
             <label class="flex items-center gap-2 text-sm text-gray-500 cursor-pointer">
                 <input type="checkbox" class="w-4 h-4 accent-[#4C1D95]"> Remember me
             </label>
-            <a href="#" class="text-sm text-[#3b0764] font-semibold hover:underline">Forgot Password?</a>
+            <a href="/forgot-password" class="text-sm text-[#3b0764] font-semibold hover:underline">Forgot Password?</a>
         </div>
 
         <button type="submit" :disabled="isSubmitting"

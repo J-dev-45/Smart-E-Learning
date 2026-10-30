@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\AssessmentController;
@@ -61,6 +62,20 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/verify_otp', [VerifyOTP::class, 'verify'])->middleware('throttle:2,1');
 
 });
+
+Route::get('/forgot-password', function () {
+    return view('Auth.Forgot_Password');
+})->name('forgot.password');
+
+// Rate limiting prevents brute-force abuse:
+Route::post('/forgot-password/send-otp', [ForgotPasswordController::class, 'sendResetOtp'])
+    ->middleware('throttle:3,1'); // max 3 attempts per minute
+
+Route::post('/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyResetOtp'])
+    ->middleware('throttle:5,1'); // max 5 OTP guesses per minute
+
+Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])
+    ->middleware('throttle:3,1');
 
 
 

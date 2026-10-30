@@ -2,19 +2,15 @@
 
 namespace App\Services;
 
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MailerService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
+    public function sendMail(string $email, string $name, string $otp_code): bool
     {
-        //
-    }
-
-    public function sendMail($email, $name, $otp_code){
+        $safeName = htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
         $htmlContent = "
             <div style='font-family: Arial; text-align:center; padding:20px;'>
                 <div style='margin-bottom:20px;'>
@@ -22,7 +18,7 @@ class MailerService
                 </div>
                 <h2 style='color:#26AF5A; margin-bottom:10px;'> Smart E-Learning </h2>
                 <h2 style='color:#128C40;'>Email Verification</h2>
-                <p>Your OTP code is:</p>
+                <p>Hi <b>{$safeName}</b>, your OTP code is:</p>
                 <div style='font-size:30px; font-weight:bold; letter-spacing:5px; margin:20px 0;'>
                     {$otp_code}
                 </div>
@@ -30,30 +26,76 @@ class MailerService
             </div>
         ";
 
-        $response = Http::withHeaders([
-            'api-key' => env('BREVO_API_KEY'),
-            'Content-Type' => 'application/json',
-        ])->post('https://api.brevo.com/v3/smtp/email', [
-            'sender' => [
-                'name' => env('MAIL_FROM_NAME', 'Smart E-Learning'),
-                'email' => env('MAIL_FROM_ADDRESS'),
-            ],
-            'to' => [[
-                'email' => $email,
-                'name' => $name,
-            ]],
-            'subject' => 'Your OTP Code',
-            'htmlContent' => $htmlContent,
-        ]);
+        return $this->sendOtpEmail($email, $name, 'Your OTP Code', $htmlContent);
+    }
 
-        if (!$response->successful()) {
-            \Log::error('Brevo Error: ' . $response->body());
+    public function sendResetMail(string $email, string $name, string $otp_code): bool
+    {
+        $safeName = htmlspecialchars($name, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        $htmlContent = "
+            <div style='font-family: Arial; text-align:center; padding:20px;'>
+                <div style='margin-bottom:20px;'>
+                    <img src='https://smart-e-learning.up.railway.app/images/Components/Logo.png' width='100'>
+                </div>
+                <h2 style='color:#4C1D95; margin-bottom:10px;'> Smart E-Learning </h2>
+                <h2 style='color:#4C1D95;'>Password Reset</h2>
+                <p>Hi <b>{$safeName}</b>, you requested to reset your password.</p>
+                <p>Your OTP code is:</p>
+                <div style='font-size:30px; font-weight:bold; letter-spacing:5px; margin:20px 0; color:#4C1D95;'>
+                    {$otp_code}
+                </div>
+                <p>This code is valid for 10 minutes.</p>
+                <p style='color:#999; font-size:12px; margin-top:20px;'>If you didn't request this, please ignore this email.</p>
+            </div>
+        ";
 
-            return back()->withErrors([
-                'email' => 'Failed to send OTP email. Please try again.'
-            ]);
+        return $this->sendOtpEmail($email, $name, 'Password Reset OTP', $htmlContent);
+    }
+
+    private function sendOtpEmail(string $email, string $name, string $subject, string $htmlContent): bool
+    {
+        $apiKey = config('services.brevo.api_key');
+        $senderEmail = config('mail.from.address');
+
+        if (! $apiKey || ! $senderEmail || ! filter_var($senderEmail, FILTER_VALIDATE_EMAIL)) {
+            Log::error('Brevo OTP email is not configured. Set BREVO_API_KEY and a valid MAIL_FROM_ADDRESS.');
+
+            return false;
         }
 
-        
+        try {
+            $response = Http::withHeaders([
+                'api-key' => $apiKey,
+                'Content-Type' => 'application/json',
+            ])->timeout(15)->connectTimeout(5)->post('https://api.brevo.com/v3/smtp/email', [
+                'sender' => [
+                    'name' => config('mail.from.name', 'Smart E-Learning'),
+                    'email' => $senderEmail,
+                ],
+                'to' => [[
+                    'email' => $email,
+                    'name' => $name,
+                ]],
+                'subject' => $subject,
+                'htmlContent' => $htmlContent,
+            ]);
+        } catch (ConnectionException $exception) {
+            Log::error('Brevo OTP email request failed to connect.', [
+                'exception' => $exception->getMessage(),
+            ]);
+
+            return false;
+        }
+
+        if (! $response->successful()) {
+            Log::error('Brevo rejected OTP email request.', [
+                'status' => $response->status(),
+                'response' => $response->body(),
+            ]);
+
+            return false;
+        }
+
+        return true;
     }
 }

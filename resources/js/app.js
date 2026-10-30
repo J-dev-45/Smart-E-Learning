@@ -101,11 +101,13 @@ import Mobile_Login from './Vue/Auth/Mobile_Login.vue';
 import Desktop_Login from './Vue/Auth/Desktop_Login.vue';
 import Desktop_Register from './Vue/Auth/Desktop_Register.vue';
 import Mobile_Register from './Vue/Auth/Mobile_Register.vue';
+import Desktop_Forgot_Password from './Vue/Auth/Desktop_Forgot_Password.vue';
 
 app.component('mobile-login', Mobile_Login);
 app.component('desktop-login', Desktop_Login);
 app.component('desktop-register', Desktop_Register);
 app.component('mobile-register', Mobile_Register);
+app.component('desktop-forgot-password', Desktop_Forgot_Password);
 
 // ===================================================================================================|GLOBAL
 // ===================================================================================================|GLOBAL

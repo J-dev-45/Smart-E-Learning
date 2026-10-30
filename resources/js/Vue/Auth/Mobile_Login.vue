@@ -111,7 +111,7 @@
                     Remember me!
                 </label>
 
-                <a href="#" class="text-[#3b0764] font-semibold hover:underline"
+                <a href="/forgot-password" class="text-[#3b0764] font-semibold hover:underline"
                    style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
                     Forgot Password?
                 </a>
