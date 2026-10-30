@@ -63,4 +63,35 @@ class TopicController extends Controller
             'message'=> 'Topic updated successfully!'
         ]);
     }
+
+
+    public function deleteTopic(Request $request)
+    {
+        $topic = Topics::find($request->topic_id);
+
+        if (!$topic) {
+            return response()->json([
+                'success' => false,
+                'message' => 'topic not found!'
+            ], 444);
+        }
+
+        $topicName = $topic->topic_name;
+        $topicId = $topic->id;
+
+        $topic->delete();
+
+        RecentActivity::create([
+            'name' => auth()->user()->name,
+            'action' => 'deleted_topic',
+            'subject' => $request->subject_name,
+            'topic' => $topicName
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'topic deleted Successfully!',
+            'deleted_topic_id' => $topicId
+        ]);
+    }
 }
