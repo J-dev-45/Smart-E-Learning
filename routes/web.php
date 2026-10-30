@@ -199,11 +199,21 @@ Route::middleware(['auth','Admin'])->group(function(){
         $total_admins = User::where('role', 'Admin')->count();
         $total_subjects = Subjects::count();
         $recent_activities = RecentActivity::orderBy('created_at', 'DESC')->get();
+
+        $leaderboard = Leaderboard::where('points', '>', 0)
+            ->orderBy('points', 'DESC')
+            ->take(20)
+            ->get();
+
+        $users_names = User::whereIn('id', $leaderboard->pluck('user_id'))->select('id','name')->get();
+
         return view('Admin.Pages.Dashboard', compact(
             'total_users',
             'total_admins',
             'total_subjects',
             'recent_activities',
+            'leaderboard',
+            'users_names'
         ));
     })->name('dashboard_page');
 
