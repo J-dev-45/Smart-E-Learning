@@ -44,6 +44,7 @@ import Feedbacks from './Vue/Admin/Pages/Feedbacks.vue';
 import Modules from './Vue/Admin/Pages/Modules.vue';
 import Questions_Main from './Vue/Admin/Pages/Main/Questions_Main.vue';
 import Subjects_Cards_Admin from './Vue/Admin/Pages/Subjects_Cards_Admin.vue';
+import Admin_Header from './Vue/Admin/components/Admin_Header.vue';
 
 app.component('dashboard-cards', Dashboard_Cards);
 app.component('overview', Overview);
@@ -55,7 +56,7 @@ app.component('subjects-cards-admin', Subjects_Cards_Admin);
 app.component('feedbacks-page', Feedbacks);
 app.component('modules', Modules);
 app.component('questions-main', Questions_Main);
-
+app.component('admin-header', Admin_Header);
 
 // ===================================================================================================|CLIENT
 // ===================================================================================================|CLIENT
