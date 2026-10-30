@@ -40,11 +40,10 @@
                 
                 <div class="flex flex-col items-center justify-center gap-4">
                     @if (auth()->user()->profile_picture === null)
-                        <div class="w-40 h-40 rounded-full flex items-center justify-center {{auth()->user()->profile_color}} ring-4 ring-white/10 shadow-xl shadow-black/30">
-                            <span class="text-5xl font-semibold text-white tracking-wide">
-                                {{ Str(auth()->user()->name)->initials()}}
-                            </span>
-                        </div>
+                        <student-profile
+                        user-name="{{auth()->user()->name}}"
+                        profile-color="{{auth()->user()->profile_color}}"
+                        ></student-profile>
                     @endif
                     <div class="flex flex-col items-center justify-center gap-2">
                         <span class="text-2xl font-semibold tracking-tight">{{auth()->user()->name}}</span>
