@@ -68,10 +68,37 @@
             <button
                 type="button"
                 @click="logout"
-                class="w-full flex items-center gap-2.5 mt-2 px-3 py-2 rounded-md text-[13px] font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer"
+                :disabled="isLoggingOut"
+                :aria-busy="isLoggingOut"
+                class="w-full flex items-center gap-2.5 mt-2 px-3 py-2 rounded-md text-[13px] font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-600"
             >
 
                 <svg
+                    v-if="isLoggingOut"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    class="size-[17px] shrink-0 animate-spin motion-reduce:animate-none"
+                    aria-hidden="true"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        class="opacity-25"
+                    />
+                    <path
+                        d="M21 12a9 9 0 0 0-9-9"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                    />
+                </svg>
+
+                <svg
+                    v-else
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -86,7 +113,7 @@
                     />
                 </svg>
 
-                Logout
+                <span>{{ isLoggingOut ? 'Logging out...' : 'Logout' }}</span>
 
             </button>
 
@@ -98,7 +125,7 @@
 </template>
 
 <script setup>
-
+import { ref } from 'vue'
 
 defineProps({
     activePage: { type: String, default: 'Dashboard' },
@@ -109,6 +136,7 @@ defineProps({
     profileColor: { type: String, required: true}
 });
 
+const isLoggingOut = ref(false)
 
 const changeLocalStorage = (linkName) => {
 
@@ -151,7 +179,14 @@ const links = [
 ];
 
 async function logoutForm(){
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    isLoggingOut.value = true
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+    if (!csrfToken) {
+        isLoggingOut.value = false
+        throw new Error('CSRF token not found')
+    }
 
     try{
         const response = await fetch('/logout',{
@@ -168,14 +203,22 @@ async function logoutForm(){
         if (response.ok && data.success) { 
             window.location.href = '/'; 
         } 
-        else { console.log('Logout failed:', data); }
+        else {
+            isLoggingOut.value = false
+            throw new Error(`Logout failed: ${response.status}`)
+        }
 
     }catch(err){
-        console.log(err)
+        isLoggingOut.value = false
+        throw err
     }
 }
 
-function logout(){
-    logoutForm();
+async function logout(){
+    try {
+        await logoutForm()
+    } catch (err) {
+        console.error(err)
+    }
 }
 </script>
