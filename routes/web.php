@@ -267,7 +267,10 @@ Route::middleware(['auth','Admin'])->group(function(){
 
     // SUBJECTS
     Route::get('/subject/{subject_name}/{subject_id}', [SubjectController::class, 'subjectPage']);
+    
     Route::post('/addSubject', [SubjectController::class, 'addSubject'])->name('addSubject');
+    Route::put('/editSubject', [SubjectController::class, 'editSubject']);
+    Route::delete('deleteSubject', [SubjectController::class, 'deleteSubject']);
     
 
     // QUESTIONS
@@ -288,6 +291,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     // TOPICS
     Route::post('/addTopic', [TopicController::class, 'addTopic']);
     Route::put('/editTopic', [TopicController::class, 'editTopic']);
+    Route::delete('/deleteTopic', [TopicController::class, 'deleteTopic']);
 
     Route::post('/logout', [Logout::class, 'logout']);
 });
