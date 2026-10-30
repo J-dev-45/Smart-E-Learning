@@ -1,6 +1,6 @@
 <template>
     <main
-        class="h-full main-bg md:w-[calc(100%-280px)] w-full flex flex-col md:ml-[280px] ml-0 overflow-x-hidden overflow-y-auto scrollbar-thin"
+        class="h-full md:w-[calc(100%-280px)] w-full flex flex-col md:ml-[280px] ml-0 overflow-x-hidden overflow-y-auto scrollbar-thin"
     >
         <!-- HEADER -->
         <header

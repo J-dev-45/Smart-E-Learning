@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
 </head>
-<body class="h-screen w-screen bg-gray-50 overflow-hidden">
+<body class="h-screen w-screen overflow-hidden">
 
     <div id="app" class="h-full">
 
@@ -22,7 +22,7 @@
             user-email="{{auth()->user()->email}}"
         ></left-navigation>
 
-        <main class="h-full main-bg w-[calc(100%-280px)] h-full flex flex-col ml-[280px] p-5 overflow-hidden">
+        <main class="h-full w-[calc(100%-280px)] h-full flex flex-col ml-[280px] p-5 overflow-hidden">
             {{-- CARDS --}}
             <div class="shrink-0 grid grid-cols-3 gap-6 pb-5">
 

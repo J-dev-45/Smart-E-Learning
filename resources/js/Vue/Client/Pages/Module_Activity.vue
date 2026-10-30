@@ -169,7 +169,10 @@
             <div
                 v-for="(quest, index) in questions"
                 :key="quest.id"
-                class="group flex flex-col gap-3 p-4 rounded-xl border border-gray-200 bg-gray-50/50 transition-all duration-200 hover:border-gray-300 focus-within:border-[#8B5CF6]/50 focus-within:bg-white focus-within:shadow-sm"
+                class="group flex flex-col gap-3 p-4 rounded-xl border transition-all duration-200 focus-within:bg-white focus-within:shadow-sm"
+                :class="showErrors && isEmpty(quest.id)
+                    ? 'border-rose-300 bg-rose-50/40 focus-within:border-rose-400'
+                    : 'border-gray-200 bg-gray-50/50 hover:border-gray-300 focus-within:border-[#8B5CF6]/50'"
             >
                 <label
                     :for="`question-${quest.id}`"
@@ -186,8 +189,17 @@
                     type="text"
                     v-model="answers[quest.id]"
                     placeholder="Type your answer"
-                    class="w-full sm:ml-9 sm:max-w-[calc(100%-2.25rem)] border border-gray-300 rounded-lg px-3.5 py-2.5 text-sm text-gray-800 bg-white outline-none placeholder:text-gray-400 hover:border-gray-400 focus:border-[#8B5CF6] focus:ring-4 focus:ring-[#8B5CF6]/15 transition-all duration-200"
+                    class="w-full sm:ml-9 sm:max-w-[calc(100%-2.25rem)] border rounded-lg px-3.5 py-2.5 text-sm text-gray-800 bg-white outline-none placeholder:text-gray-400 transition-all duration-200"
+                    :class="showErrors && isEmpty(quest.id)
+                        ? 'border-rose-400 hover:border-rose-500 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/15'
+                        : 'border-gray-300 hover:border-gray-400 focus:border-[#8B5CF6] focus:ring-4 focus:ring-[#8B5CF6]/15'"
                 >
+                <span
+                    v-if="showErrors && isEmpty(quest.id)"
+                    class="sm:ml-9 text-xs font-medium text-rose-600"
+                >
+                    This question needs an answer.
+                </span>
             </div>
 
             <div
@@ -237,7 +249,11 @@ const results = ref(props.answeredModuleQuestions)
 const score = ref(props.score)
 
 const answers = reactive({})
-console.log(answers)
+const showErrors = ref(false)
+
+function isEmpty(questionId) {
+    return !String(answers[questionId] ?? '').trim()
+}
 
 watch(
     () => props.questions,
@@ -285,6 +301,7 @@ function clearAnswers() {
     Object.keys(answers).forEach(key => {
         answers[key] = ''
     })
+    showErrors.value = false
 }
 
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -292,6 +309,20 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribut
 async function submitAnswers() {
     if (isSubmitting.value) return
 
+    const firstUnanswered = props.questions.find(quest => isEmpty(quest.id))
+
+    if (firstUnanswered) {
+        showErrors.value = true
+
+        const el = document.getElementById(`question-${firstUnanswered.id}`)
+        if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' })
+            el.focus({ preventScroll: true })
+        }
+        return
+    }
+
+    showErrors.value = false
     isSubmitting.value = true
 
     try {

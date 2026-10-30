@@ -4,11 +4,13 @@ use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Client\AssessmentController;
 use App\Http\Controllers\Client\CodePretestController;
 use App\Http\Controllers\Client\LearnController;
 use App\Http\Controllers\Client\Pretest;
+use App\Http\Controllers\CodeRunnerController;
 use App\Http\Controllers\Logout;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\Pages\QuestionsPage;
@@ -27,8 +29,8 @@ use App\Models\RecentActivity;
 use App\Models\Subjects;
 use App\Models\SubjectStarted;
 use App\Models\User;
+use App\Models\UserScoreboard;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\CodeRunnerController;
 
 
 Route::post('/run-code', [CodeRunnerController::class, 'run'])
@@ -93,7 +95,25 @@ Route::middleware(['auth'])->group(function(){
 
         $subjects_started = SubjectStarted::where('user_id', auth()->id())->get();
 
-        $leaderboard = Leaderboard::orderBy('points', 'DESC')
+        $user_leaderboard = Leaderboard::where('user_id', auth()->id())->exists();
+        $user_scoreboard = UserScoreboard::where('user_id', auth()->id())->exists();
+
+        if(!$user_leaderboard){
+            Leaderboard::create([
+                'user_id' => auth()->id(),
+            ]);
+        }
+
+        if(!$user_scoreboard){
+            UserScoreboard::create([
+                'user_id' => auth()->id(),
+                'total_score' => 0
+            ]);
+        }
+
+        
+        $leaderboard = Leaderboard::where('points', '>', 0)
+            ->orderBy('points', 'DESC')
             ->take(20)
             ->get();
 
@@ -159,6 +179,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/pretest/{subject_name}/{subject_id}', [Pretest::class, 'pretestModules']);
     Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('pretest.taking');
 
+    Route::put('/change-password', [PasswordController::class, 'changePassword']);
     Route::post('/logout_student', [Logout::class, 'logout']);
 
 });
@@ -256,6 +277,7 @@ Route::middleware(['auth','Admin'])->group(function(){
 
     // TOPICS
     Route::post('/addTopic', [TopicController::class, 'addTopic']);
+    Route::put('/editTopic', [TopicController::class, 'editTopic']);
 
     Route::post('/logout', [Logout::class, 'logout']);
 });

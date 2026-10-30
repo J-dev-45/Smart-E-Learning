@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
 </head>
-<body class="h-screen w-screen bg-gray-50 overflow-hidden">
+<body class="h-screen w-screen overflow-hidden">
     @vite([ 'resources/js/app.js'])
     <div id="app" class="h-full">
 
@@ -21,7 +21,7 @@
         ></left-navigation>
 
         <main
-            class="w-full h-full main-bg md:w-[calc(100%-280px)] flex flex-col md:ml-[280px] ml-0 overflow-y-auto overflow-hidden scrollbar-thin scroll-smooth"
+            class="w-full h-full md:w-[calc(100%-280px)] flex flex-col md:ml-[280px] ml-0 overflow-y-auto overflow-hidden scrollbar-thin scroll-smooth"
         >
             {{-- <subjects-navigation
                 :subjects="subjects"

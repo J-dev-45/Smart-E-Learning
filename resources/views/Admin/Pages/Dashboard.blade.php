@@ -28,7 +28,7 @@
     </style>
 
 </head>
-    <body class="h-screen w-screen bg-gray-50 overflow-hidden">
+    <body class="h-screen w-screen overflow-hidden">
         <div id="app" class="h-full">
 
             <bottom-navigation></bottom-navigation>
@@ -39,7 +39,7 @@
                 user-email="{{auth()->user()->email}}"
             ></left-navigation>
 
-            <main class="w-full main-bg md:w-[calc(100%-280px)] h-full flex flex-col md:ml-[280px] ml-0 p-5 overflow-hidden">
+            <main class="w-full md:w-[calc(100%-280px)] h-full flex flex-col md:ml-[280px] ml-0 p-5 overflow-hidden">
                 <dashboard-cards
                     :total-user="{{$total_users}}"
                     :total-subjects="{{$total_subjects}}"

@@ -1,5 +1,5 @@
 <div id="splash-loader"
-     class="w-screen h-screen fixed inset-0 z-200 main-body flex items-center justify-center overflow-hidden bg-[#1A0B2E]"
+     class="w-screen h-screen fixed inset-0 z-200 flex items-center justify-center overflow-hidden bg-[#3b0764]"
      style="transition: opacity .4s ease;">
 
     <div class="flex flex-col items-center gap-6">

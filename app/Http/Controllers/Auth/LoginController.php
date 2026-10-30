@@ -13,8 +13,9 @@ class LoginController extends Controller
     public function login(Request $request, MailerService $mailerService)
     {
         $credentials = $request->only('email', 'password');
+        $remember = $request->boolean('remember');
 
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials, $remember)) {
             return response()->json([
                 'success' => false,
                 'message' => 'Invalid Credentials'

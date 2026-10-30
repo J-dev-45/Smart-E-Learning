@@ -30,7 +30,7 @@
 
 </head>
 <body class="w-screen h-screen overflow-hidden font-sans">
-    @vite(['resources/js/Auth.js', 'resources/js/app.js'])
+    @vite(['resources/js/app.js'])
 
     @include('Global.Loading_Screen', ['logo' => asset('images/Components/Logo.png') ])
 

@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
 </head>
-<body class="h-screen w-screen bg-gray-50 overflow-hidden">
+<body class="h-screen w-screen overflow-hidden">
 
     @vite([ 'resources/js/app.js'])
     <div id="app" class="h-full">
@@ -22,7 +22,7 @@
         ></left-navigation>
 
         <main
-            class="w-full h-full main-bg md:w-[calc(100%-280px)] grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] xl:grid-cols-3 content-start gap-6 md:ml-[280px] ml-0 p-5 overflow-y-auto scrollbar-thin scroll-smooth"
+            class="w-full h-full md:w-[calc(100%-280px)] grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] xl:grid-cols-3 content-start gap-6 md:ml-[280px] ml-0 p-5 overflow-y-auto scrollbar-thin scroll-smooth"
         >
 
             <subjects-cards-admin

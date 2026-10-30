@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
 </head>
-<body class="h-dvh w-screen bg-gray-50 overflow-hidden">
+<body class="h-dvh w-screen overflow-hidden">
 
     <div id="app" class="h-full">
 
@@ -26,7 +26,7 @@
         ></bottom-navigation>
 
         {{-- pb-20 on mobile leaves room for the bottom navigation --}}
-        <main class="h-full main-bg md:w-[calc(100%-280px)] w-full flex flex-col md:ml-[280px] ml-0 p-3 pb-20 sm:p-5 md:pb-5 overflow-hidden">
+        <main class="h-full md:w-[calc(100%-280px)] w-full flex flex-col md:ml-[280px] ml-0 p-3 pb-20 sm:p-5 md:pb-5 overflow-hidden">
             {{-- CARDS: 3 compact columns on phones, roomier from sm up --}}
             <div class="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 pb-3 sm:pb-5 shrink-0">
 

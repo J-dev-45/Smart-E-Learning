@@ -69,6 +69,7 @@
                             autocapitalize="off"
                             class="col-start-1 row-start-1 w-full h-full m-0 p-3 pl-0 code-font whitespace-pre bg-transparent text-transparent caret-[#4f00f5] resize-none outline-none overflow-hidden selection:bg-[#4f00f5]/20"
                             @keydown.tab.prevent="insertTab"
+                            @keydown="onKeydown"
                             @keydown.ctrl.enter.prevent="runCode"
                             @keydown.meta.enter.prevent="runCode"
                             @keyup="updateActiveLine"
@@ -138,7 +139,19 @@ import axios from 'axios';
 
 // ── Java only ────────────────────────────────────────────────────────────────
 const LANG    = 'openjdk-25';
-const STARTER = 'public class Main {\n    public static void main(String[] args) {\n        System.out.println("Hello, World!");\n    }\n}';
+const STARTER = `import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scn = new Scanner(System.in);
+
+        System.out.print("Enter Name: ");
+        String name = scn.nextLine();
+        System.out.println("Welcome to Smart E-Learning, " + name + "!");
+        scn.close();
+        
+    }
+}`;
 
 // ── State ────────────────────────────────────────────────────────────────────
 const code    = ref(STARTER);
@@ -158,12 +171,12 @@ const KEYWORDS =
 
 const TOKEN_RE = new RegExp(
     [
-        '(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)',          // 1 comment
-        '("(?:\\\\.|[^"\\\\\\n])*")',                  // 2 string
-        `\\b(${KEYWORDS})\\b`,                         // 3 keyword
-        '(?<=\\bclass\\s+)([A-Z]\\w*)',                // 4 class name
-        '\\b([A-Za-z_]\\w*)(?=\\s*\\()',               // 5 method call / declaration
-        '\\b(\\d+(?:\\.\\d+)?[fFdDlL]?)\\b',           // 6 number
+        '(\\/\\/.*|\\/\\*[\\s\\S]*?\\*\\/)',           
+        '("(?:\\\\.|[^"\\\\\\n])*")',                  
+        `\\b(${KEYWORDS})\\b`,                         
+        '(?<=\\bclass\\s+)([A-Z]\\w*)',                
+        '\\b([A-Za-z_]\\w*)(?=\\s*\\()',                
+        '\\b(\\d+(?:\\.\\d+)?[fFdDlL]?)\\b',           
     ].join('|'),
     'g'
 );
@@ -195,9 +208,99 @@ function updateActiveLine() {
 function insertTab() {
     const ta = editor.value;
     if (!ta) return;
-    ta.setRangeText('    ', ta.selectionStart, ta.selectionEnd, 'end');
-    code.value = ta.value;
+    replaceRange(ta.selectionStart, ta.selectionEnd, INDENT);
+}
+
+// ── Auto-indent / auto-close ─────────────────────────────────────────────────
+const PAIRS   = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'" };
+const CLOSERS = new Set([')', ']', '}', '"', "'"]);
+const INDENT  = '    ';
+
+// execCommand keeps the browser's native undo stack; setRangeText is the fallback
+function replaceRange(start, end, text, caret = start + text.length) {
+    const ta = editor.value;
+    ta.focus();
+    ta.setSelectionRange(start, end);
+    const ok = document.execCommand?.('insertText', false, text);
+    if (!ok) {
+        ta.setRangeText(text, start, end, 'end');
+        code.value = ta.value;
+    }
+    ta.setSelectionRange(caret, caret);
     updateActiveLine();
+}
+
+function onKeydown(e) {
+    const ta = editor.value;
+    if (!ta || e.isComposing || e.ctrlKey || e.metaKey || e.altKey) return;
+
+    const { value, selectionStart: start, selectionEnd: end } = ta;
+    const prev = value[start - 1];
+    const next = value[end];
+    const key  = e.key;
+
+    // Enter: keep indentation, expand {} / () / [] onto separate lines
+    if (key === 'Enter') {
+        e.preventDefault();
+        const lineStart = value.lastIndexOf('\n', start - 1) + 1;
+        const indent    = value.slice(lineStart, start).match(/^[ \t]*/)[0];
+        const opensBlock = '{(['.includes(prev ?? '');
+
+        if (opensBlock && PAIRS[prev] === next) {
+            const inner = indent + INDENT;
+            replaceRange(start, end, '\n' + inner + '\n' + indent, start + 1 + inner.length);
+        } else if (opensBlock) {
+            replaceRange(start, end, '\n' + indent + INDENT);
+        } else {
+            replaceRange(start, end, '\n' + indent);
+        }
+        return;
+    }
+
+    // Backspace between an empty pair deletes both characters
+    if (key === 'Backspace' && start === end && prev && PAIRS[prev] === next) {
+        e.preventDefault();
+        replaceRange(start - 1, start + 1, '');
+        return;
+    }
+
+    // Typing a closer when the same one is next: just move past it
+    if (CLOSERS.has(key) && start === end && next === key) {
+        e.preventDefault();
+        ta.setSelectionRange(start + 1, start + 1);
+        updateActiveLine();
+        return;
+    }
+
+    // Typing "}" on a whitespace-only line: dedent one level
+    if (key === '}' && start === end) {
+        const lineStart = value.lastIndexOf('\n', start - 1) + 1;
+        const before    = value.slice(lineStart, start);
+        if (before.length >= INDENT.length && /^[ \t]+$/.test(before)) {
+            e.preventDefault();
+            replaceRange(start - INDENT.length, start, '}');
+            return;
+        }
+    }
+
+    // Opening bracket / quote: auto-close (or wrap the selection)
+    if (key in PAIRS) {
+        const isQuote = key === '"' || key === "'";
+        const hasSelection = start !== end;
+
+        // don't auto-close quotes after a word character (e.g. don't)
+        if (isQuote && !hasSelection && /\w/.test(prev ?? '')) return;
+        // don't auto-close in front of a word character
+        if (!hasSelection && /\w/.test(next ?? '')) return;
+
+        e.preventDefault();
+        if (hasSelection) {
+            const selected = value.slice(start, end);
+            replaceRange(start, end, key + selected + PAIRS[key], start + 1 + selected.length);
+        } else {
+            replaceRange(start, end, key + PAIRS[key], start + 1);
+        }
+    }
 }
 
 // ── Resizable divider (desktop only) ─────────────────────────────────────────

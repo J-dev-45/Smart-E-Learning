@@ -42,7 +42,6 @@ import Left_Navigation from './Vue/Admin/components/Left_Navigation.vue';
 import Subjects_Navigation from './Vue/Admin/components/Subjects_Navigation.vue';
 import Feedbacks from './Vue/Admin/Pages/Feedbacks.vue';
 import Modules from './Vue/Admin/Pages/Modules.vue';
-import Modules_Main from './Vue/Admin/Pages/Main/Modules_Main.vue';
 import Questions_Main from './Vue/Admin/Pages/Main/Questions_Main.vue';
 import Subjects_Cards_Admin from './Vue/Admin/Pages/Subjects_Cards_Admin.vue';
 
@@ -55,7 +54,6 @@ app.component('subjects-navigation', Subjects_Navigation);
 app.component('subjects-cards-admin', Subjects_Cards_Admin);
 app.component('feedbacks-page', Feedbacks);
 app.component('modules', Modules);
-app.component('modules-main', Modules_Main);
 app.component('questions-main', Questions_Main);
 
 

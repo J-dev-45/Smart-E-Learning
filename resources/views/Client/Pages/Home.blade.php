@@ -13,9 +13,7 @@
     @include('Global.Skeleton_Loading.Client_Navigation')
     <div id="app" class="w-screen flex flex-col overflow-x-hidden min-h-screen relative">
 
-        <div class="fixed inset-0 -z-10 bg-gradient-to-b from-[#090014] via-[#1A0B2E] to-[#0D0620]"></div>
-        <div class="fixed top-[-10%] right-[-10%] -z-10 w-[600px] h-[600px] rounded-full bg-[#4C1D95]/25 blur-[120px]"></div>
-        <div class="fixed bottom-[-10%] left-[-10%] -z-10 w-[500px] h-[500px] rounded-full bg-[#CECBF6]/10 blur-[120px]"></div>
+     
 
         
         <client-navigation
@@ -27,7 +25,6 @@
 
         <main class="w-full text-white pt-[80px] md:pt-[120px] pb-16 px-4 flex flex-col">
 
-            <feedback-form></feedback-form>
             {{-- HERO SECTION --}}
             <section id="hero" class="w-full flex items-center justify-center flex-col gap-8 scroll-mt-24">
                 {{-- <div class="flex flex-col items-center justify-center w-full sm:w-[85%] md:w-[70%] lg:w-[55%] gap-4">
@@ -40,6 +37,7 @@
                     </p>
                 </div> --}}
 
+                
                 <div class="flex flex-col items-center justify-center gap-4">
                     @if (auth()->user()->profile_picture === null)
                         <div class="w-40 h-40 rounded-full flex items-center justify-center {{auth()->user()->profile_color}} ring-4 ring-white/10 shadow-xl shadow-black/30">
