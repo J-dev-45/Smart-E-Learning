@@ -262,6 +262,7 @@ Route::middleware(['auth','Admin'])->group(function(){
 
     // TOPICS
     Route::post('/addTopic', [TopicController::class, 'addTopic']);
+    Route::put('/editTopic', [TopicController::class, 'editTopic']);
 
     Route::post('/logout', [Logout::class, 'logout']);
 });

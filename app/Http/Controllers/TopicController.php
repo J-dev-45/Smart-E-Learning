@@ -38,4 +38,29 @@ class TopicController extends Controller
         ]);
 
     }
+
+
+    public function editTopic(Request $request){
+        $input = $request->validate([
+            'new_topic_name' => 'required|string|max:255'
+        ]);
+        $topic = Topics::find($request->topic_id);
+
+        $topic->update([
+            'topic_name' => $input['new_topic_name'],
+            'slug' => 'topic-'. Str::slug($input['new_topic_name'])
+        ]);
+
+        RecentActivity::create([
+            'name' => auth()->user()->name,
+            'action' => 'edited_topic',
+            'subject' => $request->subject_name,
+            'topic' => $input['new_topic_name']
+        ]);
+
+        return response()->json([
+            'success'=> true,
+            'message'=> 'Topic updated successfully!'
+        ]);
+    }
 }

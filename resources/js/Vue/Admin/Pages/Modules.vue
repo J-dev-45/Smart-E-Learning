@@ -213,7 +213,9 @@
                                 <span class="text-xs text-gray-300 truncate">{{ topic.topic_name }}</span>
                                 <div class="flex items-center gap-1 shrink-0">
                                     
-                                    <button type="button" class="shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-gray-400 hover:bg-[#CECBF6]/10 hover:text-white active:scale-95 transition-all cursor-pointer">
+                                    <button type="button" 
+                                        @click="openEditTopic(topic)"
+                                        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-md text-gray-400 hover:bg-[#CECBF6]/10 hover:text-white active:scale-95 transition-all cursor-pointer">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
                                         </svg>
@@ -300,10 +302,19 @@
         @new_modules="handelNewModule"
     />
 
+    
+
     <Edit_Module
         :show-edit-module="showEditModule"
         :module-data="selectedEditModule"
         @close="closeEditModule"
+    />
+
+    <Edit_Topic
+        :show-edit-topic="showEditTopic"
+        :topic-data="selectedEditTopic"
+        @close-edit-topic="closeEditTopic"
+        @topic-updated="handleTopicUpdated"
     />
 
     <Delete_Module
@@ -337,6 +348,7 @@ import Edit_Module from '../Modal/Edit_Module.vue'
 import Delete_Module from '../Modal/Delete_Module.vue'
 
 import Add_Topics from '../Modal/Add_Topics.vue'
+import Edit_Topic from '../Modal/Edit_Topic.vue'
 
 const props = defineProps({
     subjectId: { type: String, required: true},
@@ -392,6 +404,7 @@ const subjectName = ref('')
 const showEditModule = ref(false)
 const selectedEditModule = ref(null)
 
+
 function openAddModule() {
     selectedSubjectId.value = props.subjectId
     selectedSubjectName.value = props.subjectName
@@ -414,6 +427,9 @@ function closeEditModule() {
     showEditModule.value = false
     selectedEditModule.value = null
 }
+
+
+
 
 
 const showDeleteModule = ref(false)
@@ -473,6 +489,31 @@ function handelNewTopic(newTopic) {
 
         return a.order - b.order;
     });
+}
+
+
+const showEditTopic = ref(false)
+const selectedEditTopic = ref(null)
+
+
+function openEditTopic(topic) {
+    selectedEditTopic.value = topic
+    showEditTopic.value = true
+}
+
+function closeEditTopic() {
+    showEditTopic.value = false
+    selectedEditTopic.value = null
+}
+
+function handleTopicUpdated(updatedTopic) {
+    const index = localTopics.value.findIndex(
+        topic => topic.id === updatedTopic.id
+    );
+
+    if (index !== -1) {
+        localTopics.value[index].topic_name = updatedTopic.topic_name;
+    }
 }
 
 </script>
