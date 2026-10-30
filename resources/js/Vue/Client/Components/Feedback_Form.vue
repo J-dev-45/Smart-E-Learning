@@ -213,7 +213,7 @@ const props = defineProps({
     },
 
     userId: {
-        type: String,
+        type: Number,
         default: ''
     },
 
