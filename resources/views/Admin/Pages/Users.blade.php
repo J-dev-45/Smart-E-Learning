@@ -18,7 +18,7 @@
             :id-number="{{auth()->user()->id_number}}"
             user-name="{{auth()->user()->name}}"
             user-email="{{auth()->user()->email}}"
-            
+            profile-color="{{auth()->user()->profile_color}}"
             logo="{{ asset('images/Components/Logo.png') }}"
         ></left-navigation>
 

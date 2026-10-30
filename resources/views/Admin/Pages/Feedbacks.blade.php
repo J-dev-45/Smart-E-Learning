@@ -21,6 +21,7 @@
             user-name="{{ auth()->user()->name }}"
             user-email="{{ auth()->user()->email }}"
             logo="{{ asset('images/Components/Logo.png') }}"
+            profile-color="{{auth()->user()->profile_color}}"
         ></left-navigation>
 
         {{-- MOBILE --}}
@@ -33,7 +34,7 @@
             <admin-header
                 user-name="{{ auth()->user()->name }}"
                 user-email="{{ auth()->user()->email }}"
-                profile-color="bg-[#7C3AED]"
+                profile-color="{{auth()->user()->profile_color}}"
             ></admin-header>
 
             <div class="shrink-0 grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 pt-3 sm:pt-5 pb-3 sm:pb-5">

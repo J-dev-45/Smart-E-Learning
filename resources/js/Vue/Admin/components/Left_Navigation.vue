@@ -50,7 +50,10 @@
 
             <div class="flex items-center gap-2.5 px-2 py-2">
 
-                <div class="w-10 h-10 rounded-full bg-[#4C1D95]/30 text-[#4C1D95] flex items-center justify-center shrink-0">
+                <div :class="[
+                    'w-10 h-10 rounded-full  flex items-center justify-center shrink-0',
+                    profileColor
+                ]">
                     <span class="text-[13px] font-semibold">JR</span>
                 </div>
 
@@ -102,7 +105,8 @@ defineProps({
     idNumber: { type: Number, default: 0},
     userName: { type: String, default: 'Undefined'},
     userEmail: { type: String, default: 'Undefined'},
-    logo: { type: String, required: true}
+    logo: { type: String, required: true},
+    profileColor: { type: String, required: true}
 });
 
 

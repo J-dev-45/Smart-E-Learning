@@ -19,6 +19,7 @@
             user-name="{{ auth()->user()->name }}"
             user-email="{{ auth()->user()->email }}"
             logo="{{ asset('images/Components/Logo.png') }}"
+            profile-color="{{auth()->user()->profile_color}}"
         ></left-navigation>
 
         {{-- MOBILE --}}
@@ -31,7 +32,7 @@
             <admin-header
                 user-name="{{ auth()->user()->name }}"
                 user-email="{{ auth()->user()->email }}"
-                profile-color="bg-[#7C3AED]"
+                profile-color="{{auth()->user()->profile_color}}"
             ></admin-header>
 
             <div class="flex-1 min-h-0 overflow-y-auto scrollbar-thin scroll-smooth grid grid-cols-[repeat(auto-fill,minmax(240px,1fr))] xl:grid-cols-3 content-start gap-4 sm:gap-6 p-4 sm:p-5 max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden">

@@ -18,6 +18,7 @@
             user-name="{{ auth()->user()->name }}"
             user-email="{{ auth()->user()->email }}"
             logo="{{ asset('images/Components/Logo.png') }}"
+            profile-color="{{auth()->user()->profile_color}}"
         ></left-navigation>
 
         <main class="w-full h-full md:w-[calc(100%-280px)] md:ml-[280px] ml-0 flex flex-col overflow-hidden">
