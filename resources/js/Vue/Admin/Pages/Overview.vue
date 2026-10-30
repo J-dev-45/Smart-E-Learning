@@ -1,9 +1,9 @@
 <template>
 
-    <div class="w-full flex-1 min-h-0 grid md:grid-cols-[1.3fr_1fr] gap-6">
+    <div class="w-full shrink-0 md:shrink md:flex-1 md:min-h-0 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-4 md:gap-6">
 
         <!-- RECENT ACTIVITY -->
-        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-4 rounded-md flex flex-col h-full min-h-0 transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
+        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 sm:p-4 rounded-md flex flex-col h-[26rem] md:h-full min-h-0 transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-md font-semibold text-white">Recent Activity</span>
                 <span class="text-gray-400 text-xs uppercase tracking-wide">Live</span>
@@ -29,7 +29,7 @@
 
                     <!-- NAME, MESSAGE, DETAIL PILLS -->
                     <div class="flex flex-col gap-1.5 min-w-0 flex-1">
-                        <span class="text-sm leading-snug">
+                        <span class="text-sm leading-snug break-words">
                             <strong class="text-white font-medium">{{ act.name }}</strong>
                             <span class="text-gray-400">{{ ' ' + message(act) }}</span>
                         </span>
@@ -37,7 +37,7 @@
                         <!-- Pill row: 2 pills (subject/topic or role change), 1 pill (single detail), or none -->
                         <div v-if="pillLeft(act)" class="flex flex-wrap items-center gap-1.5">
                             <span
-                                class="inline-flex items-center px-2 py-0.5 rounded border text-xs truncate max-w-[220px]"
+                                class="inline-flex items-center px-2 py-0.5 rounded border text-xs truncate max-w-[140px] sm:max-w-[220px]"
                                 :class="pillLeftStyle(act)"
                             >
                                 {{ pillLeft(act) }}
@@ -47,7 +47,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                                 </svg>
                                 <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded border text-xs truncate max-w-[160px]"
+                                    class="inline-flex items-center px-2 py-0.5 rounded border text-xs truncate max-w-[110px] sm:max-w-[160px]"
                                     :class="pillRightStyle(act)"
                                 >
                                     {{ pillRight(act) }}
@@ -67,7 +67,7 @@
         </div>
 
         <!-- LEADERBOARDS -->
-        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-4 rounded-md flex flex-col h-full min-h-0 transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
+        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 sm:p-4 rounded-md flex flex-col h-[26rem] md:h-full min-h-0 transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
             <div class="flex items-center justify-between mb-3">
                 <span class="text-md font-semibold text-white">Leaderboards</span>
                 <span class="text-gray-400 text-xs uppercase tracking-wide">This Month</span>
