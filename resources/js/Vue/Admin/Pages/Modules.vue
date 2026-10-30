@@ -2,7 +2,7 @@
 
     <!-- HEADER -->
     <header
-        class="sticky top-0 shrink-0 z-10 w-full h-[60px] flex items-center justify-between text-white px-6 border-b border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm"
+        class="shrink-0 w-full h-[60px] flex items-center justify-between text-white px-6 border-b border-[#CECBF6]/15 bg-[#44136D]"
     >
         <a
             href="/subjects"
@@ -47,10 +47,8 @@
     </header>
     
     <section
-        class="w-full h-auto min-h-[calc(100dvh-100px)] rounded-xl shrink-0 p-3 text-white my-5 p-5"
-    >
-
-        
+        class="w-full flex-1 min-h-0 overflow-y-auto scrollbar-thin scroll-smooth p-5 text-white max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden"
+    >   
 
         <div class="flex items-center justify-between gap-4 flex-wrap">
             <h1 class="font-bold text-3xl">
@@ -209,7 +207,7 @@
 
                         <div class="flex flex-col divide-y divide-[#CECBF6]/10">
 
-                            <div v-for="topic in localTopics.filter(Tid => Tid.module_id === module.id)" :ker="topic.order" class="flex items-center justify-between px-1.5 py-1.5 rounded-sm hover:bg-[#CECBF6]/5">
+                            <div v-for="topic in localTopics.filter(Tid => Tid.module_id === module.id)" :ker="topic.id" class="flex items-center justify-between px-1.5 py-1.5 rounded-sm hover:bg-[#CECBF6]/5">
                                 <span class="text-xs text-gray-300 truncate">{{ topic.topic_name }}</span>
                                 <div class="flex items-center gap-1 shrink-0">
                                     
