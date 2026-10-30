@@ -38,6 +38,7 @@
                 user-name="{{auth()->user()->name}}"
                 user-email="{{auth()->user()->email}}"
                 logo="{{ asset('images/Components/Logo.png') }}"
+                profile-color="{{auth()->user()->profile_color}}"
             ></left-navigation>
 
             {{-- MOBILE --}}
@@ -61,6 +62,8 @@
 
                 <overview
                 :recent-activities='@json($recent_activities)'
+                :leaderboard='@json($leaderboard)'
+                :users-names='@json($users_names)'
                 ></overview>
 
                 <div class="h-[calc(4rem+env(safe-area-inset-bottom))] shrink-0 md:hidden"></div>
