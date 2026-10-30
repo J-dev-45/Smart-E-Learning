@@ -1,11 +1,11 @@
 <template>
     <nav class="w-[280px] h-screen fixed top-0 left-0 bg-white border-r border-gray-200 md:flex hidden flex-col overflow-hidden">
 
-        <div class="w-full flex items-center h-[60px] px-5 border-b border-gray-200 shrink-0 bg-gradient-to-r from-[#1A0B2E] to-[#4C1D95]">
+        <div class="w-full flex items-center gap-3 h-[60px] px-5 border-b border-gray-200 shrink-0 bg-white">
 
-            <div class="font-bold text-[15px] tracking-tight text-white">
-                Smart <span class="text-purple-300">E-Learning</span>
-            </div>
+            <img :src="logo" alt="Smart E-Learning logo" class="size-10 shrink-0 object-contain">
+
+            <span class="font-extrabold text-[#5b21b6] tracking-wide leading-tight text-[17px] truncate">Smart E-Learning</span>
 
         </div>
 
@@ -102,6 +102,7 @@ defineProps({
     idNumber: { type: Number, default: 0},
     userName: { type: String, default: 'Undefined'},
     userEmail: { type: String, default: 'Undefined'},
+    logo: { type: String, required: true}
 });
 
 
