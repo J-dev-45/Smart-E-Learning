@@ -3,41 +3,60 @@
         class="w-full h-[calc(64px+env(safe-area-inset-bottom))] pb-[env(safe-area-inset-bottom)] fixed bottom-0 left-0 bg-white border-t border-gray-200 flex md:hidden items-center justify-between px-2 z-50"
         aria-label="Main navigation"
     >
-
         <a
             v-for="link in links"
             :key="link.id"
             :href="link.routeName"
             @click="changeLocalStorage(link.linkName)"
-            :aria-current="link.linkName === activePage ? 'page' : undefined"
-            class="flex-1 min-w-0 flex flex-col items-center justify-center gap-1 py-2 transition-colors"
-            :class="link.linkName === activePage
+            :aria-current="isActive(link) ? 'page' : undefined"
+            class="group relative flex-1 min-w-0 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-200 motion-reduce:transition-none focus-visible:outline-none"
+            :class="isActive(link)
                 ? 'text-[#4C1D95] font-semibold'
-                : 'text-gray-600 font-medium hover:text-[#4C1D95]'"
+                : 'text-gray-500 font-medium hover:text-[#4C1D95]'"
         >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-[19px] shrink-0">
-                <path stroke-linecap="round" stroke-linejoin="round" :d="link.icon" />
-            </svg>
-            <span class="text-[10px] truncate max-w-full">{{ link.linkName }}</span>
-        </a>
+            <span
+                aria-hidden="true"
+                class="absolute top-0 h-[3px] rounded-b-full bg-[#4C1D95] transition-all duration-300 motion-reduce:transition-none"
+                :class="isActive(link) ? 'w-8 opacity-100' : 'w-0 opacity-0'"
+            />
 
+            <span
+                class="flex items-center justify-center h-7 w-14 rounded-full transition-all duration-200 motion-reduce:transition-none group-active:scale-95 group-focus-visible:ring-2 group-focus-visible:ring-[#4C1D95]/40"
+                :class="isActive(link)
+                    ? 'bg-[#4C1D95]/10'
+                    : 'bg-transparent group-hover:bg-gray-100'"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    :stroke-width="isActive(link) ? 2 : 1.5"
+                    class="size-5 shrink-0 transition-transform duration-200 motion-reduce:transition-none"
+                    :class="isActive(link) ? 'scale-110' : 'scale-100'"
+                >
+                    <path stroke-linecap="round" stroke-linejoin="round" :d="link.icon" />
+                </svg>
+            </span>
+
+            <span class="text-[10px] leading-none truncate max-w-full">{{ link.linkName }}</span>
+        </a>
     </nav>
 </template>
 
 <script setup>
-
-defineProps({
+const props = defineProps({
     activePage: { type: String, default: 'Dashboard' }
 });
 
-const changeLocalStorage = (linkName) => {
+const isActive = (link) => link.linkName === props.activePage;
 
+const changeLocalStorage = (linkName) => {
     if (linkName !== 'Subjects') {
         localStorage.setItem('Main', 'topics');
     } else {
         localStorage.removeItem('Main');
     }
-
 };
 
 const links = [
@@ -66,5 +85,4 @@ const links = [
         icon: "M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"
     }
 ];
-
 </script>
