@@ -198,7 +198,7 @@ import { ref, computed, watch, nextTick, onMounted, onUnmounted } from 'vue'
 const props = defineProps({
     showReply: { type: Boolean, default: false },
     feedbackId: { type: Number, required: true },
-    userId: { type: Number, required: true },
+    studentId: { type: Number, required: true },
     senderName: { type: String, required: true },
     feedbackMessage: { type: String, required: true },
     questionId: { type: [String, Number], default: null },
@@ -293,7 +293,7 @@ async function sendReply() {
             body: JSON.stringify({
                 feedback_id: props.feedbackId,
                 reply_message: reply_message.value.trim(),
-                user_id: props.userId,
+                student_id: props.studentId,
                 question_label: props.questionLabel
             })
         })

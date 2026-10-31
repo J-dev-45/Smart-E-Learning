@@ -177,7 +177,7 @@
         :feedback-message="feedback_message"
         :question-id="question_id"
         :question-label="question_label"
-        :user-id="props.userId"
+        :student-id="student_id"
         @close="closeReplyToFeedback"
         @new_reply="handleNewReply"
     />
@@ -280,6 +280,7 @@ const sender_name = ref('');
 const feedback_message = ref('');
 const question_id = ref('');
 const question_label = ref('');
+const student_id = ref(0);
 
 function openReplyToFeedback(feedback) {
     feedback_id.value = feedback.id;
@@ -287,7 +288,7 @@ function openReplyToFeedback(feedback) {
     feedback_message.value = feedback.feedback_message;
     question_id.value = feedback.question_id ?? '';
     question_label.value = props.questions.find(q => q.id === feedback.question_id)?.question ?? '';
-
+    student_id.value = feedback.user_id;
     show_reply.value = true;
 }
 

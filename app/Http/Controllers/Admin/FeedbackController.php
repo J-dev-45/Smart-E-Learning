@@ -35,13 +35,13 @@ class FeedbackController extends Controller
     public function sendFeedbackReply(Request $request, MailerService $mailerService)
     {
         $validated = $request->validate([
-            'user_id' => ['required', 'integer', 'exists:users,id'],
+            'student_id' => ['required', 'integer', 'exists:users,id'],
             'feedback_id' => ['required', 'integer', 'exists:feedback,id'],
             'question_label' => ['nullable', 'string', 'max:1000'],
             'reply_message' => ['required', 'string', 'min:10', 'max:1000'],
         ]);
 
-        $user = User::findOrFail($validated['user_id']);
+        $student = User::findOrFail($validated['student_id']);
         $feedback = Feedback::findOrFail($validated['feedback_id']);
 
         $feedback->update([
@@ -52,9 +52,9 @@ class FeedbackController extends Controller
 
         $emailSent = false;
 
-        if ($user->email && filter_var($user->email, FILTER_VALIDATE_EMAIL)) {
+        if ($student->email && filter_var($student->email, FILTER_VALIDATE_EMAIL)) {
             $emailSent = $mailerService->sendFeedbackMail(
-                $user->email,
+                $student->email,
                 $feedback->student_name,
                 $feedback->feedback_message,
                 $validated['reply_message'],
