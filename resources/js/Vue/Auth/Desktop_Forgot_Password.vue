@@ -54,7 +54,7 @@
 
             <div class="flex justify-center items-center gap-2 text-sm mt-[clamp(0.75rem,2vh,1.25rem)]">
                 <span class="text-gray-500">Remember your password?</span>
-                <a href="/" class="text-[#4C1D95] font-semibold hover:underline">Log in</a>
+                <a href="/" @click="clearFpSession" class="text-[#4C1D95] font-semibold hover:underline">Log in</a>
             </div>
         </template>
 
@@ -67,6 +67,7 @@
                 style="font-size:clamp(1.2rem,2.2vw,1.50rem)">Verify OTP</h4>
             <p class="text-gray-500 mt-1.5 mb-[clamp(1rem,3vh,2rem)] text-sm text-center px-4 leading-relaxed">
                 Enter the 6-digit OTP code sent to <b class="text-gray-700">{{ email }}</b>
+                <span @click="changeEmail" class="block text-xs text-[#4C1D95] font-semibold hover:underline cursor-pointer mt-1.5">Wrong email? Change</span>
             </p>
 
             <!-- ERROR -->
@@ -209,7 +210,7 @@
                     Your password has been reset successfully. You can now log in with your new password.
                 </p>
 
-                <a href="/"
+                <a href="/" @click="clearFpSession"
                     class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85
                             text-white font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg
                             transition-all duration-200 tracking-wide
@@ -227,11 +228,25 @@
 <script setup>
 import { ref } from 'vue';
 
-const step = ref('email'); // 'email' | 'otp' | 'reset' | 'success'
-const email = ref('');
+const savedStep = typeof window !== 'undefined' ? sessionStorage.getItem('fp_step') : null;
+const savedEmail = typeof window !== 'undefined' ? sessionStorage.getItem('fp_email') : null;
+
+const step = ref((savedStep && ['email', 'otp', 'reset'].includes(savedStep)) ? savedStep : 'email');
+const email = ref(savedEmail || '');
 const errors = ref([]);
 const successMessage = ref('');
 const isSubmitting = ref(false);
+
+function changeEmail() {
+    step.value = 'email';
+    sessionStorage.removeItem('fp_step');
+    errors.value = [];
+}
+
+function clearFpSession() {
+    sessionStorage.removeItem('fp_step');
+    sessionStorage.removeItem('fp_email');
+}
 
 // OTP
 const otpDigits = ref(['', '', '', '', '', '']);
@@ -275,6 +290,8 @@ async function sendOtp() {
 
         if (response.ok && data.success) {
             step.value = 'otp';
+            sessionStorage.setItem('fp_step', 'otp');
+            sessionStorage.setItem('fp_email', email.value);
             startResendCooldown();
             return;
         }
@@ -339,6 +356,7 @@ async function verifyOtp() {
 
         if (response.ok && data.success) {
             step.value = 'reset';
+            sessionStorage.setItem('fp_step', 'reset');
             return;
         }
 
@@ -391,6 +409,8 @@ async function resetPassword() {
 
         if (response.ok && data.success) {
             step.value = 'success';
+            sessionStorage.removeItem('fp_step');
+            sessionStorage.removeItem('fp_email');
             return;
         }
 
