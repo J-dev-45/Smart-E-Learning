@@ -1,11 +1,11 @@
 <template>
     <nav class="w-[280px] h-screen fixed top-0 left-0 bg-white border-r border-gray-200 md:flex hidden flex-col overflow-hidden">
 
-        <div class="w-full flex items-center h-[60px] px-5 border-b border-gray-200 shrink-0 bg-gradient-to-r from-[#1A0B2E] to-[#4C1D95]">
+        <div class="w-full flex items-center gap-3 h-[60px] px-5 border-b border-gray-200 shrink-0 bg-white">
 
-            <div class="font-bold text-[15px] tracking-tight text-white">
-                Smart <span class="text-purple-300">E-Learning</span>
-            </div>
+            <img :src="logo" alt="Smart E-Learning logo" class="size-10 shrink-0 object-contain">
+
+            <span class="font-extrabold text-[#5b21b6] tracking-wide leading-tight text-[17px] truncate">Smart E-Learning</span>
 
         </div>
 
@@ -50,7 +50,10 @@
 
             <div class="flex items-center gap-2.5 px-2 py-2">
 
-                <div class="w-10 h-10 rounded-full bg-[#4C1D95]/30 text-[#4C1D95] flex items-center justify-center shrink-0">
+                <div :class="[
+                    'w-10 h-10 rounded-full  flex items-center justify-center shrink-0',
+                    profileColor
+                ]">
                     <span class="text-[13px] font-semibold">JR</span>
                 </div>
 
@@ -65,10 +68,37 @@
             <button
                 type="button"
                 @click="logout"
-                class="w-full flex items-center gap-2.5 mt-2 px-3 py-2 rounded-md text-[13px] font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer"
+                :disabled="isLoggingOut"
+                :aria-busy="isLoggingOut"
+                class="w-full flex items-center gap-2.5 mt-2 px-3 py-2 rounded-md text-[13px] font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-600"
             >
 
                 <svg
+                    v-if="isLoggingOut"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    class="size-[17px] shrink-0 animate-spin motion-reduce:animate-none"
+                    aria-hidden="true"
+                >
+                    <circle
+                        cx="12"
+                        cy="12"
+                        r="9"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        class="opacity-25"
+                    />
+                    <path
+                        d="M21 12a9 9 0 0 0-9-9"
+                        stroke="currentColor"
+                        stroke-width="2.5"
+                        stroke-linecap="round"
+                    />
+                </svg>
+
+                <svg
+                    v-else
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -83,7 +113,7 @@
                     />
                 </svg>
 
-                Logout
+                <span>{{ isLoggingOut ? 'Logging out...' : 'Logout' }}</span>
 
             </button>
 
@@ -95,15 +125,18 @@
 </template>
 
 <script setup>
-
+import { ref } from 'vue'
 
 defineProps({
     activePage: { type: String, default: 'Dashboard' },
     idNumber: { type: Number, default: 0},
     userName: { type: String, default: 'Undefined'},
     userEmail: { type: String, default: 'Undefined'},
+    logo: { type: String, required: true},
+    profileColor: { type: String, required: true}
 });
 
+const isLoggingOut = ref(false)
 
 const changeLocalStorage = (linkName) => {
 
@@ -146,7 +179,14 @@ const links = [
 ];
 
 async function logoutForm(){
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+    isLoggingOut.value = true
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+    if (!csrfToken) {
+        isLoggingOut.value = false
+        throw new Error('CSRF token not found')
+    }
 
     try{
         const response = await fetch('/logout',{
@@ -163,14 +203,22 @@ async function logoutForm(){
         if (response.ok && data.success) { 
             window.location.href = '/'; 
         } 
-        else { console.log('Logout failed:', data); }
+        else {
+            isLoggingOut.value = false
+            throw new Error(`Logout failed: ${response.status}`)
+        }
 
     }catch(err){
-        console.log(err)
+        isLoggingOut.value = false
+        throw err
     }
 }
 
-function logout(){
-    logoutForm();
+async function logout(){
+    try {
+        await logoutForm()
+    } catch (err) {
+        console.error(err)
+    }
 }
 </script>

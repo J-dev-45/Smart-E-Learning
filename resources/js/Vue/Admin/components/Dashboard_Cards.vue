@@ -1,8 +1,8 @@
 <template>
 
-    <div class="w-full grid md:grid-cols-4 grid-cols-2 md:gap-6 gap-2 text-white mb-5">
+    <div class="w-full shrink-0 grid md:grid-cols-4 grid-cols-2 md:gap-6 gap-2 text-white md:mb-5">
         
-        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 rounded-md flex flex-col transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10"">
+        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 rounded-md flex flex-col transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
             <div class="w-full flex justify-end">
                 <div class="w-8 h-8  bg-[#8B5CF6]/15 border border-[#CECBF6]/15 text-[#CECBF6] flex items-center justify-center rounded-md ">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -17,7 +17,7 @@
             </div>
         </div>
 
-        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 rounded-md flex flex-col transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10"">
+        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 rounded-md flex flex-col transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
             <div class="w-full flex justify-end">
                 <div class="w-8 h-8  bg-[#E04A4A]/15 border border-[#CECBF6]/15 text-[#F09595] flex items-center justify-center rounded-md">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 rounded-md flex flex-col transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10"">
+        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 rounded-md flex flex-col transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
             <div class="w-full flex justify-end">
                 <div class="w-8 h-8  bg-[#22D3EE]/15 border border-[#CECBF6]/15 text-[#67E8F9] flex items-center justify-center rounded-md">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 rounded-md flex flex-col transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10"">
+        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 rounded-md flex flex-col transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
             <div class="w-full flex justify-end">
                 <div class="w-8 h-8  bg-[#6366F1]/15 border border-[#CECBF6]/15 text-[#A5A6F6] flex items-center justify-center rounded-md">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

@@ -8,10 +8,10 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
 </head>
-<body class="w-screen min-h-screen overflow-x-hidden">
+<body class="w-screen min-h-screen overflow-x-hidden ">
     @vite(['resources/js/app.js'])
     @include('Global.Skeleton_Loading.Client_Navigation')
-    <div id="app" class="w-screen flex flex-col overflow-x-hidden min-h-screen relative">
+    <div id="app" class="w-screen flex flex-col overflow-x-hidden min-h-screen relative ">
 
      
 
@@ -26,25 +26,14 @@
         <main class="w-full text-white pt-[80px] md:pt-[120px] pb-16 px-4 flex flex-col">
 
             {{-- HERO SECTION --}}
-            <section id="hero" class="w-full flex items-center justify-center flex-col gap-8 scroll-mt-24">
-                {{-- <div class="flex flex-col items-center justify-center w-full sm:w-[85%] md:w-[70%] lg:w-[55%] gap-4">
-                    <h1 class="text-[28px] sm:text-[34px] md:text-[44px] font-bold text-center leading-[1.15] tracking-tight">
-                        Review smarter, quiz better.
-                    </h1>
-                    <p class="text-[15px] md:text-[16px] text-center leading-relaxed text-white/60 max-w-[560px]">
-                        Review lessons and take quizzes across a wide range of modules — 
-                        all in one place, designed for IT, Computer Science, and related courses.
-                    </p>
-                </div> --}}
-
+            <section id="hero" class="w-full flex items-center justify-center flex-col gap-8 scroll-mt-24 ">
                 
                 <div class="flex flex-col items-center justify-center gap-4">
                     @if (auth()->user()->profile_picture === null)
-                        <div class="w-40 h-40 rounded-full flex items-center justify-center {{auth()->user()->profile_color}} ring-4 ring-white/10 shadow-xl shadow-black/30">
-                            <span class="text-5xl font-semibold text-white tracking-wide">
-                                {{ Str(auth()->user()->name)->initials()}}
-                            </span>
-                        </div>
+                        <student-profile
+                        user-name="{{auth()->user()->name}}"
+                        profile-color="{{auth()->user()->profile_color}}"
+                        ></student-profile>
                     @endif
                     <div class="flex flex-col items-center justify-center gap-2">
                         <span class="text-2xl font-semibold tracking-tight">{{auth()->user()->name}}</span>

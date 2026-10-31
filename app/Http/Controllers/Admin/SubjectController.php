@@ -68,4 +68,63 @@ class SubjectController extends Controller
         ]);
 
     }
+
+
+    public function editSubject(Request $request){
+        $input = $request->validate([
+            'new_subject_name' => 'required|string|max:255',
+            'new_subject_code' => 'required|string|max:10',
+        ]);
+        $subject = Subjects::find($request->subject_id);
+
+        $subject->update([
+            'subject_name' => $input['new_subject_name'],
+            'subject_code' => $input['new_subject_code'],
+            'slug' => Str::slug($input['new_subject_name'])
+        ]);
+
+        RecentActivity::create([
+            'name' => auth()->user()->name,
+            'action' => 'edited_subject',
+            'subject' => $request->subject_name,
+            'subject' => $input['new_subject_name']
+        ]);
+
+        return response()->json([
+            'success'=> true,
+            'message'=> 'Subject updated successfully!'
+        ]);
+    }
+
+
+
+    public function deleteSubject(Request $request)
+    {
+        $subject = Subjects::find($request->subject_id);
+
+        if (!$subject) {
+            return response()->json([
+                'success' => false,
+                'message' => 'subject not found!'
+            ], 444);
+        }
+
+        $subjectName = $subject->subject_name;
+        $subjectId = $subject->id;
+
+        $subject->delete();
+
+        RecentActivity::create([
+            'name' => auth()->user()->name,
+            'action' => 'deleted_subject',
+            'subject' => $request->subject_name,
+            'subject' => $subjectName
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'subject deleted Successfully!',
+            'deleted_subject_id' => $subjectId
+        ]);
+    }
 }

@@ -18,6 +18,8 @@
             :id-number="{{ auth()->user()->id_number }}"
             user-name="{{ auth()->user()->name }}"
             user-email="{{ auth()->user()->email }}"
+            logo="{{ asset('images/Components/Logo.png') }}"
+            profile-color="{{auth()->user()->profile_color}}"
         ></left-navigation>
 
         <questions-main

@@ -69,12 +69,11 @@ Route::get('/forgot-password', function () {
     return view('Auth.Forgot_Password');
 })->name('forgot.password');
 
-// Rate limiting prevents brute-force abuse:
 Route::post('/forgot-password/send-otp', [ForgotPasswordController::class, 'sendResetOtp'])
-    ->middleware('throttle:3,1'); // max 3 attempts per minute
+    ->middleware('throttle:3,1'); 
 
 Route::post('/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyResetOtp'])
-    ->middleware('throttle:5,1'); // max 5 OTP guesses per minute
+    ->middleware('throttle:5,1');
 
 Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])
     ->middleware('throttle:3,1');
@@ -125,8 +124,6 @@ Route::middleware(['auth'])->group(function(){
         $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())->get();
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())->get();
 
-        // $total_answered_module = $answered_module_questions->count();
-        // $total_answered_assessment = $answered_assessment_questions->count();
 
         $total_assessment_score = $answered_assessment_questions->where('is_correct', true)->count();
 
@@ -199,11 +196,21 @@ Route::middleware(['auth','Admin'])->group(function(){
         $total_admins = User::where('role', 'Admin')->count();
         $total_subjects = Subjects::count();
         $recent_activities = RecentActivity::orderBy('created_at', 'DESC')->get();
+
+        $leaderboard = Leaderboard::where('points', '>', 0)
+            ->orderBy('points', 'DESC')
+            ->take(20)
+            ->get();
+
+        $users_names = User::whereIn('id', $leaderboard->pluck('user_id'))->select('id','name')->get();
+
         return view('Admin.Pages.Dashboard', compact(
             'total_users',
             'total_admins',
             'total_subjects',
             'recent_activities',
+            'leaderboard',
+            'users_names'
         ));
     })->name('dashboard_page');
 
@@ -257,7 +264,10 @@ Route::middleware(['auth','Admin'])->group(function(){
 
     // SUBJECTS
     Route::get('/subject/{subject_name}/{subject_id}', [SubjectController::class, 'subjectPage']);
+
     Route::post('/addSubject', [SubjectController::class, 'addSubject'])->name('addSubject');
+    Route::put('/editSubject', [SubjectController::class, 'editSubject']);
+    Route::delete('deleteSubject', [SubjectController::class, 'deleteSubject']);
     
 
     // QUESTIONS
@@ -278,6 +288,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     // TOPICS
     Route::post('/addTopic', [TopicController::class, 'addTopic']);
     Route::put('/editTopic', [TopicController::class, 'editTopic']);
+    Route::delete('/deleteTopic', [TopicController::class, 'deleteTopic']);
 
     Route::post('/logout', [Logout::class, 'logout']);
 });

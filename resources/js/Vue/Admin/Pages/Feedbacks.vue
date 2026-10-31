@@ -4,7 +4,7 @@
         <div class="w-full flex flex-col sm:flex-row sm:items-center gap-3">
 
             <!-- STATUS FILTER TABS -->
-            <div class="flex items-center gap-1 p-1 rounded-md border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 w-fit overflow-x-auto">
+            <div class="flex items-center gap-1 p-1 rounded-md border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 w-fit max-w-full overflow-x-auto">
                 <button
                     v-for="tab in statusTabs"
                     :key="tab"
@@ -30,7 +30,7 @@
                     v-model="search"
                     type="search"
                     placeholder="Search by Name or Date..."
-                    class="w-full h-[36px] pl-10 pr-3 rounded-md text-sm text-white placeholder:text-gray-500
+                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-md text-base sm:text-sm text-white placeholder:text-gray-500
                            bg-[#CECBF6]/6 border-[1.5px] border-[#CECBF6]/15 outline-none
                            focus:border-[#CECBF6]/30 focus:bg-[#CECBF6]/10 transition-all"
                 >
@@ -39,11 +39,11 @@
             
         </div>
 
-        <!-- TABLE -->
+        <!-- LIST / TABLE -->
         <div class="w-full flex-1 min-h-0 flex flex-col border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm rounded-md overflow-hidden">
 
-            <!-- header -->
-            <div class="shrink-0 min-w-[720px] grid grid-cols-[90px_1fr_1fr_110px_100px_170px] px-4 py-3 border-b border-[#CECBF6]/15
+            <!-- header (table layout, large screens only) -->
+            <div class="hidden lg:grid shrink-0 grid-cols-[90px_1fr_1fr_110px_100px_170px] px-4 py-3 border-b border-[#CECBF6]/15
                         text-xs font-semibold text-gray-400">
                 <span>ID</span>
                 <span>Name</span>
@@ -54,37 +54,53 @@
             </div>
 
             <!-- rows -->
-            <ul class="min-w-[720px] flex-1 min-h-0 overflow-y-scroll scrollbar-thin">
+            <ul class="flex-1 min-h-0 max-h-[60dvh] lg:max-h-none overflow-y-auto lg:overflow-y-scroll scrollbar-thin max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden">
                 <li v-for="feedback in filteredFeedbacks" :key="feedback.id"
-                    class="grid grid-cols-[90px_1fr_1fr_110px_100px_170px] items-center px-4 py-3.5
+                    class="flex flex-col gap-3 px-4 py-3.5
+                           lg:grid lg:grid-cols-[90px_1fr_1fr_110px_100px_170px] lg:items-center lg:gap-0
                            border-b border-[#CECBF6]/10 last:border-b-0
                            hover:bg-[#CECBF6]/5 transition-colors">
 
-                    <span class="text-xs text-gray-400 font-mono">#{{ String(feedback.id).padStart(3, '0') }}</span>
+                    <!-- ID (table only) -->
+                    <span class="hidden lg:block text-xs text-gray-400 font-mono">#{{ String(feedback.id).padStart(3, '0') }}</span>
 
-                    <div class="flex items-center gap-3 min-w-0 pr-2">
+                    <!-- NAME (+ status and meta on cards) -->
+                    <div class="flex items-center gap-3 min-w-0 lg:pr-2">
                         <div class="w-8 h-8 shrink-0 rounded-md flex items-center justify-center text-[11px] font-semibold
                                     bg-[#8B5CF6]/15 border border-[#CECBF6]/15 text-[#CECBF6]">
                             {{ initials(feedback.student_name) }}
                         </div>
-                        <span class="text-sm text-white truncate">{{ feedback.student_name }}</span>
+
+                        <div class="flex flex-col min-w-0 flex-1">
+                            <span class="text-sm text-white truncate">{{ feedback.student_name }}</span>
+                            <span class="lg:hidden text-[11px] text-gray-400 font-mono truncate">#{{ String(feedback.id).padStart(3, '0') }} · {{ formatDate(feedback.created_at) }}</span>
+                            <span class="lg:hidden empty:hidden before:content-['Replied_by:_'] text-[11px] text-gray-400 truncate">{{ feedback.replied_by }}</span>
+                        </div>
+
+                        <span class="lg:hidden shrink-0 inline-flex px-2 py-1 rounded-md text-[11px] font-medium border"
+                              :class="statusStyle(feedback.status)">
+                            {{ feedback.status }}
+                        </span>
                     </div>
 
-                    <span class="text-xs text-gray-300 truncate pr-2">{{ feedback.replied_by }}</span>
+                    <!-- REPLIED BY (table only) -->
+                    <span class="hidden lg:block text-xs text-gray-300 truncate pr-2">{{ feedback.replied_by }}</span>
 
-                    <span>
+                    <!-- STATUS (table only) -->
+                    <span class="hidden lg:block">
                         <span class="inline-flex px-2 py-1 rounded-md text-[11px] font-medium border"
                               :class="statusStyle(feedback.status)">
                             {{ feedback.status }}
                         </span>
                     </span>
 
-                    <span class="text-xs text-gray-400">{{ formatDate(feedback.created_at) }}</span>
+                    <!-- DATE (table only) -->
+                    <span class="hidden lg:block text-xs text-gray-400">{{ formatDate(feedback.created_at) }}</span>
 
                     <div class="flex items-center gap-2">
                         <!-- VIEW / REPLY -->
                         <button
-                            class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-md text-xs font-medium
                                 bg-[#8B5CF6]/10 border-[1.5px] border-[#8B5CF6]/25 text-[#CECBF6]
                                 hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/40
                                 active:scale-95 transition-all cursor-pointer"
@@ -100,7 +116,7 @@
                         <!-- DELETE -->
                         <button
                             @click="deleteFeedbackModalOpen()"
-                            class="flex items-center justify-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-md text-xs font-medium
                                 bg-red-500/10 border-[1.5px] border-red-500/25 text-red-300
                                 hover:bg-red-500 hover:border-red-500 hover:text-white
                                 active:scale-95 transition-all cursor-pointer"

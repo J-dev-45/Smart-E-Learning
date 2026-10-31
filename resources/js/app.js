@@ -44,6 +44,7 @@ import Feedbacks from './Vue/Admin/Pages/Feedbacks.vue';
 import Modules from './Vue/Admin/Pages/Modules.vue';
 import Questions_Main from './Vue/Admin/Pages/Main/Questions_Main.vue';
 import Subjects_Cards_Admin from './Vue/Admin/Pages/Subjects_Cards_Admin.vue';
+import Admin_Header from './Vue/Admin/components/Admin_Header.vue';
 
 app.component('dashboard-cards', Dashboard_Cards);
 app.component('overview', Overview);
@@ -55,7 +56,7 @@ app.component('subjects-cards-admin', Subjects_Cards_Admin);
 app.component('feedbacks-page', Feedbacks);
 app.component('modules', Modules);
 app.component('questions-main', Questions_Main);
-
+app.component('admin-header', Admin_Header);
 
 // ===================================================================================================|CLIENT
 // ===================================================================================================|CLIENT
@@ -75,6 +76,7 @@ import Leaderboard from './Vue/Client/Pages/Leaderboard.vue';
 import Module_Activity from './Vue/Client/Pages/Module_Activity.vue';
 import Module_Quiz_Buttons from './Vue/Client/Components/Module_Quiz_Buttons.vue';
 import Feedback_Form from './Vue/Client/Components/Feedback_Form.vue';
+import Student_Profile from './Vue/Client/Components/Student_Profile.vue';
 
 app.component('subjects-card', Subjects_Cards);
 app.component('assessment-form', Assessment_Form);
@@ -90,6 +92,7 @@ app.component('leaderboard', Leaderboard);
 app.component('module-activity', Module_Activity);
 app.component('module-quiz-buttons', Module_Quiz_Buttons);
 app.component('feedback-form', Feedback_Form);
+app.component('student-profile', Student_Profile);
 
 // | AUTH |===================================================================================================
 // | AUTH |===================================================================================================
@@ -100,12 +103,16 @@ import Desktop_Login from './Vue/Auth/Desktop_Login.vue';
 import Desktop_Register from './Vue/Auth/Desktop_Register.vue';
 import Mobile_Register from './Vue/Auth/Mobile_Register.vue';
 import Desktop_Forgot_Password from './Vue/Auth/Desktop_Forgot_Password.vue';
+import Desktop_Verify from './Vue/Auth/Desktop_Verify.vue';
+import Mobile_Verify from './Vue/Auth/Mobile_Verify.vue';
 
 app.component('mobile-login', Mobile_Login);
 app.component('desktop-login', Desktop_Login);
 app.component('desktop-register', Desktop_Register);
 app.component('mobile-register', Mobile_Register);
 app.component('desktop-forgot-password', Desktop_Forgot_Password);
+app.component('desktop-verify', Desktop_Verify);
+app.component('mobile-verify', Mobile_Verify);
 
 // ===================================================================================================|GLOBAL
 // ===================================================================================================|GLOBAL

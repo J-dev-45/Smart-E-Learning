@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Users | Smart E-Learning</title>
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
@@ -18,16 +18,26 @@
             :id-number="{{auth()->user()->id_number}}"
             user-name="{{auth()->user()->name}}"
             user-email="{{auth()->user()->email}}"
+            profile-color="{{auth()->user()->profile_color}}"
+            logo="{{ asset('images/Components/Logo.png') }}"
         ></left-navigation>
 
         {{-- MOBILE --}}
         <bottom-navigation
-        
+            active-page="Users"
         ></bottom-navigation>
 
-        {{-- pb-20 on mobile leaves room for the bottom navigation --}}
-        <main class="h-full md:w-[calc(100%-280px)] w-full flex flex-col md:ml-[280px] ml-0 p-3 pb-20 sm:p-5 md:pb-5 overflow-hidden">
-            {{-- CARDS: 3 compact columns on phones, roomier from sm up --}}
+        
+        <main class="h-full min-w-0 md:w-[calc(100%-280px)] w-full flex flex-col md:ml-[280px] ml-0 p-3 sm:p-5 overflow-y-auto max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden">
+
+            {{-- HEADER --}}
+            <admin-header
+                class="mb-3 sm:mb-5"
+                user-name="{{auth()->user()->name}}"
+                user-email="{{auth()->user()->email}}"
+                profile-color="{{auth()->user()->profile_color}}"
+            ></admin-header>
+
             <div class="grid grid-cols-3 gap-2 sm:gap-4 lg:gap-6 pb-3 sm:pb-5 shrink-0">
 
                 {{-- TOTAL USERS --}}
@@ -36,7 +46,7 @@
 
                     <div class="flex flex-col justify-center text-white relative min-w-0">
                         <span class="text-xl sm:text-2xl font-bold leading-tight">{{$users->count()}}</span>
-                        <span class="text-gray-400 text-[10px] sm:text-xs font-semibold tracking-wide leading-tight">TOTAL USERS</span>
+                        <span class="text-gray-400 text-[10px] sm:text-xs font-semibold tracking-wide leading-tight break-words">TOTAL USERS</span>
                     </div>
                     <div class="hidden sm:flex w-9 h-9 shrink-0 bg-[#8B5CF6]/15 border border-[#CECBF6]/15 text-[#CECBF6] items-center justify-center rounded-md relative transition-transform duration-200 group-hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -51,7 +61,7 @@
 
                     <div class="flex flex-col justify-center text-white relative min-w-0">
                         <span class="text-xl sm:text-2xl font-bold leading-tight">{{$users->where('role', 'Admin')->count()}}</span>
-                        <span class="text-gray-400 text-[10px] sm:text-xs font-semibold tracking-wide leading-tight">TOTAL ADMINS</span>
+                        <span class="text-gray-400 text-[10px] sm:text-xs font-semibold tracking-wide leading-tight break-words">TOTAL ADMINS</span>
                     </div>
                     <div class="hidden sm:flex w-9 h-9 shrink-0 bg-[#E04A4A]/15 border border-[#CECBF6]/15 text-[#F09595] items-center justify-center rounded-md relative transition-transform duration-200 group-hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -66,7 +76,7 @@
 
                     <div class="flex flex-col justify-center text-white relative min-w-0">
                         <span class="text-xl sm:text-2xl font-bold leading-tight">{{$users->where('role', 'Student')->count()}}</span>
-                        <span class="text-gray-400 text-[10px] sm:text-xs font-semibold tracking-wide leading-tight">TOTAL STUDENTS</span>
+                        <span class="text-gray-400 text-[10px] sm:text-xs font-semibold tracking-wide leading-tight break-words">TOTAL STUDENTS</span>
                     </div>
                     <div class="hidden sm:flex w-9 h-9 shrink-0 bg-emerald-400/15 border border-[#CECBF6]/15 text-emerald-300 items-center justify-center rounded-md relative transition-transform duration-200 group-hover:scale-105">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -80,6 +90,8 @@
             <users-page
                 :users='@json($users)'
             ></users-page>
+
+            <div class="h-[calc(4rem+env(safe-area-inset-bottom))] shrink-0 md:hidden"></div>
         </main>
 
     </div>

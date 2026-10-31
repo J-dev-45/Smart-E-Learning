@@ -4,7 +4,7 @@
     >
         <!-- HEADER -->
         <header
-            class="sticky top-0 shrink-0 z-10 w-full h-[60px] flex items-center justify-between text-white px-6 border-b border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm"
+            class="sticky top-0 shrink-0 z-10 w-full h-[60px] flex items-center justify-between text-white px-6 border-b border-[#CECBF6]/15 bg-[#44136D]"
         >
             <a
                 :href="`/subject/${url(props.subjectName)}/${props.subjectId}`"

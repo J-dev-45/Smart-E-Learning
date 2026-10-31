@@ -80,7 +80,6 @@ const verifyErrors = ref([]);
 async function mobileVerifyForm(event) {
     if (isSubmitting.value) return;
 
-    // Read the real DOM values at submit time (autofill / one-time-code can skip input events).
     const form = event.target;
     const body = {};
     for (let n = 1; n <= 6; n++) {
