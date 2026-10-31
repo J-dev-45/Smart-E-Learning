@@ -24,8 +24,11 @@
         </div>
 
         <button class="py-2 flex items-center justify-center">
-            <span class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md bg-blue-600 text-white">
-                JL
+            <span :class="[
+                'rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md',
+                profileColor
+            ] ">
+                {{ initials(userName) }}
             </span>
         </button>
     </header>
@@ -35,11 +38,23 @@
 <script setup>
 
 const props = defineProps({
-  subjectName: { type: String, default: ''}  
+  subjectName: { type: String, default: ''},
+  userName: { type: String, requierd: true},
+  profileColor: {type: String, requierd: true}  
 })
 
 function goBack(){
     window.location.href = '/home';
+}
+
+function initials(name) {
+    return name
+        .split(' ')
+        .filter(Boolean)
+        .map(word => word[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
 }
 
 
