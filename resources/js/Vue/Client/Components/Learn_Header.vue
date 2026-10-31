@@ -1,15 +1,15 @@
-
 <template>
-    <div ref="headerEl" class="relative shrink-0 bg-[#12081F] w-full h-[60px] border-b-[#2A1B4A] border-b-[1px] flex items-center justify-between text-white px-5">
+    <div ref="headerEl" class="relative shrink-0 bg-[#44136D] w-full h-[60px] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20 flex items-center justify-between text-white px-5">
         <div class="flex items-center">
-            <button type="button" @click="goBack"
+            <a 
+                :href="`/learn/${url(subjectName)}/${subjectId}`"
                 class="group inline-flex items-center gap-2 rounded-full border-[1.5px] border-[#CECBF6]/20 bg-[#CECBF6]/5 py-1.5 pl-2.5 pr-4 text-sm font-semibold text-[#CECBF6] transition-all duration-300 hover:border-[#CECBF6]/50 hover:bg-[#CECBF6]/10 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:-translate-x-0.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
                 <span class="hidden sm:inline">Back to Modules</span>
                 <span class="sm:hidden">Back</span>
-            </button>
+            </a>
         </div>
 
         <div class="flex flex-col items-center justify-center min-w-0 px-2 text-center">
@@ -39,11 +39,13 @@
             </span>
         </button>
 
-        <div class="absolute bottom-0 left-0 w-full h-[3px] bg-[#CECBF6]/10 pointer-events-none">
+        <div class="absolute bottom-0 left-0 w-full h-1 bg-black/40 pointer-events-none">
             <div
-                class="h-full rounded-r-full bg-[#CECBF6] transition-[width] duration-150"
+                class="relative h-full overflow-hidden rounded-r-full bg-[#CECBF6] shadow-[0_0_8px_rgba(206,203,246,0.5)] transition-[width] duration-150"
                 :style="{ width: progress + '%' }"
-            ></div>
+            >
+                <span class="progress-shimmer"></span>
+            </div>
         </div>
     </div>
 </template>
@@ -74,14 +76,9 @@ function initials(name) {
         .slice(0, 2)
         .toUpperCase();
 }
-
-const goBack = () => {
-    if (window.history.length > 1) {
-        window.history.back();
-    } else {
-        window.location.href = '/dashboard';
-    }
-};
+function url(url_name) {
+    return url_name.replace(/\s+/g, "_");
+}
 
 const normalizeProgress = value =>
     Math.min(100, Math.max(0, Number(value) || 0));
@@ -284,3 +281,31 @@ onBeforeUnmount(() => {
     );
 });
 </script>
+
+<style scoped>
+.progress-shimmer {
+    position: absolute;
+    inset: 0;
+    width: 60%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(19, 10, 34, 0.85),
+        transparent
+    );
+    transform: translateX(-100%);
+    animation: progress-shimmer 3.5s linear infinite;
+}
+
+@keyframes progress-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(260%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .progress-shimmer {
+        animation: none;
+        display: none;
+    }
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
 
-    <header class="fixed top-0 shrink-0 z-100 w-full h-[60px] flex items-center justify-between text-white px-5 bg-[#12081F] border-b-[1px] border-b-[#2A1B4A]">
+    <header class="fixed top-0 shrink-0 z-100 w-full h-[60px] flex items-center justify-between text-white px-5 bg-[#44136D] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20">
         <div class="flex items-center">
             <button
                 type="button"
@@ -39,8 +39,8 @@
 
 const props = defineProps({
   subjectName: { type: String, default: ''},
-  userName: { type: String, requierd: true},
-  profileColor: {type: String, requierd: true}  
+  userName: { type: String, required: true},
+  profileColor: { type: String, required: true}
 })
 
 function goBack(){
