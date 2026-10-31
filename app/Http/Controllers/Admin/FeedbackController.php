@@ -13,7 +13,7 @@ class FeedbackController extends Controller
     public function sendFeedback(Request $request){
 
         $request->validate([
-            'question_id' => 'nullable|integer|exists:questions,id',
+            'question_id' => 'nullable|uuid|exists:questions,id',
             'feedback_message' => 'required|string|min:10|max:1000',
         ]);
 
