@@ -69,12 +69,11 @@ Route::get('/forgot-password', function () {
     return view('Auth.Forgot_Password');
 })->name('forgot.password');
 
-// Rate limiting prevents brute-force abuse:
 Route::post('/forgot-password/send-otp', [ForgotPasswordController::class, 'sendResetOtp'])
-    ->middleware('throttle:3,1'); // max 3 attempts per minute
+    ->middleware('throttle:3,1'); 
 
 Route::post('/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyResetOtp'])
-    ->middleware('throttle:5,1'); // max 5 OTP guesses per minute
+    ->middleware('throttle:5,1');
 
 Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])
     ->middleware('throttle:3,1');
@@ -125,8 +124,6 @@ Route::middleware(['auth'])->group(function(){
         $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())->get();
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())->get();
 
-        // $total_answered_module = $answered_module_questions->count();
-        // $total_answered_assessment = $answered_assessment_questions->count();
 
         $total_assessment_score = $answered_assessment_questions->where('is_correct', true)->count();
 
@@ -267,7 +264,7 @@ Route::middleware(['auth','Admin'])->group(function(){
 
     // SUBJECTS
     Route::get('/subject/{subject_name}/{subject_id}', [SubjectController::class, 'subjectPage']);
-    
+
     Route::post('/addSubject', [SubjectController::class, 'addSubject'])->name('addSubject');
     Route::put('/editSubject', [SubjectController::class, 'editSubject']);
     Route::delete('deleteSubject', [SubjectController::class, 'deleteSubject']);
