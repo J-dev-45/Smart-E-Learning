@@ -243,4 +243,64 @@ class AssessmentController extends Controller
 
 
     }
+
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+
+    public function retakeAssessment(Request $request)
+    {
+        $validated = $request->validate([
+            'type_of_assessment' => ['required', 'in:quiz,exam'],
+            'type'               => ['nullable', 'string'],
+            'subject_id'         => ['required', 'uuid', 'exists:subjects,id'],
+            'module_id'          => ['required_if:type_of_assessment,quiz', 'nullable', 'uuid', 'exists:modules,id'],
+        ]);
+    
+        $type_of_assessment = $validated['type_of_assessment'];
+        $to_take = $validated['type'] ?? 'question_type';
+    
+        $subject = Subjects::findOrFail($validated['subject_id']);
+    
+        if ($type_of_assessment === 'quiz') {
+    
+            $module = Modules::findOrFail($validated['module_id']);
+    
+            AnsweredAssessmentQuestions::where('user_id', auth()->id())
+                ->where('subject_id', $subject->id)
+                ->where('module_id', $module->id)
+                ->where('type_of_assessment', 'quiz')
+                ->delete();
+    
+            $module_name = str_replace(' ', '_', $module->module_name);
+            $module_id = $module->id;
+    
+        } else {
+    
+            AnsweredAssessmentQuestions::where('user_id', auth()->id())
+                ->where('subject_id', $subject->id)
+                ->whereNull('module_id')
+                ->where('type_of_assessment', 'exam')
+                ->delete();
+    
+            $module_name = 'none';
+            $module_id = '0';
+        }
+    
+        return response()->json([
+            'success'  => true,
+            'redirect' => route('assessment.taking', [
+                'type_of_assessment' => $type_of_assessment,
+                'to_take'            => $to_take,
+                'subject_name'       => str_replace(' ', '_', $subject->subject_name),
+                'subject_id'         => $subject->id,
+                'module_name'        => $module_name,
+                'module_id'          => $module_id,
+            ]),
+        ]);
+    }
+    
 }

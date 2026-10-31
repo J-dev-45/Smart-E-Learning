@@ -16,14 +16,6 @@ use Illuminate\Http\Request;
 
 class Pretest extends Controller
 {
-    
-
-    
-
-
-
-
-
     public function submitAnswer(Request $request)
     {
         $request->validate([
@@ -33,33 +25,38 @@ class Pretest extends Controller
         ]);
 
         $type_of_assessment = $request->type_of_assessment;
-        
+
         $question = Questions::find($request->question_id);
 
-        $student_answer = strtolower(trim($request->student_answer));
-        $correct_answer = strtolower(trim($question->answer));
-
-         if (!$question) {
+        // FIX: null check BEFORE touching $question->answer
+        if (!$question) {
             return response()->json([
                 'success' => false,
                 'message' => 'Question not found.'
             ], 404);
         }
 
+        $student_answer = strtolower(trim($request->student_answer));
+        $correct_answer = strtolower(trim($question->answer));
+
+        // FIX: compute correctness once, up front, for both quiz and exam
+        $is_correct = $correct_answer === $student_answer;
+        $correct = $is_correct ? 'yes' : 'no';
+
         // ===========================================================================================
-        // 
+        // QUIZ
         // ===========================================================================================
 
-        if($type_of_assessment === 'quiz'){
+        if ($type_of_assessment === 'quiz') {
 
             $request->validate([
                 'module_id' => ['required', 'uuid'],
             ]);
 
             $score = ModuleQuiz::where('user_id', auth()->id())
-            ->where('subject_id', $request->subject_id)
-            ->where('module_id', $request->module_id)
-            ->first();
+                ->where('subject_id', $request->subject_id)
+                ->where('module_id', $request->module_id)
+                ->first();
 
             if (!$score) {
                 return response()->json([
@@ -87,11 +84,7 @@ class Pretest extends Controller
                 ->where('question_id', $question->id)
                 ->exists();
 
-            $correct = ''; 
-
             if ($alreadyAnswered) {
-                $correct = $correct_answer === $student_answer ? 'yes' : 'no';
-
                 $answered_questions_ids = AnsweredAssessmentQuestions::where('user_id', auth()->id())
                     ->where('module_id', $request->module_id)
                     ->pluck('question_id');
@@ -103,12 +96,6 @@ class Pretest extends Controller
                     'already_answered' => true,
                     'answered_questions' => $answered_questions_ids
                 ]);
-            }
-
-            if($correct === 'yes'){
-                $is_correct = true;
-            }else{
-                $is_correct = false;
             }
 
             AnsweredAssessmentQuestions::create([
@@ -123,10 +110,8 @@ class Pretest extends Controller
                 'is_correct' => $is_correct
             ]);
 
-            
-            $open_temporary_points = TemporaryPoints::where('user_id', auth()->id())->value('points') ?? 0;
-
-            if ($correct_answer === $student_answer) {
+            if ($is_correct) {
+                $open_temporary_points = TemporaryPoints::where('user_id', auth()->id())->value('points') ?? 0;
 
                 TemporaryPoints::updateOrCreate(
                     ['user_id' => auth()->id()],
@@ -134,7 +119,6 @@ class Pretest extends Controller
                 );
 
                 $score->increment('scored');
-                $correct = 'yes';
             }
 
             $score->refresh();
@@ -150,39 +134,23 @@ class Pretest extends Controller
                 'answered_questions' => $answered_questions_ids
             ]);
 
-        }elseif($type_of_assessment === 'exam'){
+        // ===========================================================================================
+        // EXAM
+        // ===========================================================================================
 
-            $modules = Modules::where('subject_id', $request->subject_id)->get();
+        } elseif ($type_of_assessment === 'exam') {
 
-            // $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
-            //         ->where('subject_id', $request->subject_id)
-            //         ->get();
-            
-            // $exam_open = $module_quizzes->isNotEmpty()
-            //     && $module_quizzes->every(fn($quiz) => $quiz->has_passed === true);
-
-            // if(!$exam_open){
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => 'This Exam is locked.'
-            //     ], 403);
-            // }
-
-            
             $alreadyAnswered = AnsweredAssessmentQuestions::where('user_id', auth()->id())
-                    ->where('subject_id', $request->subject_id)
-                    ->where('module_id', null)
-                    ->where('question_id', $question->id)
-                    ->exists();
-
-            $correct = $correct_answer === $student_answer ? 'yes' : 'no';
-            $is_correct = $correct === 'yes';
+                ->where('subject_id', $request->subject_id)
+                ->whereNull('module_id')
+                ->where('question_id', $question->id)
+                ->exists();
 
             if ($alreadyAnswered) {
 
                 $answered_questions_ids = AnsweredAssessmentQuestions::where('user_id', auth()->id())
                     ->where('subject_id', $request->subject_id)
-                    ->where('module_id', null)
+                    ->whereNull('module_id')
                     ->pluck('question_id');
 
                 return response()->json([
@@ -207,13 +175,12 @@ class Pretest extends Controller
 
             $score = AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $request->subject_id)
-                ->where('module_id', null)
+                ->whereNull('module_id')
                 ->where('is_correct', true)
                 ->count();
 
-            $open_temporary_points = TemporaryPoints::where('user_id', auth()->id())->value('points') ?? 0;
-
             if ($is_correct) {
+                $open_temporary_points = TemporaryPoints::where('user_id', auth()->id())->value('points') ?? 0;
 
                 TemporaryPoints::updateOrCreate(
                     ['user_id' => auth()->id()],
@@ -223,7 +190,7 @@ class Pretest extends Controller
 
             $answered_questions_ids = AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $request->subject_id)
-                ->where('module_id', null)
+                ->whereNull('module_id')
                 ->pluck('question_id');
 
             return response()->json([
@@ -233,12 +200,12 @@ class Pretest extends Controller
                 'is_correct' => $is_correct,
                 'answered_questions' => $answered_questions_ids
             ]);
-
-            
         }
 
-
-        
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid assessment type.'
+        ], 422);
     }
 
 
@@ -246,10 +213,12 @@ class Pretest extends Controller
 
     public function resultPretest(Request $request)
     {
-
         $type_of_assessment = $request->type_of_assessment;
 
-        if($type_of_assessment === 'quiz'){
+        // ========================================================
+        // QUIZ
+        // ========================================================
+        if ($type_of_assessment === 'quiz') {
 
             $module_quiz = ModuleQuiz::where('user_id', auth()->id())
                 ->where('subject_id', $request->subject_id)
@@ -287,7 +256,7 @@ class Pretest extends Controller
                 ->where('module_id', $module->id)
                 ->whereIn('question_id', $question_ids)
                 ->pluck('question_id');
-            
+
             $total_questions = min($questions->count(), 15);
 
             $answered_count = $answered_questions->count();
@@ -296,7 +265,7 @@ class Pretest extends Controller
                 ->value('subject_name');
 
             if ($total_questions > 0 && $answered_count < $total_questions) {
-                return redirect()->route('pretest.taking', [
+                return redirect()->route('assessment.taking', [
                     'type_of_assessment' => $type_of_assessment,
                     'to_take' => $request->type,
                     'subject_name' => $subject_name,
@@ -314,28 +283,26 @@ class Pretest extends Controller
                 ->whereIn('id', $answered_questions)
                 ->values();
 
+            $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+                ->where('subject_id', $request->subject_id)
+                ->where('module_id', $module->id)
+                ->where('type_of_assessment', 'quiz')
+                ->get();
+
             $total_possible_points = (int) $selected_questions->sum('points');
+            $total_possible_score = (int) $answered_assessment_questions->count();
 
             $temporary_points = TemporaryPoints::where('user_id', auth()->id())
-                    ->first();
+                ->first();
 
             if ($request->type === 'coding') {
-                $section_score = (int) $selected_questions->sum('points');
+                $section_score = (int) $selected_questions->count() * 20;
             } else {
-                
-
-                $coding_points = array_sum(
-                    session('pretest_coding_points', [])
-                );
-
-                $section_score = max(
-                    0,
-                    (int) ($temporary_points?->points ?? 0) - $coding_points
-                );
+                $section_score = (int) $answered_assessment_questions->where('is_correct', true)->count();
             }
 
-            $score_percent = $total_possible_points > 0
-                ? ($section_score / $total_possible_points) * 100
+            $score_percent = $total_possible_score > 0
+                ? ($section_score / $total_possible_score) * 100
                 : 0;
 
             $status = $score_percent >= 75 ? 'Passed' : 'Failed';
@@ -362,7 +329,7 @@ class Pretest extends Controller
                 $module_passed = false;
 
                 if ($module->has_question_type && $module->has_coding) {
-                    if ($module_quiz->questions_type_passed &&$module_quiz->coding_passed){
+                    if ($module_quiz->questions_type_passed && $module_quiz->coding_passed) {
                         $module_passed = true;
                     }
 
@@ -388,7 +355,8 @@ class Pretest extends Controller
                     );
 
                     $module_quiz->update([
-                        'status' => 'passed',
+                        'is_open' => false,
+                        'has_passed' => true,
                         'scored' => 0
                     ]);
 
@@ -414,7 +382,7 @@ class Pretest extends Controller
 
                     if ($nextmodule) {
                         $nextmodule->update([
-                            'status' => 'open'
+                            'is_open' => true
                         ]);
                     }
                 }
@@ -434,7 +402,6 @@ class Pretest extends Controller
 
             $subject_id = $request->subject_id;
             $module_id = $module->id;
-            $module_name = $request->module_name;
 
             return view(
                 'Client.Pages.Assessment_Result',
@@ -446,14 +413,15 @@ class Pretest extends Controller
                     'subject_name',
                     'module_id',
                     'subject_id',
-                    'type_of_assessment'
+                    'type_of_assessment',
+                    'section_score'
                 )
             );
 
-            
-
         // ========================================================
-        }elseif($type_of_assessment === 'exam'){
+        // EXAM
+        // ========================================================
+        } elseif ($type_of_assessment === 'exam') {
 
             $modules = Modules::where('subject_id', $request->subject_id)->get();
 
@@ -468,12 +436,11 @@ class Pretest extends Controller
 
             $answered_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $request->subject_id)
-                ->where('module_id', null)
+                ->whereNull('module_id')
                 ->whereIn('question_id', $question_ids)
                 ->where('type_of_assessment', 'exam')
                 ->pluck('question_id');
 
-            
             $total_questions = min($questions->count(), 40);
 
             $answered_count = $answered_questions->count();
@@ -482,7 +449,7 @@ class Pretest extends Controller
                 ->value('subject_name');
 
             if ($total_questions > 0 && $answered_count < $total_questions) {
-                return redirect()->route('pretest.taking', [
+                return redirect()->route('assessment.taking', [
                     'type_of_assessment' => $type_of_assessment,
                     'to_take' => $request->type,
                     'subject_name' => $subject_name,
@@ -492,20 +459,20 @@ class Pretest extends Controller
                 ]);
             }
 
-            
             $temporary_points = TemporaryPoints::where('user_id', auth()->id())
                 ->first();
 
             $score = AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $request->subject_id)
-                ->where('module_id', null)
+                ->whereNull('module_id')
                 ->where('type_of_assessment', 'exam')
                 ->where('is_correct', true)
                 ->count();
 
-            $score_percent = 40 > 0
-                ? ($score / 40) * 100
-                : 0;
+            $section_score = (int) $score;
+
+            $exam_total = max($total_questions, 1);
+            $score_percent = ($score / $exam_total) * 100;
 
             $status = $score_percent >= 75 ? 'Passed' : 'Failed';
 
@@ -514,7 +481,6 @@ class Pretest extends Controller
                 : "Don't give up! You didn't pass the summative exam this time. Review your lessons and try again!";
 
             if ($status === 'Passed') {
-
 
                 $user_scoreboard = UserScoreboard::where('user_id', auth()->id())
                     ->value('total_score') ?? 0;
@@ -538,8 +504,6 @@ class Pretest extends Controller
                     $temporary_points->delete();
                 }
 
-
-                    
             } else {
 
                 $temporary_points?->update([
@@ -551,7 +515,7 @@ class Pretest extends Controller
             }
 
             $subject_id = $request->subject_id;
-            $module_id = $request->module_id;
+            $module_id = $request->module_id ?? 0;
             $module_name = 'none';
 
             return view(
@@ -564,23 +528,12 @@ class Pretest extends Controller
                     'subject_name',
                     'module_id',
                     'subject_id',
-                    'type_of_assessment'
+                    'type_of_assessment',
+                    'section_score'
                 )
             );
-
-
-        // ========================================================
         }
 
-        
-
-        
-    
-        
-
-        
+        return redirect()->route('home');
     }
-        
-
-    
 }

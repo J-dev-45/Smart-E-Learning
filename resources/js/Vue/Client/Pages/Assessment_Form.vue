@@ -29,11 +29,13 @@
                 </span>
             </div>
 
+            <!-- @copy.prevent
+                    @cut.prevent
+                    @contextmenu.prevent -->
+
             <div class="bg-[#4C1D95]/[0.04] border border-[#CECBF6]/40 p-4 rounded-xl">
                 <span
-                    @copy.prevent
-                    @cut.prevent
-                    @contextmenu.prevent
+                    
                     class="text-gray-800 leading-relaxed">{{ question.question }}</span>
             </div>
 

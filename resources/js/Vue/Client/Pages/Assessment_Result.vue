@@ -34,6 +34,8 @@
             </p>
         </div>
 
+        <p v-if="errorMessage" class="w-full text-red-600 text-sm mt-4">{{ errorMessage }}</p>
+
         <div class="w-full flex items-center justify-between mt-8 pt-6 border-t border-gray-100">
             <a
                 :href="homeUrl"
@@ -47,19 +49,22 @@
                 Home
             </a>
 
-            <a
+            <button
                 v-if="status === 'Failed'"
-                :href="`/takingPretest/${subjectId}/${moduleId}/${url(moduleName)}`"
-                class="inline-flex items-center gap-1.5 bg-[#4C1D95] text-white font-semibold text-sm px-8 py-3 rounded-lg shadow-sm hover:bg-[#3b1575] hover:shadow-md active:scale-[0.98] transition-all"
+                type="button"
+                @click="retakeAssessment"
+                :disabled="submitting"
+                class="inline-flex items-center gap-1.5 bg-[#4C1D95] text-white font-semibold text-sm px-8 py-3 rounded-lg shadow-sm hover:bg-[#3b1575] hover:shadow-md active:scale-[0.98] transition-all disabled:opacity-60 disabled:cursor-not-allowed"
             >
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                Retake
-            </a>
+                {{ submitting ? 'Please wait...' : 'Retake' }}
+            </button>
+
             <a
                 v-else
-                :href="`/pretest/${url(subjectName)}/${subjectId}`"
+                :href="`/learning/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}`"
                 class="inline-flex items-center gap-1.5 bg-[#4C1D95] text-white font-semibold text-sm px-8 py-3 rounded-lg shadow-sm hover:bg-[#3b1575] hover:shadow-md active:scale-[0.98] transition-all"
             >
                 Done
@@ -73,7 +78,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 function url(url_name) {
     return url_name.replace(/\s+/g, "_");
@@ -87,19 +92,59 @@ const props = defineProps({
     scorePercent: { type: Number, required: true },
     message: { type: String, required: true },
     status: { type: String, required: true },
-    assessmentType: { type: String, required:true },
+    assessmentType: { type: String, required: true },
+    toTake: { type: String, default: 'question_type' },
     homeUrl: { type: String, default: '/home' },
+    sectionScore: { type: Number, required: true }
 });
+
+const submitting = ref(false);
+const errorMessage = ref('');
 
 const isPassed = computed(() => props.status.toLowerCase() === 'passed');
 
-const ringColor  = computed(() => (isPassed.value ? '#16A34A' : '#DC2626'));
-const textColor  = computed(() => (isPassed.value ? 'text-green-600' : 'text-red-600'));
-const badgeBg    = computed(() => (isPassed.value ? 'bg-green-50' : 'bg-red-50'));
-const badgeText  = computed(() => (isPassed.value ? 'text-green-600' : 'text-red-600'));
+const ringColor = computed(() => (isPassed.value ? '#16A34A' : '#DC2626'));
+const textColor = computed(() => (isPassed.value ? 'text-green-600' : 'text-red-600'));
+const badgeBg   = computed(() => (isPassed.value ? 'bg-green-50' : 'bg-red-50'));
+const badgeText = computed(() => (isPassed.value ? 'text-green-600' : 'text-red-600'));
 
 const circumference = 439.8;
 const offset = computed(() => circumference - (circumference * props.scorePercent / 100));
 
 const displayScore = computed(() => Math.round(props.scorePercent));
+
+async function retakeAssessment() {
+    if (submitting.value) return;
+
+    submitting.value = true;
+    errorMessage.value = '';
+
+    try {
+        const response = await fetch('/retake-assessment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                type_of_assessment: props.assessmentType,
+                type: props.toTake,
+                subject_id: props.subjectId,
+                module_id: props.assessmentType === 'quiz' ? props.moduleId : null
+            })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+            throw new Error(data.message ?? 'Unable to start the retake. Please try again.');
+        }
+
+        window.location.href = data.redirect;
+    } catch (error) {
+        errorMessage.value = error.message;
+        submitting.value = false;
+    }
+}
 </script>

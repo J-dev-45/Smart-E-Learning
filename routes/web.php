@@ -64,20 +64,22 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:3,1');
     Route::post('/verify_otp', [VerifyOTP::class, 'verify'])->middleware('throttle:2,1');
 
+    Route::get('/forgot-password', function () {
+        return view('Auth.Forgot_Password');
+    })->name('forgot.password');
+
+    Route::post('/forgot-password/send-otp', [ForgotPasswordController::class, 'sendResetOtp'])
+        ->middleware('throttle:3,1'); 
+
+    Route::post('/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyResetOtp'])
+        ->middleware('throttle:5,1');
+
+    Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])
+        ->middleware('throttle:3,1');
+
 });
 
-Route::get('/forgot-password', function () {
-    return view('Auth.Forgot_Password');
-})->name('forgot.password');
 
-Route::post('/forgot-password/send-otp', [ForgotPasswordController::class, 'sendResetOtp'])
-    ->middleware('throttle:3,1'); 
-
-Route::post('/forgot-password/verify-otp', [ForgotPasswordController::class, 'verifyResetOtp'])
-    ->middleware('throttle:5,1');
-
-Route::post('/forgot-password/reset', [ForgotPasswordController::class, 'resetPassword'])
-    ->middleware('throttle:3,1');
 
 
 
@@ -163,7 +165,9 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/learning/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']);
     Route::put('/module-progress', [LearnController::class, 'scrollModuleProgress']);
     Route::post('/submit-module-activity', [LearnController::class, 'submitModuleActivity']);
+
     Route::post('/retake-activity', [LearnController::class, 'retakeActivity']);
+    Route::post('/retake-assessment', [AssessmentController::class, 'retakeAssessment']);
 
     Route::post('/sendFeedback', [FeedbackController::class, 'sendFeedback'])->middleware('throttle:3,1');
 
@@ -175,7 +179,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/submitCode', [CodePretestController::class, 'submitCodeAnswer']);
 
     Route::get('/pretest/{subject_name}/{subject_id}', [Pretest::class, 'pretestModules']);
-    Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('pretest.taking');
+    Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('assessment.taking');
 
     Route::put('/change-password', [PasswordController::class, 'changePassword']);
     Route::post('/logout_student', [Logout::class, 'logout']);
