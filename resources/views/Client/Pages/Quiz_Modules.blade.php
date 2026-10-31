@@ -14,6 +14,8 @@
         {{-- Header --}}
         <choose-module-header 
         subject-name="{{$subject->subject_name}}"
+        user-name="{{auth()->user()->name}}"
+        profile-color="{{auth()->user()->profile_color}}"
         >
         </choose-module-header>
 

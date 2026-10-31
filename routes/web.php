@@ -25,6 +25,7 @@ use App\Models\Feedback;
 use App\Models\Leaderboard;
 use App\Models\ModuleQuiz;
 use App\Models\Modules;
+use App\Models\Questions;
 use App\Models\RecentActivity;
 use App\Models\Subjects;
 use App\Models\SubjectStarted;
@@ -245,9 +246,12 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     Route::get('/feedbacks', function(){
 
-        $feedbacks = Feedback::select('id', 'student_name', 'replied_by', 'status', 'created_at')->get();
+        $feedbacks = Feedback::select('id', 'student_name', 'feedback_message', 'question_id', 'replied_by', 'reply_message', 'status', 'created_at')->get();
+
+        $questions = Questions::whereIn('id', $feedbacks->pluck('question_id'))->get();
         return view('Admin.Pages.Feedbacks', compact(
-            'feedbacks'
+            'feedbacks',
+            'questions'
         ));
     })->name('feedbacks_page');
 
@@ -260,6 +264,9 @@ Route::middleware(['auth','Admin'])->group(function(){
     Route::put('/promoteUser', [UserController::class, 'promoteUser']);
     Route::put('/demoteUser', [UserController::class, 'demoteUser']);
     Route::delete('/deleteUser', [UserController::class, 'deleteUser']);
+
+    // FEEDBACKS
+    Route::post('/sendReply', [FeedbackController::class, 'sendFeedbackReply']);
 
 
     // SUBJECTS
