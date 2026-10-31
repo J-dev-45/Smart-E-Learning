@@ -89,6 +89,8 @@
             <div class="shrink-0 md:shrink md:flex-1 md:min-h-0">
                 <feedbacks-page
                     :feedbacks='@json($feedbacks)'
+                    :questions='@json($questions)'
+                    :user-id="{{auth()->id()}}"
                 ></feedbacks-page>
             </div>
 
