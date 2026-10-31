@@ -39,8 +39,8 @@
             </div>
 
             <!-- Code area -->
-            <div class="flex-1 min-h-0 overflow-auto">
-                <div class="relative grid grid-cols-[auto_1fr] w-max min-w-full min-h-full">
+            <div class="flex-1 min-h-0 overflow-auto" id="whiteBG">
+                <div class="relative grid grid-cols-[auto_1fr] w-max min-w-full min-h-full" >
                     <!-- Active line band -->
                     <div
                         class="absolute inset-x-0 h-[22px] bg-[#f0f0f0] pointer-events-none"
