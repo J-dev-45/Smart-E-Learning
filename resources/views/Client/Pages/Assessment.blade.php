@@ -13,6 +13,8 @@
     <div id="app" class="w-screen h-screen flex flex-col overflow-hidden">
         <taking-pretest-header
             subject-name="{{$subject_name}}"
+            subject-id="{{ $subject_id }}"
+            module-id="{{ $module_id }}"
             module-name="{{$module_name}}"
             assessment-type="{{$type_of_assessment}}"
         ></taking-pretest-header>

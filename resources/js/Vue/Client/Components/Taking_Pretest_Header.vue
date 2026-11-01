@@ -1,17 +1,16 @@
 <template>
     <header class="sticky top-0 shrink-0 z-10 w-full h-14 flex items-center justify-between text-white px-3 sm:px-5 border-b border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-md">
-        <!-- Back button -->
-        <button
-            type="button"
-            aria-label="Go back"
-            @click="goBack"
-            class="group relative z-10 flex items-center gap-1 h-9 pl-1.5 pr-3 rounded-full text-white/90 hover:text-white hover:bg-[#CECBF6]/10 active:bg-[#CECBF6]/15 transition-colors duration-150 cursor-pointer"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 shrink-0 transition-transform duration-150 group-active:-translate-x-0.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
-            </svg>
-            <span class="hidden sm:inline text-sm font-medium whitespace-nowrap">Back to Choose Module</span>
-        </button>
+        <div class="flex items-center">
+            <a 
+                :href="`/learning/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}/`"
+                class="group inline-flex items-center gap-2 rounded-full border-[1.5px] border-[#CECBF6]/20 bg-[#CECBF6]/5 py-1.5 pl-2.5 pr-4 text-sm font-semibold text-[#CECBF6] transition-all duration-300 hover:border-[#CECBF6]/50 hover:bg-[#CECBF6]/10 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:-translate-x-0.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+                <span class="hidden sm:inline">Back to Learn</span>
+                <span class="sm:hidden">Back</span>
+            </a>
+        </div>
 
         <!-- Title: absolutely centered on the header, independent of side button widths -->
         <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center min-w-0 px-2 max-w-[50vw] sm:max-w-[40vw]">
@@ -47,14 +46,16 @@ import { ref } from 'vue'
 
 const props = defineProps({
     subjectName: { type:String, required: true},
+    subjectId: { type: String, required: true},
+    moduleId: { type: String, required: true},
     moduleName: { type:String, required: true},
     assessmentType: { type: String, required: true}
 })
 
 const muted = ref(false)
-
-
-function goBack() {
-    window.history.back()
+function url(url_name) {
+    return url_name.replace(/\s+/g, "_");
 }
+
+
 </script>
