@@ -34,8 +34,7 @@ use App\Models\UserScoreboard;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/run-code', [CodeRunnerController::class, 'run'])
-    ->middleware(['throttle:20,1']);
+
 
 
 Route::middleware(['guest'])->group(function(){
@@ -160,6 +159,10 @@ Route::middleware(['auth'])->group(function(){
 
     // ===========================================================
     // ===========================================================
+
+
+    Route::post('/run-code', [CodeRunnerController::class, 'run'])
+    ->middleware(['throttle:20,1']);
 
     Route::get('/learn/{subject_name}/{subject_id}', [LearnController::class, 'learn']);
     Route::get('/learning/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']);
