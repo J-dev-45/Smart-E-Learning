@@ -1,6 +1,6 @@
 
 <template>
-    <header class="fixed top-0 shrink-0 z-100 w-full h-[60px] flex items-center justify-between text-white px-5 bg-[#44136D] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20">
+    <header class="fixed top-0 shrink-0 z-100 w-full h-[60px] flex items-center justify-between text-white px-5 sharedBG border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20">
         <div class="flex items-center">
             <button
                 type="button"

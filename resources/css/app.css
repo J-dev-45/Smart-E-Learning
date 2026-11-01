@@ -11,8 +11,22 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+:root {
+    --primary-color: #3b0764;
+}
+
+/* #3b0764 */
+
+.sharedTXT{
+    color: var(--primary-color);
+}
+
+.sharedBG{
+    background: var(--primary-color);
+}
+
 body {
-  background:#3b0764;
+  background: var(--primary-color);
 }
 
 @media (max-width: 767px) {

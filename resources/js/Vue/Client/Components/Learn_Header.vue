@@ -1,5 +1,5 @@
 <template>
-    <div ref="headerEl" class="relative shrink-0 bg-[#44136D] w-full h-[60px] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20 flex items-center justify-between text-white px-5">
+    <div ref="headerEl" class="relative shrink-0 sharedBG w-full h-[60px] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20 flex items-center justify-between text-white px-5">
         <div class="flex items-center">
             <a 
                 :href="`/learn/${url(subjectName)}/${subjectId}`"

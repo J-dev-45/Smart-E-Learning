@@ -4,7 +4,7 @@
         class="bg-white w-full max-w-2xl h-[50px] fixed md:top-[15px] left-1/2 -translate-x-1/2 z-50 flex items-center justify-between md:px-4 px-6 md:rounded-full shadow-xs shadow-gray-200"
     >
         <div class="font-bold text-[15px] tracking-tight">
-            Smart <span class="text-blue-600">E-Learning</span>
+            Smart <span class="text-[#5b21b6]">E-Learning</span>
         </div>
 
         <ul class="hidden md:flex items-center justify-center gap-4 text-[13px] font-semibold text-gray-600">
@@ -12,7 +12,7 @@
                 <a
                     href="#hero"
                     class="relative transition-colors"
-                    :class="activeSection === 'hero' ? 'text-blue-600' : 'hover:text-blue-600'"
+                    :class="activeSection === 'hero' ? 'text-[#5b21b6]' : 'hover:text-[#5b21b6]'"
                 >
                     Home
                 </a>
@@ -22,7 +22,7 @@
                 <a
                     href="#subjects"
                     class="relative transition-colors"
-                    :class="activeSection === 'subjects' ? 'text-blue-600' : 'hover:text-blue-600'"
+                    :class="activeSection === 'subjects' ? 'text-[#5b21b6]' : 'hover:text-[#5b21b6]'"
                 >
                     Subjects
                 </a>
@@ -32,7 +32,7 @@
                 <a
                     href="#code-playground"
                     class="relative transition-colors"
-                    :class="activeSection === 'code-playground' ? 'text-blue-600' : 'hover:text-blue-600'"
+                    :class="activeSection === 'code-playground' ? 'text-[#5b21b6]' : 'hover:text-[#5b21b6]'"
                 >
                     Code
                 </a>
@@ -42,7 +42,7 @@
                 <a
                     href="#leaderboard"
                     class="relative transition-colors"
-                    :class="activeSection === 'leaderboard' ? 'text-blue-600' : 'hover:text-blue-600'"
+                    :class="activeSection === 'leaderboard' ? 'text-[#5b21b6]' : 'hover:text-[#5b21b6]'"
                 >
                     Leaderboard
                 </a>
