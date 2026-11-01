@@ -48,6 +48,7 @@ class FeedbackController extends Controller
             'replied_by' => auth()->user()->name,
             'reply_message' => $validated['reply_message'],
             'status' => 'Done',
+            'updated_at' => now()
         ]);
 
         $emailSent = false;

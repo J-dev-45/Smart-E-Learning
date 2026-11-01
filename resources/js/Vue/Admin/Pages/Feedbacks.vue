@@ -120,7 +120,7 @@
                         <!-- VIEW (tinted violet) -->
                         <button
                             v-if="feedback.status === 'Done'"
-                            @click="openReplyToFeedback(feedback)"
+                            @click="openViewReplied(feedback)"
                             class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
                                 text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20
                                 hover:bg-[#8B5CF6]/25
@@ -189,11 +189,24 @@
         @new_reply="handleNewReply"
     />
 
+    <View_Replied_Feedback
+        :show-reply="show_replied"
+        :sender-name="replied_sender_name"
+        :feedback-message="replied_feedback_message"
+        :question-id="replied_question_id"
+        :question-label="replied_question_label"
+        :reply-message="replied_reply_message"
+        :replied-by="replied_replied_by"
+        :replied-at="replied_replied_at"
+        @close="closeViewReplied"
+    />
+
 </template>
 
 <script setup>
 import { ref, computed } from 'vue'
 import Reply_To_Feedback from '../components/Reply_To_Feedback.vue';
+import View_Replied_Feedback from '../components/View_Replied_Feedback.vue';
 
 const props = defineProps({
     feedbacks: { type: Array, required: true },
@@ -317,5 +330,35 @@ function handleNewReply(reply) {
     } else if (reply?.user?.name) {
         feedback.replied_by = reply.user.name;
     }
+
+    if (reply?.reply_message) {
+        feedback.reply_message = reply.reply_message;
+    }
+
+    feedback.updated_at = reply?.updated_at ?? new Date().toISOString();
+}
+
+const show_replied = ref(false);
+const replied_sender_name = ref('');
+const replied_feedback_message = ref('');
+const replied_question_id = ref('');
+const replied_question_label = ref('');
+const replied_reply_message = ref('');
+const replied_replied_by = ref('');
+const replied_replied_at = ref('');
+
+function openViewReplied(feedback) {
+    replied_sender_name.value = feedback.student_name;
+    replied_feedback_message.value = feedback.feedback_message;
+    replied_question_id.value = feedback.question_id ?? '';
+    replied_question_label.value = props.questions.find(q => q.id === feedback.question_id)?.question ?? '';
+    replied_reply_message.value = feedback.reply_message ?? '';
+    replied_replied_by.value = feedback.replied_by ?? 'Admin';
+    replied_replied_at.value = feedback.updated_at ?? '';
+    show_replied.value = true;
+}
+
+function closeViewReplied() {
+    show_replied.value = false;
 }
 </script>

@@ -253,7 +253,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     Route::get('/feedbacks', function(){
 
-        $feedbacks = Feedback::select('id', 'student_name', 'feedback_message', 'question_id', 'replied_by', 'reply_message', 'status', 'created_at')->get();
+        $feedbacks = Feedback::select('id', 'student_name', 'feedback_message', 'question_id', 'replied_by', 'reply_message', 'status', 'created_at', 'updated_at')->get();
 
         $questions = Questions::whereIn('id', $feedbacks->pluck('question_id'))->get();
 
