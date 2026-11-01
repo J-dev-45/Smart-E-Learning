@@ -1,3 +1,4 @@
+
 <template>
     <Transition
         enter-active-class="transition ease-out duration-150"
@@ -12,12 +13,6 @@
             class="w-[290px] fixed md:top-3 top-[55px] right-0 z-[100] p-3 flex flex-col bg-white rounded-xl shadow-lg ring-1 ring-black/5 gap-3"
         >
             <div class="w-full flex items-center gap-3 px-1">
-                <!-- <div
-                    class="w-11 h-11 shrink-0 rounded-full flex items-center justify-center font-semibold text-sm"
-                    :class="profileColor"
-                >
-                    {{ initials }}
-                </div> -->
 
                 <img
                     v-if="currentProfileImage"
@@ -29,7 +24,7 @@
                 <span
                     v-else
                     class="w-11 h-11 shrink-0 rounded-full flex items-center justify-center font-semibold text-sm"
-                    :class="profileColor"
+                    :class="profileColor || 'bg-purple-800 text-white'"
                 >
                     {{ initials }}
                 </span>
@@ -185,7 +180,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import Feedback_Form from './Feedback_Form.vue'
 import Change_Password from './Change_Password.vue'
 
@@ -194,14 +189,14 @@ const props = defineProps({
     userId: { type: Number, required: true },
     userName: { type: String, required: true },
     userEmail: { type: String, required: true },
-    profileColor: { type: String, default: 'bg-purple-800 text-white'},
+    profileColor: { type: String, default: 'bg-purple-800 text-white' },
     profilePicture: { type: String, default: '' },
     profileAvatar: { type: String, default: '' }
 })
 
 const currentProfileImage = ref(
     props.profilePicture || props.profileAvatar || ''
-);
+)
 
 const isLoggingOut = ref(false)
 const showFeedback = ref(false)
@@ -232,6 +227,24 @@ function openChangePassword() {
     showChangePassword.value = true
     closeMenu()
 }
+
+function handleProfileUpdate(event) {
+    const { type, imageUrl } = event.detail || {}
+
+    if (!imageUrl) return
+
+    if (type === 'upload' || type === 'preset') {
+        currentProfileImage.value = imageUrl
+    }
+}
+
+onMounted(() => {
+    window.addEventListener('profile-updated', handleProfileUpdate)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('profile-updated', handleProfileUpdate)
+})
 
 async function logoutForm() {
     isLoggingOut.value = true
