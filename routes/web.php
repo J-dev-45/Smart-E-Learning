@@ -207,7 +207,9 @@ Route::middleware(['auth','Admin'])->group(function(){
             ->take(20)
             ->get();
 
-        $users_names = User::whereIn('id', $leaderboard->pluck('user_id'))->select('id','name')->get();
+        $users = User::whereIn('id', $leaderboard->pluck('user_id'))->select('id','name','profile_color')->get();
+
+        $total_feedbacks = Feedback::count();
 
         return view('Admin.Pages.Dashboard', compact(
             'total_users',
@@ -215,7 +217,8 @@ Route::middleware(['auth','Admin'])->group(function(){
             'total_subjects',
             'recent_activities',
             'leaderboard',
-            'users_names'
+            'users',
+            'total_feedbacks'
         ));
     })->name('dashboard_page');
 
@@ -253,9 +256,16 @@ Route::middleware(['auth','Admin'])->group(function(){
         $feedbacks = Feedback::select('id', 'student_name', 'feedback_message', 'question_id', 'replied_by', 'reply_message', 'status', 'created_at')->get();
 
         $questions = Questions::whereIn('id', $feedbacks->pluck('question_id'))->get();
+
+        $total_feedbacks = $feedbacks->count();
+        $total_new_feedbacks = $feedbacks->where('status', 'New')->count();
+        $total_done_feedbacks = $feedbacks->where('status', 'Done')->count();
         return view('Admin.Pages.Feedbacks', compact(
             'feedbacks',
-            'questions'
+            'questions',
+            'total_feedbacks',
+            'total_new_feedbacks',
+            'total_done_feedbacks',
         ));
     })->name('feedbacks_page');
 

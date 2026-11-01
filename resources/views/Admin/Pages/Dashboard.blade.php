@@ -58,12 +58,13 @@
                     :total-user="{{$total_users}}"
                     :total-subjects="{{$total_subjects}}"
                     :total-admins="{{$total_admins}}"
+                    :total-feedbacks="{{$total_feedbacks}}"
                 ></dashboard-cards>
 
                 <overview
                 :recent-activities='@json($recent_activities)'
                 :leaderboard='@json($leaderboard)'
-                :users-names='@json($users_names)'
+                :users='@json($users)'
                 ></overview>
 
                 <div class="h-[calc(4rem+env(safe-area-inset-bottom))] shrink-0 md:hidden"></div>

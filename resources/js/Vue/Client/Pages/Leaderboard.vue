@@ -2,7 +2,7 @@
 
     <!-- ------------------------------ EMPTY STATE ------------------------------ -->
     <div v-if="!leaderboard.length" class="w-full sm:w-[85%] lg:w-[65%] px-4">
-        <div class="rounded-xl border border-dashed border-[#CECBF6]/20 bg-white/[0.03] backdrop-blur-sm
+        <div class="rounded-2xl border border-dashed border-[#CECBF6]/20 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20
                     flex flex-col items-center text-center px-6 py-16 gap-4">
 
             <div class="w-16 h-16 rounded-full border border-[#FFD558]/30 bg-[#FFD558]/[0.06]
@@ -30,18 +30,18 @@
 
         <div class="flex items-end justify-center gap-5 sm:gap-10 md:gap-14 w-full px-4">
 
-            <!-- ----------------------------------------------------- SECOND ----------------------------------------------------------------- -->
+            <!-- ----------------------------------------------------- SECOND (cyan) ----------------------------------------------------------------- -->
 
             <div class="flex flex-col items-center gap-3">
 
                 <!-- No 2nd place yet -->
                 <div v-if="!leaderboard[1]"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-dashed border-[#CECBF6]/20 bg-white/[0.03]">
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-dashed border-[#22D3EE]/25 bg-[#22D3EE]/[0.04]">
                 </div>
 
                 <!-- Initials avatar -->
                 <div v-else-if="!getTop(leaderboard[1].user_id)?.profile_picture"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center ring-4 ring-[#22D3EE]/60"
                     :class="getTop(leaderboard[1].user_id)?.profile_color"
                 >
                     <span class="text-3xl font-semibold">
@@ -53,7 +53,7 @@
                 <img v-else
                     :src="getTop(leaderboard[1].user_id).profile_picture"
                     :alt="getTop(leaderboard[1].user_id)?.name"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-4 ring-[#22D3EE]/60"
                 />
 
                 <span class="text-sm sm:text-base font-semibold text-center leading-tight"
@@ -61,9 +61,9 @@
                 >
                     {{ getTop(leaderboard[1]?.user_id)?.name }} {{ getTop(leaderboard[1]?.user_id)?.id === myId ? ' (You)' : '' }}
                 </span>
-                <div class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5">
-                    <span class="text-xl sm:text-2xl font-bold text-white/70">2nd</span>
-                    <span class="text-[10px] sm:text-xs font-medium text-white/40">
+                <div class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border border-[#22D3EE]/30 bg-[#22D3EE]/[0.06] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5">
+                    <span class="text-xl sm:text-2xl font-bold text-[#7EE3F5]">2nd</span>
+                    <span class="text-[10px] sm:text-xs font-medium text-[#7EE3F5]/60">
                         {{ leaderboard[1]
                             ? `${leaderboard[1].points} ${leaderboard[1].points === 1 ? 'point' : 'points'}`
                             : 'No 2nd Place yet'
@@ -72,13 +72,13 @@
                 </div>
             </div>
 
-            <!-- ----------------------------------------------------- FIRST ----------------------------------------------------------------- -->
+            <!-- ----------------------------------------------------- FIRST (gold) ----------------------------------------------------------------- -->
 
             <div class="flex flex-col items-center gap-3">
 
                 <!-- Initials avatar -->
                 <div v-if="leaderboard[0] && !getTop(leaderboard[0].user_id)?.profile_picture"
-                    class="w-32 h-32 sm:w-36 sm:h-36 rounded-full flex items-center justify-center ring-4 ring-yellow-300"
+                    class="w-32 h-32 sm:w-36 sm:h-36 rounded-full flex items-center justify-center ring-4 ring-[#FFD558]/70"
                     :class="getTop(leaderboard[0].user_id)?.profile_color"
                 >
                     <span class="text-5xl font-semibold">
@@ -90,7 +90,7 @@
                 <img v-else-if="leaderboard[0]"
                     :src="getTop(leaderboard[0].user_id).profile_picture"
                     :alt="getTop(leaderboard[0].user_id)?.name"
-                    class="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover ring-4 ring-yellow-300"
+                    class="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover ring-4 ring-[#FFD558]/70"
                 />
 
                 <span class="text-base sm:text-lg font-bold text-center leading-tight"
@@ -109,18 +109,18 @@
                 </div>
             </div>
 
-            <!-- ----------------------------------------------------- THIRD ----------------------------------------------------------------- -->
+            <!-- ----------------------------------------------------- THIRD (violet) ----------------------------------------------------------------- -->
 
             <div class="flex flex-col items-center gap-3">
 
                 <!-- No 3rd place yet -->
                 <div v-if="!leaderboard[2]"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-dashed border-[#CECBF6]/20 bg-white/[0.03]">
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-dashed border-[#8B5CF6]/25 bg-[#8B5CF6]/[0.04]">
                 </div>
 
                 <!-- Initials avatar -->
                 <div v-else-if="!getTop(leaderboard[2].user_id)?.profile_picture"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center ring-4 ring-[#8B5CF6]/60"
                     :class="getTop(leaderboard[2].user_id)?.profile_color"
                 >
                     <span class="text-3xl font-semibold">
@@ -132,7 +132,7 @@
                 <img v-else
                     :src="getTop(leaderboard[2].user_id).profile_picture"
                     :alt="getTop(leaderboard[2].user_id)?.name"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-4 ring-[#8B5CF6]/60"
                 />
 
                 <span class="text-sm sm:text-base font-semibold text-center leading-tight"
@@ -140,9 +140,9 @@
                 >
                     {{ getTop(leaderboard[2]?.user_id)?.name }} {{ getTop(leaderboard[2]?.user_id)?.id === myId ? ' (You)' : '' }}
                 </span>
-                <div class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5">
-                    <span class="text-xl sm:text-2xl font-bold text-white/70">3rd</span>
-                    <span class="text-[10px] sm:text-xs font-medium text-white/40">
+                <div class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border border-[#8B5CF6]/30 bg-[#8B5CF6]/[0.08] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5">
+                    <span class="text-xl sm:text-2xl font-bold text-[#B9A6F0]">3rd</span>
+                    <span class="text-[10px] sm:text-xs font-medium text-[#B9A6F0]/60">
                         {{ leaderboard[2]
                             ? `${leaderboard[2].points} ${leaderboard[2].points === 1 ? 'point' : 'points'}`
                             : 'No 3rd Place yet'
@@ -156,7 +156,7 @@
         <!-- ----------------------------------------------------- TABLE (4th and below) ----------------------------------------------------------------- -->
 
         <div v-if="leaderboard.length > 3" class="w-full sm:w-[85%] lg:w-[65%] pt-10 px-4">
-            <div class="rounded-xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm overflow-hidden">
+            <div class="rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 overflow-hidden">
 
                 <div class="flex items-center px-5 py-3 text-xs font-medium text-white/45 border-b border-[#CECBF6]/10">
                     <span class="w-12">Rank</span>
@@ -165,14 +165,14 @@
                 </div>
 
                 <div v-for="(lb, index) in leaderboard.slice(3)" :key="lb.id"
-                    class="flex items-center px-5 py-3.5 border-b border-[#CECBF6]/10 last:border-b-0 hover:bg-white/[0.02] transition-colors duration-200">
-                    <span class="w-12 text-sm font-semibold text-white/60">{{ ordinal(index + 4) }}</span>
+                    class="flex items-center px-5 py-3.5 border-b border-[#CECBF6]/10 last:border-b-0 hover:bg-white/[0.05] transition-colors duration-200">
+                    <span class="w-12 text-sm font-semibold text-[#B9A6F0]/70">{{ ordinal(index + 4) }}</span>
                     <span class="flex-1 text-sm font-medium"
                         :class="getTop(lb.user_id)?.id === myId ? 'text-green-500' : ''"
                     >
                         {{ getName(lb.user_id) }} {{ getTop(lb.user_id)?.id === myId ? ' (You)' : '' }}
                     </span>
-                    <span class="text-sm font-bold text-white/70">{{ lb.points }} pts</span>
+                    <span class="text-sm font-bold tabular-nums text-white/70">{{ lb.points }} pts</span>
                 </div>
 
             </div>

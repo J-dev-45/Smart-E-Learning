@@ -1,12 +1,10 @@
 <template>
-    <!-- Root: on md+ it fills the space left under the cards (flex-1) and the list scrolls inside it.
-         On mobile it keeps its natural height and the <main> element scrolls instead. -->
     <div class="w-full min-w-0 shrink-0 md:shrink md:flex-1 md:min-h-[320px] flex flex-col gap-4">
         <div class="w-full shrink-0 flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div class="relative w-full sm:w-[320px]">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none">
+                    class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 z-10 text-white/50 pointer-events-none">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
@@ -15,23 +13,24 @@
                     type="search"
                     placeholder="Search by ID or Name..."
                     aria-label="Search users by ID or name"
-                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-md text-base sm:text-sm text-white placeholder:text-gray-500
-                           bg-[#CECBF6]/6 border-[1.5px] border-[#CECBF6]/15 outline-none
-                           focus:border-[#CECBF6]/30 focus:bg-[#CECBF6]/10 transition-all"
+                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-xl text-base sm:text-sm text-white placeholder:text-white/40
+                        appearance-none [color-scheme:dark]
+                        bg-white/[0.03] border border-[#CECBF6]/15 outline-none
+                        focus:border-[#8B5CF6]/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-[#8B5CF6]/30 transition-all duration-200"
                 >
             </div>
-            <span class="text-xs text-gray-400 sm:shrink-0" aria-live="polite">
+            <span class="text-xs font-medium text-white/45 sm:shrink-0" aria-live="polite">
                 {{ filteredUsers.length }} {{ filteredUsers.length === 1 ? 'user' : 'users' }}
             </span>
         </div>
 
         <div
-            class="w-full min-w-0 border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm rounded-md overflow-hidden
+            class="w-full min-w-0 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 overflow-hidden
                    md:flex-1 md:min-h-0 md:flex md:flex-col"
         >
             <!-- Column header: table layout only from lg (1024px) up -->
             <div
-                class="hidden lg:grid shrink-0 gap-3 px-4 py-2.5 border-b border-[#CECBF6]/15 text-xs font-semibold text-gray-400"
+                class="hidden lg:grid shrink-0 gap-3 px-4 py-2.5 border-b border-[#CECBF6]/10 text-xs font-medium text-white/45"
                 :class="gridCols"
             >
                 <span>ID Number</span>
@@ -48,10 +47,10 @@
                     class="flex flex-col gap-3 px-4 py-3
                            lg:grid lg:items-center lg:gap-3
                            border-b border-[#CECBF6]/10 last:border-b-0
-                           hover:bg-[#CECBF6]/5 transition-colors"
+                           hover:bg-white/[0.05] transition-colors duration-200"
                     :class="gridCols"
                 >
-                    <span class="hidden lg:block text-xs text-gray-400 font-mono truncate">
+                    <span class="hidden lg:block text-xs text-white/45 font-mono truncate tabular-nums">
                         {{ user.id_number }}
                     </span>
 
@@ -64,17 +63,17 @@
                         </div>
 
                         <div class="flex flex-col min-w-0 flex-1">
-                            <span class="text-sm text-white truncate" :title="user.name">
+                            <span class="text-sm font-medium text-white truncate" :title="user.name">
                                 {{ user.name }}
                             </span>
-                            <span class="lg:hidden text-[11px] text-gray-400 font-mono truncate">
+                            <span class="lg:hidden text-[11px] text-white/45 font-mono truncate tabular-nums">
                                 {{ user.id_number }}
                             </span>
                         </div>
 
                         <!-- Role badge inside the name cell until the dedicated Role column appears (xl) -->
                         <span
-                            class="xl:hidden shrink-0 inline-flex px-2 py-1 rounded-md text-[11px] font-medium border"
+                            class="xl:hidden shrink-0 inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-medium"
                             :class="roleBadge(user.role)"
                         >
                             {{ user.role }}
@@ -82,7 +81,7 @@
                     </div>
 
                     <span
-                        class="text-xs text-gray-400 font-mono truncate min-w-0"
+                        class="text-xs text-white/45 font-mono truncate min-w-0"
                         :title="user.email"
                     >
                         {{ user.email }}
@@ -90,7 +89,7 @@
 
                     <span class="hidden xl:flex justify-center">
                         <span
-                            class="inline-flex px-2 py-1 rounded-md text-[11px] font-medium border"
+                            class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-medium"
                             :class="roleBadge(user.role)"
                         >
                             {{ user.role }}
@@ -98,16 +97,17 @@
                     </span>
 
                     <div class="flex items-center gap-2 lg:gap-1.5 lg:justify-end">
+                        <!-- PROMOTE (violet) -->
                         <button
                             v-if="user.role === 'Student'"
                             type="button"
                             @click="promoteUser(user.id)"
                             :aria-label="`Promote ${user.name}`"
                             title="Promote"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-md text-xs font-medium
-                                bg-emerald-500/10 border-[1.5px] border-emerald-500/25 text-emerald-300
-                                hover:bg-emerald-500/20 hover:border-emerald-500/40
-                                active:scale-95 transition-all cursor-pointer"
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
+                                text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20
+                                hover:bg-[#8B5CF6]/25
+                                active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="2" stroke="currentColor" class="size-3.5 shrink-0">
@@ -116,16 +116,17 @@
                             <span class="lg:hidden xl:inline">Promote</span>
                         </button>
 
+                        <!-- DEMOTE (neutral, amber on hover) -->
                         <button
                             v-else
                             type="button"
                             @click="demoteUser(user.id)"
                             :aria-label="`Demote ${user.name}`"
                             title="Demote"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-md text-xs font-medium
-                                bg-[#CECBF6]/5 border-[1.5px] border-[#CECBF6]/15 text-gray-300
-                                hover:bg-amber-500/10 hover:border-amber-500/30 hover:text-amber-300
-                                active:scale-95 transition-all cursor-pointer"
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
+                                text-white/60 bg-white/[0.04] ring-1 ring-[#CECBF6]/15
+                                hover:bg-amber-400/15 hover:ring-amber-400/25 hover:text-amber-300
+                                active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="2" stroke="currentColor" class="size-3.5 shrink-0">
@@ -134,15 +135,16 @@
                             <span class="lg:hidden xl:inline">Demote</span>
                         </button>
 
+                        <!-- DELETE (red) -->
                         <button
                             type="button"
                             @click="deleteUser(user.id)"
                             :aria-label="`Delete ${user.name}`"
                             title="Delete"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-md text-xs font-medium
-                                bg-red-500/10 border-[1.5px] border-red-500/25 text-red-300
-                                hover:bg-red-500 hover:border-red-500 hover:text-white
-                                active:scale-95 transition-all cursor-pointer"
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
+                                text-red-300 bg-red-500/15 ring-1 ring-red-500/20
+                                hover:bg-red-500 hover:ring-red-500 hover:text-white
+                                active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-3.5 shrink-0">
@@ -156,7 +158,7 @@
 
                 <li
                     v-if="filteredUsers.length === 0"
-                    class="px-4 py-8 text-center text-sm text-gray-500"
+                    class="px-4 py-8 text-center text-sm text-white/45"
                 >
                     No users found.
                 </li>
@@ -196,9 +198,7 @@ const props = defineProps({
     }
 });
 
-// Stacked cards below lg. Table from lg (role shown as a badge in the name cell).
-// Dedicated Role column + labelled action buttons from xl.
-// Action column widths fit 3 icon buttons (~114px) / 3 labelled buttons (~253px).
+
 const gridCols =
     'lg:grid-cols-[100px_minmax(0,1.2fr)_minmax(0,1fr)_124px] ' +
     'xl:grid-cols-[110px_minmax(0,1.2fr)_minmax(0,1fr)_100px_264px]';
@@ -237,8 +237,8 @@ function initials(name) {
 
 function roleBadge(role) {
     return role === 'Admin'
-        ? 'bg-[#E04A4A]/10 border-[#E04A4A]/20 text-[#F09595]'
-        : 'bg-white/5 border-white/10 text-gray-300';
+        ? 'bg-[#E04A4A]/15 ring-1 ring-[#E04A4A]/20 text-[#F09595]'
+        : 'bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 text-[#B9A6F0]'
 }
 
 function promoteUser(id) {

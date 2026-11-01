@@ -1,10 +1,9 @@
-
 <template>
     <div class="col-span-full flex items-center justify-end">
         <button
             type="button"
             @click="addSubjectOpen()"
-            class="flex items-center justify-center gap-1.5 bg-white text-black rounded-md font-bold text-xs whitespace-nowrap cursor-pointer h-8 w-8 sm:h-9 sm:w-auto sm:px-4 transition-all duration-200 hover:bg-[#CECBF6] hover:text-[#1A0B2E] active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CECBF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
+            class="flex items-center justify-center gap-1.5 text-white bg-[#8B5CF6] rounded-xl font-bold text-xs whitespace-nowrap cursor-pointer h-8 w-8 sm:h-9 sm:w-auto sm:px-4 transition-all duration-200 hover:bg-[#8B5CF6]/85 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
         >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-3.5 shrink-0">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -16,11 +15,12 @@
     <div
         v-for="subject in localSubjects"
         :key="subject.id"
-        class="group relative flex min-w-0 flex-col justify-between gap-6 overflow-clip rounded-2xl border border-[#CECBF6]/15 bg-gradient-to-b from-[#CECBF6]/10 to-[#CECBF6]/[0.03] p-5 shadow-sm shadow-black/20 transition-colors duration-300 hover:border-[#CECBF6]/45 hover:from-[#CECBF6]/[0.16] hover:to-[#CECBF6]/[0.08] md:p-6"
+        class="group relative flex min-w-0 flex-col justify-between gap-6 overflow-clip rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm p-5 shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05] md:p-6"
     >
         <div class="flex items-start justify-between gap-3">
-            <div class="shrink-0 rounded-xl border border-[#CECBF6]/20 bg-[#CECBF6]/10 p-3 shadow-inner shadow-[#CECBF6]/5">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-[#CECBF6]">
+            <!-- Icon tile (violet) -->
+            <div class="flex items-center justify-center shrink-0 w-11 h-11 rounded-xl bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 transition-colors duration-200 group-hover:bg-[#8B5CF6]/25">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-[#B9A6F0]">
                     <path
                         stroke-linecap="round"
                         stroke-linejoin="round"
@@ -29,14 +29,15 @@
                 </svg>
             </div>
 
-            <span class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-[#CECBF6]/20 bg-[#CECBF6]/10 px-2.5 py-1 text-[11px] font-semibold text-[#CECBF6]/80">
-                <span class="size-1.5 rounded-full bg-[#CECBF6]"></span>
+            <!-- Modules badge (cyan) -->
+            <span class="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-[#22D3EE]/15 ring-1 ring-[#22D3EE]/20 px-2.5 py-1 text-[11px] font-semibold tabular-nums text-[#7EE3F5]">
+                <span class="size-1.5 rounded-full bg-[#22D3EE]"></span>
                 {{ getAvailableModulesCount(subject.id) }} Modules
             </span>
         </div>
 
         <div class="flex min-w-0 flex-col gap-2">
-            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#CECBF6]/50">
+            <span class="text-[10px] font-bold uppercase tracking-[0.2em] text-[#B9A6F0]/70">
                 {{ subject.subject_code }}
             </span>
 
@@ -47,9 +48,10 @@
 
         <div class="border-t border-[#CECBF6]/10 pt-4">
             <div class="flex items-center gap-2">
+                <!-- View (solid violet) -->
                 <a
                     :href="`/subject/${url(subject.subject_name)}/${subject.id}`"
-                    class="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-lg bg-[#CECBF6]/85 py-2.5 text-center text-xs font-bold text-[#090014] transition-all duration-300 hover:bg-[#CECBF6] active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CECBF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
+                    class="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl bg-[#8B5CF6] py-2.5 text-center text-xs font-bold text-white transition-all duration-200 hover:bg-[#8B5CF6]/85 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
                 >
                     View
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5 transition-transform duration-300 group-hover:translate-x-1">
@@ -57,24 +59,26 @@
                     </svg>
                 </a>
 
+                <!-- Edit (neutral, amber on hover, same as Demote) -->
                 <button
                     type="button"
                     @click="openEditSubject(subject)"
                     aria-label="Edit subject"
                     title="Edit"
-                    class="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-[#CECBF6]/20 bg-[#CECBF6]/10 text-[#CECBF6] transition-all duration-300 hover:border-[#CECBF6]/50 hover:bg-[#CECBF6]/20 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CECBF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
+                    class="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-xl text-white/60 bg-white/[0.04] ring-1 ring-[#CECBF6]/15 transition-all duration-200 hover:bg-amber-400/15 hover:ring-amber-400/25 hover:text-amber-300 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CECBF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                     </svg>
                 </button>
 
+                <!-- Delete (red) -->
                 <button
                     type="button"
                     @click="openDeleteSubject(subject)"
                     aria-label="Delete subject"
                     title="Delete"
-                    class="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-lg border border-red-400/20 bg-red-500/10 text-red-300 transition-all duration-300 hover:border-red-400/50 hover:bg-red-500/20 hover:text-red-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
+                    class="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-xl text-red-300 bg-red-500/15 ring-1 ring-red-500/20 transition-all duration-200 hover:bg-red-500 hover:ring-red-500 hover:text-white active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />

@@ -8,7 +8,7 @@
         >
             <a
                 :href="`/subject/${url(props.subjectName)}/${props.subjectId}`"
-                class="cursor-pointer group text-gray-400 hover:text-white flex items-center gap-1.5 transition-colors"
+                class="cursor-pointer group text-white/60 hover:text-white flex items-center gap-1.5 transition-colors duration-200"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 transition-transform group-hover:-translate-x-0.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -17,7 +17,7 @@
                 <span class="text-sm font-medium">Back To Modules</span>
             </a>
 
-            <div class="text-xs text-gray-400">
+            <div class="text-xs font-medium text-white/45 tabular-nums">
                 {{ filteredQuestions.length }}
                 question{{ filteredQuestions.length === 1 ? '' : 's' }}
             </div>
@@ -31,16 +31,16 @@
                     {{ subjectName }}
                 </span>
 
-                <!-- ADD QUESTION BUTTON -->
+                <!-- ADD QUESTION BUTTON (solid violet) -->
                 <button
                     type="button"
                     @click="openAddQuestionModal"
-                    class="flex items-center justify-center gap-1.5 bg-white text-black rounded-md font-bold text-xs whitespace-nowrap cursor-pointer
+                    class="flex items-center justify-center gap-1.5 text-white bg-[#8B5CF6] rounded-xl font-bold text-xs whitespace-nowrap cursor-pointer
                     h-8 w-8 sm:h-9 sm:w-auto sm:px-4
                     transition-all duration-200
-                    hover:bg-[#CECBF6] hover:text-[#1A0B2E]
+                    hover:bg-[#8B5CF6]/85
                     active:scale-95
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#CECBF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
+                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-3.5 shrink-0">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -53,8 +53,8 @@
             <!-- MODULE (left) & TOPIC (right) -->
             <div class="w-full flex items-center gap-3 flex-wrap text-sm">
                 <div class="flex items-center gap-2">
-                    <span class="font-semibold">Module</span>
-                    <span class="px-2.5 py-0.5 rounded-full border border-white/20 text-xs">
+                    <span class="font-medium text-white/45">Module</span>
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20">
                         {{ props.moduleName }}
                     </span>
                 </div>
@@ -63,7 +63,7 @@
 
             <!-- SEARCH -->
             <div class="relative w-full">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute left-4 top-1/2 -translate-y-1/2 size-5 text-gray-500 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 size-5 text-white/50 pointer-events-none">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
 
@@ -71,7 +71,7 @@
                     v-model="searchQuery"
                     type="text"
                     placeholder="Search by question..."
-                    class="w-full pl-11 pr-10 py-3 rounded-lg border border-white/10 bg-[#150022]/60 text-sm text-white placeholder:text-gray-500 focus:outline-none focus:border-[#CECBF6]/40 transition-colors"
+                    class="w-full pl-11 pr-10 py-3 rounded-xl border border-[#CECBF6]/15 bg-white/[0.03] text-sm text-white placeholder:text-white/40 outline-none focus:border-[#8B5CF6]/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-[#8B5CF6]/30 transition-all duration-200"
                 />
 
                 <button
@@ -79,7 +79,7 @@
                     type="button"
                     @click="searchQuery = ''"
                     title="Clear search"
-                    class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-gray-500 hover:text-white transition-colors cursor-pointer"
+                    class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center text-white/40 hover:text-white transition-colors duration-200 cursor-pointer"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -91,11 +91,11 @@
         <!-- QUESTIONS TABLE -->
         <div class="p-5 flex-1 min-h-0 flex flex-col">
             <div
-                class="w-full border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm rounded-md overflow-hidden flex-1 min-h-0 flex flex-col"
+                class="w-full rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 overflow-hidden flex-1 min-h-0 flex flex-col"
             >
                 <!-- Table Header -->
                 <div
-                    class="grid md:grid-cols-[80px_1fr_0.5fr_120px_150px] grid-cols-[60px_1fr_100px] px-4 py-2.5 border-b border-[#CECBF6]/15 text-xs font-semibold text-gray-400"
+                    class="grid md:grid-cols-[80px_1fr_0.5fr_120px_150px] grid-cols-[60px_1fr_100px] px-4 py-2.5 border-b border-[#CECBF6]/10 text-xs font-medium text-white/45"
                 >
                     <span>ID</span>
                     <span>Question</span>
@@ -109,14 +109,14 @@
                     <li
                         v-for="(question, index) in filteredQuestions"
                         :key="question.id"
-                        class="grid md:grid-cols-[80px_1fr_0.5fr_120px_150px] grid-cols-[60px_1fr_100px] items-center px-4 py-3 border-b border-[#CECBF6]/10 hover:bg-[#CECBF6]/5 transition-colors"
+                        class="grid md:grid-cols-[80px_1fr_0.5fr_120px_150px] grid-cols-[60px_1fr_100px] items-center px-4 py-3 border-b border-[#CECBF6]/10 last:border-b-0 hover:bg-white/[0.05] transition-colors duration-200"
                     >
-                        <span class="text-xs text-gray-400 font-mono">
+                        <span class="text-xs text-white/45 font-mono tabular-nums">
                             #{{ String(index + 1).padStart(3, '0') }}
                         </span>
 
                         <span
-                            class="text-xs text-gray-300 truncate pr-2"
+                            class="text-xs text-white/70 truncate pr-2"
                             :title="question.question"
                         >
                             {{ question.question }}
@@ -125,26 +125,26 @@
                         <div
                             class="md:flex hidden items-center gap-3 min-w-0 pr-2"
                         >
-                            <span class="text-sm truncate text-emerald-500">
+                            <span class="text-sm truncate text-emerald-300">
                                 {{ question.answer }}
                             </span>
                         </div>
 
                         <span class="md:flex hidden">
                             <span
-                                class="inline-flex px-2 py-1 rounded-md text-[11px] font-medium text-gray-400"
+                                class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-medium text-[#7EE3F5] bg-[#22D3EE]/15 ring-1 ring-[#22D3EE]/20"
                             >
                                 {{ questionTypeLabel(question.question_type) }}
                             </span>
                         </span>
 
                         <div class="flex items-center gap-1.5 sm:gap-2">
-                            <!-- VIEW -->
+                            <!-- VIEW (tinted violet) -->
                             <button
                                 type="button"
                                 @click="openViewModal(question)"
                                 title="View"
-                                class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-md text-xs font-medium bg-[#8B5CF6]/10 border-[1.5px] border-[#8B5CF6]/25 text-[#CECBF6] hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/40 active:scale-95 transition-all cursor-pointer"
+                                class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-xl text-xs font-medium text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 hover:bg-[#8B5CF6]/25 active:scale-95 transition-all duration-200 cursor-pointer"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5 shrink-0" >
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -153,12 +153,12 @@
                                 <span class="hidden md:inline">View</span>
                             </button>
 
-                            <!-- EDIT -->
+                            <!-- EDIT (neutral, amber on hover) -->
                             <button
                                 type="button"
                                 @click="editQuestionOpen(question.id)"
                                 title="Edit"
-                                class="flex items-center justify-center px-2 sm:px-2.5 py-1.5 rounded-md border-[1.5px] border-[#CECBF6]/15 text-gray-300 hover:bg-[#CECBF6]/10 hover:border-[#CECBF6]/30 hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
+                                class="flex items-center justify-center px-2 sm:px-2.5 py-1.5 rounded-xl text-white/60 bg-white/[0.04] ring-1 ring-[#CECBF6]/15 hover:bg-amber-400/15 hover:ring-amber-400/25 hover:text-amber-300 active:scale-95 transition-all duration-200 cursor-pointer shrink-0"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -176,12 +176,12 @@
                                 </svg>
                             </button>
 
-                            <!-- DELETE -->
+                            <!-- DELETE (red) -->
                             <button
                                 type="button"
                                 @click="deleteQuestionOpen(question.id)"
                                 title="Delete"
-                                class="flex items-center justify-center px-2 sm:px-2.5 py-1.5 rounded-md text-xs font-medium bg-red-500/10 border-[1.5px] border-red-500/25 text-red-300 hover:bg-red-500 hover:border-red-500 hover:text-white active:scale-95 transition-all cursor-pointer shrink-0"
+                                class="flex items-center justify-center px-2 sm:px-2.5 py-1.5 rounded-xl text-xs font-medium text-red-300 bg-red-500/15 ring-1 ring-red-500/20 hover:bg-red-500 hover:ring-red-500 hover:text-white active:scale-95 transition-all duration-200 cursor-pointer shrink-0"
                             >
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -203,7 +203,7 @@
 
                     <li
                         v-if="filteredQuestions.length === 0"
-                        class="px-4 py-8 text-center text-sm text-gray-500"
+                        class="px-4 py-8 text-center text-sm text-white/45"
                     >
                         No Questions found.
                     </li>

@@ -2,46 +2,42 @@
     <div
         v-for="subject in subjectsData"
         :key="subject.order"
-        class="group relative flex flex-col justify-between md:p-5 p-2 gap-4 rounded-xl border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 transition-all duration-300 hover:border-[#CECBF6]/40 hover:bg-[#CECBF6]/10">
+        class="group relative flex flex-col justify-between p-4 md:p-5 gap-4 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
+
         <div class="flex items-start justify-between">
-            <div  class="p-2.5 rounded-lg bg-[#CECBF6]/10">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-[#CECBF6]">
-                    <path stroke-linecap="round" stroke-linejoin="round" :d="icons.find(ic=>ic.subject === subject.subject_name)?.d" />
+            <div class="flex items-center justify-center shrink-0 w-11 h-11 rounded-xl bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 transition-colors duration-200 group-hover:bg-[#8B5CF6]/25">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-[#B9A6F0]">
+                    <path stroke-linecap="round" stroke-linejoin="round" :d="icons.find(ic => ic.subject === subject.subject_name)?.d" />
                 </svg>
             </div>
-
 
             <div class="relative size-11 shrink-0">
                 <svg class="size-11 -rotate-90" viewBox="0 0 40 40">
-                    <circle cx="20" cy="20" r="16" fill="none" stroke="#CECBF6" stroke-opacity="0.12" stroke-width="4"/>
-                    <circle cx="20" cy="20" r="16" fill="none" stroke="#CECBF6" stroke-width="4" stroke-linecap="round" stroke-dasharray="100.5" :stroke-dashoffset="100.5 - (percentage(subject.id) / 100) * 100.5"/>
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="#22D3EE" stroke-opacity="0.15" stroke-width="4"/>
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="#22D3EE" stroke-width="4" stroke-linecap="round" stroke-dasharray="100.5" :stroke-dashoffset="100.5 - (percentage(subject.id) / 100) * 100.5"/>
                 </svg>
-                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold text-[#CECBF6]">{{ percentage(subject.id) }}%</span>
+                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold tabular-nums text-[#7EE3F5]">{{ percentage(subject.id) }}%</span>
             </div>
         </div>
+
         <div class="flex flex-col gap-1">
-            <span class="text-[10px] font-bold tracking-widest text-[#CECBF6]/50">
-                <!-- {{ acronym(subject.subject_name) }} -->
-                  {{ subject.subject_code }}
+            <span class="text-[10px] font-bold tracking-widest text-[#B9A6F0]/70">
+                {{ subject.subject_code }}
             </span>
             <h3 class="text-base font-bold leading-snug">{{ subject.subject_name }}</h3>
-            <p class="text-xs font-semibold text-gray-500">{{ getAvailableModulesCount(subject.id) }} quizzes available</p>
+            <p class="text-xs font-medium text-white/45">{{ getAvailableModulesCount(subject.id) }} quizzes available</p>
         </div>
-        <div  class="flex items-center gap-2 pt-1">
-            
 
-            <a :href="`/learn/${url(subject.subject_name)}/${subject.id}`" 
-                class="flex-1 text-center text-xs font-bold   rounded-lg py-2.5 transition-colors "
-                :class="getSubjectStarted(subject.id) 
-                    ? 'text-[#CECBF6]/85 border-[1.5px] border-[#CECBF6]/85 bg-transparent hover:text-[#090014] hover:bg-[#CECBF6]/85' 
-                    : 'text-[#090014] bg-[#CECBF6]/85 '"
-            >
-                  {{ getSubjectStarted(subject.id) ? 'Continue Learning' : 'Learn' }}
+        <div class="flex items-center gap-2 pt-1">
+            <a :href="`/learn/${url(subject.subject_name)}/${subject.id}`"
+                class="flex-1 text-center text-xs font-bold rounded-xl py-2.5 transition-colors duration-200"
+                :class="getSubjectStarted(subject.id)
+                    ? 'text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 hover:bg-[#8B5CF6]/25'
+                    : 'text-white bg-[#8B5CF6] hover:bg-[#8B5CF6]/85'">
+                {{ getSubjectStarted(subject.id) ? 'Continue Learning' : 'Learn' }}
             </a>
         </div>
     </div>
-
-
 </template>
 
 <script setup>

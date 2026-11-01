@@ -36,8 +36,8 @@
                         ></student-profile>
                     @endif
                     <div class="flex flex-col items-center justify-center gap-2">
-                        <span class="text-2xl font-semibold tracking-tight">{{auth()->user()->name}}</span>
-                        <span class="text-xs font-semibold text-white/50 uppercase tracking-wider px-3 py-1 rounded-full border border-white/10 bg-white/[0.04]">Student</span>
+                        <span class="text-2xl font-semibold tracking-tight">{{ auth()->user()->name }}</span>
+                        <span class="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20">{{auth()->user()->role}}</span>
                     </div>
                 </div>
 

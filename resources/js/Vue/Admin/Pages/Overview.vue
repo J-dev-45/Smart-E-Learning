@@ -1,25 +1,24 @@
 <template>
 
-    <div class="w-full shrink-0 md:shrink md:flex-1 md:min-h-0 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-4 md:gap-6">
+    <div class="w-full shrink-0 md:shrink md:flex-1 md:min-h-0 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-4 md:gap-5">
 
         <!-- RECENT ACTIVITY -->
-        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm py-3 pl-3 pr-2 sm:py-4 sm:pl-4 sm:pr-2 rounded-md flex flex-col h-[26rem] md:h-full min-h-0 transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-md font-semibold text-white">Recent Activity</span>
-                
+        <div class="flex flex-col h-[26rem] md:h-full min-h-0 py-4 pl-4 pr-2 sm:py-5 sm:pl-5 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
+            <div class="flex items-center justify-between mb-3 pr-2">
+                <span class="text-base font-semibold text-white/80">Recent activity</span>
             </div>
 
-            <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-1 -mr-1">
+            <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-2">
 
                 <!-- ACTIVITY ITEM -->
                 <li
                     v-for="act in recentActivities"
                     :key="act.id"
-                    class="flex items-start gap-3 py-3 px-3 border-b border-[#CECBF6]/10 last:border-b-0 transition-colors hover:bg-[#CECBF6]/5 rounded-md px-1 -mx-1"
+                    class="flex items-start gap-3 py-3 px-2 -mx-2 rounded-xl border-b border-[#CECBF6]/10 last:border-b-0 transition-colors duration-200 hover:bg-white/[0.05]"
                 >
                     <!-- ICON -->
                     <div
-                        class="shrink-0 w-9 h-9 flex items-center justify-center rounded-md border-[1.5px]"
+                        class="shrink-0 w-9 h-9 flex items-center justify-center rounded-xl"
                         :class="svg_style(act.action)"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
@@ -30,24 +29,23 @@
                     <!-- NAME, MESSAGE, DETAIL PILLS -->
                     <div class="flex flex-col gap-1.5 min-w-0 flex-1">
                         <span class="text-sm leading-snug break-words">
-                            <strong class="text-white font-medium">{{ act.name }}</strong>
-                            <span class="text-gray-400">{{ ' ' + message(act) }}</span>
+                            <strong class="text-white font-semibold">{{ act.name }}</strong>
+                            <span class="text-white/50">{{ ' ' + message(act) }}</span>
                         </span>
 
-                        <!-- Pill row: 2 pills (subject/topic or role change), 1 pill (single detail), or none -->
                         <div v-if="pillLeft(act)" class="flex flex-wrap items-center gap-1.5">
                             <span
-                                class="inline-flex items-center px-2 py-0.5 rounded border text-xs truncate max-w-[140px] sm:max-w-[220px]"
+                                class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium truncate max-w-[140px] sm:max-w-[220px]"
                                 :class="pillLeftStyle(act)"
                             >
                                 {{ pillLeft(act) }}
                             </span>
                             <template v-if="pillRight(act)">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3 text-gray-600 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3 text-white/30 shrink-0">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                                 </svg>
                                 <span
-                                    class="inline-flex items-center px-2 py-0.5 rounded border text-xs truncate max-w-[110px] sm:max-w-[160px]"
+                                    class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium truncate max-w-[110px] sm:max-w-[160px]"
                                     :class="pillRightStyle(act)"
                                 >
                                     {{ pillRight(act) }}
@@ -55,60 +53,58 @@
                             </template>
                         </div>
 
-                        <span class="text-xs text-gray-500">{{ formatTimeAgo(act.created_at) }}</span>
+                        <span class="text-xs font-medium text-white/40">{{ formatTimeAgo(act.created_at) }}</span>
                     </div>
                 </li>
 
                 <li v-if="recentActivities.length === 0" class="flex flex-col items-center justify-center gap-2 py-10 text-center">
-                    <span class="text-gray-500 text-sm">No recent activity yet</span>
+                    <span class="text-sm text-white/45">No recent activity yet</span>
                 </li>
 
             </ul>
         </div>
 
         <!-- LEADERBOARDS -->
-        <div class="border-[1.5px] border-[#CECBF6]/15 bg-[#CECBF6]/6 backdrop-blur-sm p-3 sm:p-4 rounded-md flex flex-col h-[26rem] md:h-full min-h-0 transition-all hover:border-[#CECBF6]/30 hover:bg-[#CECBF6]/10">
-            <div class="flex items-center justify-between mb-3">
-                <span class="text-md font-semibold text-white">Leaderboards</span>
-                <span class="text-xs font-semibold text-gray-300">Top 20</span>
+        <div class="flex flex-col h-[26rem] md:h-full min-h-0 py-4 pl-4 pr-2 sm:py-5 sm:pl-5 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
+            <div class="flex items-center justify-between mb-3 pr-2">
+                <span class="text-base font-semibold text-white/80">Leaderboards</span>
+                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20">Top 20</span>
             </div>
 
-            <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-1 -mr-1">
+            <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-2">
 
                 <li
                     v-for="(rank, index) in sorted_by_points"
                     :key="rank.id"
-                    class="flex items-center gap-3 py-2.5 px-2 rounded-md border-b border-[#CECBF6]/10 last:border-b-0 transition-colors hover:bg-[#CECBF6]/5"
+                    class="flex items-center gap-3 py-2.5 px-2 -mx-2 rounded-xl border-b border-[#CECBF6]/10 last:border-b-0 transition-colors duration-200 hover:bg-white/[0.05]"
                 >
                     <!-- RANK -->
                     <div
-                        class="shrink-0 w-8 h-8 flex items-center justify-center rounded-md border-[1.5px]"
+                        class="shrink-0 w-8 h-8 flex items-center justify-center rounded-xl"
                         :class="rankStyle(index).badge"
                     >
-                        <span
-                            class="font-bold text-sm"
-                            :class="rankStyle(index).text"
-                        >{{ index + 1 }}</span>
+                        <span class="font-bold text-sm tabular-nums" :class="rankStyle(index).text">{{ index + 1 }}</span>
                     </div>
 
                     <!-- AVATAR -->
-                    <div class="shrink-0 w-8 h-8 rounded-full bg-[#4C1D95]/30 border border-[#CECBF6]/15 flex items-center justify-center text-xs font-semibold text-white">
+                    <div :class="[
+                        'shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold',
+                        profileColor(rank.user_id)
+                    ]">
                         {{ initials(userName(rank.user_id)) }}
                     </div>
 
                     <!-- NAME AND SCORE -->
                     <div class="flex flex-col min-w-0 flex-1">
                         <span class="text-sm text-white font-medium truncate">{{ userName(rank.user_id) }}</span>
-                        <span class="text-xs text-gray-500">{{ rank.points.toLocaleString() }} pts</span>
+                        <span class="text-xs font-medium text-white/45 tabular-nums">{{ rank.points.toLocaleString() }} pts</span>
                     </div>
                 </li>
-
-
 
                 <li
                     v-if="leaderboard.length === 0"
                     class="flex flex-col items-center justify-center gap-2 py-10 text-center">
-                    <span class="text-gray-500 text-sm">No rankings yet this month</span>
+                    <span class="text-sm text-white/45">No rankings yet this month</span>
                 </li>
 
             </ul>
@@ -123,14 +119,16 @@
 const props = defineProps({
     recentActivities: { type: Array, default: ()=>[]},
     leaderboard: { type: Array, default: ()=>[]},
-    usersNames: { type: Array, default: ()=>[]}
+    users: { type: Array, default: ()=>[]},
 })
 
 function userName(user_id){
-    return props.usersNames.find(u => u.id === user_id)?.name;
+    return props.users.find(u => u.id === user_id)?.name;
 }
 
-
+function profileColor(user_id){
+    return props.users.find(uid => uid.id === user_id)?.profile_color;
+}
 
 const sorted_by_points = props.leaderboard.sort((a, b) => b.points - a.points);
 
