@@ -1,4 +1,3 @@
-
 <template>
     <Transition
         enter-active-class="transition ease-out duration-150"
@@ -10,10 +9,10 @@
     >
         <div
             v-if="showUserMenu"
+            ref="userMenuRef"
             class="w-[290px] fixed md:top-3 top-[55px] right-0 z-[100] p-3 flex flex-col bg-white rounded-xl shadow-lg ring-1 ring-black/5 gap-3"
         >
             <div class="w-full flex items-center gap-3 px-1">
-
                 <img
                     v-if="currentProfileImage"
                     :src="currentProfileImage"
@@ -33,6 +32,7 @@
                     <span class="font-semibold text-sm text-gray-900 truncate">
                         {{ userName }}
                     </span>
+
                     <span class="text-xs text-gray-400 truncate">
                         {{ userEmail }}
                     </span>
@@ -62,7 +62,7 @@
                 </button>
             </div>
 
-            <div class="h-px bg-gray-100" />
+            <div class="h-px bg-gray-100"></div>
 
             <div class="flex flex-col gap-1">
                 <button
@@ -84,6 +84,7 @@
                             d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z"
                         />
                     </svg>
+
                     <span>Change Password</span>
                 </button>
 
@@ -106,11 +107,12 @@
                             d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z"
                         />
                     </svg>
+
                     <span>Feedback</span>
                 </button>
             </div>
 
-            <div class="h-px bg-gray-100" />
+            <div class="h-px bg-gray-100"></div>
 
             <div class="flex flex-col gap-1">
                 <button
@@ -136,6 +138,7 @@
                             stroke-width="2.5"
                             class="opacity-25"
                         />
+
                         <path
                             d="M21 12a9 9 0 0 0-9-9"
                             stroke="currentColor"
@@ -160,7 +163,9 @@
                         />
                     </svg>
 
-                    <span>{{ isLoggingOut ? 'Logging out...' : 'Log out' }}</span>
+                    <span>
+                        {{ isLoggingOut ? 'Logging out...' : 'Log out' }}
+                    </span>
                 </button>
             </div>
         </div>
@@ -180,19 +185,23 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import Feedback_Form from './Feedback_Form.vue'
 import Change_Password from './Change_Password.vue'
 
 const props = defineProps({
     showUserMenu: { type: Boolean, default: true },
-    userId: { type: Number, required: true },
+    userId: { type: [Number, String], required: true },
     userName: { type: String, required: true },
     userEmail: { type: String, required: true },
     profileColor: { type: String, default: 'bg-purple-800 text-white' },
     profilePicture: { type: String, default: '' },
     profileAvatar: { type: String, default: '' }
 })
+
+const emit = defineEmits(['close-user-menu'])
+
+const userMenuRef = ref(null)
 
 const currentProfileImage = ref(
     props.profilePicture || props.profileAvatar || ''
@@ -203,16 +212,21 @@ const showFeedback = ref(false)
 const showChangePassword = ref(false)
 
 const initials = computed(() =>
-    props.userName
-        .split(' ')
+    String(props.userName ?? '')
+        .split(/\s+/)
         .filter(Boolean)
-        .map(n => n[0])
+        .map(name => name[0])
         .join('')
         .slice(0, 2)
         .toUpperCase()
 )
 
-const emit = defineEmits(['close-user-menu'])
+watch(
+    () => [props.profilePicture, props.profileAvatar],
+    ([picture, avatar]) => {
+        currentProfileImage.value = picture || avatar || ''
+    }
+)
 
 function closeMenu() {
     emit('close-user-menu')
@@ -228,6 +242,18 @@ function openChangePassword() {
     closeMenu()
 }
 
+function handleOutsideClick(event) {
+    if (!props.showUserMenu) return
+
+    // The parent container includes both the profile button and menu.
+    // Ignore clicks inside the menu itself.
+    if (userMenuRef.value?.contains(event.target)) return
+
+    // The parent profile button is handled by the parent component.
+    // Its click uses @click.stop, so this listener won't receive that click.
+    closeMenu()
+}
+
 function handleProfileUpdate(event) {
     const { type, imageUrl } = event.detail || {}
 
@@ -240,10 +266,12 @@ function handleProfileUpdate(event) {
 
 onMounted(() => {
     window.addEventListener('profile-updated', handleProfileUpdate)
+    document.addEventListener('click', handleOutsideClick)
 })
 
 onUnmounted(() => {
     window.removeEventListener('profile-updated', handleProfileUpdate)
+    document.removeEventListener('click', handleOutsideClick)
 })
 
 async function logoutForm() {

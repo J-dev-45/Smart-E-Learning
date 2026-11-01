@@ -9,15 +9,18 @@
     @vite(['resources/css/app.css'])
 
 </head>
-<body class="w-screen h-screen overflow-hidden bg-[#12081F]">
+<body class="w-full h-screen overflow-hidden bg-[#12081F]">
     <div id="app" class="flex flex-col h-screen w-screen overflow-hidden">
 
 
         <main class="main-bg w-full h-screen flex flex-col overflow-y-auto overflow-x-hidden scrollbar-thin">
 
             {{-- HEADER (stays visible while scrolling) --}}
-            <div class="sticky top-0 z-20 shrink-0 bg-[#12081F]">
+            <div id="app" class="flex flex-col h-screen w-full overflow-hidden">
                 <learn-header
+                    :user-id="{{ auth()->id() }}"
+                    user-name="{{ auth()->user()->name }}"
+                    user-email="{{ auth()->user()->email }}"
                     profile-color="{{ auth()->user()->profile_color ?? '' }}"
                     profile-picture="{{ auth()->user()->profile_picture && str_starts_with(auth()->user()->profile_picture, 'profiles/') ? rtrim(config('services.supabase.url'), '/') . '/storage/v1/object/public/' . config('services.supabase.avatar_bucket', 'pictures') . '/' . auth()->user()->profile_picture : (auth()->user()->profile_picture ?? '') }}"
                     profile-avatar="{{ auth()->user()->profile_avatar ? asset(ltrim(auth()->user()->profile_avatar, '/')) : '' }}"

@@ -1,6 +1,6 @@
-
 <template>
     <header class="fixed top-0 shrink-0 z-100 w-full h-[60px] flex items-center justify-between text-white px-5 sharedBG border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20">
+
         <div class="flex items-center">
             <button
                 type="button"
@@ -10,6 +10,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:-translate-x-0.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
                 </svg>
+
                 <span class="hidden sm:inline">Back to Home</span>
                 <span class="sm:hidden">Back</span>
             </button>
@@ -19,12 +20,18 @@
             <span class="font-bold text-base sm:text-xl leading-tight truncate max-w-[40vw] sm:max-w-none">
                 {{ subjectName }}
             </span>
+
             <span class="hidden md:block text-[#CECBF6]/60 text-xs tracking-wide truncate">
                 Work through each module in order. Pass a quiz to unlock the next one on the list.
             </span>
         </div>
 
-        <button type="button" class="py-2 flex items-center justify-center">
+        <!-- Profile Button -->
+        <button
+            type="button"
+            @click.stop="toggleUserMenu"
+            class="py-2 flex items-center justify-center rounded-full cursor-pointer"
+        >
             <img
                 v-if="profilePicture || profileAvatar"
                 :src="profilePicture || profileAvatar"
@@ -35,24 +42,73 @@
             <span
                 v-else
                 :class="[
-                    'rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md',
+                    'rounded-full w-8 h-8 flex items-center justify-center font-semibold text-md',
                     profileColor || 'bg-purple-800 text-white'
                 ]"
             >
                 {{ initials(userName) }}
             </span>
         </button>
+
+        <!-- User Menu -->
+        <User_Menu
+            :show-user-menu="showUserMenu"
+            :user-id="userId"
+            :user-name="userName"
+            :user-email="userEmail"
+            :profile-color="profileColor"
+            :profile-picture="profilePicture"
+            :profile-avatar="profileAvatar"
+            @close-user-menu="closeUserMenu"
+        />
+
     </header>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import User_Menu from './User_Menu.vue'
+
 const props = defineProps({
-    subjectName: { type: String, default: '' },
-    userName: { type: String, required: true },
-    profileColor: { type: String, default: 'bg-purple-800 text-white' },
-    profilePicture: { type: String, default: '' },
-    profileAvatar: { type: String, default: '' }
+    subjectName: {
+        type: String,
+        default: ''
+    },
+    userId: {
+        type: [String, Number],
+        default: ''
+    },
+    userName: {
+        type: String,
+        required: true
+    },
+    userEmail: {
+        type: String,
+        default: ''
+    },
+    profileColor: {
+        type: String,
+        default: 'bg-purple-800 text-white'
+    },
+    profilePicture: {
+        type: String,
+        default: ''
+    },
+    profileAvatar: {
+        type: String,
+        default: ''
+    }
 })
+
+const showUserMenu = ref(false)
+
+function toggleUserMenu() {
+    showUserMenu.value = !showUserMenu.value
+}
+
+function closeUserMenu() {
+    showUserMenu.value = false
+}
 
 function goBack() {
     window.location.href = '/home'

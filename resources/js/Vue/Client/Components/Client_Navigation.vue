@@ -51,32 +51,11 @@
 
         <div class="relative">
             <button
-                v-if="userMenu"
                 type="button"
-                @click="openUserMenu"
+                @click.stop="toggleUserMenu"
                 class="py-2"
-            >
-                <img
-                    v-if="currentProfileImage"
-                    :src="currentProfileImage"
-                    alt="Profile picture"
-                    class="rounded-full w-8 h-8 cursor-pointer object-cover ring-1 ring-gray-200"
-                >
-
-                <span
-                    v-else
-                    class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md"
-                    :class="profileColor"
-                >
-                    {{ initials(userName) }}
-                </span>
-            </button>
-
-            <button
-                v-else
-                type="button"
-                @click="closeUserMenu"
-                class="py-2"
+                aria-label="Toggle user menu"
+                :aria-expanded="showUserMenu"
             >
                 <img
                     v-if="currentProfileImage"
@@ -109,34 +88,33 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue';
-import User_Menu from './User_Menu.vue';
+import { ref, watch, onMounted, onUnmounted } from 'vue'
+import User_Menu from './User_Menu.vue'
 
 const props = defineProps({
     userId: { type: Number, required: true },
     userName: { type: String, required: true },
     userEmail: { type: String, required: true },
-    profileColor: { type: String, default: 'bg-purple-800 text-white'},
+    profileColor: { type: String, default: 'bg-purple-800 text-white' },
     profilePicture: { type: String, default: '' },
     profileAvatar: { type: String, default: '' }
-});
+})
 
-const showUserMenu = ref(false);
-const userMenu = ref(true);
-const activeSection = ref('hero');
+const showUserMenu = ref(false)
+const activeSection = ref('hero')
 
 const currentProfileImage = ref(
     props.profilePicture || props.profileAvatar || ''
-);
+)
 
-let sectionObserver = null;
+let sectionObserver = null
 
 watch(
     () => [props.profilePicture, props.profileAvatar],
     ([picture, avatar]) => {
-        currentProfileImage.value = picture || avatar || '';
+        currentProfileImage.value = picture || avatar || ''
     }
-);
+)
 
 function initials(name) {
     return String(name ?? '')
@@ -145,58 +123,56 @@ function initials(name) {
         .map(word => word[0])
         .join('')
         .slice(0, 2)
-        .toUpperCase();
+        .toUpperCase()
 }
 
-function openUserMenu() {
-    userMenu.value = false;
-    showUserMenu.value = true;
+function toggleUserMenu() {
+    showUserMenu.value = !showUserMenu.value
 }
 
 function closeUserMenu() {
-    userMenu.value = true;
-    showUserMenu.value = false;
+    showUserMenu.value = false
 }
 
 function handleProfileUpdate(event) {
-    const { type, imageUrl } = event.detail || {};
+    const { type, imageUrl } = event.detail || {}
 
-    if (!imageUrl) return;
+    if (!imageUrl) return
 
     if (type === 'upload' || type === 'preset') {
-        currentProfileImage.value = imageUrl;
+        currentProfileImage.value = imageUrl
     }
 }
 
 onMounted(() => {
-    window.addEventListener('profile-updated', handleProfileUpdate);
+    window.addEventListener('profile-updated', handleProfileUpdate)
 
-    const sections = document.querySelectorAll('main section[id]');
+    const sections = document.querySelectorAll('main section[id]')
 
     sectionObserver = new IntersectionObserver(
         (entries) => {
             entries.forEach((entry) => {
                 if (entry.isIntersecting) {
-                    activeSection.value = entry.target.id;
+                    activeSection.value = entry.target.id
                 }
-            });
+            })
         },
         {
             rootMargin: '-45% 0px -45% 0px',
             threshold: 0
         }
-    );
+    )
 
     sections.forEach((section) => {
-        sectionObserver.observe(section);
-    });
-});
+        sectionObserver.observe(section)
+    })
+})
 
 onUnmounted(() => {
-    window.removeEventListener('profile-updated', handleProfileUpdate);
+    window.removeEventListener('profile-updated', handleProfileUpdate)
 
     if (sectionObserver) {
-        sectionObserver.disconnect();
+        sectionObserver.disconnect()
     }
-});
+})
 </script>

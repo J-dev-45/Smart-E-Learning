@@ -1,12 +1,28 @@
 <template>
-    <div ref="headerEl" class="relative shrink-0 sharedBG w-full h-[60px] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20 flex items-center justify-between text-white px-5">
+    <div
+    ref="headerEl"
+    class="relative left-0 right-2 shrink-0 sharedBG w-auto h-[60px] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20 flex items-center justify-between text-white px-5"
+>
         <div class="flex items-center">
-            <a 
+            <a
                 :href="`/learn/${url(subjectName)}/${subjectId}`"
-                class="group inline-flex items-center gap-2 rounded-full border-[1.5px] border-[#CECBF6]/20 bg-[#CECBF6]/5 py-1.5 pl-2.5 pr-4 text-sm font-semibold text-[#CECBF6] transition-all duration-300 hover:border-[#CECBF6]/50 hover:bg-[#CECBF6]/10 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:-translate-x-0.5">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                class="group inline-flex items-center gap-2 rounded-full border-[1.5px] border-[#CECBF6]/20 bg-[#CECBF6]/5 py-1.5 pl-2.5 pr-4 text-sm font-semibold text-[#CECBF6] transition-all duration-300 hover:border-[#CECBF6]/50 hover:bg-[#CECBF6]/10 cursor-pointer"
+            >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="2.5"
+                    stroke="currentColor"
+                    class="size-4 shrink-0 transition-transform duration-300 group-hover:-translate-x-0.5"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M15.75 19.5 8.25 12l7.5-7.5"
+                    />
                 </svg>
+
                 <span class="hidden sm:inline">Back to Modules</span>
                 <span class="sm:hidden">Back</span>
             </a>
@@ -16,39 +32,52 @@
             <span class="text-sm sm:text-lg font-bold leading-tight text-white truncate max-w-[40vw] sm:max-w-md">
                 {{ subjectName }}
             </span>
+
             <span class="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#CECBF6]/60 truncate max-w-[40vw] sm:max-w-none">
                 {{ module.module_name }}
             </span>
         </div>
 
-        <button v-if="userMenu" type="button" class="py-2">
-            <span
-                class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md"
-                :class="profileColor"
+        <!-- Profile Button and User Menu -->
+        <div ref="userMenuContainer" class="relative shrink-0">
+            <button
+                type="button"
+                @click.stop="toggleUserMenu"
+                class="py-2 flex items-center justify-center rounded-full cursor-pointer"
+                :aria-expanded="showUserMenu"
+                aria-label="Toggle user menu"
             >
-                {{ initials(userName) }}
-            </span>
-        </button>
+                <img
+                    v-if="profilePicture || profileAvatar"
+                    :src="profilePicture || profileAvatar"
+                    alt="Profile"
+                    class="w-8 h-8 rounded-full object-cover"
+                />
 
-        <button v-else type="button" class="py-2">
-            <img
-                v-if="profilePicture || profileAvatar"
-                :src="profilePicture || profileAvatar"
-                alt="Profile"
-                class="w-8 h-8 rounded-full object-cover"
+                <span
+                    v-else
+                    :class="[
+                        'rounded-full w-8 h-8 flex items-center justify-center font-semibold text-md',
+                        profileColor || 'bg-purple-800 text-white'
+                    ]"
+                >
+                    {{ initials(userName) }}
+                </span>
+            </button>
+
+            <User_Menu
+                :show-user-menu="showUserMenu"
+                :user-id="userId"
+                :user-name="userName"
+                :user-email="userEmail"
+                :profile-color="profileColor"
+                :profile-picture="profilePicture"
+                :profile-avatar="profileAvatar"
+                @close-user-menu="closeUserMenu"
             />
+        </div>
 
-            <span
-                v-else
-                :class="[
-                    'rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md',
-                    profileColor || 'bg-purple-800 text-white'
-                ]"
-            >
-                {{ initials(userName) }}
-            </span>
-        </button>
-
+        <!-- Progress Bar -->
         <div class="absolute bottom-0 left-0 w-full h-1 bg-black/40 pointer-events-none">
             <div
                 class="relative h-full overflow-hidden rounded-r-full bg-[#CECBF6] shadow-[0_0_8px_rgba(206,203,246,0.5)] transition-[width] duration-150"
@@ -61,9 +90,13 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
+import User_Menu from './User_Menu.vue'
 
 const props = defineProps({
+    userId: { type: [Number, String], required: true },
+    userName: { type: String, required: true },
+    userEmail: { type: String, required: true },
     profileColor: { type: String, default: 'bg-purple-800 text-white' },
     profilePicture: { type: String, default: '' },
     profileAvatar: { type: String, default: '' },
@@ -72,140 +105,157 @@ const props = defineProps({
     answeredCount: { type: Number, default: 0 },
     initialProgress: { type: Number, default: 0 },
     subjectId: { type: String, required: true },
-    subjectName: { type:String, required: true}
-});
+    subjectName: { type: String, required: true }
+})
 
-const userMenu = ref(false);
-const userName = ref("Jimwell Raza");
-const headerEl = ref(null);
+// Header DOM reference
+const headerEl = ref(null)
 
+// User menu container reference
+const userMenuContainer = ref(null)
+
+// User Menu
+const showUserMenu = ref(false)
+
+function toggleUserMenu() {
+    showUserMenu.value = !showUserMenu.value
+}
+
+function closeUserMenu() {
+    showUserMenu.value = false
+}
+
+// Profile Initials
 function initials(name) {
-    return name
-        .split(' ')
+    return String(name ?? '')
+        .split(/\s+/)
         .filter(Boolean)
         .map(word => word[0])
         .join('')
         .slice(0, 2)
-        .toUpperCase();
+        .toUpperCase()
 }
+
+// URL Formatter
 function url(url_name) {
-    return url_name.replace(/\s+/g, "_");
+    return String(url_name ?? '').replace(/\s+/g, '_')
 }
 
+// Module Progress
 const normalizeProgress = value =>
-    Math.min(100, Math.max(0, Number(value) || 0));
+    Math.min(100, Math.max(0, Number(value) || 0))
 
-const databaseProgress = ref(normalizeProgress(props.initialProgress));
-const scrollProgress = ref(Math.min(85, databaseProgress.value));
+const databaseProgress = ref(normalizeProgress(props.initialProgress))
+const scrollProgress = ref(Math.min(85, databaseProgress.value))
 
-let scroller = null;
-let lastSavedProgress = Math.floor(databaseProgress.value / 5) * 5;
-let saving = false;
-let pendingMilestone = null;
+let scroller = null
+let lastSavedProgress = Math.floor(databaseProgress.value / 5) * 5
+let saving = false
+let pendingMilestone = null
 
 const progress = computed(() =>
     Math.max(databaseProgress.value, scrollProgress.value)
-);
+)
 
 watch(
     () => props.initialProgress,
     value => {
-        const savedProgress = normalizeProgress(value);
+        const savedProgress = normalizeProgress(value)
 
         databaseProgress.value = Math.max(
             databaseProgress.value,
             savedProgress
-        );
+        )
 
         scrollProgress.value = Math.max(
             scrollProgress.value,
             Math.min(85, savedProgress)
-        );
+        )
 
         lastSavedProgress = Math.max(
             lastSavedProgress,
             Math.floor(savedProgress / 5) * 5
-        );
+        )
     }
-);
+)
 
 function syncDatabaseProgress(value) {
-    const savedProgress = normalizeProgress(value);
+    const savedProgress = normalizeProgress(value)
 
     databaseProgress.value = Math.max(
         databaseProgress.value,
         savedProgress
-    );
+    )
 
     scrollProgress.value = Math.max(
         scrollProgress.value,
         Math.min(85, savedProgress)
-    );
+    )
 
     lastSavedProgress = Math.max(
         lastSavedProgress,
         Math.floor(savedProgress / 5) * 5
-    );
+    )
 }
 
 function handleProgressUpdated(event) {
-    const detail = event.detail ?? {};
+    const detail = event.detail ?? {}
 
     if (
         String(detail.module_id) !== String(props.module.id) ||
         String(detail.subject_id) !== String(props.subjectId)
     ) {
-        return;
+        return
     }
 
     if (detail.progress !== undefined) {
-        syncDatabaseProgress(detail.progress);
+        syncDatabaseProgress(detail.progress)
     }
 }
 
 function updateScroll() {
-    if (!scroller) return;
+    if (!scroller) return
 
-    const max = scroller.scrollHeight - scroller.clientHeight;
+    const max = scroller.scrollHeight - scroller.clientHeight
 
     const percent = max > 0
         ? Math.min(85, Math.max(0, (scroller.scrollTop / max) * 85))
-        : 85;
+        : 85
 
     scrollProgress.value = Math.max(
         scrollProgress.value,
         percent
-    );
+    )
 
-    const milestone = Math.floor(percent / 5) * 5;
+    const milestone = Math.floor(percent / 5) * 5
 
-    if (milestone <= lastSavedProgress) return;
+    if (milestone <= lastSavedProgress) return
 
     pendingMilestone = Math.max(
         pendingMilestone ?? 0,
         milestone
-    );
+    )
 
     if (!saving) {
-        scrollModuleProgress();
+        scrollModuleProgress()
     }
 }
 
 async function scrollModuleProgress() {
-    if (saving || pendingMilestone === null) return;
+    if (saving || pendingMilestone === null) return
 
-    saving = true;
+    saving = true
 
     try {
         while (pendingMilestone !== null) {
-            const milestone = pendingMilestone;
-            pendingMilestone = null;
+            const milestone = pendingMilestone
+            pendingMilestone = null
 
-            if (milestone <= lastSavedProgress) continue;
+            if (milestone <= lastSavedProgress) continue
 
             const csrfToken = document
                 .querySelector('meta[name="csrf-token"]')
-                ?.getAttribute('content');
+                ?.getAttribute('content')
 
             const response = await fetch('/module-progress', {
                 method: 'PUT',
@@ -219,79 +269,80 @@ async function scrollModuleProgress() {
                     module_id: props.module.id,
                     module_percent: milestone
                 })
-            });
+            })
 
-            let data;
+            let data
 
             try {
-                data = await response.json();
+                data = await response.json()
             } catch {
-                data = {};
+                data = {}
             }
 
             if (!response.ok || !data.success) {
                 console.error(
                     'Failed to save module progress:',
                     data.message || response.statusText
-                );
+                )
 
-                break;
+                break
             }
 
             const savedProgress = normalizeProgress(
                 data.module_progress?.progress ?? milestone
-            );
+            )
 
-            syncDatabaseProgress(savedProgress);
+            syncDatabaseProgress(savedProgress)
 
             lastSavedProgress = Math.max(
                 lastSavedProgress,
                 milestone,
                 Math.floor(savedProgress / 5) * 5
-            );
+            )
         }
     } catch (error) {
-        console.error('Failed to save module progress:', error);
+        console.error('Failed to save module progress:', error)
     } finally {
-        saving = false;
+        saving = false
 
         if (
             pendingMilestone !== null &&
             pendingMilestone > lastSavedProgress
         ) {
-            scrollModuleProgress();
+            scrollModuleProgress()
         }
     }
 }
 
+// Lifecycle Hooks
 onMounted(() => {
-    scroller = headerEl.value?.closest('main');
+    scroller = headerEl.value?.closest('main')
 
     window.addEventListener(
         'module-progress-updated',
         handleProgressUpdated
-    );
+    )
 
-    if (!scroller) return;
+    if (!scroller) return
 
-    updateScroll();
+    updateScroll()
 
     scroller.addEventListener('scroll', updateScroll, {
         passive: true
-    });
+    })
 
-    window.addEventListener('resize', updateScroll);
-});
+    window.addEventListener('resize', updateScroll)
+})
 
 onBeforeUnmount(() => {
-    scroller?.removeEventListener('scroll', updateScroll);
-    window.removeEventListener('resize', updateScroll);
+    scroller?.removeEventListener('scroll', updateScroll)
+    window.removeEventListener('resize', updateScroll)
 
     window.removeEventListener(
         'module-progress-updated',
         handleProgressUpdated
-    );
-});
+    )
+})
 </script>
 
 <style scoped>
@@ -310,9 +361,17 @@ onBeforeUnmount(() => {
 }
 
 @keyframes progress-shimmer {
-    0%   { transform: translateX(-120%) skewX(-20deg); }
-    60%  { transform: translateX(320%) skewX(-20deg); }
-    100% { transform: translateX(320%) skewX(-20deg); }
+    0% {
+        transform: translateX(-120%) skewX(-20deg);
+    }
+
+    60% {
+        transform: translateX(320%) skewX(-20deg);
+    }
+
+    100% {
+        transform: translateX(320%) skewX(-20deg);
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
