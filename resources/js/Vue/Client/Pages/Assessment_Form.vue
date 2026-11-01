@@ -1,5 +1,32 @@
 <template>
-    <form @submit.prevent="submitAnswer(question.id)" class="w-full max-w-2xl mb-[50px] bg-white rounded-2xl shadow-xl shadow-[#4C1D95]/5 border border-gray-100 flex flex-col gap-5 p-6">
+    <!-- Time is up: submits unanswered questions via controller, then redirects to result -->
+    <form v-if="timeLeft === 0" method="POST" action="/submit-unanswered" class="w-full max-w-2xl mb-[50px] bg-white rounded-2xl shadow-xl shadow-[#4C1D95]/5 border border-gray-100 flex flex-col gap-5 p-6">
+        <input type="hidden" name="_token" :value="csrfToken">
+        <input type="hidden" name="subject_id" :value="subjectId">
+        <input type="hidden" name="module_id" :value="moduleId ?? '0'">
+        <input type="hidden" name="type_of_assessment" :value="assessmentType">
+        <input v-for="q in available_questions" :key="q.id" type="hidden" name="question_ids[]" :value="q.id">
+
+        <div class="w-full flex flex-col items-center text-center gap-5 py-6">
+            <div class="w-16 h-16 rounded-full bg-red-50 border-[1.5px] border-red-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+
+            <div class="flex flex-col gap-1.5">
+                <span class="text-xl font-semibold text-gray-900">Time is up!</span>
+                <span class="text-sm text-gray-600 leading-relaxed">Your time for this {{ assessmentType }} has ended. You can now view your result.</span>
+            </div>
+
+            <button type="submit"
+                class="flex items-center justify-center min-w-[160px] px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] hover:opacity-90 transition-opacity shadow-sm shadow-[#4C1D95]/30 cursor-pointer">
+                Go to Result
+            </button>
+        </div>
+    </form>
+
+    <form v-else @submit.prevent="submitAnswer(question?.id)" class="w-full max-w-2xl mb-[50px] bg-white rounded-2xl shadow-xl shadow-[#4C1D95]/5 border border-gray-100 flex flex-col gap-5 p-6">
         <div v-if="question" class="w-full flex flex-col gap-5">
             <div class="w-full flex flex-col gap-2 pb-4 border-b border-gray-200">
                 <div class="flex items-center justify-between">
@@ -240,6 +267,7 @@ const answered_count = ref(props.answeredCount)
 const correctAnswer = computed(() => question.value?.answer)
 const total_questions = props.questionsData.length + answered_count.value
 const passing_score = 75
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
 
 // ===== Timer =====
 const TOTAL_SECONDS = props.totalSeconds

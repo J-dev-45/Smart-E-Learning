@@ -190,7 +190,6 @@ import { computed } from 'vue';
 
 const props = defineProps({
     userModules: { type: Array, required: true },
-    answeredQuestions: { type: Array, required: true },
     modules: { type: Array, required: true },
     topics: { type: Array, required: true },
     questions: { type: Object, required: true },
@@ -219,11 +218,7 @@ function moduleName(module_id) {
     return props.modules.find(Mname => Mname.id === module_id)?.module_name ?? '';
 }
 
-function linkText(M_id) {
-    return props.answeredQuestions.filter(
-        Aq => Aq.module_id === M_id
-    ).length;
-}
+
 
 function moduleTopics(M_id){
     return props.topics.filter(

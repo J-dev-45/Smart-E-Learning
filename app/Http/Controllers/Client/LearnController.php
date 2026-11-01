@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use App\Models\AnsweredAssessmentQuestions;
 use App\Models\AnsweredModuleQuestions;
-use App\Models\AnsweredQuestions;
 use App\Models\Leaderboard;
 use App\Models\ModuleProgress;
 use App\Models\ModuleQuiz;
@@ -118,8 +117,7 @@ class LearnController extends Controller
 
         $subject_id = $subject->id;
 
-        $answered_questions = AnsweredQuestions::where('user_id', auth()->id())
-            ->get();
+        
 
         $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $subject->id)
@@ -202,7 +200,6 @@ class LearnController extends Controller
                 'modules',
                 'topics',
                 'subject_id',
-                'answered_questions',
                 'questions',
                 'exam_open',
                 'modules_started',
@@ -534,8 +531,6 @@ class LearnController extends Controller
         ]);
     }
 
-    public function retakeAssessment(){
-        
-    }
+    
 
 }

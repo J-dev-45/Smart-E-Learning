@@ -71,7 +71,6 @@
             {{-- MODULES --}}
             <quiz-modules
             :user-modules='@json($user_modules)'
-            :answered-questions='@json($answered_questions)'
             :modules='@json($modules)'
             :topics='@json($topics)'
             :questions='@json($questions)'

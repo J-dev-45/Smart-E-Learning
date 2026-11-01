@@ -8,6 +8,7 @@ use App\Models\Leaderboard;
 use App\Models\ModuleQuiz;
 use App\Models\Modules;
 use App\Models\Questions;
+use App\Models\StudentAttempts;
 use App\Models\Subjects;
 use App\Models\TemporaryPoints;
 use App\Models\UserScoreboard;
@@ -226,6 +227,11 @@ class Pretest extends Controller
                 ->first();
 
             $module = Modules::findOrFail($request->module_id);
+            $student_attempts = StudentAttempts::where('user_id', auth()->id())
+                ->where('subject_id', $request->subject_id)
+                ->where('module_id', $module->id)
+                ->where('type_of_assessment', 'quiz')
+                ->first();
 
             if (!$module_quiz) {
                 return redirect()->route('home');
@@ -344,6 +350,22 @@ class Pretest extends Controller
                     }
                 }
 
+                if($student_attempts->attempts_count === 1 && $student_attempts->bonus_claimed === false){
+                    Leaderboard::where('user_id', auth()->id())
+                        ->increment(
+                            'points',
+                            30
+                        );
+
+                    $student_attempts->update([
+                        'bonus_claimed' => true
+                    ]);
+
+                    $student_attempts->refresh();
+                }
+
+                
+
                 if ($module_passed) {
 
                     $user_scoreboard = UserScoreboard::where('user_id', auth()->id())
@@ -371,8 +393,12 @@ class Pretest extends Controller
                             (int) $temporary_points->points
                         );
 
+                        
+
                         $temporary_points->delete();
                     }
+
+                    
 
                     $nextmodule = ModuleQuiz::where('user_id', auth()->id())
                         ->where('subject_id', $request->subject_id)
@@ -424,6 +450,11 @@ class Pretest extends Controller
         } elseif ($type_of_assessment === 'exam') {
 
             $modules = Modules::where('subject_id', $request->subject_id)->get();
+
+            $student_attempts = StudentAttempts::where('user_id', auth()->id())
+                ->where('subject_id', $request->subject_id)
+                ->where('type_of_assessment', 'exam')
+                ->first();
 
             $questions = Questions::whereIn('module_id', $modules->pluck('id'))
                 ->whereIn('question_type', [
@@ -484,6 +515,19 @@ class Pretest extends Controller
 
                 $user_scoreboard = UserScoreboard::where('user_id', auth()->id())
                     ->value('total_score') ?? 0;
+
+                if($student_attempts->attempts_count === 1 && $student_attempts->bonus_claimed === false){
+                    Leaderboard::where('user_id', auth()->id())
+                        ->increment(
+                            'points',
+                            50
+                        );
+
+                    $student_attempts->update([
+                        'bonus_claimed' => true
+                    ]);
+                    $student_attempts->refresh();
+                }
 
                 UserScoreboard::updateOrCreate(
                     ['user_id' => auth()->id()],

@@ -275,15 +275,8 @@ watch(
     { immediate: true, deep: true }
 )
 
-watch(
-    () => props.answeredModuleQuestions,
-    (value) => { results.value = value }
-)
-
-watch(
-    () => props.score,
-    (value) => { score.value = value }
-)
+watch(() => props.answeredModuleQuestions, (value) => { results.value = value })
+watch(() => props.score, (value) => { score.value = value })
 
 function questionText(questionId) {
     return props.answeredQuestions.find(
@@ -367,7 +360,8 @@ async function submitAnswers() {
                     module_id: props.module?.id,
                     subject_id: props.moduleProgress?.subject_id,
                     progress: 100,
-                    has_passed: true
+                    has_passed: true,
+                    activity_type: 'quiz'
                 }
             }))
         }

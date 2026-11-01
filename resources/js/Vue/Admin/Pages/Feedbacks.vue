@@ -1,364 +1,426 @@
 <template>
-    <div class="w-full h-full flex flex-col gap-4 min-h-0">
+    <form v-if="timeLeft === 0" method="POST" action="/submitUnanswered" class="w-full max-w-2xl mb-[50px] bg-white rounded-2xl shadow-xl shadow-[#4C1D95]/5 border border-gray-100 flex flex-col gap-5 p-6">
+        <input type="hidden" name="_token" :value="csrfToken">
+        <input type="hidden" name="subject_id" :value="subjectId">
+        <input type="hidden" name="module_id" :value="moduleId">
+        <input type="hidden" name="type_of_assessment" :value="assessmentType">
+        <input v-for="q in available_questions" :key="q.id" type="hidden" name="question_ids[]" :value="q.id">
 
-        <div class="w-full flex flex-col sm:flex-row sm:items-center gap-3">
+        <div class="w-full flex flex-col items-center text-center gap-5 py-6">
+            <div class="w-16 h-16 rounded-full bg-red-50 border-[1.5px] border-red-200 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-red-500" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
 
-            <!-- STATUS TABS -->
-            <div class="flex items-center gap-1 p-1 rounded-xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm w-fit max-w-full overflow-x-auto">
-                <button
-                    v-for="tab in statusTabs"
-                    :key="tab"
-                    @click="activeTab = tab"
-                    class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 cursor-pointer"
-                    :class="activeTab === tab
-                        ? 'bg-[#8B5CF6] text-white'
-                        : 'text-white/45 hover:text-white hover:bg-white/[0.05]'"
-                >
-                    {{ tab }}
+            <div class="flex flex-col gap-1.5">
+                <span class="text-xl font-semibold text-gray-900">Time is up!</span>
+                <span class="text-sm text-gray-600 leading-relaxed">Your time for this quiz has ended. You can now view your result.</span>
+            </div>
+
+            <button type="submit"
+                class="flex items-center justify-center min-w-[160px] px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] hover:opacity-90 transition-opacity shadow-sm shadow-[#4C1D95]/30 cursor-pointer">
+                Go to Result
+            </button>
+        </div>
+    </form>
+
+    <form v-else @submit.prevent="submitAnswer(question?.id)" class="w-full max-w-2xl mb-[50px] bg-white rounded-2xl shadow-xl shadow-[#4C1D95]/5 border border-gray-100 flex flex-col gap-5 p-6">
+        <div v-if="question" class="w-full flex flex-col gap-5">
+            <div class="w-full flex flex-col gap-2 pb-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <span class="text-lg font-semibold text-gray-900">
+                        Question <span class="text-[#4C1D95]">{{ question_number + answered_count }}</span>
+                        <span class="text-gray-400 font-normal">/ {{ questionsData.length + answered_count }}</span>
+                    </span>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-medium text-[#4C1D95] bg-[#CECBF6]/25 px-2.5 py-1 rounded-full tabular-nums">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        {{ formattedTime }} left
+                    </span>
+                </div>
+
+                <div class="w-full h-1.5 bg-gray-100 rounded-full overflow-hidden">
+                    <div class="h-full bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] rounded-full transition-all duration-1000 ease-linear"
+                        :style="{ width: `${Math.min((timeLeft / TOTAL_SECONDS) * 100, 100)}%` }">
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide"
+                    :class="question.question_type === 'multipleChoice' ? 'text-[#4C1D95] bg-[#4C1D95]/8 border border-[#4C1D95]/15' : 'text-[#8B5CF6] bg-[#8B5CF6]/8 border border-[#8B5CF6]/15'">
+                    {{ question.question_type === 'multipleChoice' ? 'Multiple Choice' : question.question_type === 'TorF' ? 'True or False' : question.question_type === 'identification' ? 'Identification' : '' }}
+                </span>
+            </div>
+
+            <!-- @copy.prevent
+                    @cut.prevent
+                    @contextmenu.prevent -->
+
+            <div class="bg-[#4C1D95]/[0.04] border border-[#CECBF6]/40 p-4 rounded-xl">
+                <span
+                    
+                    class="text-gray-800 leading-relaxed">{{ question.question }}</span>
+            </div>
+
+            <div v-if="question.question_type === 'multipleChoice'" class="flex flex-col gap-2.5">
+                <label v-for="choice in choices" :key="choice"
+                    :class="[
+                        'flex items-center justify-between gap-3 p-3 rounded-xl border-[1.5px] transition-colors',
+                        !showExplanation
+                            ? 'border-gray-200 cursor-pointer hover:border-[#8B5CF6]/50 hover:bg-[#CECBF6]/10 has-[:checked]:border-[#4C1D95] has-[:checked]:bg-[#4C1D95]/5'
+                            : choiceState(choice) === 'selected-correct' || choiceState(choice) === 'correct-unselected'
+                                ? 'border-emerald-400 bg-gradient-to-r from-emerald-50 to-green-50 shadow-sm shadow-emerald-500/10'
+                                : choiceState(choice) === 'selected-wrong'
+                                    ? 'border-red-500 bg-red-50'
+                                    : 'border-gray-200 opacity-60'
+                    ]">
+                    <div class="flex items-center gap-3">
+                        <input v-model="selected_answer" :value="choice" type="radio" name="answer"
+                            :disabled="showExplanation" class="w-4 h-4 accent-[#4C1D95]">
+                        <span class="text-sm"
+                            :class="showExplanation && (choiceState(choice) === 'selected-correct' || choiceState(choice) === 'correct-unselected') ? 'text-emerald-700 font-medium' : showExplanation && choiceState(choice) === 'selected-wrong' ? 'text-red-700 font-medium' : 'text-gray-700'">
+                            {{ choice }}
+                        </span>
+                    </div>
+
+                    <svg v-if="showExplanation && choiceState(choice) !== 'unselected'"
+                        xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+                        :class="choiceState(choice) === 'selected-wrong' ? 'text-red-600' : 'text-emerald-500'">
+                        <path v-if="choiceState(choice) !== 'selected-wrong'" stroke-linecap="round"
+                            stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        <path v-else stroke-linecap="round" stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </label>
+            </div>
+
+            <div v-if="question.question_type === 'identification'" class="flex flex-col gap-2">
+                <div class="relative">
+                    <input v-model="selected_answer" type="text" id="identification-answer"
+                        name="identification-answer" placeholder="Enter your answer here" autocomplete="off"
+                        :disabled="showExplanation"
+                        :class="[
+                            'w-full px-4 py-3 rounded-xl text-sm text-gray-800 placeholder-gray-400 border-[1.5px] outline-none transition-colors duration-150',
+                            showExplanation
+                                ? isCorrect
+                                    ? 'border-emerald-400 bg-gradient-to-r from-emerald-50 to-green-50 text-emerald-800 font-medium shadow-sm shadow-emerald-500/10'
+                                    : 'border-red-500 bg-red-50 text-red-800 font-medium'
+                                : 'border-gray-200 focus:border-[#4C1D95] focus:ring-4 focus:ring-[#4C1D95]/10 hover:border-[#8B5CF6]/50'
+                        ]">
+
+                    <svg v-if="showExplanation" xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+                        :class="isCorrect ? 'text-emerald-500' : 'text-red-600'">
+                        <path v-if="isCorrect" stroke-linecap="round" stroke-linejoin="round"
+                            d="M4.5 12.75l6 6 9-13.5" />
+                        <path v-else stroke-linecap="round" stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </div>
+            </div>
+
+            <div v-if="question.question_type === 'TorF'" class="flex flex-col gap-2.5">
+                <label v-for="opt in torfOptions" :key="opt.value"
+                    :class="[
+                        'flex items-center justify-between gap-3 p-3 rounded-xl border-[1.5px] transition-colors',
+                        !showExplanation
+                            ? 'border-gray-200 cursor-pointer hover:border-[#8B5CF6]/50 hover:bg-[#CECBF6]/10 has-[:checked]:border-[#4C1D95] has-[:checked]:bg-[#4C1D95]/5'
+                            : choiceState(opt.value) === 'selected-correct' || choiceState(opt.value) === 'correct-unselected'
+                                ? 'border-emerald-400 bg-gradient-to-r from-emerald-50 to-green-50 shadow-sm shadow-emerald-500/10'
+                                : choiceState(opt.value) === 'selected-wrong'
+                                    ? 'border-red-500 bg-red-50'
+                                    : 'border-gray-200 opacity-60'
+                    ]">
+                    <div class="flex items-center gap-3">
+                        <input type="radio" v-model="selected_answer" name="answer" :value="opt.value"
+                            :disabled="showExplanation" class="w-4 h-4 accent-[#4C1D95]">
+                        <span class="text-sm"
+                            :class="showExplanation && (choiceState(opt.value) === 'selected-correct' || choiceState(opt.value) === 'correct-unselected') ? 'text-emerald-700 font-medium' : showExplanation && choiceState(opt.value) === 'selected-wrong' ? 'text-red-700 font-medium' : 'text-gray-700'">
+                            {{ opt.label }}
+                        </span>
+                    </div>
+
+                    <svg v-if="showExplanation && choiceState(opt.value) !== 'unselected'"
+                        xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none"
+                        viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+                        :class="choiceState(opt.value) === 'selected-wrong' ? 'text-red-600' : 'text-emerald-500'">
+                        <path v-if="choiceState(opt.value) !== 'selected-wrong'" stroke-linecap="round"
+                            stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        <path v-else stroke-linecap="round" stroke-linejoin="round"
+                            d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </label>
+            </div>
+
+            <transition enter-active-class="transition duration-200 ease-out"
+                enter-from-class="opacity-0 -translate-y-1" enter-to-class="opacity-100 translate-y-0">
+                <div v-if="showExplanation" class="flex gap-3 p-4 rounded-xl border-[1.5px]"
+                    :class="isCorrect ? 'border-emerald-200 bg-gradient-to-br from-emerald-50 to-green-50 shadow-sm shadow-emerald-500/10' : 'border-red-200 bg-red-50'">
+
+                    <div class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5"
+                        :class="isCorrect ? 'bg-gradient-to-br from-emerald-400 to-green-500' : 'bg-red-500/15'">
+
+                        <svg v-if="isCorrect" xmlns="http://www.w3.org/2000/svg"
+                            class="w-4 h-4 text-white" fill="none" viewBox="0 0 24 24"
+                            stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M4.5 12.75l6 6 9-13.5" />
+                        </svg>
+
+                        <svg v-else xmlns="http://www.w3.org/2000/svg"
+                            class="w-4 h-4 text-red-600" fill="none" viewBox="0 0 24 24"
+                            stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </div>
+
+                    <div class="flex flex-col gap-1">
+                        <span class="text-sm font-semibold"
+                            :class="isCorrect ? 'text-emerald-700' : 'text-red-700'">
+                            {{ isCorrect ? 'Correct!' : 'Incorrect' }}
+                        </span>
+
+                        <span v-if="!isCorrect && question.question_type === 'identification' && correctAnswer"
+                            class="text-md font-semibold text-gray-800">
+                            Answer: <span class="text-green-700">{{ question.answer }}</span>
+                        </span>
+
+                        <span class="text-sm text-gray-600 leading-relaxed">
+                            {{ question.explanation }}
+                        </span>
+                    </div>
+                </div>
+            </transition>
+
+            <div v-if="!showExplanation"
+                class="flex items-center justify-end pt-4 border-t border-gray-200 mt-1">
+                <button type="submit" :disabled="!selected_answer || isSubmitting"
+                    class="flex items-center justify-center gap-2 min-w-[140px] px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] hover:opacity-90 disabled:opacity-60 disabled:cursor-not-allowed transition-opacity shadow-sm shadow-[#4C1D95]/30 cursor-pointer">
+                    <svg v-if="isSubmitting" class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                    </svg>
+                    {{ isSubmitting ? 'Checking Answer...' : 'Submit Answer' }}
                 </button>
             </div>
 
-            <!-- SEARCH -->
-            <div class="relative w-full sm:w-[320px] shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 z-10 text-white/50 pointer-events-none">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
+            <div v-else class="flex items-center justify-end pt-4 border-t border-gray-200 mt-1">
+                <button v-if="available_questions.length != 0" type="button" @click="nextQuestion"
+                    class="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] hover:opacity-90 transition-opacity shadow-sm shadow-[#4C1D95]/30">
+                    Next Question
+                </button>
 
-                <input
-                    v-model="search"
-                    type="search"
-                    placeholder="Search by Name or Date..."
-                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-xl text-base sm:text-sm text-white placeholder:text-white/40
-                           appearance-none [color-scheme:dark]
-                           bg-white/[0.03] border border-[#CECBF6]/15 outline-none
-                           focus:border-[#8B5CF6]/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-[#8B5CF6]/30 transition-all duration-200"
-                >
+                <a v-else :href="`/result/${assessmentType}/question_type/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}`"
+                    class="px-5 py-2 rounded-lg text-sm font-semibold text-white bg-gradient-to-r from-[#4C1D95] to-[#8B5CF6] hover:opacity-90 transition-opacity shadow-sm shadow-[#4C1D95]/30">
+                    Finish
+                </a>
             </div>
-
         </div>
 
-        <div class="w-full flex-1 min-h-0 flex flex-col rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 overflow-hidden">
-
-            <div class="hidden lg:grid shrink-0 grid-cols-[90px_1fr_1fr_110px_100px_170px] px-4 py-3 border-b border-[#CECBF6]/10
-                        text-xs font-medium text-white/45">
-                <span>ID</span>
-                <span>Name</span>
-                <span>Replied By</span>
-                <span>Status</span>
-                <span>Date</span>
-                <span>Actions</span>
-            </div>
-
-            <ul class="flex-1 min-h-0 max-h-[60dvh] lg:max-h-none overflow-y-auto lg:overflow-y-scroll scrollbar-thin max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden">
-
-                <li
-                    v-for="feedback in filteredFeedbacks"
-                    :key="feedback.id"
-                    class="flex flex-col gap-3 px-4 py-3.5
-                           lg:grid lg:grid-cols-[90px_1fr_1fr_110px_100px_170px] lg:items-center lg:gap-0
-                           border-b border-[#CECBF6]/10 last:border-b-0
-                           hover:bg-white/[0.05] transition-colors duration-200"
-                >
-
-                    <span class="hidden lg:block text-xs text-white/45 font-mono tabular-nums">
-                        #{{ String(feedback.id).padStart(3, '0') }}
-                    </span>
-
-                    <div class="flex items-center gap-3 min-w-0 lg:pr-2">
-
-                        <!-- Initials tile (violet) -->
-                        <div class="w-8 h-8 shrink-0 rounded-xl flex items-center justify-center text-[11px] font-semibold
-                                    bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 text-[#B9A6F0]">
-                            {{ initials(feedback.student_name) }}
-                        </div>
-
-                        <div class="flex flex-col min-w-0 flex-1">
-                            <span class="text-sm font-medium text-white truncate">
-                                {{ feedback.student_name }}
-                            </span>
-
-                            <span class="lg:hidden text-[11px] text-white/45 font-mono truncate tabular-nums">
-                                #{{ String(feedback.id).padStart(3, '0') }} · {{ formatDate(feedback.created_at) }}
-                            </span>
-
-                            <span class="lg:hidden empty:hidden before:content-['Replied_by:_'] text-[11px] text-white/45 truncate">
-                                {{ feedback.replied_by }}
-                            </span>
-                        </div>
-
-                        <span
-                            class="lg:hidden shrink-0 inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-medium"
-                            :class="statusStyle(feedback.status)"
-                        >
-                            {{ feedback.status }}
-                        </span>
-
-                    </div>
-
-                    <span class="hidden lg:block text-xs text-white/60 truncate pr-2">
-                        {{ feedback.replied_by }}
-                    </span>
-
-                    <span class="hidden lg:block">
-                        <span
-                            class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-medium"
-                            :class="statusStyle(feedback.status)"
-                        >
-                            {{ feedback.status }}
-                        </span>
-                    </span>
-
-                    <span class="hidden lg:block text-xs text-white/45 tabular-nums">
-                        {{ formatDate(feedback.created_at) }}
-                    </span>
-
-                    <div class="flex items-center gap-2">
-
-                        <!-- VIEW (tinted violet) -->
-                        <button
-                            v-if="feedback.status === 'Done'"
-                            @click="openViewReplied(feedback)"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
-                                text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20
-                                hover:bg-[#8B5CF6]/25
-                                active:scale-95 transition-all duration-200 cursor-pointer"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="size-3.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                            View
-                        </button>
-
-                        <!-- REPLY (solid violet, the main action) -->
-                        <button
-                            v-else
-                            @click="openReplyToFeedback(feedback)"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-bold
-                                text-white bg-[#8B5CF6]
-                                hover:bg-[#8B5CF6]/85
-                                active:scale-95 transition-all duration-200 cursor-pointer"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
-                                stroke="currentColor" class="size-3.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                            </svg>
-                            Reply
-                        </button>
-
-                        <!-- DELETE (red) -->
-                        <button
-                            @click="deleteFeedbackModalOpen()"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
-                                text-red-300 bg-red-500/15 ring-1 ring-red-500/20
-                                hover:bg-red-500 hover:ring-red-500 hover:text-white
-                                active:scale-95 transition-all duration-200 cursor-pointer"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-3.5">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                            </svg>
-                        </button>
-
-                    </div>
-
-                </li>
-
-                <li v-if="filteredFeedbacks.length === 0" class="px-4 py-8 text-center text-sm text-white/45">
-                    No feedbacks found.
-                </li>
-
-            </ul>
+        <div v-else class="text-center py-8 text-gray-600">
+            You have completed all available questions for this quiz!
         </div>
-    </div>
-
-    <Reply_To_Feedback
-        :show-reply="show_reply"
-        :feedback-id="feedback_id"
-        :sender-name="sender_name"
-        :feedback-message="feedback_message"
-        :question-id="question_id"
-        :question-label="question_label"
-        :student-id="student_id"
-        @close="closeReplyToFeedback"
-        @new_reply="handleNewReply"
-    />
-
-    <View_Replied_Feedback
-        :show-reply="show_replied"
-        :sender-name="replied_sender_name"
-        :feedback-message="replied_feedback_message"
-        :question-id="replied_question_id"
-        :question-label="replied_question_label"
-        :reply-message="replied_reply_message"
-        :replied-by="replied_replied_by"
-        :replied-at="replied_replied_at"
-        @close="closeViewReplied"
-    />
-
+    </form>
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import Reply_To_Feedback from '../components/Reply_To_Feedback.vue';
-import View_Replied_Feedback from '../components/View_Replied_Feedback.vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
-    feedbacks: { type: Array, required: true },
-    questions: { type: Array, required: true },
-    userId: { type: Number, required: true}
+    questionsData: { type: Array, required: true },
+    choicesData: { type: Array, required: true },
+    subjectId: { type: String, required: true },
+    moduleId: { type: String, required: true },
+    answeredCount: { type: Number, default: 0 },
+    answeredQuestions: { type: Array, required: true },
+    subjectName: { type: String, required: true },
+    moduleName: { type: String, required: true },
+    score: { type: Number, default: 0 },
+    remainingSeconds: { type: Number, required: true },
+    totalSeconds: { type: Number, default: 60 * 60 },
+    assessmentType: { type: String, required:true}
 })
 
-const deleteFeedbackModal = document.getElementById('deleteFeedbackModal');
-const deleteFeedbackModalClose = document.querySelectorAll('.deleteFeedbackModalClose');
 
-function deleteFeedbackModalOpen() {
-    localStorage.setItem('deleteFeedbackModal', 'true');
-
-    if (deleteFeedbackModal) {
-        deleteFeedbackModal.style.display = 'flex';
-    }
+function url(url_name) {
+    return url_name.replace(/\s+/g, "_");
 }
 
-deleteFeedbackModalClose.forEach(closeModal => {
-    closeModal.addEventListener('click', () => {
-        if (deleteFeedbackModal) {
-            deleteFeedbackModal.style.display = 'none';
+const showExplanation = ref(false)
+const question_number = ref(1)
+const selected_answer = ref('')
+const score = ref(props.score)
+const isSubmitting = ref(false)
+const answered_questions = ref(
+    props.answeredQuestions.map(q => typeof q === 'object' ? q.question_id : q)
+)
+const question = ref(null)
+const correct = ref('yes')
+const answered_count = ref(props.answeredCount)
+const correctAnswer = computed(() => question.value?.answer)
+const total_questions = props.questionsData.length + answered_count.value
+const passing_score = 75
+const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+
+// ===== Timer =====
+const TOTAL_SECONDS = props.totalSeconds
+const timeLeft = ref(Math.max(0, Math.floor(props.remainingSeconds)))
+const deadline = Date.now() + timeLeft.value * 1000
+let timerId = null
+
+const formattedTime = computed(() => {
+    const m = Math.floor(timeLeft.value / 60)
+    const s = timeLeft.value % 60
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
+})
+
+onMounted(() => {
+    timerId = setInterval(() => {
+        timeLeft.value = Math.max(0, Math.ceil((deadline - Date.now()) / 1000))
+
+        if (timeLeft.value === 0) {
+            clearInterval(timerId)
         }
+    }, 1000)
+})
 
-        localStorage.setItem('deleteFeedbackModal', 'false');
-    });
-});
+onUnmounted(() => clearInterval(timerId))
+// ===== End Timer =====
 
-if (localStorage.getItem('deleteFeedbackModal') === 'true' && deleteFeedbackModal) {
-    deleteFeedbackModal.style.display = 'flex';
+const percentage = computed(() => {
+    if (total_questions <= 0) {
+        return 0
+    }
+
+    return (score.value / total_questions) * 100
+})
+
+const pretest_status = computed(() => {
+    return percentage.value >= passing_score ? 'Passed' : 'Failed'
+})
+
+const torfOptions = [
+    { value: 'true', label: 'True' },
+    { value: 'false', label: 'False' }
+]
+
+const isCorrect = computed(() => correct.value === 'yes')
+
+function choiceState(value) {
+    if (!showExplanation.value) {
+        return 'unselected'
+    }
+
+    if (value === selected_answer.value) {
+        return isCorrect.value ? 'selected-correct' : 'selected-wrong'
+    }
+
+    if (!isCorrect.value && correctAnswer.value && value === correctAnswer.value) {
+        return 'correct-unselected'
+    }
+
+    return 'unselected'
 }
 
-const search = ref('');
+const available_questions = computed(() =>
+    props.questionsData.filter(q => !answered_questions.value.includes(q.id))
+)
 
-const statusTabs = ['All', 'New', 'Unread', 'Done'];
-const activeTab = ref('All');
+function getRandomQuestion() {
+    if (available_questions.value.length === 0) {
+        return null
+    }
 
-function formatDate(date) {
-    const d = new Date(date);
-
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    const year = String(d.getFullYear()).slice(-2);
-
-    return `${month}-${day}-${year}`;
+    const randomIndex = Math.floor(Math.random() * available_questions.value.length)
+    return available_questions.value[randomIndex]
 }
 
-const feedbackList = ref(
-    [...props.feedbacks].sort(
-        (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    )
-);
+question.value = getRandomQuestion()
 
-const filteredFeedbacks = computed(() => {
-    const q = search.value.trim().toLowerCase();
+const choiceData = computed(() => {
+    if (!question.value) {
+        return null
+    }
 
-    return feedbackList.value.filter(f => {
-        const matchesTab = activeTab.value === 'All' || f.status === activeTab.value;
+    return props.choicesData.find(ch => ch.question_id === question.value.id)
+})
 
-        const matchesSearch = !q ||
-            (f.student_name || '').toLowerCase().includes(q) ||
-            String(f.id).includes(q);
+const choices = computed(() => [
+    choiceData.value?.choice_A,
+    choiceData.value?.choice_B,
+    choiceData.value?.choice_C,
+    choiceData.value?.choice_D
+].filter(Boolean))
 
-        return matchesTab && matchesSearch;
-    });
-});
+async function submitAnswer(id) {
+    if (!selected_answer.value || isSubmitting.value) {
+        return
+    }
 
-function initials(name) {
-    return (name || '').split(' ').map(n => n[0]).slice(0, 2).join('');
-}
+    isSubmitting.value = true
 
-function statusStyle(status) {
-    switch (status) {
-        case 'Done':
-            return 'bg-emerald-400/15 ring-1 ring-emerald-400/20 text-emerald-300';
+    try {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+        const response = await fetch('/submitAnswer', {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                question_id: id,
+                student_answer: selected_answer.value.toLowerCase().trim(),
+                subject_id: props.subjectId,
+                module_id: props.moduleId,
+                type_of_assessment : props.assessmentType
+            })
+        })
 
-        case 'New':
-            return 'bg-[#6366F1]/15 ring-1 ring-[#6366F1]/20 text-[#A5A9F5]';
+        const data = await response.json()
 
-        case 'Unread':
-            return 'bg-rose-400/15 ring-1 ring-rose-400/20 text-rose-300';
+        if (data.success) {
+            score.value = data.score
+            showExplanation.value = true
+            correct.value = data.correct
 
-        default:
-            return 'bg-white/[0.04] ring-1 ring-[#CECBF6]/15 text-white/60';
+            if (!answered_questions.value.includes(id)) {
+                answered_questions.value.push(id)
+            }
+
+            if (Array.isArray(data.answered_questions)) {
+                answered_questions.value = data.answered_questions.map(
+                    q => typeof q === 'object' ? q.question_id : q
+                )
+            }
+        } else {
+            console.error(data.message)
+        }
+    } catch (err) {
+        console.error(err)
+    } finally {
+        isSubmitting.value = false
     }
 }
 
-const show_reply = ref(false);
-const feedback_id = ref(0);
-const sender_name = ref('');
-const feedback_message = ref('');
-const question_id = ref('');
-const question_label = ref('');
-const student_id = ref(0);
+function nextQuestion() {
+    selected_answer.value = ''
+    showExplanation.value = false
 
-function openReplyToFeedback(feedback) {
-    feedback_id.value = feedback.id;
-    sender_name.value = feedback.student_name;
-    feedback_message.value = feedback.feedback_message;
-    question_id.value = feedback.question_id ?? '';
-    question_label.value = props.questions.find(q => q.id === feedback.question_id)?.question ?? '';
-    student_id.value = feedback.user_id;
-    show_reply.value = true;
-}
+    const next = getRandomQuestion()
 
-function closeReplyToFeedback() {
-    show_reply.value = false;
-}
-
-function handleNewReply(reply) {
-    const feedback = feedbackList.value.find(
-        f => f.id === feedback_id.value
-    );
-
-    if (!feedback) return;
-
-    feedback.status = 'Done';
-
-    if (reply?.replied_by) {
-        feedback.replied_by = reply.replied_by;
-    } else if (reply?.user?.name) {
-        feedback.replied_by = reply.user.name;
+    if (!next) {
+        question.value = null
+        return
     }
 
-    if (reply?.reply_message) {
-        feedback.reply_message = reply.reply_message;
-    }
-
-    feedback.updated_at = reply?.updated_at ?? new Date().toISOString();
-}
-
-const show_replied = ref(false);
-const replied_sender_name = ref('');
-const replied_feedback_message = ref('');
-const replied_question_id = ref('');
-const replied_question_label = ref('');
-const replied_reply_message = ref('');
-const replied_replied_by = ref('');
-const replied_replied_at = ref('');
-
-function openViewReplied(feedback) {
-    replied_sender_name.value = feedback.student_name;
-    replied_feedback_message.value = feedback.feedback_message;
-    replied_question_id.value = feedback.question_id ?? '';
-    replied_question_label.value = props.questions.find(q => q.id === feedback.question_id)?.question ?? '';
-    replied_reply_message.value = feedback.reply_message ?? '';
-    replied_replied_by.value = feedback.replied_by ?? 'Admin';
-    replied_replied_at.value = feedback.updated_at ?? '';
-    show_replied.value = true;
-}
-
-function closeViewReplied() {
-    show_replied.value = false;
+    question_number.value++
+    question.value = next
 }
 </script>

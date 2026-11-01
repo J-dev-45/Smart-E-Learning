@@ -14,6 +14,7 @@ use App\Models\Subjects;
 use App\Models\TestCase;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AssessmentController extends Controller
 {
@@ -59,6 +60,7 @@ class AssessmentController extends Controller
             $answered_questions_data = AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $subject_id)
                 ->where('module_id', $request->module_id)
+                ->where('type_of_assessment', 'quiz')
                 ->get();
 
             $answered_question_ids = $answered_questions_data->pluck('question_id');
@@ -72,6 +74,21 @@ class AssessmentController extends Controller
                 ->count();
 
             $remaining_questions = max(0, $total_questions - $answered_count);
+
+            if($remaining_questions === 0){
+                return redirect()->route('assessment.result', [
+                    'type_of_assessment' => $type_of_assessment,
+                    'type' => $request->type,
+                    'subject_name' => $subject_name,
+                    'subject_id' => $request->subject_id,
+                    'module_name' => str_replace(
+                        ' ',
+                        '_',
+                        Modules::where('id', $module->id)->value('module_name')
+                    ),
+                    'module_id' => $module->id,
+                ]);
+            }
             
 
             $module_name = Modules::where('id', $module_id)
@@ -191,6 +208,17 @@ class AssessmentController extends Controller
 
             $remaining_questions = max(0, $total_questions - $answered_count);
 
+            if($remaining_questions === 0){
+                return redirect()->route('assessment.result', [
+                    'type_of_assessment' => $type_of_assessment,
+                    'type' => $request->type,
+                    'subject_name' => $subject_name,
+                    'subject_id' => $request->subject_id,
+                    'module_name' => 'none',
+                    'module_id' => "0",
+                ]);
+            }
+
             $score = $answered_questions_data->where('is_correct', true)->count(); 
 
             $questions = Questions::whereIn('module_id', $modules->pluck('id'))
@@ -268,6 +296,26 @@ class AssessmentController extends Controller
         if ($type_of_assessment === 'quiz') {
     
             $module = Modules::findOrFail($validated['module_id']);
+            $student_attempt = StudentAttempts::where('user_id', auth()->id())
+                ->where('subject_id', $validated['subject_id'])
+                ->where('module_id', $validated['module_id'])
+                ->where('type_of_assessment', 'quiz')
+                ->first();
+
+            if ($student_attempt) {
+                $start = now();
+
+                $student_attempt->update([
+                    'started_at' => $start,
+                    'ends_at' => $start->copy()->addSeconds(
+                        $type_of_assessment === 'quiz' ? 3600 : 5400
+                    ),
+                    'finished_at' => null,
+                ]);
+
+                $student_attempt->increment('attempts_count');
+                $student_attempt->refresh();
+            }
     
             AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $subject->id)
@@ -302,5 +350,99 @@ class AssessmentController extends Controller
             ]),
         ]);
     }
-    
+
+
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+    // ========================================================================================================================================
+
+
+
+    public function submitUnanswered(Request $request)
+    {
+        $data = $request->validate([
+            'subject_id'         => ['required', 'uuid', 'exists:subjects,id'],
+            'module_id'          => ['required_if:type_of_assessment,quiz', 'nullable', 'uuid', 'exists:modules,id'],
+            'type_of_assessment' => ['required', 'in:quiz,exam'],
+            'question_ids' => ['required', 'array'],
+            'question_ids.*' => ['required', 'string'],
+        ]);
+
+        $subject = Subjects::find($data['subject_id']);
+
+        if($data['type_of_assessment'] === 'quiz'){
+
+            $module = Modules::find($data['module_id']);
+            $answered_ids = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+                ->where('subject_id', $data['subject_id'])
+                ->where('module_id', $data['module_id'])
+                ->where('type_of_assessment', 'quiz')
+                ->pluck('question_id');
+
+            $unanswered = Questions::whereIn('id', $data['question_ids'])->select('id', 'answer', 'explanation')->get();
+
+            DB::transaction(function () use ($unanswered, $data, $subject, $module) {
+                foreach ($unanswered as $question) {
+                    AnsweredAssessmentQuestions::create([
+                        'user_id' => auth()->id(),
+                        'subject_id' => $subject->id,
+                        'module_id' => $module->id,
+                        'question_id' => $question->id,
+                        'type_of_assessment' => 'quiz',
+                        'user_answer' => 'Time`s Up',
+                        'correct_answer' => $question->answer,
+                        'explanation' => $question->explanation,
+                        'is_correct' => false,
+                    ]);
+                }
+            });
+
+            return redirect()->route('assessment.result', [
+                'type_of_assessment' => $data['type_of_assessment'],
+                'type'               => 'question_type',
+                'subject_name'       => str_replace(' ', '_', $subject->subject_name),
+                'subject_id'         => $data['subject_id'],
+                'module_name'        => str_replace(' ', '_', $module->module_name),
+                'module_id'          => $data['module_id'],
+            ]);
+        }elseif($data['type_of_assessment'] === 'exam'){
+
+            $answered_ids = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+                ->where('subject_id', $data['subject_id'])
+                ->where('type_of_assessment', 'exam')
+                ->pluck('question_id');
+
+            $unanswered = Questions::whereIn('id', $data['question_ids'])->select('id', 'answer', 'explanation')->get();
+
+            DB::transaction(function () use ($unanswered, $data, $subject, $module) {
+                foreach ($unanswered as $question) {
+                    AnsweredAssessmentQuestions::create([
+                        'user_id' => auth()->id(),
+                        'subject_id' => $subject->id,
+                        'module_id' => null,
+                        'question_id' => $question->id,
+                        'type_of_assessment' => 'exam',
+                        'user_answer' => 'Time`s Up',
+                        'correct_answer' => $question->answer,
+                        'explanation' => $question->explanation,
+                        'is_correct' => false,
+                    ]);
+                }
+            });
+
+
+            return redirect()->route('assessment.result', [
+                'type_of_assessment' => $data['type_of_assessment'],
+                'type'               => 'question_type',
+                'subject_name'       => str_replace(' ', '_', $subject->subject_name),
+                'subject_id'         => $data['subject_id'],
+                'module_name'        => 'none',
+                'module_id'          => '0',
+            ]);
+
+        }
+    }
 }

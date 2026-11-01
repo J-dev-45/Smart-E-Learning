@@ -175,8 +175,8 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/sendFeedback', [FeedbackController::class, 'sendFeedback'])->middleware('throttle:3,1');
 
     
-
-    Route::get('/result/{type_of_assessment}/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'resultPretest']);
+    Route::post('/submit-unanswered', [AssessmentController::class, 'submitUnanswered']);
+    Route::get('/result/{type_of_assessment}/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'resultPretest'])->name('assessment.result');
 
     Route::post('/submitAnswer', [Pretest::class, 'submitAnswer']);
     Route::post('/submitCode', [CodePretestController::class, 'submitCodeAnswer']);
