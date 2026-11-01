@@ -35,7 +35,9 @@
             {{-- HEADER (stays visible while scrolling) --}}
             <div class="sticky top-0 z-20 shrink-0 bg-[#12081F]">
                 <learn-header
-                    :profile-color='@json(auth()->user()->profile_color)'
+                    profile-color="{{ auth()->user()->profile_color ?? '' }}"
+                    profile-picture="{{ auth()->user()->profile_picture && str_starts_with(auth()->user()->profile_picture, 'profiles/') ? rtrim(config('services.supabase.url'), '/') . '/storage/v1/object/public/' . config('services.supabase.avatar_bucket', 'pictures') . '/' . auth()->user()->profile_picture : (auth()->user()->profile_picture ?? '') }}"
+                    profile-avatar="{{ auth()->user()->profile_avatar ? asset(ltrim(auth()->user()->profile_avatar, '/')) : '' }}"
                     :module='@json($module)'
                     :topic-count="{{ count($topics) }}"
                     :answered-count="0"

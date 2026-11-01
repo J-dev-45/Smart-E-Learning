@@ -31,9 +31,19 @@
         </button>
 
         <button v-else type="button" class="py-2">
+            <img
+                v-if="profilePicture || profileAvatar"
+                :src="profilePicture || profileAvatar"
+                alt="Profile"
+                class="w-8 h-8 rounded-full object-cover"
+            />
+
             <span
-                class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md"
-                :class="profileColor"
+                v-else
+                :class="[
+                    'rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md',
+                    profileColor || 'bg-purple-800 text-white'
+                ]"
             >
                 {{ initials(userName) }}
             </span>
@@ -54,7 +64,9 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 
 const props = defineProps({
-    profileColor: { type: String, required: true },
+    profileColor: { type: String, default: 'bg-purple-800 text-white' },
+    profilePicture: { type: String, default: '' },
+    profileAvatar: { type: String, default: '' },
     module: { type: Object, required: true },
     topicCount: { type: Number, default: 0 },
     answeredCount: { type: Number, default: 0 },
@@ -286,20 +298,21 @@ onBeforeUnmount(() => {
 .progress-shimmer {
     position: absolute;
     inset: 0;
-    width: 60%;
+    width: 45%;
     background: linear-gradient(
-        90deg,
-        transparent,
-        rgba(19, 10, 34, 0.85),
-        transparent
+        100deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.55) 50%,
+        transparent 100%
     );
-    transform: translateX(-100%);
-    animation: progress-shimmer 3.5s linear infinite;
+    transform: translateX(-120%) skewX(-20deg);
+    animation: progress-shimmer 2.2s ease-in-out infinite;
 }
 
 @keyframes progress-shimmer {
-    0%   { transform: translateX(-100%); }
-    100% { transform: translateX(260%); }
+    0%   { transform: translateX(-120%) skewX(-20deg); }
+    60%  { transform: translateX(320%) skewX(-20deg); }
+    100% { transform: translateX(320%) skewX(-20deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {

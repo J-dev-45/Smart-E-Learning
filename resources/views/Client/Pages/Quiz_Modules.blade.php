@@ -15,7 +15,9 @@
         <choose-module-header 
         subject-name="{{$subject->subject_name}}"
         user-name="{{auth()->user()->name}}"
-        profile-color="{{auth()->user()->profile_color}}"
+        profile-color="{{ auth()->user()->profile_color ?? '' }}"
+        profile-picture="{{ auth()->user()->profile_picture && str_starts_with(auth()->user()->profile_picture, 'profiles/') ? rtrim(config('services.supabase.url'), '/') . '/storage/v1/object/public/' . config('services.supabase.avatar_bucket', 'pictures') . '/' . auth()->user()->profile_picture : (auth()->user()->profile_picture ?? '') }}"
+        profile-avatar="{{ auth()->user()->profile_avatar ? asset(ltrim(auth()->user()->profile_avatar, '/')) : '' }}"
         >
         </choose-module-header>
 

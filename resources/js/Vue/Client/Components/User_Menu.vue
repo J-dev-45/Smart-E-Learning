@@ -12,12 +12,27 @@
             class="w-[290px] fixed md:top-3 top-[55px] right-0 z-[100] p-3 flex flex-col bg-white rounded-xl shadow-lg ring-1 ring-black/5 gap-3"
         >
             <div class="w-full flex items-center gap-3 px-1">
-                <div
+                <!-- <div
                     class="w-11 h-11 shrink-0 rounded-full flex items-center justify-center font-semibold text-sm"
                     :class="profileColor"
                 >
                     {{ initials }}
-                </div>
+                </div> -->
+
+                <img
+                    v-if="currentProfileImage"
+                    :src="currentProfileImage"
+                    alt="Profile picture"
+                    class="w-11 h-11 shrink-0 rounded-full object-cover ring-1 ring-gray-200"
+                >
+
+                <span
+                    v-else
+                    class="w-11 h-11 shrink-0 rounded-full flex items-center justify-center font-semibold text-sm"
+                    :class="profileColor"
+                >
+                    {{ initials }}
+                </span>
 
                 <div class="flex flex-col leading-tight justify-center min-w-0 flex-1">
                     <span class="font-semibold text-sm text-gray-900 truncate">
@@ -179,8 +194,14 @@ const props = defineProps({
     userId: { type: Number, required: true },
     userName: { type: String, required: true },
     userEmail: { type: String, required: true },
-    profileColor: { type: String, default: 'bg-purple-800 text-white' }
+    profileColor: { type: String, default: 'bg-purple-800 text-white'},
+    profilePicture: { type: String, default: '' },
+    profileAvatar: { type: String, default: '' }
 })
+
+const currentProfileImage = ref(
+    props.profilePicture || props.profileAvatar || ''
+);
 
 const isLoggingOut = ref(false)
 const showFeedback = ref(false)

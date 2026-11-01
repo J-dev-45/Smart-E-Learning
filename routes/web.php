@@ -14,6 +14,7 @@ use App\Http\Controllers\CodeRunnerController;
 use App\Http\Controllers\Logout;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\Pages\QuestionsPage;
+use App\Http\Controllers\ProfileAvatarController;
 use App\Http\Controllers\Question;
 use App\Http\Controllers\QuestionImport;
 use App\Http\Controllers\TopicController;
@@ -118,10 +119,27 @@ Route::middleware(['auth'])->group(function(){
             ->take(20)
             ->get();
 
+        
         $users = User::whereIn('id', $leaderboard->pluck('user_id'))
-            ->select('id', 'name', 'profile_color', 'profile_picture')
+            ->select('id', 'name', 'profile_color', 'profile_picture', 'profile_avatar')
             ->get()
-            ->keyBy('id');
+            ->keyBy('id')
+            ->map(function ($user) {
+                if ($user->profile_picture && str_starts_with($user->profile_picture, 'profiles/')) {
+                    $user->profile_picture = rtrim(config('services.supabase.url'), '/')
+                        . '/storage/v1/object/public/'
+                        . config('services.supabase.avatar_bucket', 'pictures')
+                        . '/'
+                        . $user->profile_picture;
+                }
+
+                if ($user->profile_avatar) {
+                    $user->profile_avatar = asset(ltrim($user->profile_avatar, '/'));
+                }
+
+                return $user;
+            });
+
 
         $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())->get();
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())->get();
@@ -163,6 +181,16 @@ Route::middleware(['auth'])->group(function(){
 
     Route::post('/run-code', [CodeRunnerController::class, 'run'])
     ->middleware(['throttle:20,1']);
+
+    Route::post('/profile/avatar', [
+        ProfileAvatarController::class,
+        'update'
+    ])->name('profile.avatar.update');
+
+    Route::post('/profile/avatar/preset', [
+        ProfileAvatarController::class,
+        'savePreset'
+    ])->name('profile.avatar.preset');
 
     Route::get('/learn/{subject_name}/{subject_id}', [LearnController::class, 'learn']);
     Route::get('/learning/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']);

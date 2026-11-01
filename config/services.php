@@ -39,7 +39,13 @@ return [
     ],
 
     'onlinecompiler' => [
-    'key' => env('ONLINECOMPILER_API_KEY'),
-    'url' => 'https://api.onlinecompiler.io/api/run-code-sync/',
-],
+        'key' => env('ONLINECOMPILER_API_KEY'),
+        'url' => 'https://api.onlinecompiler.io/api/run-code-sync/',
+    ],
+    
+    'supabase' => [
+        'url' => env('SUPABASE_URL'),
+        'secret_key' => env('SUPABASE_SECRET_KEY'),
+        'avatar_bucket' => env('SUPABASE_AVATAR_BUCKET', 'pictures'),
+    ],
 ];

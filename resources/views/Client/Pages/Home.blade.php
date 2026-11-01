@@ -17,10 +17,12 @@
 
         
         <client-navigation
-        :user-id="{{auth()->user()->id}}"
-        user-name="{{auth()->user()->name}}"
-        user-email="{{auth()->user()->email}}"
-        profile-color="{{auth()->user()->profile_color}}"
+            :user-id="{{ auth()->user()->id }}"
+            user-name="{{ auth()->user()->name }}"
+            user-email="{{ auth()->user()->email }}"
+            profile-color="{{ auth()->user()->profile_color ?? '' }}"
+            profile-picture="{{ auth()->user()->profile_picture && str_starts_with(auth()->user()->profile_picture, 'profiles/') ? rtrim(config('services.supabase.url'), '/') . '/storage/v1/object/public/' . config('services.supabase.avatar_bucket', 'pictures') . '/' . auth()->user()->profile_picture : (auth()->user()->profile_picture ?? '') }}"
+            profile-avatar="{{ auth()->user()->profile_avatar ? asset(ltrim(auth()->user()->profile_avatar, '/')) : '' }}"
         ></client-navigation>
 
         <main class="w-full text-white pt-[80px] md:pt-[120px] pb-16 px-4 flex flex-col">
@@ -29,12 +31,23 @@
             <section id="hero" class="w-full flex items-center justify-center flex-col gap-8 scroll-mt-24 ">
                 
                 <div class="flex flex-col items-center justify-center gap-4">
-                    @if (auth()->user()->profile_picture === null)
-                        <student-profile
-                        user-name="{{auth()->user()->name}}"
-                        profile-color="{{auth()->user()->profile_color}}"
-                        ></student-profile>
-                    @endif
+
+                    <student-profile
+                        user-name="{{ auth()->user()->name }}"
+                        profile-picture="{{ auth()->user()->profile_picture && str_starts_with(auth()->user()->profile_picture, 'profiles/') ? rtrim(config('services.supabase.url'), '/') . '/storage/v1/object/public/' . config('services.supabase.avatar_bucket', 'pictures') . '/' . auth()->user()->profile_picture : auth()->user()->profile_picture }}"
+                        profile-avatar="{{ auth()->user()->profile_avatar ? asset(ltrim(auth()->user()->profile_avatar, '/')) : '' }}"
+                        avatar1="{{ asset('/images/Profile_Avatars/Avatar_1.jpg') }}"
+                        avatar2="{{ asset('/images/Profile_Avatars/Avatar_2.jpg') }}"
+                        avatar3="{{ asset('/images/Profile_Avatars/Avatar_3.jpg') }}"
+                        avatar4="{{ asset('/images/Profile_Avatars/Avatar_4.jpg') }}"
+                        avatar5="{{ asset('/images/Profile_Avatars/Avatar_5.jpg') }}"
+                        avatar6="{{ asset('/images/Profile_Avatars/Avatar_6.jpg') }}"
+                        avatar7="{{ asset('/images/Profile_Avatars/Avatar_7.jpg') }}"
+                        avatar8="{{ asset('/images/Profile_Avatars/Avatar_8.jpg') }}"
+                        avatar9="{{ asset('/images/Profile_Avatars/Avatar_9.jpg') }}"
+                        avatar10="{{ asset('/images/Profile_Avatars/Avatar_10.jpg') }}"
+                    ></student-profile>
+
                     <div class="flex flex-col items-center justify-center gap-2">
                         <span class="text-2xl font-semibold tracking-tight">{{ auth()->user()->name }}</span>
                         <span class="text-xs font-semibold uppercase tracking-wider px-3 py-1 rounded-full text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20">{{auth()->user()->role}}</span>
