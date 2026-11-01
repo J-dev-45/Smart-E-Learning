@@ -112,7 +112,7 @@
                         type="checkbox"
                         name="remember"
                         v-model="remember"
-                        class="w-3.5 h-3.5 accent-[#4C1D95]">
+                        class="w-3.5 h-3.5 accent-[#3b0764]">
                     Remember me!
                 </label>
 

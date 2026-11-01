@@ -33,13 +33,13 @@
                 <label class="ps-2 font-semibold text-gray-700 text-sm">Email</label>
                 <input type="email" placeholder="example@gmail.com" v-model="email"
                     class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 text-sm text-[#090014]
-                    placeholder:text-gray-400 w-full focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                    placeholder:text-gray-400 w-full focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                     style="height:clamp(44px,5.5vh,56px)"
                     @keyup.enter="sendOtp">
             </div>
 
             <button @click="sendOtp" :disabled="isSubmitting"
-                class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85 disabled:opacity-60 disabled:cursor-not-allowed
+                class="w-full bg-[#3b0764] hover:bg-[#3b0764]/85 disabled:opacity-60 disabled:cursor-not-allowed
                         text-white font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg
                         transition-all duration-200 tracking-wide mt-[clamp(0.2rem,1dvh,0.6rem)]
                         flex items-center justify-center gap-2"
@@ -54,7 +54,7 @@
 
             <div class="flex justify-center items-center gap-2 text-sm mt-[clamp(0.75rem,2vh,1.25rem)]">
                 <span class="text-gray-500">Remember your password?</span>
-                <a href="/" @click="clearFpSession" class="text-[#4C1D95] font-semibold hover:underline">Log in</a>
+                <a href="/" @click="clearFpSession" class="text-[#3b0764] font-semibold hover:underline">Log in</a>
             </div>
         </template>
 
@@ -67,7 +67,7 @@
                 style="font-size:clamp(1.2rem,2.2vw,1.50rem)">Verify OTP</h4>
             <p class="text-gray-500 mt-1.5 mb-[clamp(1rem,3vh,2rem)] text-sm text-center px-4 leading-relaxed">
                 Enter the 6-digit OTP code sent to <b class="text-gray-700">{{ email }}</b>
-                <span @click="changeEmail" class="block text-xs text-[#4C1D95] font-semibold hover:underline cursor-pointer mt-1.5">Wrong email? Change</span>
+                <span @click="changeEmail" class="block text-xs text-[#3b0764] font-semibold hover:underline cursor-pointer mt-1.5">Wrong email? Change</span>
             </p>
 
             <!-- ERROR -->
@@ -90,7 +90,7 @@
             </div>
 
             <button @click="verifyOtp" :disabled="isSubmitting"
-                class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85 disabled:opacity-60 disabled:cursor-not-allowed
+                class="w-full bg-[#3b0764] hover:bg-[#3b0764]/85 disabled:opacity-60 disabled:cursor-not-allowed
                         text-white font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg
                         transition-all duration-200 tracking-wide mt-[clamp(0.2rem,1dvh,0.6rem)]
                         flex items-center justify-center gap-2"
@@ -105,7 +105,7 @@
 
             <div class="flex justify-center items-center gap-2 text-sm mt-[clamp(0.75rem,2vh,1.25rem)]">
                 <span class="text-gray-500">Didn't receive a code?</span>
-                <span @click="resendOtp" class="text-[#4C1D95] font-semibold hover:underline cursor-pointer">
+                <span @click="resendOtp" class="text-[#3b0764] font-semibold hover:underline cursor-pointer">
                     {{ resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Code' }}
                 </span>
             </div>
@@ -135,7 +135,7 @@
                 <input :type="showPassword ? 'text' : 'password'" v-model="newPassword"
                     placeholder="••••••••"
                     class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
-                    placeholder:text-xl placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                    placeholder:text-xl placeholder:text-gray-400 focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                     style="height:clamp(44px,5.5vh,56px)">
 
                 <svg v-if="!showPassword" @click="showPassword = true" xmlns="http://www.w3.org/2000/svg"
@@ -159,7 +159,7 @@
                 <input :type="showConfirmPassword ? 'text' : 'password'" v-model="confirmPassword"
                     placeholder="••••••••"
                     class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
-                    placeholder:text-xl placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                    placeholder:text-xl placeholder:text-gray-400 focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                     style="height:clamp(44px,5.5vh,56px)">
 
                 <svg v-if="!showConfirmPassword" @click="showConfirmPassword = true" xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +179,7 @@
             </div>
 
             <button @click="resetPassword" :disabled="isSubmitting"
-                class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85 disabled:opacity-60 disabled:cursor-not-allowed
+                class="w-full bg-[#3b0764] hover:bg-[#3b0764]/85 disabled:opacity-60 disabled:cursor-not-allowed
                         text-white font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg
                         transition-all duration-200 tracking-wide mt-[clamp(0.2rem,1dvh,0.6rem)]
                         flex items-center justify-center gap-2"
@@ -211,7 +211,7 @@
                 </p>
 
                 <a href="/" @click="clearFpSession"
-                    class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85
+                    class="w-full bg-[#3b0764] hover:bg-[#3b0764]/85
                             text-white font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg
                             transition-all duration-200 tracking-wide
                             flex items-center justify-center gap-2 no-underline"

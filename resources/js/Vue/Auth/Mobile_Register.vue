@@ -7,7 +7,7 @@
             <!-- BRAND ROW -->
             <div class="flex items-center gap-3 mb-[clamp(1rem,3dvh,1.6rem)]">
                 <img :src="logo" alt="Smart E-Learning logo" class="size-11 shrink-0 object-contain">
-                <span class="font-extrabold text-[#4C1D95] tracking-wide leading-tight"
+                <span class="font-extrabold text-[#3b0764] tracking-wide leading-tight"
                       style="font-size:clamp(1.05rem,2.6dvh,1.35rem)">Smart E-Learning</span>
             </div>
 
@@ -34,7 +34,7 @@
                            style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">First Name and Last Name</label>
                     <input type="text" placeholder="First Name and Last Name" v-model="name"
                            class="border-[1.5px] border-gray-200 rounded-full ps-5 outline-none bg-gray-50
-                                  w-full text-[#090014] placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white
+                                  w-full text-[#090014] placeholder:text-gray-400 focus:border-[#3b0764]/50 focus:bg-white
                                   transition-all duration-200"
                            style="height:clamp(40px,6dvh,52px); font-size:clamp(0.7rem,1.7dvh,0.85rem)">
                 </div>
@@ -45,7 +45,7 @@
                            style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">Email</label>
                     <input type="email" placeholder="example@gmail.com" v-model="email"
                            class="border-[1.5px] border-gray-200 rounded-full ps-5 outline-none bg-gray-50
-                                  w-full text-[#090014] placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white
+                                  w-full text-[#090014] placeholder:text-gray-400 focus:border-[#3b0764]/50 focus:bg-white
                                   transition-all duration-200"
                            style="height:clamp(40px,6dvh,52px); font-size:clamp(0.7rem,1.7dvh,0.85rem)">
                 </div>
@@ -70,7 +70,7 @@
                                       [&::-webkit-credentials-auto-fill-button]:hidden
                                       border-[1.5px] border-gray-200 rounded-full ps-5 pe-12 outline-none bg-gray-50
                                       w-full text-[#090014] placeholder:text-gray-400
-                                      focus:border-[#4C1D95]/50 focus:bg-white
+                                      focus:border-[#3b0764]/50 focus:bg-white
                                       transition-all duration-200">
 
                         <!-- @mousedown.prevent keeps focus in the input so the keyboard stays open -->
@@ -141,7 +141,7 @@
                                       [&::-webkit-credentials-auto-fill-button]:hidden
                                       border-[1.5px] border-gray-200 rounded-full ps-5 pe-12 outline-none bg-gray-50
                                       w-full text-[#090014] placeholder:text-gray-400
-                                      focus:border-[#4C1D95]/50 focus:bg-white
+                                      focus:border-[#3b0764]/50 focus:bg-white
                                       transition-all duration-200">
 
                         <button type="button"
@@ -195,8 +195,8 @@
                 <!-- Submit -->
                 <button type="submit"
                         :disabled="isSubmitting || password.length < 8 || password !== password_confirmation"
-                        class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85 disabled:opacity-50 disabled:cursor-not-allowed
-                               disabled:hover:bg-[#4C1D95] text-white font-bold
+                        class="w-full bg-[#3b0764] hover:bg-[#3b0764]/85 disabled:opacity-50 disabled:cursor-not-allowed
+                               disabled:hover:bg-[#3b0764] text-white font-bold
                                rounded-full cursor-pointer shadow-md hover:shadow-lg
                                transition-all duration-200 tracking-wide touch-manipulation
                                mt-[clamp(0.2rem,1dvh,0.6rem)] flex items-center justify-center gap-2"
@@ -214,7 +214,7 @@
                             pt-[clamp(0.1rem,0.8dvh,0.4rem)] pb-1"
                      style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
                     <span class="text-gray-500">Already have an account?</span>
-                    <a :href="logIn" class="text-[#4C1D95] font-semibold hover:underline">Log in</a>
+                    <a :href="logIn" class="text-[#3b0764] font-semibold hover:underline">Log in</a>
                 </div>
 
             </form>

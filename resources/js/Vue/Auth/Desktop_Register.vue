@@ -21,7 +21,7 @@
                 <label class="ps-2 font-semibold text-gray-700 text-sm">First Name and Last Name</label>
                 <input type="text" placeholder="First Name and Last Name" v-model="name"
                         class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 text-sm text-[#090014]
-                        placeholder:text-gray-400 w-full focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                        placeholder:text-gray-400 w-full focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                         style="height:clamp(44px,5.5vh,56px)">
             </div>
 
@@ -29,7 +29,7 @@
                 <label class="ps-2 font-semibold text-gray-700 text-sm">Email</label>
                 <input type="email" placeholder="example@gmail.com" v-model="email"
                         class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 text-sm text-[#090014]
-                        placeholder:text-gray-400 w-full focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                        placeholder:text-gray-400 w-full focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                         style="height:clamp(44px,5.5vh,56px)">
             </div>
 
@@ -39,7 +39,7 @@
                         class="[&::-ms-reveal]:hidden [&::-ms-clear]:hidden
                         [&::-webkit-credentials-auto-fill-button]:hidden
                         border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
-                        placeholder:text-xl placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                        placeholder:text-xl placeholder:text-gray-400 focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                         style="height:clamp(44px,5.5vh,56px)">
 
                 <svg v-if="!showPassword" @click="showPassword = true" xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +79,7 @@
                         class="[&::-ms-reveal]:hidden [&::-ms-clear]:hidden
                         [&::-webkit-credentials-auto-fill-button]:hidden
                         border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
-                        placeholder:text-xl placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                        placeholder:text-xl placeholder:text-gray-400 focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                         style="height:clamp(44px,5.5vh,56px)">
 
                 <svg v-if="!showConfirmPassword" @click="showConfirmPassword = true" xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +117,7 @@
 
         <button type="submit"
                 :disabled="isSubmitting || password.length < 8 || password !== password_confirmation"
-                class="w-full bg-[#4C1D95] hover:bg-[#4C1D95]/85 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#4C1D95] text-white font-bold
+                class="w-full bg-[#3b0764] hover:bg-[#3b0764]/85 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#3b0764] text-white font-bold
                         rounded-full cursor-pointer shadow-md hover:shadow-xl
                         tracking-wide transition-all duration-200 mt-6 flex items-center justify-center gap-2"
                 style="height:clamp(46px,5.5vh,58px); font-size:clamp(0.95rem,1.5vw,1.15rem)">
@@ -132,7 +132,7 @@
         <div class="flex justify-center items-center gap-2 text-sm
                     mt-[clamp(0.75rem,2vh,1.25rem)]">
             <span class="text-gray-500">Already have an Account?</span>
-            <a :href="logIn" class="text-[#4C1D95] font-semibold hover:underline">Log in</a>
+            <a :href="logIn" class="text-[#3b0764] font-semibold hover:underline">Log in</a>
         </div>
 
     </form>

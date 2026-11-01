@@ -25,7 +25,7 @@
 
             <input type="email" placeholder="example@gmail.com" name="email" v-model="email"
                 class="border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 text-sm text-[#090014]
-                placeholder:text-gray-400 w-full focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                placeholder:text-gray-400 w-full focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                 style="height:clamp(44px,5.5vh,56px)">
         </div>
 
@@ -37,7 +37,7 @@
                 class="[&::-ms-reveal]:hidden [&::-ms-clear]:hidden
                 [&::-webkit-credentials-auto-fill-button]:hidden
                 border-[1.5px] border-gray-200 rounded-full px-5 outline-none bg-gray-50 w-full text-[#090014]
-                placeholder:text-xl placeholder:text-gray-400 focus:border-[#4C1D95]/50 focus:bg-white transition-all duration-200"
+                placeholder:text-xl placeholder:text-gray-400 focus:border-[#3b0764]/50 focus:bg-white transition-all duration-200"
                 style="height:clamp(44px,5.5vh,56px)">
 
             <svg v-if="!showPassword" @click="showPassword = true" xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +62,7 @@
                 <input
                     type="checkbox"
                     v-model="remember"
-                    class="w-4 h-4 accent-[#4C1D95]">
+                    class="w-4 h-4 accent-[#3b0764]">
                 Remember me
             </label>
             <a href="/forgot-password" class="text-sm text-[#3b0764] font-semibold hover:underline">Forgot Password?</a>

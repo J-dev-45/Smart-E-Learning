@@ -16,7 +16,6 @@
         body {
             margin: 0;
             overflow-x: hidden;
-            background: linear-gradient(135deg, #090014 0%, #1A0B2E 50%, #4C1D95 100%);
         }
 
         @media (max-width: 767px) {
