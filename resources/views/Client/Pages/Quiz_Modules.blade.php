@@ -8,9 +8,9 @@
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
 </head>
-<body class="w-full min-h-screen bg-gray-50 flex flex-col overflow-x-hidden text-white">
+<body class="w-full min-h-screen sharedBG flex flex-col overflow-x-hidden sharedTXT">
 
-    <div id="app" class="flex flex-col overflow-x-hidden text-white">
+    <div id="app" class="flex flex-col overflow-x-hidden sharedTXT">
 
         {{-- Header --}}
         <choose-module-header 
@@ -26,41 +26,41 @@
 
             {{-- PROGRESS STATS --}}
             <section class="w-full max-w-3xl flex items-center justify-center flex-col gap-4 sm:gap-5 pt-6 sm:pt-8">
-                <p class="pt-2 text-sm font-medium text-white/45">Your progress in this subject</p>
+                <p class="pt-2 text-sm font-medium sharedTXTMuted">Your progress in this subject</p>
 
                 <div class="grid grid-cols-3 gap-2 sm:gap-4 md:gap-5 pb-3 pt-1 w-full">
 
-                    {{-- PASSED (violet) --}}
-                    <div class="group flex flex-col items-center justify-center p-3 sm:p-4 gap-1.5 sm:gap-2 rounded-2xl text-center border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
-                        <div class="flex items-center justify-center shrink-0 size-9 sm:size-11 rounded-xl bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 transition-colors duration-200 group-hover:bg-[#8B5CF6]/25">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5 text-[#B9A6F0]">
+                    {{-- PASSED --}}
+                    <div class="group flex flex-col items-center justify-center p-3 sm:p-4 gap-1.5 sm:gap-2 rounded-2xl text-center sharedSurface shadow-lg sharedShadow transition-all duration-200">
+                        <div class="flex items-center justify-center shrink-0 size-9 sm:size-11 rounded-xl sharedTile">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5 sharedTXTAccent">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                         </div>
                         <span class="text-xl sm:text-2xl font-bold leading-tight tabular-nums">{{ $modules_passed_count }}</span>
-                        <p class="text-[10px] sm:text-xs font-medium tracking-wide text-white/45">Passed</p>
+                        <p class="text-[10px] sm:text-xs font-medium tracking-wide sharedTXTMuted">Passed</p>
                     </div>
 
-                    {{-- AVG SCORE (cyan) --}}
-                    <div class="group flex flex-col items-center justify-center p-3 sm:p-4 gap-1.5 sm:gap-2 rounded-2xl text-center border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
-                        <div class="flex items-center justify-center shrink-0 size-9 sm:size-11 rounded-xl bg-[#22D3EE]/15 ring-1 ring-[#22D3EE]/20 transition-colors duration-200 group-hover:bg-[#22D3EE]/25">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5 text-[#7EE3F5]">
+                    {{-- AVG SCORE --}}
+                    <div class="group flex flex-col items-center justify-center p-3 sm:p-4 gap-1.5 sm:gap-2 rounded-2xl text-center sharedSurface shadow-lg sharedShadow transition-all duration-200">
+                        <div class="flex items-center justify-center shrink-0 size-9 sm:size-11 rounded-xl sharedTile">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5 sharedTXTAccent">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.99 14.993 6-6m6 3.001c0 1.268-.63 2.39-1.593 3.069a3.746 3.746 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043 3.745 3.745 0 0 1-3.068 1.593c-1.268 0-2.39-.63-3.068-1.593a3.745 3.745 0 0 1-3.296-1.043 3.746 3.746 0 0 1-1.043-3.297 3.746 3.746 0 0 1-1.593-3.068c0-1.268.63-2.39 1.593-3.068a3.746 3.746 0 0 1 1.043-3.297 3.745 3.745 0 0 1 3.296-1.042 3.745 3.745 0 0 1 3.068-1.594c1.268 0 2.39.63 3.068 1.593a3.745 3.745 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.297 3.746 3.746 0 0 1 1.593 3.068ZM9.74 9.743h.008v.007H9.74v-.007Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm4.125 4.5h.008v.008h-.008v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
                             </svg>
                         </div>
                         <span class="text-xl sm:text-2xl font-bold leading-tight tabular-nums">{{ $average_score }}%</span>
-                        <p class="text-[10px] sm:text-xs font-medium tracking-wide text-white/45">Avg score</p>
+                        <p class="text-[10px] sm:text-xs font-medium tracking-wide sharedTXTMuted">Avg score</p>
                     </div>
 
-                    {{-- REMAINING MODULES (indigo) --}}
-                    <div class="group flex flex-col items-center justify-center p-3 sm:p-4 gap-1.5 sm:gap-2 rounded-2xl text-center border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
-                        <div class="flex items-center justify-center shrink-0 size-9 sm:size-11 rounded-xl bg-[#6366F1]/15 ring-1 ring-[#6366F1]/20 transition-colors duration-200 group-hover:bg-[#6366F1]/25">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5 text-[#A5A9F5]">
+                    {{-- REMAINING MODULES --}}
+                    <div class="group flex flex-col items-center justify-center p-3 sm:p-4 gap-1.5 sm:gap-2 rounded-2xl text-center sharedSurface shadow-lg sharedShadow transition-all duration-200">
+                        <div class="flex items-center justify-center shrink-0 size-9 sm:size-11 rounded-xl sharedTile">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5 sharedTXTAccent">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                             </svg>
                         </div>
                         <span class="text-xl sm:text-2xl font-bold leading-tight tabular-nums">{{ $remaining_modules }}</span>
-                        <p class="text-[10px] sm:text-xs font-medium tracking-wide text-white/45">Remaining modules</p>
+                        <p class="text-[10px] sm:text-xs font-medium tracking-wide sharedTXTMuted">Remaining modules</p>
                     </div>
 
                 </div>
@@ -68,7 +68,7 @@
 
             {{-- SEPARATOR --}}
             <div class="w-full h-[1px] flex items-center justify-center pt-[30px]">
-                <div class="bg-gray-600 w-full max-w-3xl h-[1px]"></div>
+                <div class="sharedLine w-full max-w-3xl h-[1px]"></div>
             </div>
 
             {{-- MODULES --}}

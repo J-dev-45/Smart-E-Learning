@@ -2,38 +2,38 @@
     <div
         v-for="subject in subjectsData"
         :key="subject.order"
-        class="group relative flex flex-col justify-between p-4 md:p-5 gap-4 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
+        class="group relative flex flex-col justify-between p-4 md:p-5 gap-4 rounded-2xl sharedSurface shadow-lg sharedShadow transition-all duration-200">
 
         <div class="flex items-start justify-between">
-            <div class="flex items-center justify-center shrink-0 w-11 h-11 rounded-xl bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 transition-colors duration-200 group-hover:bg-[#8B5CF6]/25">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-[#B9A6F0]">
+            <div class="flex items-center justify-center shrink-0 w-11 h-11 rounded-xl sharedTile transition-colors duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 sharedTXTAccent">
                     <path stroke-linecap="round" stroke-linejoin="round" :d="icons.find(ic => ic.subject === subject.subject_name)?.d" />
                 </svg>
             </div>
 
             <div class="relative size-11 shrink-0">
-                <svg class="size-11 -rotate-90" viewBox="0 0 40 40">
-                    <circle cx="20" cy="20" r="16" fill="none" stroke="#22D3EE" stroke-opacity="0.15" stroke-width="4"/>
-                    <circle cx="20" cy="20" r="16" fill="none" stroke="#22D3EE" stroke-width="4" stroke-linecap="round" stroke-dasharray="100.5" :stroke-dashoffset="100.5 - (percentage(subject.id) / 100) * 100.5"/>
+                <svg class="size-11 -rotate-90 sharedTXTAccent" viewBox="0 0 40 40">
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="4"/>
+                    <circle cx="20" cy="20" r="16" fill="none" stroke="currentColor" stroke-width="4" stroke-linecap="round" stroke-dasharray="100.5" :stroke-dashoffset="100.5 - (percentage(subject.id) / 100) * 100.5"/>
                 </svg>
-                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold tabular-nums text-[#7EE3F5]">{{ percentage(subject.id) }}%</span>
+                <span class="absolute inset-0 flex items-center justify-center text-[10px] font-bold tabular-nums sharedTXTAccent">{{ percentage(subject.id) }}%</span>
             </div>
         </div>
 
         <div class="flex flex-col gap-1">
-            <span class="text-[10px] font-bold tracking-widest text-[#B9A6F0]/70">
+            <span class="text-[10px] font-bold tracking-widest sharedTXTMuted">
                 {{ subject.subject_code }}
             </span>
             <h3 class="text-base font-bold leading-snug">{{ subject.subject_name }}</h3>
-            <p class="text-xs font-medium text-white/45">{{ getAvailableModulesCount(subject.id) }} quizzes available</p>
+            <p class="text-xs font-medium sharedTXTMuted">{{ getAvailableModulesCount(subject.id) }} quizzes available</p>
         </div>
 
         <div class="flex items-center gap-2 pt-1">
             <a :href="`/learn/${url(subject.subject_name)}/${subject.id}`"
                 class="flex-1 text-center text-xs font-bold rounded-xl py-2.5 transition-colors duration-200"
                 :class="getSubjectStarted(subject.id)
-                    ? 'text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 hover:bg-[#8B5CF6]/25'
-                    : 'text-white bg-[#8B5CF6] hover:bg-[#8B5CF6]/85'">
+                    ? 'sharedBtnSoft'
+                    : 'sharedBtn'">
                 {{ getSubjectStarted(subject.id) ? 'Continue Learning' : 'Learn' }}
             </a>
         </div>

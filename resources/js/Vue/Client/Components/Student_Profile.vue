@@ -5,17 +5,17 @@
             v-if="currentProfileImage"
             :src="currentProfileImage"
             alt="Profile picture"
-            class="w-40 h-40 rounded-full object-cover ring-4 ring-white/10 shadow-xl shadow-black/30"
+            class="w-40 h-40 rounded-full object-cover ring-4 sharedRingSoft shadow-xl sharedShadow"
         >
 
         <div
             v-else
             :class="[
-                'w-40 h-40 rounded-full flex items-center justify-center ring-4 ring-white/10 shadow-xl shadow-black/30',
+                'w-40 h-40 rounded-full flex items-center justify-center ring-4 sharedRingSoft shadow-xl sharedShadow',
                 profileColor
             ]"
         >
-            <span class="text-5xl font-semibold text-white tracking-wide">
+            <span class="text-5xl font-semibold sharedTXT tracking-wide">
                 {{ initials(userName) }}
             </span>
         </div>
@@ -24,10 +24,10 @@
             type="button"
             aria-label="Change profile picture"
             @click="showUpdateProfile"
-            class="absolute bottom-2 right-2 flex items-center justify-center w-7 h-7 rounded-full bg-[#8B5CF6] hover:bg-[#7C3AED] hover:scale-105 ring-2 ring-[#3B0764] shadow-lg shadow-black/40 cursor-pointer transition duration-200 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#B9A6F0]"
+            class="absolute bottom-2 right-2 flex items-center justify-center w-7 h-7 rounded-full sharedBtn hover:scale-105 ring-2 sharedRingBG shadow-lg sharedShadow cursor-pointer transition duration-200 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sharedFocus"
         >
             <svg
-                class="w-3.5 h-3.5 text-white"
+                class="w-3.5 h-3.5"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"

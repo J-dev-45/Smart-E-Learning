@@ -1,18 +1,17 @@
-
 <template>
     <nav
-        class="bg-white w-full max-w-2xl h-[50px] fixed md:top-[15px] left-1/2 -translate-x-1/2 z-50 flex items-center justify-between md:px-4 px-6 md:rounded-full shadow-xs shadow-gray-200"
+        class="sharedNavBG w-full max-w-2xl h-[50px] fixed md:top-[15px] left-1/2 -translate-x-1/2 z-50 flex items-center justify-between md:px-4 px-6 md:rounded-full shadow-xs sharedNavShadow"
     >
-        <div class="font-bold text-[15px] tracking-tight">
-            Smart <span class="text-[#5b21b6]">E-Learning</span>
+        <div class="font-bold text-[15px] tracking-tight sharedTXTBrand">
+            Smart E-Learning
         </div>
 
-        <ul class="hidden md:flex items-center justify-center gap-4 text-[13px] font-semibold text-gray-600">
+        <ul class="hidden md:flex items-center justify-center gap-4 text-[13px] font-semibold sharedNavText">
             <li>
                 <a
                     href="#hero"
                     class="relative transition-colors"
-                    :class="activeSection === 'hero' ? 'text-[#5b21b6]' : 'hover:text-[#5b21b6]'"
+                    :class="activeSection === 'hero' ? 'sharedTXTBrand sharedNavActive' : 'sharedHoverBrand'"
                 >
                     Home
                 </a>
@@ -22,7 +21,7 @@
                 <a
                     href="#subjects"
                     class="relative transition-colors"
-                    :class="activeSection === 'subjects' ? 'text-[#5b21b6]' : 'hover:text-[#5b21b6]'"
+                    :class="activeSection === 'subjects' ? 'sharedTXTBrand sharedNavActive' : 'sharedHoverBrand'"
                 >
                     Subjects
                 </a>
@@ -32,7 +31,7 @@
                 <a
                     href="#code-playground"
                     class="relative transition-colors"
-                    :class="activeSection === 'code-playground' ? 'text-[#5b21b6]' : 'hover:text-[#5b21b6]'"
+                    :class="activeSection === 'code-playground' ? 'sharedTXTBrand sharedNavActive' : 'sharedHoverBrand'"
                 >
                     Code
                 </a>
@@ -42,7 +41,7 @@
                 <a
                     href="#leaderboard"
                     class="relative transition-colors"
-                    :class="activeSection === 'leaderboard' ? 'text-[#5b21b6]' : 'hover:text-[#5b21b6]'"
+                    :class="activeSection === 'leaderboard' ? 'sharedTXTBrand sharedNavActive' : 'sharedHoverBrand'"
                 >
                     Leaderboard
                 </a>
@@ -61,7 +60,7 @@
                     v-if="currentProfileImage"
                     :src="currentProfileImage"
                     alt="Profile picture"
-                    class="rounded-full w-8 h-8 cursor-pointer object-cover ring-1 ring-gray-200"
+                    class="rounded-full w-8 h-8 cursor-pointer object-cover ring-1 sharedNavRing"
                 >
 
                 <span
@@ -95,7 +94,7 @@ const props = defineProps({
     userId: { type: Number, required: true },
     userName: { type: String, required: true },
     userEmail: { type: String, required: true },
-    profileColor: { type: String, default: 'bg-purple-800 text-white' },
+    profileColor: { type: String, default: 'sharedBtn' },
     profilePicture: { type: String, default: '' },
     profileAvatar: { type: String, default: '' }
 })

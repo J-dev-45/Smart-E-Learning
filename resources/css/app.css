@@ -11,24 +11,207 @@
         'Segoe UI Symbol', 'Noto Color Emoji';
 }
 
+/* ------------------------------------------------------------------
+   THEME VARIABLES: every color value is written ONCE, here.
+   Anything that needs the same color points to the same variable.
+------------------------------------------------------------------- */
 :root {
-    --primary-color: #3b0764;
+    /* base color used by more than one role */
+    --white: #FFFFFF;
+
+    /* backgrounds */
+    --primary-color: #40407A;
+    --surface-color: #34346A;
+    --surface-deep: #2C2C5E;
+    --surface-deeper: #25254F;
+    --tile-color: #4A4A8F;
+    --border-color: #5C5CA3;
+
+    /* text */
+    --text-main: var(--white);
+    --text-body: #E2E2F5;
+    --text-muted: #B9B9E3;
+
+    /* accent */
+    --accent-color: #C4B5FD;
+    --accent-solid: #6D5BD6;
+    --on-accent-solid: var(--white);
+
+    /* success */
+    --success-color: #34D399;
+    --on-success: #0F3D2E;
+
+    /* info / final exam */
+    --info-color: #7EE3F5;
+    --on-info: var(--surface-deeper);
+
+    /* danger (form errors) */
+    --danger-color: #DC2626;
+
+    /* leaderboard podium */
+    --rank1-color: #FFD558;
+    --rank2-color: var(--info-color);
+    --rank3-color: var(--accent-color);
+
+    /* card shadow */
+    --shadow-color: #000000;
+
+    /* light surfaces: navbar pill and login card */
+    --light-bg: var(--white);
+    --light-field: #F9FAFB;
+    --light-line: #E5E7EB;
+    --light-faint: #9CA3AF;
+    --light-muted: #6B7280;
+    --light-success: #15803D;
+    --light-ink: var(--surface-deeper);
+
+    /* page scrollbar (reuses theme colors) */
+    --scrollbar-track: var(--surface-color);
+    --scrollbar-thumb: var(--border-color);
+    --scrollbar-thumb-hover: var(--accent-solid);
+
+    /* scrollbar inside the white panel (#whiteBG) */
+    --panel-scroll-thumb: #E9D5FF;
+    --panel-scroll-thumb-hover: #8B5CF6;
+    --panel-scroll-firefox: #BC9DDE;
 }
 
-/* #3b0764 */
+/* Amber option: --accent-color: #FFC15E; --accent-solid: #FFC15E; --on-accent-solid: #2A2A55; */
 
-.sharedTXT{
-    color: var(--primary-color);
+/* ------------------------------------------------------------------
+   SHARED CLASSES: one class per color, grouped when the color is the same
+------------------------------------------------------------------- */
+
+/* Backgrounds */
+body,
+.sharedBG { background: var(--primary-color); }
+
+body { color: var(--text-body); }
+
+.sharedSurface,
+.sharedSurfaceBG { background: var(--surface-color); }
+.sharedSurface { border: 1px solid var(--border-color); }
+.sharedSurfaceDeep { background: var(--surface-deep); border: 1px solid var(--border-color); }
+.sharedSurfaceDeeper,
+.sharedDeepBG { background: var(--surface-deeper); }
+.sharedSurfaceDeeper { border: 1px solid var(--border-color); }
+
+.sharedTile,
+.sharedBtnSoft { background: var(--tile-color); }
+
+.sharedBGAccent { background: var(--accent-color); }
+
+.sharedLightBG,
+.sharedNavBG { background: var(--light-bg); }
+
+.sharedLightFieldBG { background: var(--light-field); }
+
+.sharedLine { background: var(--border-color); }
+.sharedDivider { background: linear-gradient(to right, transparent, var(--border-color), transparent); }
+
+/* Borders */
+.sharedBorder { border-color: var(--border-color); }
+.sharedBorderLight { border-color: color-mix(in srgb, var(--white) 40%, transparent); }
+.sharedLightBorder { border-color: var(--light-line); }
+.sharedStrokeLight { stroke: var(--light-line); }
+
+/* Text on dark backgrounds */
+.sharedTXT { color: var(--text-main); }
+.sharedTXTBody { color: var(--text-body); }
+.sharedTXTMuted { color: var(--text-muted); }
+.sharedTXTAccent { color: var(--accent-color); }
+.sharedTXTSuccess { color: var(--success-color); }
+.sharedTXTBrand,
+.sharedHoverBrand:hover { color: var(--primary-color); }
+
+/* Text on light backgrounds (navbar, login card) */
+.sharedTXTOnLight { color: var(--light-ink); }
+.sharedTXTLightMuted,
+.sharedNavText { color: var(--light-muted); }
+.sharedTXTLightFaint { color: var(--light-faint); }
+.sharedTXTDanger { color: var(--danger-color); }
+.sharedTXTLightSuccess { color: var(--light-success); }
+
+/* Form controls */
+.sharedCheckAccent { accent-color: var(--primary-color); }
+.sharedInput { border-color: var(--light-line); background: var(--light-field); color: var(--light-ink); }
+.sharedInput::placeholder { color: var(--light-faint); }
+.sharedInput:focus { border-color: color-mix(in srgb, var(--primary-color) 50%, transparent); background: var(--light-bg); }
+
+/* Buttons */
+.sharedBtn { background: var(--accent-solid); color: var(--on-accent-solid); }
+.sharedBtnSuccess { background: var(--success-color); color: var(--on-success); }
+.sharedBtnInfo { background: var(--info-color); color: var(--on-info); }
+.sharedBtnSoft {
+    color: var(--text-main);
+    box-shadow: inset 0 0 0 1px var(--border-color);
 }
 
-.sharedBG{
+/* Ghost button on light surfaces */
+.sharedBtnGhostLight { color: var(--light-muted); border-color: var(--light-line); }
+.sharedBtnGhostLight:hover { background: var(--light-field); border-color: var(--light-faint); color: var(--light-ink); }
+
+/* Shadows and rings */
+.sharedShadow { --tw-shadow-color: color-mix(in srgb, var(--shadow-color) 20%, transparent); }
+.sharedNavShadow { --tw-shadow-color: var(--light-line); }
+.sharedNavRing { --tw-ring-color: var(--light-line); }
+.sharedRingSoft { --tw-ring-color: color-mix(in srgb, var(--white) 10%, transparent); }
+.sharedRingBG { --tw-ring-color: var(--primary-color); }
+.sharedFocus:focus-visible { outline-color: var(--accent-color); }
+
+/* Navbar active link underline */
+.sharedNavActive::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 2px;
+    border-radius: 9999px;
     background: var(--primary-color);
 }
 
-body {
-  background: var(--primary-color);
+/* Hover effects */
+.sharedSurface:hover { border-color: var(--accent-color); }
+.sharedBtn:not(:disabled):hover,
+.sharedBtnSuccess:hover,
+.sharedBtnInfo:hover { filter: brightness(1.1); }
+.sharedBtnSoft:hover {
+    background: color-mix(in srgb, var(--tile-color) 80%, var(--white));
+    box-shadow: inset 0 0 0 1px var(--accent-color);
 }
 
+/* Status colors (passed / open / exam): set --state once, children read it */
+.sharedStatePassed { --state: var(--success-color); }
+.sharedStateOpen   { --state: var(--accent-color); }
+.sharedStateExam   { --state: var(--info-color); }
+
+.sharedStateLightPassed { --state: var(--light-success); }
+.sharedStateLightFailed { --state: var(--danger-color); }
+
+.sharedStateText   { color: var(--state); }
+.sharedStateTint   { background: color-mix(in srgb, var(--state) 10%, transparent); }
+.sharedStateBorder { border-color: var(--state); }
+.sharedStateBox    { border-color: color-mix(in srgb, var(--state) 30%, transparent); background: color-mix(in srgb, var(--state) 8%, transparent); }
+.sharedStateBox:hover { border-color: color-mix(in srgb, var(--state) 50%, transparent); background: color-mix(in srgb, var(--state) 12%, transparent); }
+.sharedStateChip   { color: var(--state); background: color-mix(in srgb, var(--state) 12%, transparent); --tw-ring-color: color-mix(in srgb, var(--state) 25%, transparent); }
+.sharedStatePill   { color: var(--state); border-color: color-mix(in srgb, var(--state) 35%, transparent); background: color-mix(in srgb, var(--state) 10%, transparent); }
+.sharedStatePillLink:hover { border-color: color-mix(in srgb, var(--state) 60%, transparent); background: color-mix(in srgb, var(--state) 18%, transparent); }
+.sharedStateCircle { background: color-mix(in srgb, var(--state) 20%, transparent); --tw-ring-color: color-mix(in srgb, var(--state) 60%, transparent); }
+
+/* Leaderboard podium */
+.sharedRank1 { --rank: var(--rank1-color); }
+.sharedRank2 { --rank: var(--rank2-color); }
+.sharedRank3 { --rank: var(--rank3-color); }
+
+.sharedRankRing  { --tw-ring-color: color-mix(in srgb, var(--rank) 70%, transparent); }
+.sharedRankBox   { border-color: color-mix(in srgb, var(--rank) 40%, transparent); background: color-mix(in srgb, var(--rank) 12%, transparent); }
+.sharedRankEmpty { border-color: color-mix(in srgb, var(--rank) 35%, transparent); background: color-mix(in srgb, var(--rank) 8%, transparent); }
+.sharedRankText  { color: var(--rank); }
+
+/* ------------------------------------------------------------------
+   SCROLLBARS
+------------------------------------------------------------------- */
 @media (max-width: 767px) {
     html,
     body,
@@ -48,39 +231,24 @@ body {
     }
 }
 
-.main-body {
-  background: linear-gradient(
-    135deg,
-    #090014 0%,
-    #1A0B2E 50%,
-    #4C1D95 100%
-  );
-}
-
-.nav-ul li{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
 ::-webkit-scrollbar {
     width: 8px;
 }
 ::-webkit-scrollbar-track {
-    background: #090014;
+    background: var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb {
-    background-color: #4C1D95;
+    background-color: var(--scrollbar-thumb);
     border-radius: 9999px;
-    border: 2px solid #090014;
+    border: 2px solid var(--scrollbar-track);
 }
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #6D28D9;
+    background-color: var(--scrollbar-thumb-hover);
 }
 
 html {
     scrollbar-width: thin;
-    scrollbar-color: #4C1D95 #090014;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
 }
 
 #whiteBG::-webkit-scrollbar {
@@ -90,14 +258,31 @@ html {
     background: transparent;
 }
 #whiteBG::-webkit-scrollbar-thumb {
-    background-color: #E9D5FF;
+    background-color: var(--panel-scroll-thumb);
     border-radius: 9999px;
 }
 #whiteBG::-webkit-scrollbar-thumb:hover {
-    background-color: #8B5CF6; 
+    background-color: var(--panel-scroll-thumb-hover);
 }
 
 #whiteBG {
     scrollbar-width: thin;
-    scrollbar-color: #bc9dde transparent;
+    scrollbar-color: var(--panel-scroll-firefox) transparent;
+}
+
+/* ------------------------------------------------------------------
+   OTHER
+------------------------------------------------------------------- */
+.main-body {
+    background: linear-gradient(
+        135deg,
+        var(--surface-deeper) 0%,
+        var(--primary-color) 100%
+    );
+}
+
+.nav-ul li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

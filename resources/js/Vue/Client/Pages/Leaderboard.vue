@@ -1,18 +1,17 @@
-
 <template>
     <!-- ------------------------------ EMPTY STATE ------------------------------ -->
     <div v-if="!leaderboard.length" class="w-full sm:w-[85%] lg:w-[65%] px-4">
         <div
-            class="rounded-2xl border border-dashed border-[#CECBF6]/20 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20
+            class="rounded-2xl border border-dashed sharedBorder sharedSurfaceBG shadow-lg sharedShadow
                     flex flex-col items-center text-center px-6 py-16 gap-4"
         >
             <div
-                class="w-16 h-16 rounded-full border border-[#FFD558]/30 bg-[#FFD558]/[0.06]
+                class="w-16 h-16 rounded-full border sharedRank1 sharedRankBox
                         flex items-center justify-center"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    class="w-8 h-8 text-[#FFD558]/70"
+                    class="w-8 h-8 sharedRankText"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -27,10 +26,10 @@
             </div>
 
             <div class="flex flex-col gap-1">
-                <h3 class="text-lg font-semibold text-white/80">
+                <h3 class="text-lg font-semibold sharedTXTBody">
                     No rankings yet
                 </h3>
-                <p class="text-sm text-white/45 max-w-xs">
+                <p class="text-sm sharedTXTMuted max-w-xs">
                     Nobody has scored any points. Once someone does, the podium will show up here.
                 </p>
             </div>
@@ -45,18 +44,18 @@
 
             <!-- ----------------------------------------------------- SECOND (cyan) ----------------------------------------------------------------- -->
 
-            <div class="flex flex-col items-center gap-3">
+            <div class="flex flex-col items-center gap-3 sharedRank2">
 
                 <!-- No 2nd place yet -->
                 <div
                     v-if="!leaderboard[1]"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-dashed border-[#22D3EE]/25 bg-[#22D3EE]/[0.04]"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-dashed sharedRankEmpty"
                 ></div>
 
                 <!-- Initials avatar -->
                 <div
                     v-else-if="!getProfileImage(leaderboard[1].user_id)"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center ring-4 ring-[#22D3EE]/60"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center ring-4 sharedRankRing"
                     :class="getTop(leaderboard[1].user_id)?.profile_color"
                 >
                     <span class="text-3xl font-semibold">
@@ -69,24 +68,24 @@
                     v-else
                     :src="getProfileImage(leaderboard[1].user_id)"
                     :alt="getTop(leaderboard[1].user_id)?.name"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-4 ring-[#22D3EE]/60"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-4 sharedRankRing"
                 />
 
                 <span
                     class="text-sm sm:text-base font-semibold text-center leading-tight"
-                    :class="getTop(leaderboard[1]?.user_id)?.id === myId ? 'text-green-500' : ''"
+                    :class="getTop(leaderboard[1]?.user_id)?.id === myId ? 'sharedTXTSuccess' : ''"
                 >
                     {{ getTop(leaderboard[1]?.user_id)?.name }}
                     {{ getTop(leaderboard[1]?.user_id)?.id === myId ? ' (You)' : '' }}
                 </span>
 
                 <div
-                    class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border border-[#22D3EE]/30 bg-[#22D3EE]/[0.06] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5"
+                    class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border sharedRankBox flex flex-col items-center justify-center gap-0.5"
                 >
-                    <span class="text-xl sm:text-2xl font-bold text-[#7EE3F5]">
+                    <span class="text-xl sm:text-2xl font-bold sharedRankText">
                         2nd
                     </span>
-                    <span class="text-[10px] sm:text-xs font-medium text-[#7EE3F5]/60">
+                    <span class="text-[10px] sm:text-xs font-medium sharedRankText">
                         {{ leaderboard[1]
                             ? `${leaderboard[1].points} ${leaderboard[1].points === 1 ? 'point' : 'points'}`
                             : 'No 2nd Place yet'
@@ -97,12 +96,12 @@
 
             <!-- ----------------------------------------------------- FIRST (gold) ----------------------------------------------------------------- -->
 
-            <div class="flex flex-col items-center gap-3">
+            <div class="flex flex-col items-center gap-3 sharedRank1">
 
                 <!-- Initials avatar -->
                 <div
                     v-if="leaderboard[0] && !getProfileImage(leaderboard[0].user_id)"
-                    class="w-32 h-32 sm:w-36 sm:h-36 rounded-full flex items-center justify-center ring-4 ring-[#FFD558]/70"
+                    class="w-32 h-32 sm:w-36 sm:h-36 rounded-full flex items-center justify-center ring-4 sharedRankRing"
                     :class="getTop(leaderboard[0].user_id)?.profile_color"
                 >
                     <span class="text-5xl font-semibold">
@@ -115,24 +114,24 @@
                     v-else-if="leaderboard[0]"
                     :src="getProfileImage(leaderboard[0].user_id)"
                     :alt="getTop(leaderboard[0].user_id)?.name"
-                    class="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover ring-4 ring-[#FFD558]/70"
+                    class="w-32 h-32 sm:w-36 sm:h-36 rounded-full object-cover ring-4 sharedRankRing"
                 />
 
                 <span
                     class="text-base sm:text-lg font-bold text-center leading-tight"
-                    :class="getTop(leaderboard[0]?.user_id)?.id === myId ? 'text-green-500' : ''"
+                    :class="getTop(leaderboard[0]?.user_id)?.id === myId ? 'sharedTXTSuccess' : ''"
                 >
                     {{ getTop(leaderboard[0]?.user_id)?.name }}
                     {{ getTop(leaderboard[0]?.user_id)?.id === myId ? ' (You)' : '' }}
                 </span>
 
                 <div
-                    class="w-32 sm:w-36 h-28 sm:h-32 rounded-t-xl border border-[#FFD558]/30 bg-[#FFD558]/[0.06] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5"
+                    class="w-32 sm:w-36 h-28 sm:h-32 rounded-t-xl border sharedRankBox flex flex-col items-center justify-center gap-0.5"
                 >
-                    <span class="text-2xl sm:text-3xl font-bold text-[#FFD558]">
+                    <span class="text-2xl sm:text-3xl font-bold sharedRankText">
                         1st
                     </span>
-                    <span class="text-xs sm:text-sm font-medium text-[#FFD558]/60">
+                    <span class="text-xs sm:text-sm font-medium sharedRankText">
                         {{ leaderboard[0]
                             ? `${leaderboard[0].points} ${leaderboard[0].points === 1 ? 'point' : 'points'}`
                             : 'No 1st Place yet'
@@ -143,18 +142,18 @@
 
             <!-- ----------------------------------------------------- THIRD (violet) ----------------------------------------------------------------- -->
 
-            <div class="flex flex-col items-center gap-3">
+            <div class="flex flex-col items-center gap-3 sharedRank3">
 
                 <!-- No 3rd place yet -->
                 <div
                     v-if="!leaderboard[2]"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-dashed border-[#8B5CF6]/25 bg-[#8B5CF6]/[0.04]"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full border border-dashed sharedRankEmpty"
                 ></div>
 
                 <!-- Initials avatar -->
                 <div
                     v-else-if="!getProfileImage(leaderboard[2].user_id)"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center ring-4 ring-[#8B5CF6]/60"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full flex items-center justify-center ring-4 sharedRankRing"
                     :class="getTop(leaderboard[2].user_id)?.profile_color"
                 >
                     <span class="text-3xl font-semibold">
@@ -167,24 +166,24 @@
                     v-else
                     :src="getProfileImage(leaderboard[2].user_id)"
                     :alt="getTop(leaderboard[2].user_id)?.name"
-                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-4 ring-[#8B5CF6]/60"
+                    class="w-24 h-24 sm:w-28 sm:h-28 rounded-full object-cover ring-4 sharedRankRing"
                 />
 
                 <span
                     class="text-sm sm:text-base font-semibold text-center leading-tight"
-                    :class="getTop(leaderboard[2]?.user_id)?.id === myId ? 'text-green-500' : ''"
+                    :class="getTop(leaderboard[2]?.user_id)?.id === myId ? 'sharedTXTSuccess' : ''"
                 >
                     {{ getTop(leaderboard[2]?.user_id)?.name }}
                     {{ getTop(leaderboard[2]?.user_id)?.id === myId ? ' (You)' : '' }}
                 </span>
 
                 <div
-                    class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border border-[#8B5CF6]/30 bg-[#8B5CF6]/[0.08] backdrop-blur-sm flex flex-col items-center justify-center gap-0.5"
+                    class="w-24 sm:w-28 h-20 sm:h-24 rounded-t-xl border sharedRankBox flex flex-col items-center justify-center gap-0.5"
                 >
-                    <span class="text-xl sm:text-2xl font-bold text-[#B9A6F0]">
+                    <span class="text-xl sm:text-2xl font-bold sharedRankText">
                         3rd
                     </span>
-                    <span class="text-[10px] sm:text-xs font-medium text-[#B9A6F0]/60">
+                    <span class="text-[10px] sm:text-xs font-medium sharedRankText">
                         {{ leaderboard[2]
                             ? `${leaderboard[2].points} ${leaderboard[2].points === 1 ? 'point' : 'points'}`
                             : 'No 3rd Place yet'
@@ -201,9 +200,9 @@
             class="w-full sm:w-[85%] lg:w-[65%] pt-10 px-4"
         >
             <div
-                class="rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 overflow-hidden"
+                class="rounded-2xl sharedSurface shadow-lg sharedShadow overflow-hidden"
             >
-                <div class="flex items-center px-5 py-3 text-xs font-medium text-white/45 border-b border-[#CECBF6]/10">
+                <div class="flex items-center px-5 py-3 text-xs font-medium sharedTXTMuted border-b sharedBorder">
                     <span class="w-12">Rank</span>
                     <span class="flex-1">Name</span>
                     <span>Points</span>
@@ -212,9 +211,9 @@
                 <div
                     v-for="(lb, index) in leaderboard.slice(3)"
                     :key="lb.id"
-                    class="flex items-center px-5 py-3.5 border-b border-[#CECBF6]/10 last:border-b-0 hover:bg-white/[0.05] transition-colors duration-200"
+                    class="flex items-center px-5 py-3.5 border-b sharedBorder last:border-b-0 transition-colors duration-200"
                 >
-                    <span class="w-12 text-sm font-semibold text-[#B9A6F0]/70">
+                    <span class="w-12 text-sm font-semibold sharedTXTAccent">
                         {{ ordinal(index + 4) }}
                     </span>
 
@@ -238,14 +237,14 @@
 
                         <span
                             class="text-sm font-medium truncate"
-                            :class="getTop(lb.user_id)?.id === myId ? 'text-green-500' : ''"
+                            :class="getTop(lb.user_id)?.id === myId ? 'sharedTXTSuccess' : ''"
                         >
                             {{ getName(lb.user_id) }}
                             {{ getTop(lb.user_id)?.id === myId ? ' (You)' : '' }}
                         </span>
                     </div>
 
-                    <span class="text-sm font-bold tabular-nums text-white/70">
+                    <span class="text-sm font-bold tabular-nums sharedTXTBody">
                         {{ lb.points }} pts
                     </span>
                 </div>
