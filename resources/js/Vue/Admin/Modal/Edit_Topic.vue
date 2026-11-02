@@ -142,6 +142,7 @@ const props = defineProps({
         type: Boolean,
         default: true
     },
+    moduleId: {type: String, default: null},
     topicData: {
         type: Object,
         default: () => ({})
@@ -202,6 +203,7 @@ async function editTopicForm() {
 
             body: JSON.stringify({
                 topic_id: props.topicData.id,
+                module_id: props.moduleId,
                 new_topic_name: newTopicName
             })
         });

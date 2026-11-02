@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Modules;
 use App\Models\RecentActivity;
 use App\Models\Topics;
 use Illuminate\Http\Request;
@@ -11,9 +12,11 @@ class TopicController extends Controller
 {
     public function addTopic(Request $request){
         $input = $request->validate([
-            'module_id' => 'required|uuid',
+            'module_id'          => ['required', 'uuid', 'exists:modules,id'],
             'topic_name' => 'required|string|max:255'
         ]);
+
+        $module = Modules::find($input['module_id']);
 
         $maxOrder = Topics::where('module_id', $input['module_id'])->max('order');
         $nextOrder = is_null($maxOrder) ? 1 : $maxOrder + 1;
@@ -21,7 +24,7 @@ class TopicController extends Controller
             'order' => $nextOrder,
             'module_id' => $input['module_id'],
             'topic_name' => $input['topic_name'],
-            'slug' => 'topic-'. Str::slug($input['topic_name'])
+            'slug' => Str::slug($module->module_name).'-'.'topic-'. Str::slug($input['topic_name'])
         ]);
 
         RecentActivity::create([
@@ -42,13 +45,14 @@ class TopicController extends Controller
 
     public function editTopic(Request $request){
         $input = $request->validate([
+            'module_id'          => ['required', 'uuid', 'exists:modules,id'],
             'new_topic_name' => 'required|string|max:255'
         ]);
         $topic = Topics::find($request->topic_id);
-
+        $module = Modules::find($input['module_id']);
         $topic->update([
             'topic_name' => $input['new_topic_name'],
-            'slug' => 'topic-'. Str::slug($input['new_topic_name'])
+            'slug' => Str::slug($module->module_name).'-'.'topic-'. Str::slug($input['new_topic_name'])
         ]);
 
         RecentActivity::create([

@@ -196,7 +196,7 @@
                                     <!-- Edit topic (neutral, amber on hover) -->
                                     <button
                                         type="button"
-                                        @click="openEditTopic(topic)"
+                                        @click="openEditTopic(topic, module.id)"
                                         class="shrink-0 w-6 h-6 flex items-center justify-center rounded-lg text-white/45 hover:bg-amber-400/15 hover:text-amber-300 active:scale-95 transition-all duration-200 cursor-pointer"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
@@ -308,6 +308,7 @@
     <Edit_Topic
         :show-edit-topic="showEditTopic"
         :topic-data="selectedEditTopic"
+        :module-id="m_id"
         @close-edit-topic="closeEditTopic"
         @topic-updated="handleTopicUpdated"
     />
@@ -496,11 +497,17 @@ function handelNewTopic(newTopic) {
 
 const showEditTopic = ref(false)
 const selectedEditTopic = ref(null)
+const m_id = ref(null)
 
+function openEditTopic(topic, mod_id) {
+    console.log('Topic:', topic)
+    console.log('Module ID:', mod_id)
 
-function openEditTopic(topic) {
     selectedEditTopic.value = topic
+    m_id.value = mod_id
     showEditTopic.value = true
+
+    console.log('m_id:', m_id.value)
 }
 
 
