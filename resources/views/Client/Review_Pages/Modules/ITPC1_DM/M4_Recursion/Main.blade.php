@@ -23,15 +23,15 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-            @case('topic-recursive-definition')
+            @case('ITPC1-topic-recursive-definition')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M4_Recursion.Recursive_Definition')
                 @break
 
-            @case('topic-generalized-set-operations')
+            @case('ITPC1-topic-generalized-set-operations')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M4_Recursion.Generalized_Set_Operations')
                 @break
 
-            @case('topic-recursive-definition-of-function')
+            @case('ITPC1-topic-recursive-definition-of-function')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M4_Recursion.Recursive_Definition_Of_Function')
                 @break
 

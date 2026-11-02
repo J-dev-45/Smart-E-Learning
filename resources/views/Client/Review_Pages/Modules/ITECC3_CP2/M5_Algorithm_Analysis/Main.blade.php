@@ -21,17 +21,17 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-algorithm-analysis-efficiency-and-time-and-space-complexity')
+                @case('ITECC3-topic-algorithm-analysis-efficiency-and-time-and-space-complexity')
                     {{-- ALGORITHM ANALYSIS, EFFICIENCY, AND TIME AND SPACE COMPLEXITY --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M5_Algorithm_Analysis.What_Is_Algorithm_Analysis')
                     @break
 
-                @case('topic-best-average-and-worst-case-and-big-o-notation')
+                @case('ITECC3-topic-best-average-and-worst-case-and-big-o-notation')
                     {{-- BEST, AVERAGE, AND WORST CASE, AND BIG O NOTATION --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M5_Algorithm_Analysis.Best_Average_Worst_Case_And_Big_O')
                     @break
 
-                @case('topic-comparing-algorithms-and-their-complexities')
+                @case('ITECC3-topic-comparing-algorithms-and-their-complexities')
                     {{-- COMPARING ALGORITHMS AND THEIR COMPLEXITIES --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M5_Algorithm_Analysis.Comparing_Algorithms')
                     @break

@@ -21,17 +21,17 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-searching-concepts')
+                @case('ITECC3-topic-searching-concepts')
                     {{-- SEARCHING CONCEPTS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M3_Searching_Algorithms.Searching_Concepts')
                     @break
 
-                @case('topic-linear-search')
+                @case('ITECC3-topic-linear-search')
                     {{-- LINEAR SEARCH --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M3_Searching_Algorithms.Linear_Search')
                     @break
 
-                @case('topic-binary-search')
+                @case('ITECC3-topic-binary-search')
                     {{-- BINARY SEARCH --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M3_Searching_Algorithms.Binary_Search')
                     @break

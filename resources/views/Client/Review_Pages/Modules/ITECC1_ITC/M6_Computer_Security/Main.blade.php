@@ -21,12 +21,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-security-attacks-malware-and-viruses')
+                @case('ITECC1-topic-security-attacks-malware-and-viruses')
                     {{-- SECURITY ATTACKS, MALWARE, AND VIRUSES --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M6_Computer_Security.Security_Attacks_Malware_And_Viruses')
                     @break
 
-                @case('topic-symptoms-motives-protection-and-security-procedures')
+                @case('ITECC1-topic-symptoms-motives-protection-and-security-procedures')
                     {{-- SYMPTOMS, MOTIVES, PROTECTION, AND SECURITY PROCEDURES --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M6_Computer_Security.Virus_Symptoms_Motives_Protection_And_Procedures')
                     @break

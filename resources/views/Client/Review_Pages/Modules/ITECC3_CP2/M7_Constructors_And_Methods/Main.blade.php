@@ -21,17 +21,17 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-constructors')
+                @case('ITECC3-topic-constructors')
                     {{-- CONSTRUCTORS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M7_Constructors_And_Methods.Constructors')
                     @break
 
-                @case('topic-instance-methods-static-methods-parameters-and-return-values')
+                @case('ITECC3-topic-instance-methods-static-methods-parameters-and-return-values')
                     {{-- INSTANCE METHODS, STATIC METHODS, PARAMETERS, AND RETURN VALUES --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M7_Constructors_And_Methods.Instance_Methods_Static_Methods_Parameters_And_Return_Values')
                     @break
 
-                @case('topic-method-overloading-and-the-student-information-system')
+                @case('ITECC3-topic-method-overloading-and-the-student-information-system')
                     {{-- METHOD OVERLOADING AND THE STUDENT INFORMATION SYSTEM --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M7_Constructors_And_Methods.Method_Overloading_And_Student_Information_System')
                     @break

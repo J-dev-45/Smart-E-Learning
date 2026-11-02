@@ -21,10 +21,10 @@
     @foreach($module_topics as $topic)
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
-            @case('topic-basic-concepts-of-probability')
+            @case('ITPC1-topic-basic-concepts-of-probability')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M6_Probability.Basic_Concepts_Of_Probability')
                 @break
-            @case('topic-conditional-probability')
+            @case('ITPC1-topic-conditional-probability')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M6_Probability.Conditional_Probability')
                 @break
             @endswitch

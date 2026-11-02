@@ -21,22 +21,22 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-computer-hardware-revolution')
+                @case('ITECC1-topic-computer-hardware-revolution')
                     {{-- COMPUTER HARDWARE REVOLUTION --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M2_Computer_Hardware.Computer_Hardware_Revolution')
                     @break
 
-                @case('topic-computer-sub-systems-and-peripherals')
+                @case('ITECC1-topic-computer-sub-systems-and-peripherals')
                     {{-- COMPUTER SUB-SYSTEMS AND PERIPHERALS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M2_Computer_Hardware.Computer_Hardware_SubSystemandPeripherals')
                     @break
 
-                @case('topic-bits-bytes-data-and-information')
+                @case('ITECC1-topic-bits-bytes-data-and-information')
                     {{-- BITS, BYTES, DATA, AND INFORMATION --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M2_Computer_Hardware.Bits_Bytes_Data_and_Information')
                     @break
 
-                @case('topic-the-computer-number-system')
+                @case('ITECC1-topic-the-computer-number-system')
                     {{-- THE COMPUTER NUMBER SYSTEM --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M2_Computer_Hardware.Computer_Number_System')
                     @break

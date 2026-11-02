@@ -21,12 +21,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-integrating-arrays-algorithms-and-oop')
+                @case('ITECC3-topic-integrating-arrays-algorithms-and-oop')
                     {{-- INTEGRATING ARRAYS, ALGORITHMS, AND OOP --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M12_Integrating_Arrays_Algorithms_And_OOP.Designing_The_Integrated_Application')
                     @break
 
-                @case('topic-laboratory-student-management-and-ranking-system')
+                @case('ITECC3-topic-laboratory-student-management-and-ranking-system')
                     {{-- LABORATORY: STUDENT MANAGEMENT AND RANKING SYSTEM --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M12_Integrating_Arrays_Algorithms_And_OOP.Student_Management_And_Ranking_System')
                     @break

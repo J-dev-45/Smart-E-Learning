@@ -21,22 +21,22 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-overview-of-information-technology-and-history-of-computers')
+                @case('ITECC1-topic-overview-of-information-technology-and-history-of-computers')
                     {{-- OVERVIEW OF INFORMATION TECHNOLOGY AND HISTORY OF COMPUTERS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M1_Overview of IT.Overview_of_IT_History_of_Computers')
                     @break
 
-                @case('topic-generations-of-computers')
+                @case('ITECC1-topic-generations-of-computers')
                     {{-- GENERATIONS OF COMPUTERS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M1_Overview of IT.Generation_of_Computers')
                     @break
 
-                @case('topic-functions-characteristics-and-types-of-computers')
+                @case('ITECC1-topic-functions-characteristics-and-types-of-computers')
                     {{-- FUNCTIONS, CHARACTERISTICS, AND TYPES OF COMPUTERS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M1_Overview of IT.Function_of_Computer')
                     @break
 
-                @case('topic-hardware-software-and-peopleware')
+                @case('ITECC1-topic-hardware-software-and-peopleware')
                     {{-- HARDWARE, SOFTWARE, AND PEOPLEWARE --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M1_Overview of IT.HardwareSoftwarePeopleware')
                     @break

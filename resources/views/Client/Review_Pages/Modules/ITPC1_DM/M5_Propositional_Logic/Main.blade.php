@@ -26,35 +26,35 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-            @case('topic-definition-of-propositional-logic')
+            @case('ITPC1-topic-definition-of-propositional-logic')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Propositional_Logic_Definition')
                 @break
 
-            @case('topic-elements-of-propositional-logic')
+            @case('ITPC1-topic-elements-of-propositional-logic')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Elements_Of_Propositional_Logic')
                 @break
 
-            @case('topic-five-logical-connectives')
+            @case('ITPC1-topic-five-logical-connectives')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Five_Logical_Connectives')
                 @break
 
-            @case('topic-truth-tables')
+            @case('ITPC1-topic-truth-tables')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Truth_Tables')
                 @break
 
-            @case('topic-logical-operations')
+            @case('ITPC1-topic-logical-operations')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Logical_Operations')
                 @break
 
-            @case('topic-tautologies')
+            @case('ITPC1-topic-tautologies')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Tautologies')
                 @break
 
-            @case('topic-propositional-equivalence')
+            @case('ITPC1-topic-propositional-equivalence')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Propositional_Equivalence')
                 @break
 
-            @case('topic-rules-of-inference')
+            @case('ITPC1-topic-rules-of-inference')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M5_Propositional_Logic.Rules_Of_Inference')
                 @break
 

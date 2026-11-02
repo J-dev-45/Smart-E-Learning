@@ -21,12 +21,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-system-software-and-operating-systems')
+                @case('ITECC1-topic-system-software-and-operating-systems')
                     {{-- SYSTEM SOFTWARE AND OPERATING SYSTEMS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M3_Computer_Software.System_Software_And_Operating_Systems')
                     @break
 
-                @case('topic-utility-software-and-application-software')
+                @case('ITECC1-topic-utility-software-and-application-software')
                     {{-- UTILITY SOFTWARE AND APPLICATION SOFTWARE --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M3_Computer_Software.Utilities_And_Application_Software')
                     @break

@@ -21,17 +21,17 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-history-of-the-internet-intranet-extranet-and-vpn')
+                @case('ITECC1-topic-history-of-the-internet-intranet-extranet-and-vpn')
                     {{-- HISTORY OF THE INTERNET, INTRANET, EXTRANET, AND VPN --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M5_The_Internet.History_Intranet_Extranet_And_VPN')
                     @break
 
-                @case('topic-internet-protocols-addresses-and-services')
+                @case('ITECC1-topic-internet-protocols-addresses-and-services')
                     {{-- INTERNET PROTOCOLS, ADDRESSES, AND SERVICES --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M5_The_Internet.Internet_Protocols_Addresses_And_Services')
                     @break
 
-                @case('topic-web-browser-url-email-web-hosting-and-search')
+                @case('ITECC1-topic-web-browser-url-email-web-hosting-and-search')
                     {{-- WEB BROWSER, URL, EMAIL, WEB HOSTING, AND SEARCH --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M5_The_Internet.Browser_URL_Email_And_Web_Hosting')
                     @break

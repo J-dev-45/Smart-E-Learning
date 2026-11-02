@@ -16,7 +16,7 @@
         <main class="main-bg w-full h-screen flex flex-col overflow-y-auto overflow-x-hidden scrollbar-thin">
 
             {{-- HEADER (stays visible while scrolling) --}}
-            <div id="app" class="flex flex-col h-screen w-full overflow-hidden">
+            <div class="sticky top-0 z-20 shrink-0 bg-[#12081F]">
                 <learn-header
                     :user-id="{{ auth()->id() }}"
                     user-name="{{ auth()->user()->name }}"
@@ -41,47 +41,47 @@
                 @switch($module->module_name)
 
                     @case('Introduction to Computer Programming')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M1_Introduction_To_Programming.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M1_Introduction_To_Programming.Main')
                         @break
 
                     @case('Introduction to Java')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M2_Introduction_To_Java.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M2_Introduction_To_Java.Main')
                         @break
 
                     @case('Primitive Types and Variables')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M3_Primitive_Types_And_Variables.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M3_Primitive_Types_And_Variables.Main')
                         @break
 
                     @case('Operators and Expressions')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M4_Operators_And_Expressions.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M4_Operators_And_Expressions.Main')
                         @break
 
                     @case('Console Input and Output')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M5_Console_Input_And_Output.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M5_Console_Input_And_Output.Main')
                         @break
 
                     @case('Conditional Statements')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M6_Conditional_Statements.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M6_Conditional_Statements.Main')
                         @break
 
                     @case('Looping Statements')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M7_Looping_Statements.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M7_Looping_Statements.Main')
                         @break
 
                     @case('String')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M8_String.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M8_String.Main')
                         @break
 
                     @case('Arrays')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M9_Arrays.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M9_Arrays.Main')
                         @break
 
                     @case('Methods')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M10_Methods.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M10_Methods.Main')
                         @break
 
                     @case('Recursion')
-                        @include('Client.Review_Pages.Modules.ITEC2_CP.M11_Recursion.Main')
+                        @include('Client.Review_Pages.Modules.ITECC2_CP.M11_Recursion.Main')
                         @break
 
                 @endswitch

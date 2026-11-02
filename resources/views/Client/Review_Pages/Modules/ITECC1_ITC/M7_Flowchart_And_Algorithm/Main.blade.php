@@ -21,12 +21,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-programming-concepts-algorithms-and-pseudo-code')
+                @case('ITECC1-topic-programming-concepts-algorithms-and-pseudo-code')
                     {{-- PROGRAMMING CONCEPTS, ALGORITHMS, AND PSEUDO CODE --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M7_Flowchart_And_Algorithm.Programming_Concepts_Algorithms_And_Pseudo_Code')
                     @break
 
-                @case('topic-flowcharts-elements-structures-and-notations')
+                @case('ITECC1-topic-flowcharts-elements-structures-and-notations')
                     {{-- FLOWCHARTS, ELEMENTS, STRUCTURES, AND NOTATIONS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M7_Flowchart_And_Algorithm.Flowcharts_Elements_And_Notations')
                     @break

@@ -21,12 +21,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-meaning-of-polymorphism-and-compile-time-polymorphism')
+                @case('ITECC3-topic-meaning-of-polymorphism-and-compile-time-polymorphism')
                     {{-- MEANING OF POLYMORPHISM AND COMPILE-TIME POLYMORPHISM --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M10_Polymorphism.Meaning_Of_Polymorphism_And_Compile_Time')
                     @break
 
-                @case('topic-runtime-polymorphism-method-overriding-and-benefits')
+                @case('ITECC3-topic-runtime-polymorphism-method-overriding-and-benefits')
                     {{-- RUNTIME POLYMORPHISM, METHOD OVERRIDING, AND BENEFITS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M10_Polymorphism.Runtime_Polymorphism_Overriding_And_Benefits')
                     @break

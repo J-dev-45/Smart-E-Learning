@@ -27,17 +27,17 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-logic')
+                @case('ITPC1-topic-logic')
                     {{-- LOGIC --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M1_Introduction.Logic')
                     @break
 
-                @case('topic-sets-and-set-operations')
+                @case('ITPC1-topic-sets-and-set-operations')
                     {{-- SETS AND SET OPERATION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M1_Introduction.Sets_And_Set_Operation')
                     @break
 
-                @case('topic-properties-of-set')
+                @case('ITPC1-topic-properties-of-set')
                     {{-- PROPERTIES OF SET --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M1_Introduction.Properties_Of_Set')
                     @break

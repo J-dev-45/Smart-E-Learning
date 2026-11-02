@@ -21,32 +21,32 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-introduction-to-sorting')
+                @case('ITECC3-topic-introduction-to-sorting')
                     {{-- INTRODUCTION TO SORTING --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M4_Sorting_Algorithms.Introduction_To_Sorting')
                     @break
 
-                @case('topic-bubble-sort')
+                @case('ITECC3-topic-bubble-sort')
                     {{-- BUBBLE SORT --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M4_Sorting_Algorithms.Bubble_Sort')
                     @break
 
-                @case('topic-selection-sort')
+                @case('ITECC3-topic-selection-sort')
                     {{-- SELECTION SORT --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M4_Sorting_Algorithms.Selection_Sort')
                     @break
 
-                @case('topic-insertion-sort')
+                @case('ITECC3-topic-insertion-sort')
                     {{-- INSERTION SORT --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M4_Sorting_Algorithms.Insertion_Sort')
                     @break
 
-                @case('topic-merge-sort')
+                @case('ITECC3-topic-merge-sort')
                     {{-- MERGE SORT --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M4_Sorting_Algorithms.Merge_Sort')
                     @break
 
-                @case('topic-quick-sort')
+                @case('ITECC3-topic-quick-sort')
                     {{-- QUICK SORT --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M4_Sorting_Algorithms.Quick_Sort')
                     @break

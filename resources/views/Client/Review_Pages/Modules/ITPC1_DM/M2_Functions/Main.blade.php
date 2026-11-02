@@ -27,12 +27,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-definition-of-function')
+                @case('ITPC1-topic-definition-of-function')
                     {{-- DEFINITION OF FUNCTION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M2_Functions.Definition_Of_Function')
                     @break
 
-                @case('topic-types-of-function')
+                @case('ITPC1-topic-types-of-function')
                     {{-- TYPES OF FUNCTION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M2_Functions.Types_Of_Function')
                     @break

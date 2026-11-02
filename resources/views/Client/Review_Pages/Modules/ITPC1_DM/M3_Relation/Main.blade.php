@@ -27,37 +27,37 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-definitions-and-properties-of-relation')
+                @case('ITPC1-topic-definitions-and-properties-of-relation')
                     {{-- DEFINITIONS AND PROPERTIES OF RELATION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M3_Relation.Definitions_And_Properties_Of_Relation')
                     @break
 
-                @case('topic-binary-relation')
+                @case('ITPC1-topic-binary-relation')
                     {{-- BINARY RELATION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M3_Relation.Binary_Relation')
                     @break
 
-                @case('topic-equality-of-relations')
+                @case('ITPC1-topic-equality-of-relations')
                     {{-- EQUALITY OF RELATIONS --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M3_Relation.Equality_Of_Relations')
                     @break
 
-                @case('topic-properties-and-operations-of-binary-relation')
+                @case('ITPC1-topic-properties-and-operations-of-binary-relation')
                     {{-- PROPERTIES AND OPERATIONS OF BINARY RELATION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M3_Relation.Properties_And_Operations_Of_Binary_Relation')
                     @break
 
-                @case('topic-types-of-relation')
+                @case('ITPC1-topic-types-of-relation')
                     {{-- TYPES OF RELATION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M3_Relation.Types_Of_Relation')
                     @break
 
-                @case('topic-matrices-representing-relation')
+                @case('ITPC1-topic-matrices-representing-relation')
                     {{-- MATRICES REPRESENTING RELATION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M3_Relation.Matrices_Representing_Relation')
                     @break
 
-                @case('topic-digraph-representation-of-binary-relation')
+                @case('ITPC1-topic-digraph-representation-of-binary-relation')
                     {{-- DIGRAPH REPRESENTATION OF BINARY RELATION --}}
                     @include('Client.Review_Pages.Modules.ITPC1_DM.M3_Relation.Digraph_Representation_Of_Binary_Relation')
                     @break

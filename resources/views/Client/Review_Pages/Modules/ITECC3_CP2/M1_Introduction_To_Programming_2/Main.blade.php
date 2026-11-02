@@ -21,22 +21,22 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-review-of-programming-1-variables-conditions-loops-and-methods')
+                @case('ITECC3-topic-review-of-programming-1-variables-conditions-loops-and-methods')
                     {{-- REVIEW OF PROGRAMMING 1: VARIABLES, CONDITIONS, LOOPS, AND METHODS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M1_Introduction_To_Programming_2.Review_Of_Programming_1')
                     @break
 
-                @case('topic-programming-problem-solving')
+                @case('ITECC3-topic-programming-problem-solving')
                     {{-- PROGRAMMING PROBLEM-SOLVING --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M1_Introduction_To_Programming_2.Programming_Problem_Solving')
                     @break
 
-                @case('topic-procedural-programming-and-programming-paradigms')
+                @case('ITECC3-topic-procedural-programming-and-programming-paradigms')
                     {{-- PROCEDURAL PROGRAMMING AND PROGRAMMING PARADIGMS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M1_Introduction_To_Programming_2.Procedural_Programming_And_Paradigms')
                     @break
 
-                @case('topic-object-oriented-programming-overview')
+                @case('ITECC3-topic-object-oriented-programming-overview')
                     {{-- OBJECT-ORIENTED PROGRAMMING OVERVIEW --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M1_Introduction_To_Programming_2.Object_Oriented_Programming_Overview')
                     @break

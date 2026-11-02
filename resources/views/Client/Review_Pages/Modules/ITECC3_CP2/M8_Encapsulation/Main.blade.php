@@ -21,17 +21,17 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-data-hiding-and-access-modifiers')
+                @case('ITECC3-topic-data-hiding-and-access-modifiers')
                     {{-- DATA HIDING AND ACCESS MODIFIERS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M8_Encapsulation.Data_Hiding_And_Access_Modifiers')
                     @break
 
-                @case('topic-getters-setters-and-validation')
+                @case('ITECC3-topic-getters-setters-and-validation')
                     {{-- GETTERS, SETTERS, AND VALIDATION --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M8_Encapsulation.Getters_Setters_And_Validation')
                     @break
 
-                @case('topic-benefits-of-encapsulation-and-the-bank-account-system')
+                @case('ITECC3-topic-benefits-of-encapsulation-and-the-bank-account-system')
                     {{-- BENEFITS OF ENCAPSULATION AND THE BANK ACCOUNT SYSTEM --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M8_Encapsulation.Benefits_Of_Encapsulation_And_Bank_Account_System')
                     @break

@@ -21,17 +21,17 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-history-types-and-structure-of-computer-networks')
+                @case('ITECC1-topic-history-types-and-structure-of-computer-networks')
                     {{-- HISTORY, TYPES, AND STRUCTURE OF COMPUTER NETWORKS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M4_Computer_Networking.History_Types_And_Structure_Of_Networks')
                     @break
 
-                @case('topic-network-topologies-and-communication-systems')
+                @case('ITECC1-topic-network-topologies-and-communication-systems')
                     {{-- NETWORK TOPOLOGIES AND COMMUNICATION SYSTEMS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M4_Computer_Networking.Topologies_And_Communication_Systems')
                     @break
 
-                @case('topic-network-standards-devices-and-trends')
+                @case('ITECC1-topic-network-standards-devices-and-trends')
                     {{-- NETWORK STANDARDS, DEVICES, AND TRENDS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M4_Computer_Networking.Standards_Devices_And_Trends')
                     @break

@@ -21,12 +21,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-what-is-object-oriented-programming')
+                @case('ITECC3-topic-what-is-object-oriented-programming')
                     {{-- WHAT IS OBJECT-ORIENTED PROGRAMMING? --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M6_Introduction_To_OOP.What_Is_Object_Oriented_Programming')
                     @break
 
-                @case('topic-classes-and-objects')
+                @case('ITECC3-topic-classes-and-objects')
                     {{-- CLASSES AND OBJECTS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M6_Introduction_To_OOP.Classes_And_Objects')
                     @break

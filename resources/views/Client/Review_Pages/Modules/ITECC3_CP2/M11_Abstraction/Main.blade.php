@@ -21,12 +21,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-meaning-of-abstraction-abstract-classes-and-abstract-methods')
+                @case('ITECC3-topic-meaning-of-abstraction-abstract-classes-and-abstract-methods')
                     {{-- MEANING OF ABSTRACTION, ABSTRACT CLASSES, AND ABSTRACT METHODS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M11_Abstraction.Meaning_Of_Abstraction_And_Abstract_Classes')
                     @break
 
-                @case('topic-interfaces-hiding-implementation-details-and-designing-generalized-systems')
+                @case('ITECC3-topic-interfaces-hiding-implementation-details-and-designing-generalized-systems')
                     {{-- INTERFACES, HIDING IMPLEMENTATION DETAILS, AND DESIGNING GENERALIZED SYSTEMS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M11_Abstraction.Interfaces_And_Designing_Generalized_Systems')
                     @break

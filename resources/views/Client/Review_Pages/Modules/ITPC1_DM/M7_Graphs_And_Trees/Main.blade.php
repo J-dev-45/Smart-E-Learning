@@ -21,10 +21,10 @@
     @foreach($module_topics as $topic)
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
-            @case('topic-introduction-to-graphs')
+            @case('ITPC1-topic-introduction-to-graphs')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M7_Graphs_And_Trees.Introduction_To_Graphs')
                 @break
-            @case('topic-introduction-to-trees')
+            @case('ITPC1-topic-introduction-to-trees')
                 @include('Client.Review_Pages.Modules.ITPC1_DM.M7_Graphs_And_Trees.Introduction_To_Trees')
                 @break
             @endswitch

@@ -21,12 +21,12 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-html-basics')
+                @case('ITECC1-topic-html-basics')
                     {{-- HTML BASICS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M8_HTML_And_CSS.HTML_Basics')
                     @break
 
-                @case('topic-css-basics')
+                @case('ITECC1-topic-css-basics')
                     {{-- CSS BASICS --}}
                     @include('Client.Review_Pages.Modules.ITECC1_ITC.M8_HTML_And_CSS.CSS_Basics')
                     @break

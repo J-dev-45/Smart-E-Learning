@@ -21,17 +21,17 @@
         <div class="mt-10 mb-20 rounded-2xl border border-[#3A2560] border-l-4 border-l-[#8B5CF6] bg-[#150A24] p-6 shadow-lg shadow-black/30 [&>div]:mt-0 [&>div]:scroll-mt-[130px]">
             @switch($topic->slug)
 
-                @case('topic-meaning-of-inheritance-superclass-and-subclass')
+                @case('ITECC3-topic-meaning-of-inheritance-superclass-and-subclass')
                     {{-- MEANING OF INHERITANCE, SUPERCLASS, AND SUBCLASS --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M9_Inheritance.Meaning_Of_Inheritance_And_Extends')
                     @break
 
-                @case('topic-method-inheritance-method-overriding-and-the-super-keyword')
+                @case('ITECC3-topic-method-inheritance-method-overriding-and-the-super-keyword')
                     {{-- METHOD INHERITANCE, METHOD OVERRIDING, AND THE SUPER KEYWORD --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M9_Inheritance.Method_Inheritance_Overriding_And_Super')
                     @break
 
-                @case('topic-laboratory-school-management-system')
+                @case('ITECC3-topic-laboratory-school-management-system')
                     {{-- LABORATORY: SCHOOL MANAGEMENT SYSTEM --}}
                     @include('Client.Review_Pages.Modules.ITECC3_CP2.M9_Inheritance.School_Management_System')
                     @break
