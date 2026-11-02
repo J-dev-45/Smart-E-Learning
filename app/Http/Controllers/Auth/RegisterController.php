@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 
 class RegisterController extends Controller
@@ -40,7 +41,26 @@ class RegisterController extends Controller
             'last_seen' => Carbon::now()
         ]);
 
-        $mailerService->sendMail($user->email, $user->name, $otp_code);
+        $mailSent = $mailerService->sendMail(
+            $user->email,
+            $user->name,
+            (string) $otp_code
+        );
+
+        if (!$mailSent) {
+            $user->update([
+                'otp_verification' => null,
+                'otp_expiration' => null,
+            ]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Your account was created, but we could not send the verification code. Please try again.',
+            ], 500);
+        }
+
+        RateLimiter::clear('otp-resend:' . $user->id);
+        RateLimiter::hit('otp-resend:' . $user->id, 60);
 
         session([
             'otp_session' => [

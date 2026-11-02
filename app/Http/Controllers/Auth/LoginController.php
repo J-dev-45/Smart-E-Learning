@@ -7,6 +7,7 @@ use App\Services\MailerService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\RateLimiter;
 
 class LoginController extends Controller
 {
@@ -41,11 +42,29 @@ class LoginController extends Controller
                 ]
             ]);
 
-            $mailerService->sendMail(
+            $mailSent = $mailerService->sendMail(
                 $user->email,
                 $user->name,
-                $otp_code
+                (string) $otp_code
             );
+
+            if (!$mailSent) {
+                $user->update([
+                    'otp_verification' => null,
+                    'otp_expiration' => null,
+                ]);
+
+                $request->session()->forget('otp_session');
+                Auth::logout();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'We could not send your verification code. Please try logging in again.',
+                ], 500);
+            }
+
+            RateLimiter::clear('otp-resend:' . $user->id);
+            RateLimiter::hit('otp-resend:' . $user->id, 60);
 
             Auth::logout();
 
