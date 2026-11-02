@@ -78,13 +78,17 @@ class AssessmentController extends Controller
             if($remaining_questions === 0){
                 return redirect()->route('assessment.result', [
                     'type_of_assessment' => $type_of_assessment,
-                    'type' => $request->type,
-                    'subject_name' => $subject_name,
+                    'type' => $request->to_take,
+                    'subject_name' => str_replace(
+                        ' ',
+                        '_',
+                        $subject_name
+                    ),
                     'subject_id' => $request->subject_id,
                     'module_name' => str_replace(
                         ' ',
                         '_',
-                        Modules::where('id', $module->id)->value('module_name')
+                        $module->module_name
                     ),
                     'module_id' => $module->id,
                 ]);
@@ -211,8 +215,12 @@ class AssessmentController extends Controller
             if($remaining_questions === 0){
                 return redirect()->route('assessment.result', [
                     'type_of_assessment' => $type_of_assessment,
-                    'type' => $request->type,
-                    'subject_name' => $subject_name,
+                    'type' => $request->to_take,
+                    'subject_name' => str_replace(
+                        ' ',
+                        '_',
+                        $subject_name
+                    ),
                     'subject_id' => $request->subject_id,
                     'module_name' => 'none',
                     'module_id' => "0",
