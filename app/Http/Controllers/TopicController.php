@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Modules;
 use App\Models\RecentActivity;
+use App\Models\Subjects;
 use App\Models\Topics;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -17,6 +18,7 @@ class TopicController extends Controller
         ]);
 
         $module = Modules::find($input['module_id']);
+        $subject_code = Subjects::where('id', $module->subject_id)->value('subject_code');
 
         $maxOrder = Topics::where('module_id', $input['module_id'])->max('order');
         $nextOrder = is_null($maxOrder) ? 1 : $maxOrder + 1;
@@ -24,7 +26,7 @@ class TopicController extends Controller
             'order' => $nextOrder,
             'module_id' => $input['module_id'],
             'topic_name' => $input['topic_name'],
-            'slug' => Str::slug($module->module_name).'-'.'topic-'. Str::slug($input['topic_name'])
+            'slug' => $subject_code.'-'.'topic-'. Str::slug($input['topic_name'])
         ]);
 
         RecentActivity::create([
@@ -43,16 +45,34 @@ class TopicController extends Controller
     }
 
 
+    
     public function editTopic(Request $request){
         $input = $request->validate([
             'module_id'          => ['required', 'uuid', 'exists:modules,id'],
             'new_topic_name' => 'required|string|max:255'
         ]);
+
         $topic = Topics::find($request->topic_id);
         $module = Modules::find($input['module_id']);
+
+        $subject_code = Subjects::where('id', $module->subject_id)->value('subject_code');
+
+        $slug = $subject_code.'-'.'topic-'. Str::slug($input['new_topic_name']);
+
+        $existingSlug = Topics::where('slug', $slug)
+            ->where('id', '!=', $topic->id)
+            ->exists();
+
+        if ($existingSlug) {
+            return response()->json([
+                'success' => false,
+                'message' => 'A topic with this name already exists in this module.'
+            ], 422);
+        }
+
         $topic->update([
             'topic_name' => $input['new_topic_name'],
-            'slug' => Str::slug($module->module_name).'-'.'topic-'. Str::slug($input['new_topic_name'])
+            'slug' => $slug
         ]);
 
         RecentActivity::create([
@@ -67,6 +87,7 @@ class TopicController extends Controller
             'message'=> 'Topic updated successfully!'
         ]);
     }
+
 
 
     public function deleteTopic(Request $request)
