@@ -12,9 +12,6 @@
 
     <div id="app" class="h-full">
 
-        {{-- DELETE FEEDBACK MODAL --}}
-        @include('Admin.Components.Modal.Delete_Feedback')
-
         <left-navigation
             active-page="Feedbacks"
             :id-number="{{ auth()->user()->id_number }}"

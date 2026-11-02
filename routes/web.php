@@ -284,7 +284,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     Route::get('/feedbacks', function(){
 
-        $feedbacks = Feedback::select('id', 'student_name', 'feedback_message', 'question_id', 'replied_by', 'reply_message', 'status', 'created_at', 'updated_at')->get();
+        $feedbacks = Feedback::select('id', 'user_id', 'student_name', 'feedback_message', 'question_id', 'replied_by', 'reply_message', 'status', 'created_at', 'updated_at')->get();
 
         $questions = Questions::whereIn('id', $feedbacks->pluck('question_id'))->get();
 
@@ -312,6 +312,7 @@ Route::middleware(['auth','Admin'])->group(function(){
 
     // FEEDBACKS
     Route::post('/sendReply', [FeedbackController::class, 'sendFeedbackReply']);
+    Route::delete('/deleteFeedback', [FeedbackController::class, 'deleteFeedback']);
 
 
     // SUBJECTS

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
+use App\Models\RecentActivity;
 use App\Models\User;
 use App\Services\MailerService;
 use Illuminate\Http\Request;
@@ -73,5 +74,37 @@ class FeedbackController extends Controller
                 'replied_by' => auth()->user()->name,
             ],
         ]);
+    }
+
+    public function deleteFeedback(Request $request){
+
+        $data = $request->validate([
+            'feedback_id' => ['required', 'integer', 'exists:feedback,id'],
+            'sender_name' => ['required', 'string', 'exists:users,name'],
+        ]);
+
+        $feedback = Feedback::find($data['feedback_id']);
+
+        if (!$feedback) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Feedback not found!'
+            ], 444);
+        }
+
+        $feedback->delete();
+
+        RecentActivity::create([
+            'name' => auth()->user()->name,
+            'action' => 'deleted_feedback',
+            'target' => $data['sender_name']
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'feedback deleted Successfully!',
+            'deleted_feedback_id' => $feedback->id
+        ]);
+
     }
 }

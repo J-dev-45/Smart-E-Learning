@@ -260,7 +260,6 @@ const canSubmit = computed(() => {
     return len >= MIN && len <= MAX
 })
 
-// Reset to a fresh form every time the modal opens
 watch(
     () => props.showFeedback,
     async (open) => {
