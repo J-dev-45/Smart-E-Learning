@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\Auth\ResendOTP;
 use App\Http\Controllers\Client\AssessmentController;
 use App\Http\Controllers\Client\CodePretestController;
 use App\Http\Controllers\Client\LearnController;
@@ -63,6 +64,12 @@ Route::middleware(['guest'])->group(function(){
     Route::post('/login',[LoginController::class, 'login'])->middleware('throttle:3,1');
     Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:3,1');
     Route::post('/verify_otp', [VerifyOTP::class, 'verify'])->middleware('throttle:2,1');
+
+    Route::get('/otp/resend-status', [ResendOTP::class, 'status'])
+        ->middleware('throttle:30,1');
+
+    Route::post('/resend_otp', [ResendOTP::class, 'resend'])
+        ->middleware('throttle:10,1');
 
     Route::get('/forgot-password', function () {
         return view('Auth.Forgot_Password');
@@ -138,24 +145,46 @@ Route::middleware(['auth'])->group(function(){
                 }
 
                 return $user;
-            });
+        });
 
+        $subjects_passed_ids = SubjectStarted::where('user_id', auth()->id())
+            ->where('has_passed', true)
+            ->pluck('subject_id');
+
+        $answered_assessment_questions_exam = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+            ->whereIn('subject_id', $subjects_passed_ids)
+            ->where('type_of_assessment', 'exam')
+            ->get();
+
+        $modules_passed_ids = ModuleQuiz::where('user_id', auth()->id())
+            ->where('has_passed', true)
+            ->pluck('module_id');
 
         $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())->get();
+
+        $answered_assessment_questions_quiz = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+            ->whereIn('module_id', $modules_passed_ids)
+            ->where('type_of_assessment', 'quiz')
+            ->get();
+        
+
+        $total_answered_assessment = $answered_assessment_questions_exam->count() + $answered_assessment_questions_quiz->count();
+        $total_quizzes_score =  $answered_assessment_questions_quiz->where('is_correct', true)->count() ?? 0;
+        $total_exams_score = $answered_assessment_questions_exam->where('is_correct', true)->count() ?? 0;
+
+        $total_assessment_score = $total_quizzes_score + $total_exams_score;
+
+        // $total_assessment_score = $answered_assessment_questions->where('is_correct', true)->count();
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())->get();
-
-
-        $total_assessment_score = $answered_assessment_questions->where('is_correct', true)->count();
-
-        $score_count = 0;
+        $activity_score = 0;
         foreach($answered_module_questions as $amq){
             if(strtolower($amq->user_answer) === strtolower($amq->correct_answer)){
-                $score_count++;
+                $activity_score++;
             }
         }
 
-        $total_answered = $answered_assessment_questions->count() + $answered_module_questions->count();
-        $total_score = $total_assessment_score + $score_count;
+        $total_answered = $total_answered_assessment + $answered_module_questions->count();
+        $total_score = $total_assessment_score + $activity_score;
 
         $accuracy = $total_answered > 0
             ? round(($total_score / $total_answered) * 100)

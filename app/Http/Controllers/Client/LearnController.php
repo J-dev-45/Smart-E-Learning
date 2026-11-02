@@ -135,15 +135,15 @@ class LearnController extends Controller
             ->where('module_id', null)
             ->exists();
 
-        $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+        $answered_assessment_questions_exam = AnsweredAssessmentQuestions::where('user_id', auth()->id())
             ->where('subject_id', $subject_id)
             ->where('module_id', null)
             ->where('type_of_assessment', 'exam')
             ->get();
 
         $exam_passed = false;
-        if($answered_assessment_questions->count() === 40 ){
-            $exam_score = $answered_assessment_questions->where('is_correct', true)->count();
+        if($answered_assessment_questions_exam->count() === 40 ){
+            $exam_score = $answered_assessment_questions_exam->where('is_correct', true)->count();
             if($exam_score >= 30){
                 $exam_passed = true;
             }else{
@@ -166,27 +166,37 @@ class LearnController extends Controller
             ->where('has_passed', true)
             ->get();
 
-        $answered_assessment_questions = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+        $answered_assessment_questions_quiz = AnsweredAssessmentQuestions::where('user_id', auth()->id())
             ->where('subject_id', $subject_id)
+            ->whereIn('module_id', $modules_passed->pluck('module_id'))
+            ->where('type_of_assessment', 'quiz')
             ->get();
-        
-        $total_assessment_score = $answered_assessment_questions->where('is_correct', true)->count();
+
+        $quizzes_total_score = $answered_assessment_questions_quiz->where('is_correct', true)->count(); 
+
+        $exam_score = $answered_assessment_questions_exam->where('is_correct', true)->count();
+        if($exam_score >= ceil(40 * 0.75) ){
+            $total_assessment_score = $exam_score + $quizzes_total_score;
+            $total_answered_assessment = $answered_assessment_questions_exam->count() + $answered_assessment_questions_quiz->count();
+        }else{
+            $total_assessment_score = $quizzes_total_score;
+            $total_answered_assessment = $answered_assessment_questions_quiz->count();
+        }
 
 
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())
             ->whereIn('module_id', $modules_passed->pluck('module_id'))
             ->get();
 
-        $score_count = 0;
+        $total_answered = $total_answered_assessment + $answered_module_questions->count();
 
+        $activity_score = 0;
         foreach($answered_module_questions as $amq){
             if(strtolower($amq->user_answer) === strtolower($amq->correct_answer)){
-                $score_count++;
+                $activity_score++;
             }
         }
-
-        $total_answered = $answered_assessment_questions->count() + $answered_module_questions->count();
-        $total_score = $total_assessment_score + $score_count;
+        $total_score = $total_assessment_score + $activity_score;
 
         $average_score = $total_answered > 0
             ? round(($total_score / $total_answered) * 100)
