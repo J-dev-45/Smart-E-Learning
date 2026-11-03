@@ -7,10 +7,10 @@
     </h2>
 
     <div class="w-full h-[1px] flex items-center justify-center pt-[10px]">
-        <div class="bg-gray-600 w-full h-[1px]"></div>
+        <div class="sharedLine w-full h-[1px]"></div>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         In the previous module, you created a Student object and then set its attributes one line at a time. This is repetitive, and it is easy to forget to set a value. A constructor solves this problem by setting the starting values of an object at the moment it is created.
     </p>
 
@@ -18,7 +18,7 @@
         What Is a Constructor?
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         A constructor is a special method that is called automatically when an object is created with the new keyword. It has the same name as the class and has no return type, not even void. Its main job is to initialize the attributes of the new object.
     </p>
 
@@ -26,11 +26,11 @@
         Default Constructor
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         If you do not write any constructor, Java automatically gives the class a default constructor that takes no parameters and leaves the attributes at their default values (0, false, or null). You can also write your own no-argument constructor to set sensible starting values.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     String name;
     int grade;
 
@@ -49,20 +49,20 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Unknown - 0</code></pre>
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Unknown - 0</code></pre>
     </div>
 
     <h3 class="text-xl font-bold mt-6">
         Parameterized Constructor
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         A parameterized constructor takes values as arguments, so the object is created with its data already set. The keyword this refers to the current object and separates the attribute from the parameter when they have the same name.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     String name;
     int grade;
 
@@ -83,9 +83,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Ana - 90
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Ana - 90
 Ben - 85</code></pre>
     </div>
 
@@ -93,11 +93,11 @@ Ben - 85</code></pre>
         Constructor Overloading
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         A class can have several constructors as long as their parameter lists differ. This is called constructor overloading. It gives users different ways of creating an object.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     String name;
     int grade;
 
@@ -126,14 +126,14 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Unknown - 0
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Unknown - 0
 Ben - 0
 Cara - 92</code></pre>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         The call this(...) from one constructor to another is called constructor chaining. It avoids repeating the same code in several constructors. It must be the first statement in the constructor.
     </p>
 
@@ -141,7 +141,7 @@ Cara - 92</code></pre>
         Rules and Common Mistakes
     </h3>
 
-    <ul class="text-gray-400 mt-3 px-3 space-y-2 list-disc list-inside">
+    <ul class="sharedTXTMuted mt-3 px-3 space-y-2 list-disc list-inside">
 
         <li>
             A constructor has the same name as the class and no return type.
@@ -165,34 +165,34 @@ Cara - 92</code></pre>
 
     </ul>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-6">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-6">
 
         <h4 class="font-bold text-lg">
             Check Your Understanding
         </h4>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             When is a constructor called?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> Automatically, when an object is created with new.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> Automatically, when an object is created with new.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What happens to the default constructor if you write a parameterized constructor?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> Java no longer provides the default constructor, so you must write one if you still need it.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> Java no longer provides the default constructor, so you must write one if you still need it.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What does the keyword this refer to inside a constructor?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> The object that is being created.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> The object that is being created.
         </p>
 
     </div>

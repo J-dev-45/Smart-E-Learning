@@ -7,10 +7,10 @@
     </h2>
 
     <div class="w-full h-[1px] flex items-center justify-center pt-[10px]">
-        <div class="bg-gray-600 w-full h-[1px]"></div>
+        <div class="sharedLine w-full h-[1px]"></div>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Imagine a bank account where anyone could write account.balance = 1000000 from anywhere in the program. Mistakes and misuse would be easy. Encapsulation protects data by bundling it with the methods that work on it and by controlling who may access it from outside the class. It is one of the four pillars of OOP.
     </p>
 
@@ -18,7 +18,7 @@
         What Is Encapsulation?
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Encapsulation means wrapping the data (attributes) and the methods that operate on the data into one unit, the class, and restricting direct access to the data. The attributes are made private, and the class provides public methods through which other code can read or change them in a controlled way. Think of a capsule: the medicine is inside, and you use it through the outer shell.
     </p>
 
@@ -26,7 +26,7 @@
         Data Hiding
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Data hiding is the practice of keeping the internal data of a class private, so outside code cannot see or change it directly. The class decides what to expose. Because the data can only be changed through the class's own methods, the class can make sure the data stays valid.
     </p>
 
@@ -34,48 +34,48 @@
         Access Modifiers
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Access modifiers are keywords that set the visibility of classes and members.
     </p>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 private
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Visible only inside the same class. Used for attributes that must be protected.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 default (no keyword)
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Visible to classes in the same package.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 protected
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Visible in the same package and in subclasses, which are classes that extend it.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 public
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Visible everywhere. Used for methods that form the class's interface.
             </p>
         </div>
@@ -86,7 +86,7 @@
         Without and With Encapsulation
     </h3>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class BadAccount &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class BadAccount &#123;
     double balance;                           // public access: unsafe
 }
 
@@ -120,14 +120,14 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>BadAccount balance: -5000.0
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>BadAccount balance: -5000.0
 Withdrawal rejected
 GoodAccount balance: 1000.0</code></pre>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         If other code tries to write good.balance directly, the compiler reports an error: balance has private access in GoodAccount. The only way to use the balance is through the methods, and the methods check the rules.
     </p>
 
@@ -135,7 +135,7 @@ GoodAccount balance: 1000.0</code></pre>
         Why Hide Data?
     </h3>
 
-    <ul class="text-gray-400 mt-3 px-3 space-y-2 list-disc list-inside">
+    <ul class="sharedTXTMuted mt-3 px-3 space-y-2 list-disc list-inside">
 
         <li>
             To prevent invalid values from being stored.
@@ -155,34 +155,34 @@ GoodAccount balance: 1000.0</code></pre>
 
     </ul>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-6">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-6">
 
         <h4 class="font-bold text-lg">
             Check Your Understanding
         </h4>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What is encapsulation?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> Bundling data and the methods that use it in one class and restricting direct access to the data.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> Bundling data and the methods that use it in one class and restricting direct access to the data.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             Which access modifier makes an attribute visible only inside its own class?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> private.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> private.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What error does the compiler give when you access a private attribute from another class?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> An error that the attribute has private access in that class.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> An error that the attribute has private access in that class.
         </p>
 
     </div>

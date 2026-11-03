@@ -281,6 +281,11 @@ class LearnController extends Controller
         $failed = false;
         $answered_questions = [];
 
+        $next_module = Modules::where('subject_id', $subject->id)
+            ->where('order', '>', $module->order)
+            ->orderBy('order', 'ASC')
+            ->first();
+
         if ($answered_module_questions->isNotEmpty()) {
 
             $answered_questions = Questions::whereIn('id', $answered_module_questions->pluck('question_id'))
@@ -309,7 +314,8 @@ class LearnController extends Controller
             'answered_questions',
             'failed',
             'score',
-            'answered_module_questions'
+            'answered_module_questions',
+            'next_module',
         );
 
         switch ($subject->subject_name) {

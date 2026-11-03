@@ -7,10 +7,10 @@
     </h2>
 
     <div class="w-full h-[1px] flex items-center justify-center pt-[10px]">
-        <div class="bg-gray-600 w-full h-[1px]"></div>
+        <div class="sharedLine w-full h-[1px]"></div>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         The most powerful form of polymorphism happens while the program is running. A variable of a superclass type can refer to an object of any of its subclasses, and when a method is called through it, Java runs the version that belongs to the actual object. This lets you write code that works with a general type but behaves correctly for every specific type.
     </p>
 
@@ -18,11 +18,11 @@
         Method Overriding and Dynamic Binding
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         When a subclass overrides a method, the choice of which version to run is made at run time, according to the real type of the object and not the type of the variable. This is called dynamic method dispatch, or dynamic binding.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Animal &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Animal &#123;
     void makeSound() &#123; System.out.println("Some generic animal sound"); }
 }
 
@@ -55,15 +55,15 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Woof!
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Woof!
 Meow!
 Moo!
 Some generic animal sound</code></pre>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         All four variables have the type Animal, but each call runs the method of the real object. The compiler cannot know which one will run, so the decision is made at run time.
     </p>
 
@@ -71,7 +71,7 @@ Some generic animal sound</code></pre>
         Superclass Reference to a Subclass Object
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         A superclass reference can refer to a subclass object, because a Dog is an Animal. This is called upcasting, and it happens automatically. Through the Animal variable, you can use only what Animal declares, but the overridden versions are the ones that run.
     </p>
 
@@ -79,11 +79,11 @@ Some generic animal sound</code></pre>
         Polymorphism with Arrays and Methods
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         The real benefit appears when many different objects are handled by the same code. The loop below does not know or care which animal it holds.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Animal &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Animal &#123;
     void makeSound() &#123; System.out.println("..."); }
 }
 class Dog extends Animal &#123;
@@ -115,9 +115,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Woof!
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Woof!
 Meow!
 Moo!
 Woof!
@@ -126,7 +126,7 @@ This animal says: Meow!
 This animal says: Moo!</code></pre>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         The method introduce accepts any Animal. If a new class, such as Duck, is added later, introduce works with it without any change.
     </p>
 
@@ -134,7 +134,7 @@ This animal says: Moo!</code></pre>
         A Second Example: Shapes
     </h3>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Shape &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Shape &#123;
     String name() &#123; return "Shape"; }
     double area() &#123; return 0; }
 }
@@ -163,9 +163,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Circle area = 12.57
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Circle area = 12.57
 Rectangle area = 12.00
 Circle area = 7.07
 Total area = 31.63</code></pre>
@@ -175,11 +175,11 @@ Total area = 31.63</code></pre>
         Using instanceof and Casting
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Through a superclass variable, you cannot call a method that exists only in the subclass. If you need one, check the real type with instanceof and cast the reference down to the subclass.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Animal &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Animal &#123;
     void makeSound() &#123; System.out.println("..."); }
 }
 class Dog extends Animal &#123;
@@ -203,9 +203,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Woof!
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Woof!
 The dog fetches the ball.
 Meow!</code></pre>
     </div>
@@ -216,42 +216,42 @@ Meow!</code></pre>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Extensibility
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 New subclasses can be added without changing the code that uses the superclass type.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Less Code
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 One loop or method handles many kinds of objects, so there are no long if-else chains checking the type.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Maintainability
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Behavior for each type is kept in its own class.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Flexibility
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 A program can decide which object to use while running, such as according to user input.
             </p>
         </div>
@@ -264,56 +264,56 @@ Meow!</code></pre>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Overloading (compile-time)
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Same class, same name, different parameters. The compiler chooses by the arguments.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Overriding (runtime)
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Subclass and superclass, same name and same parameters. The JVM chooses by the actual object.
             </p>
         </div>
 
     </div>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-6">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-6">
 
         <h4 class="font-bold text-lg">
             Check Your Understanding
         </h4>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What decides which overridden method runs: the variable type or the object type?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> The actual object type, decided at run time.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> The actual object type, decided at run time.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What is upcasting?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> Treating a subclass object as its superclass type, such as Animal a = new Dog();
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> Treating a subclass object as its superclass type, such as Animal a = new Dog();
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             Why is polymorphism useful when adding new classes?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> Existing code that uses the superclass type works with the new subclass without being changed.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> Existing code that uses the superclass type works with the new subclass without being changed.
         </p>
 
     </div>

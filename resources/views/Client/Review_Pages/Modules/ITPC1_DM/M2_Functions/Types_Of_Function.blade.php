@@ -6,10 +6,10 @@
     </h2>
 
     <div class="w-full h-[1px] flex items-center justify-center pt-[10px]">
-        <div class="bg-gray-600 w-full h-[1px]"></div>
+        <div class="sharedLine w-full h-[1px]"></div>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-4 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-4 leading-relaxed">
         Functions can be classified according to how their inputs
         correspond to their outputs. Three important types are injective,
         surjective, and bijective functions.
@@ -19,31 +19,31 @@
         Injective Function (One-to-One)
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         An injective function is a function in which different inputs
         always produce different outputs. No two distinct elements
         of the domain are mapped to the same element of the codomain.
     </p>
 
-    <p class="text-white mt-4">
+    <p class="sharedTXT mt-4">
         If f(a) = f(b), then a = b.
     </p>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-4">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-4">
 
         <h4 class="font-bold text-lg">
             Example of an Injective Function
         </h4>
 
-        <p class="text-white mt-3">
+        <p class="sharedTXT mt-3">
             A = {1, 2, 3}
         </p>
 
-        <p class="text-white mt-2">
+        <p class="sharedTXT mt-2">
             B = {a, b, c, d}
         </p>
 
-        <div class="mt-4 space-y-2 text-gray-400">
+        <div class="mt-4 space-y-2 sharedTXTMuted">
             <p>
                 f(1) = a
             </p>
@@ -57,7 +57,7 @@
             </p>
         </div>
 
-        <p class="text-gray-400 mt-4">
+        <p class="sharedTXTMuted mt-4">
             Each input maps to a different output. The element d is
             unused, but the function is still injective.
         </p>
@@ -68,31 +68,31 @@
         Surjective Function (Onto)
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         A surjective function is a function in which every element
         of the codomain is the output of at least one element from
         the domain. In other words, the range is equal to the codomain.
     </p>
 
-    <p class="text-white mt-4">
+    <p class="sharedTXT mt-4">
         Range = Codomain
     </p>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-4">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-4">
 
         <h4 class="font-bold text-lg">
             Example of a Surjective Function
         </h4>
 
-        <p class="text-white mt-3">
+        <p class="sharedTXT mt-3">
             A = {1, 2, 3, 4}
         </p>
 
-        <p class="text-white mt-2">
+        <p class="sharedTXT mt-2">
             B = {a, b, c}
         </p>
 
-        <div class="mt-4 space-y-2 text-gray-400">
+        <div class="mt-4 space-y-2 sharedTXTMuted">
             <p>
                 f(1) = a
             </p>
@@ -110,7 +110,7 @@
             </p>
         </div>
 
-        <p class="text-gray-400 mt-4">
+        <p class="sharedTXTMuted mt-4">
             Every element of B is reached by at least one input.
             Therefore, the function is surjective.
         </p>
@@ -121,28 +121,28 @@
         Bijective Function (One-to-One and Onto)
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         A bijective function is both injective and surjective.
         Every input maps to a different output, and every element
         of the codomain is reached. Therefore, each element of the
         codomain corresponds to exactly one element of the domain.
     </p>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-4">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-4">
 
         <h4 class="font-bold text-lg">
             Example of a Bijective Function
         </h4>
 
-        <p class="text-white mt-3">
+        <p class="sharedTXT mt-3">
             A = {1, 2, 3}
         </p>
 
-        <p class="text-white mt-2">
+        <p class="sharedTXT mt-2">
             B = {a, b, c}
         </p>
 
-        <div class="mt-4 space-y-2 text-gray-400">
+        <div class="mt-4 space-y-2 sharedTXTMuted">
             <p>
                 f(1) = a
             </p>
@@ -156,7 +156,7 @@
             </p>
         </div>
 
-        <p class="text-gray-400 mt-4">
+        <p class="sharedTXTMuted mt-4">
             All outputs are different, and every element of B is
             reached. Therefore, the function is both injective
             and surjective, making it bijective.
@@ -173,77 +173,77 @@
         <table class="w-full border-collapse">
 
             <thead>
-                <tr class="bg-[#24123B]">
-                    <th class="border border-[#3A2560] p-3 text-left">
+                <tr class="sharedSurfaceBG">
+                    <th class="border sharedBorder p-3 text-left">
                         Type
                     </th>
 
-                    <th class="border border-[#3A2560] p-3 text-left">
+                    <th class="border sharedBorder p-3 text-left">
                         Main Property
                     </th>
 
-                    <th class="border border-[#3A2560] p-3 text-left">
+                    <th class="border sharedBorder p-3 text-left">
                         Can Outputs Repeat?
                     </th>
 
-                    <th class="border border-[#3A2560] p-3 text-left">
+                    <th class="border sharedBorder p-3 text-left">
                         Must Every Codomain Element Be Used?
                     </th>
                 </tr>
             </thead>
 
-            <tbody class="text-gray-400">
+            <tbody class="sharedTXTMuted">
 
                 <tr>
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border sharedBorder p-3 sharedTXT">
                         Injective
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         Different inputs have different outputs.
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         No
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         No
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border sharedBorder p-3 sharedTXT">
                         Surjective
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         Every codomain element is reached.
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         Yes
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         Yes
                     </td>
                 </tr>
 
                 <tr>
-                    <td class="border border-[#3A2560] p-3 text-white">
+                    <td class="border sharedBorder p-3 sharedTXT">
                         Bijective
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         Both injective and surjective.
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         No
                     </td>
 
-                    <td class="border border-[#3A2560] p-3">
+                    <td class="border sharedBorder p-3">
                         Yes
                     </td>
                 </tr>
@@ -258,7 +258,7 @@
         Functions in Information Technology
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Different types of functions help describe how data is mapped
         between sets. Injective functions can represent unique identifiers,
         surjective functions can represent mappings that cover all
@@ -266,13 +266,13 @@
         exact one-to-one correspondences between two sets.
     </p>
 
-    <div class="bg-[#24123B] border border-[#3A2560] rounded-xl p-5 mt-4">
+    <div class="sharedSurfaceBG border sharedBorder rounded-xl p-5 mt-4">
 
         <h4 class="font-bold text-lg">
             Key Idea
         </h4>
 
-        <p class="text-gray-300 mt-2 leading-relaxed">
+        <p class="sharedTXTBody mt-2 leading-relaxed">
             Remember the main difference: injective means no repeated
             outputs for different inputs, surjective means every
             codomain element is reached, and bijective means both

@@ -24,6 +24,7 @@
     --surface-color: #34346A;
     --surface-deep: #2C2C5E;
     --surface-deeper: #25254F;
+    --surface-code: #1B1B3F;
     --tile-color: #4A4A8F;
     --border-color: #5C5CA3;
 
@@ -77,6 +78,7 @@
     --panel-scroll-thumb-hover: #8B5CF6;
     --panel-scroll-firefox: #BC9DDE;
 
+    /* Code editor syntax tokens */
     --tok-keyword: var(--accent-solid);
     --tok-class: var(--primary-color);
     --tok-string: var(--danger-color);
@@ -100,7 +102,10 @@ body { color: var(--text-body); }
 .sharedSurface,
 .sharedSurfaceBG { background: var(--surface-color); }
 .sharedSurface { border: 1px solid var(--border-color); }
-.sharedSurfaceDeep { background: var(--surface-deep); border: 1px solid var(--border-color); }
+.sharedSurfaceDeep,
+.sharedSurfaceDeepBG { background: var(--surface-deep); }
+.sharedSurfaceDeep { border: 1px solid var(--border-color); }
+.sharedCodeBG { background: var(--surface-code); }
 .sharedSurfaceDeeper,
 .sharedDeepBG { background: var(--surface-deeper); }
 .sharedSurfaceDeeper { border: 1px solid var(--border-color); }
@@ -109,6 +114,7 @@ body { color: var(--text-body); }
 .sharedBtnSoft { background: var(--tile-color); }
 
 .sharedBGAccent { background: var(--accent-color); }
+.sharedBGWarningTint { background: color-mix(in srgb, var(--warning-color) 5%, transparent); }
 
 .sharedLightBG,
 .sharedNavBG { background: var(--light-bg); }
@@ -123,8 +129,16 @@ body { color: var(--text-body); }
 /* Borders */
 .sharedBorder { border-color: var(--border-color); }
 .sharedBorderLight { border-color: color-mix(in srgb, var(--white) 40%, transparent); }
+.sharedBorderWarningSoft { border-color: color-mix(in srgb, var(--warning-color) 30%, transparent); }
+.sharedBorderLSuccess { border-left-color: var(--success-color); }
+.sharedBorderLWarning { border-left-color: var(--warning-color); }
+.sharedBorderLAccent { border-left-color: var(--accent-solid); }
 .sharedLightBorder { border-color: var(--light-line); }
 .sharedStrokeLight { stroke: var(--light-line); }
+.sharedStrokeAccent { stroke: var(--accent-color); }
+.sharedFillAccent { fill: var(--accent-color); }
+.sharedFillTile { fill: var(--tile-color); }
+.sharedFillText { fill: var(--text-main); }
 
 /* Text on dark backgrounds */
 .sharedTXT { color: var(--text-main); }
@@ -132,6 +146,9 @@ body { color: var(--text-body); }
 .sharedTXTMuted { color: var(--text-muted); }
 .sharedTXTAccent { color: var(--accent-color); }
 .sharedTXTSuccess { color: var(--success-color); }
+.sharedTXTWarning { color: var(--warning-color); }
+.sharedTXTDangerSoft { color: var(--danger-soft); }
+.sharedTXTCode { color: var(--info-color); }
 .sharedTXTBrand,
 .sharedHoverBrand:hover { color: var(--primary-color); }
 
@@ -255,7 +272,6 @@ body { color: var(--text-body); }
 .sharedRankEmpty { border-color: color-mix(in srgb, var(--rank) 35%, transparent); background: color-mix(in srgb, var(--rank) 8%, transparent); }
 .sharedRankText  { color: var(--rank); }
 
-
 /* Code editor syntax tokens */
 .sharedTokKeyword  { color: var(--tok-keyword); }
 .sharedTokClass    { color: var(--tok-class); }
@@ -263,7 +279,7 @@ body { color: var(--text-body); }
 .sharedTokComment  { color: var(--tok-comment); }
 .sharedTokFunction { color: var(--tok-function); }
 .sharedTokNumber   { color: var(--tok-number); }
- 
+
 /* Caret and text selection inside the editor */
 .sharedCaret { caret-color: var(--accent-solid); }
 .sharedSelection::selection { background: color-mix(in srgb, var(--accent-solid) 20%, transparent); }

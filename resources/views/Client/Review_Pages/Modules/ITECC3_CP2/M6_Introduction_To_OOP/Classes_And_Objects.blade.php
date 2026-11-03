@@ -7,10 +7,10 @@
     </h2>
 
     <div class="w-full h-[1px] flex items-center justify-center pt-[10px]">
-        <div class="bg-gray-600 w-full h-[1px]"></div>
+        <div class="sharedLine w-full h-[1px]"></div>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Classes and objects are the building blocks of OOP. A class describes what a kind of thing is and does, and an object is one particular thing of that kind. A cookie cutter and the cookies it makes are a good comparison: one cutter (the class) can make many cookies (the objects), and each cookie can be decorated differently.
     </p>
 
@@ -20,22 +20,22 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Class
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 A blueprint or template. It defines the attributes (variables) and methods (actions) that its objects will have. It does not use memory for data until an object is created.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Object
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 An instance of a class. It has its own copy of the attributes, with its own values, and it can perform the methods of its class.
             </p>
         </div>
@@ -46,7 +46,7 @@
         Attributes and Methods
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Attributes, also called fields or instance variables, store the state of an object. Methods define its behavior. For a Student class, the attributes might be studentName, studentID, course, and yearLevel, and the methods might be displayInformation() and calculateGrade().
     </p>
 
@@ -54,7 +54,7 @@
         Creating a Class
     </h3>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     // attributes
     String studentName;
     String studentID;
@@ -72,11 +72,11 @@
         Creating Objects and Accessing Attributes
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Use the new keyword to create an object, and the dot operator to reach its attributes and methods. Each object has its own values.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     String studentName;
     String studentID;
     String course;
@@ -111,15 +111,15 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>2026-001 | Ana Reyes | BSIT | Year 2
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>2026-001 | Ana Reyes | BSIT | Year 2
 2026-002 | Ben Cruz | BSCS | Year 1
 Ben Cruz is now in year 2
 Ana Reyes is still in year 2</code></pre>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Changing s2 does not affect s1, because each object has its own copy of the attributes.
     </p>
 
@@ -127,7 +127,7 @@ Ana Reyes is still in year 2</code></pre>
         Methods That Use the Object's Data
     </h3>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     String studentName;
     double prelim, midterm, finals;
 
@@ -147,20 +147,20 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Cara Lim average: 87.66666666666667</code></pre>
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Cara Lim average: 87.66666666666667</code></pre>
     </div>
 
     <h3 class="text-xl font-bold mt-6">
         References and null
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         A variable of a class type does not hold the object itself, but a reference to it. Two variables can refer to the same object, and a variable can hold null, meaning it refers to no object. Calling a method through a null reference causes a NullPointerException.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     String name;
 }
 
@@ -181,9 +181,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Ben
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Ben
 c does not refer to any object</code></pre>
     </div>
 
@@ -191,11 +191,11 @@ c does not refer to any object</code></pre>
         An Array of Objects
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Arrays can store objects. Creating the array does not create the objects: each element starts as null, and you must create each object yourself.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     String name;
     int grade;
 }
@@ -215,41 +215,41 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Ana: 80
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Ana: 80
 Ben: 85
 Cara: 90</code></pre>
     </div>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-6">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-6">
 
         <h4 class="font-bold text-lg">
             Check Your Understanding
         </h4>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What is the difference between a class and an object?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> A class is a blueprint that defines attributes and methods, while an object is a specific instance created from that class.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> A class is a blueprint that defines attributes and methods, while an object is a specific instance created from that class.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             How do you access a method of an object?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> Use the object name, the dot operator, and the method name, such as s1.displayInformation().
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> Use the object name, the dot operator, and the method name, such as s1.displayInformation().
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What happens when you create an array of objects with new Student[3]?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> It creates three empty references (null). You must create each Student object separately.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> It creates three empty references (null). You must create each Student object separately.
         </p>
 
     </div>

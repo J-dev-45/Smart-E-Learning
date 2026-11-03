@@ -66,7 +66,8 @@
 
         <!-- RIGHT: Next -->
         <!-- NEXT: OPEN -->
-        <a v-if="moduleQuiz.has_passed || activityPassedLocally" href=""
+         <!-- Route::get('/learning/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']); -->
+        <a v-if="moduleQuiz.has_passed || activityPassedLocally" :href="`/learning/${url(subject.subject_name)}/${subject.id}/${url(nextModule.module_name)}/${nextModule.id}`"
             class="group inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm font-bold sharedBtn rounded-full py-2.5 px-6 transition-colors whitespace-nowrap">
             Next
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5">
@@ -104,7 +105,8 @@ const props = defineProps({
     moduleQuiz: {
         type: Object,
         required: true
-    }
+    },
+    nextModule: { type: Object, required: true}
 })
 
 const activityPassedLocally = ref(false)

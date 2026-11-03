@@ -7,10 +7,10 @@
     </h2>
 
     <div class="w-full h-[1px] flex items-center justify-center pt-[10px]">
-        <div class="bg-gray-600 w-full h-[1px]"></div>
+        <div class="sharedLine w-full h-[1px]"></div>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Throughout this course you learned separate tools: arrays store collections of data, searching and sorting algorithms process that data, algorithm analysis helps you choose the right algorithm, and object-oriented design organizes everything into classes. Real programs use all of them together. This final module shows how they fit and how to design a complete application.
     </p>
 
@@ -20,62 +20,62 @@
 
     <div class="space-y-4 mt-4">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Arrays
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 Hold collections of data. In OOP programs, arrays often hold objects, such as an array of Student objects.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Searching Algorithms
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 Find an object in the collection by a key, such as a student ID (linear search) or by a sorted key (binary search).
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Sorting Algorithms
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 Arrange the objects by a field, such as sorting students by grade to produce a ranking.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Algorithm Analysis
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 Guides your choice. A few dozen students can be sorted with insertion sort, while a million records call for merge sort or quick sort.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Classes and Objects
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 Package the data and behavior of each real-world thing.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 OOP Principles
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 Encapsulation protects the data, inheritance shares code between related classes, polymorphism and abstraction make the system general and easy to extend.
             </p>
         </div>
@@ -86,11 +86,11 @@
         An Array of Objects
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         The central structure of an integrated program is an array of objects. Because the array has a fixed size, we keep a separate counter that tells how many positions are actually used. New objects are added at index count, and the algorithms work only up to count.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     private String id;
     private String name;
     private double grade;
@@ -125,9 +125,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>S-103 Cara 91.0
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>S-103 Cara 91.0
 S-101 Ana 85.0
 S-102 Ben 78.0
 Used: 3 of 5</code></pre>
@@ -137,11 +137,11 @@ Used: 3 of 5</code></pre>
         Searching Objects
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         Searching an array of objects compares a field of each object with the key. Use equals() for Strings and == for numbers. Remember to stop at count, not at the array length, because the remaining positions are null.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     private String id, name;
     private double grade;
     Student(String id, String name, double grade) &#123; this.id = id; this.name = name; this.grade = grade; }
@@ -173,9 +173,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Search S-101: Ana
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Search S-101: Ana
 Search S-999: not found</code></pre>
     </div>
 
@@ -183,11 +183,11 @@ Search S-999: not found</code></pre>
         Sorting Objects
     </h3>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         To sort objects, compare a field but move the whole object. The following selection sort arranges students from the highest to the lowest grade.
     </p>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>class Student &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>class Student &#123;
     private String id, name;
     private double grade;
     Student(String id, String name, double grade) &#123; this.id = id; this.name = name; this.grade = grade; }
@@ -221,9 +221,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Rank 1: Dino (96.0)
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Rank 1: Dino (96.0)
 Rank 2: Cara (91.0)
 Rank 3: Ana (85.0)
 Rank 4: Ben (78.0)</code></pre>
@@ -233,7 +233,7 @@ Rank 4: Ben (78.0)</code></pre>
         Common Mistakes When Combining
     </h3>
 
-    <ul class="text-gray-400 mt-3 px-3 space-y-2 list-disc list-inside">
+    <ul class="sharedTXTMuted mt-3 px-3 space-y-2 list-disc list-inside">
 
         <li>
             Looping to array.length instead of count, which reaches null elements and causes a NullPointerException
@@ -261,7 +261,7 @@ Rank 4: Ben (78.0)</code></pre>
         Design Checklist
     </h3>
 
-    <ul class="text-gray-400 mt-3 px-3 space-y-2 list-disc list-inside">
+    <ul class="sharedTXTMuted mt-3 px-3 space-y-2 list-disc list-inside">
 
         <li>
             What are the real-world things? Make each a class.
@@ -289,34 +289,34 @@ Rank 4: Ben (78.0)</code></pre>
 
     </ul>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-6">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-6">
 
         <h4 class="font-bold text-lg">
             Check Your Understanding
         </h4>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             Why do we keep a count variable for an array of objects?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> The array has a fixed size, so count tells how many positions are really used, and the algorithms must stop at count.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> The array has a fixed size, so count tells how many positions are really used, and the algorithms must stop at count.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             What must you do after creating Student[] list = new Student[5]; before using list[0]?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> Create the object with new Student(...), because the elements are null until assigned.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> Create the object with new Student(...), because the elements are null until assigned.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             When sorting objects, what is compared and what is moved?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> A field of the object is compared, but the whole object (reference) is moved.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> A field of the object is compared, but the whole object (reference) is moved.
         </p>
 
     </div>

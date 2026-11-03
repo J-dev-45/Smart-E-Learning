@@ -7,10 +7,10 @@
     </h2>
 
     <div class="w-full h-[1px] flex items-center justify-center pt-[10px]">
-        <div class="bg-gray-600 w-full h-[1px]"></div>
+        <div class="sharedLine w-full h-[1px]"></div>
     </div>
 
-    <p class="text-md text-gray-400 px-3 mt-3 leading-relaxed">
+    <p class="text-md sharedTXTMuted px-3 mt-3 leading-relaxed">
         This laboratory combines everything in the course. The Student Management and Ranking System stores students in an array of objects, adds and displays records, searches for a student by ID, computes statistics, and ranks the students by their average grade using a sorting algorithm. The design uses encapsulation, inheritance, abstraction, and polymorphism.
     </p>
 
@@ -18,7 +18,7 @@
         System Requirements
     </h3>
 
-    <ul class="text-gray-400 mt-3 px-3 space-y-2 list-disc list-inside">
+    <ul class="sharedTXTMuted mt-3 px-3 space-y-2 list-disc list-inside">
 
         <li>
             Store a list of students in an array.
@@ -54,25 +54,25 @@
         Class Design
     </h3>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-4">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-4">
 
         <h4 class="font-bold text-lg">
             Classes and Their Roles
         </h4>
 
-        <p class="text-white mt-3">
+        <p class="sharedTXT mt-3">
             Person (abstract): name, id, and an abstract method getRole().
         </p>
 
-        <p class="text-gray-400 mt-2">
+        <p class="sharedTXTMuted mt-2">
             Student extends Person: three grades, average(), remarks(), validation, and toString().
         </p>
 
-        <p class="text-gray-400 mt-2">
+        <p class="sharedTXTMuted mt-2">
             StudentManager: holds the Student array and the count, and has the add, find, rank, and report methods.
         </p>
 
-        <p class="text-gray-400 mt-2">
+        <p class="sharedTXTMuted mt-2">
             Main: creates the manager and runs the demonstration.
         </p>
 
@@ -82,7 +82,7 @@
         The Complete Program
     </h3>
 
-    <pre class="bg-[#12081F] border border-[#3A2560] rounded-xl p-4 mt-4 text-sm text-gray-200 overflow-x-auto"><code>abstract class Person &#123;
+    <pre class="sharedDeepBG border sharedBorder rounded-xl p-4 mt-4 text-sm sharedTXTBody overflow-x-auto"><code>abstract class Person &#123;
     protected String id;
     protected String name;
 
@@ -230,9 +230,9 @@ public class Main &#123;
     }
 }</code></pre>
 
-    <div class="bg-[#12081F] border border-[#3A2560] border-l-4 border-l-emerald-400 rounded-xl p-4 mt-2">
-        <p class="text-xs font-bold text-emerald-300 uppercase tracking-wide">Output</p>
-        <pre class="text-sm text-gray-200 mt-2 overflow-x-auto"><code>Added Ana Reyes
+    <div class="sharedDeepBG border sharedBorder border-l-4 sharedBorderLSuccess rounded-xl p-4 mt-2">
+        <p class="text-xs font-bold sharedTXTSuccess uppercase tracking-wide">Output</p>
+        <pre class="text-sm sharedTXTBody mt-2 overflow-x-auto"><code>Added Ana Reyes
 Added Ben Cruz
 Added Cara Lim
 Added Dino Tan
@@ -271,62 +271,62 @@ Passed:        3 of 5</code></pre>
 
     <div class="space-y-4 mt-4">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Arrays
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 The Student array in StudentManager, and the copy used for ranking.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Searching
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 indexOf() is a linear search, used by search() and to detect duplicates.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Sorting
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 rank() uses selection sort on the average grade. The original array order is kept because a copy is sorted.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Encapsulation
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 The grades are private. The constructor validates them, so an invalid grade can never be stored.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Inheritance and Abstraction
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 Student extends the abstract class Person and implements getRole(). Person holds the shared data.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Polymorphism
             </h4>
 
-            <p class="text-gray-400 mt-2 leading-relaxed">
+            <p class="sharedTXTMuted mt-2 leading-relaxed">
                 toString() and getRole() are overridden, and println() calls the right toString() automatically.
             </p>
         </div>
@@ -339,22 +339,22 @@ Passed:        3 of 5</code></pre>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Search
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Linear search: O(n) per search. Fine for a class list. For thousands of records, sort by ID and use binary search.
             </p>
         </div>
 
-        <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5">
+        <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5">
             <h4 class="font-bold text-lg">
                 Ranking
             </h4>
 
-            <p class="text-gray-400 mt-2">
+            <p class="sharedTXTMuted mt-2">
                 Selection sort: O(n squared). For a very large school, replace it with merge sort or quick sort, O(n log n).
             </p>
         </div>
@@ -365,7 +365,7 @@ Passed:        3 of 5</code></pre>
         Ideas to Improve the System
     </h3>
 
-    <ul class="text-gray-400 mt-3 px-3 space-y-2 list-disc list-inside">
+    <ul class="sharedTXTMuted mt-3 px-3 space-y-2 list-disc list-inside">
 
         <li>
             Add a Teacher class and use an array of Person to hold both kinds, using polymorphism.
@@ -389,34 +389,34 @@ Passed:        3 of 5</code></pre>
 
     </ul>
 
-    <div class="bg-[#1B0D2D] border border-[#3A2560] rounded-xl p-5 mt-6">
+    <div class="sharedSurfaceDeepBG border sharedBorder rounded-xl p-5 mt-6">
 
         <h4 class="font-bold text-lg">
             Check Your Understanding
         </h4>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             Why does rank() sort a copy of the array?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> So the original order of the records is not changed, while the ranking is displayed.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> So the original order of the records is not changed, while the ranking is displayed.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             Which algorithms are used in this system?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> Linear search for finding a student, and selection sort for ranking.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> Linear search for finding a student, and selection sort for ranking.
         </p>
 
-        <p class="text-white mt-4">
+        <p class="sharedTXT mt-4">
             How does the system protect against invalid grades?
         </p>
 
-        <p class="text-gray-400 mt-1 leading-relaxed">
-            <span class="text-[#CECBF6] font-semibold">Answer:</span> The grades are private, and the constructor validates each grade, replacing invalid values with 0.
+        <p class="sharedTXTMuted mt-1 leading-relaxed">
+            <span class="sharedTXTAccent font-semibold">Answer:</span> The grades are private, and the constructor validates each grade, replacing invalid values with 0.
         </p>
 
     </div>

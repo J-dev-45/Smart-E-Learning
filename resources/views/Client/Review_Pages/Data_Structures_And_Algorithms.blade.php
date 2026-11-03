@@ -25,7 +25,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 
 </head>
-<body class="w-full h-screen overflow-hidden bg-[#12081F]">
+<body class="w-full h-screen overflow-hidden sharedBG">
     @vite(['resources/js/app.js'])
     <div id="app" class="flex flex-col h-screen w-screen overflow-hidden">
 
@@ -33,7 +33,7 @@
         <main class="main-bg w-full h-screen flex flex-col overflow-y-auto overflow-x-hidden scrollbar-thin">
 
             {{-- HEADER (stays visible while scrolling) --}}
-            <div class="sticky top-0 z-20 shrink-0 bg-[#12081F]">
+            <div class="sticky top-0 z-20 shrink-0 sharedBG">
                 <learn-header
                     :user-id="{{ auth()->id() }}"
                     user-name="{{ auth()->user()->name }}"
@@ -52,7 +52,7 @@
 
 
             <section
-                class="shrink-0 w-full text-white p-5 flex flex-col"
+                class="shrink-0 w-full sharedTXT p-5 flex flex-col"
             >
 
                 @switch($module->module_name)
