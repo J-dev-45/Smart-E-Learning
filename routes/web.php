@@ -63,7 +63,8 @@ Route::middleware(['guest'])->group(function(){
 
     Route::post('/login',[LoginController::class, 'login'])->middleware('throttle:3,1');
     Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:3,1');
-    Route::post('/verify_otp', [VerifyOTP::class, 'verify'])->middleware('throttle:2,1');
+    Route::post('/verify_otp', [VerifyOTP::class, 'verify'])
+    ->middleware('throttle:otp-verify');
 
     Route::get('/otp/resend-status', [ResendOTP::class, 'status'])
         ->middleware('throttle:30,1');
@@ -233,9 +234,9 @@ Route::middleware(['auth'])->group(function(){
 
     
     Route::post('/submit-unanswered', [AssessmentController::class, 'submitUnanswered']);
-    Route::get('/result/{type_of_assessment}/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [Pretest::class, 'resultPretest'])->name('assessment.result');
+    Route::get('/result/{type_of_assessment}/{type}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'resultPage'])->name('assessment.result');
 
-    Route::post('/submitAnswer', [Pretest::class, 'submitAnswer']);
+    Route::post('/submitAnswer', [AssessmentController::class, 'submitAnswer']);
     Route::post('/submitCode', [CodePretestController::class, 'submitCodeAnswer']);
 
     Route::get('/pretest/{subject_name}/{subject_id}', [Pretest::class, 'pretestModules']);
