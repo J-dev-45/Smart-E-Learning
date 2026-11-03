@@ -66,7 +66,6 @@
 
         <!-- RIGHT: Next -->
         <!-- NEXT: OPEN -->
-         <!-- Route::get('/learning/{subject_name}/{subject_id}/{module_name}/{module_id}', [LearnController::class, 'learnModule']); -->
         <a v-if="moduleQuiz.has_passed || activityPassedLocally" :href="`/learning/${url(subject.subject_name)}/${subject.id}/${url(nextModule.module_name)}/${nextModule.id}`"
             class="group inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm font-bold sharedBtn rounded-full py-2.5 px-6 transition-colors whitespace-nowrap">
             Next
