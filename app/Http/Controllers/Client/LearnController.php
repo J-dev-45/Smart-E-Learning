@@ -14,9 +14,7 @@ use App\Models\Questions;
 use App\Models\StudentAttempts;
 use App\Models\Subjects;
 use App\Models\SubjectStarted;
-use App\Models\TemporaryPoints;
 use App\Models\Topics;
-use App\Models\UserScoreboard;
 use Illuminate\Http\Request;
 
 class LearnController extends Controller
@@ -240,6 +238,8 @@ class LearnController extends Controller
             ->where('module_id', $module->id)
             ->exists();
 
+        
+
         if (!$module_already_started) {
             ModuleStarted::create([
                 'user_id' => auth()->id(),
@@ -264,6 +264,16 @@ class LearnController extends Controller
             ->where('subject_id', $subject->id)
             ->where('module_id', $module->id)
             ->firstOrFail();
+
+        $has_unpassed_previous_module = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $subject->id)
+            ->where('id', '<', $module_quiz->id)
+            ->where('has_passed', false)
+            ->exists();
+
+        if ($has_unpassed_previous_module) {
+            return redirect()->route('home');
+        }
 
         $activity_questions = Questions::where('module_id', $module->id)
             ->where('question_type', 'identification')
@@ -409,6 +419,7 @@ class LearnController extends Controller
         ]);
 
         $score = 0;
+        $points = 0;
         $passing_percent = 80;
         $total_questions = count($validated['answers']);
 
@@ -440,13 +451,7 @@ class LearnController extends Controller
             return preg_replace('/\s+/u', ' ', trim($answer)) ?? trim($answer);
         };
 
-        $temporary_points = TemporaryPoints::create([
-            'user_id' => auth()->id(),
-            'points' => 0,
-        ]);
-
         $leaderboard = Leaderboard::where('user_id', auth()->id())->firstOrFail();
-        $scoreboard = UserScoreboard::where('user_id', auth()->id())->firstOrFail();
 
         $module_progress = ModuleProgress::where('user_id', auth()->id())
             ->where('subject_id', $validated['subject_id'])
@@ -471,9 +476,7 @@ class LearnController extends Controller
             if ($normalizeAnswer($answer) === $normalizeAnswer($question->answer)) {
                 $score++;
 
-                $temporary_points->update([
-                    'points' => $temporary_points->points + $question->points,
-                ]);
+                $points = $points + $question->points;
             }
         }
 
@@ -484,20 +487,17 @@ class LearnController extends Controller
         $passing_score = (int) ceil($total_questions * ($passing_percent / 100));
 
         if ($score >= $passing_score) {
-            $leaderboard->update([
-                'points' => $leaderboard->points + $temporary_points->points,
-            ]);
 
-            $scoreboard->update([
-                'total_score' => $scoreboard->total_score + $score
-            ]);
+            $leaderboard->increment(
+                    'points',
+                    (int) $points
+                );
 
             $module_progress->update([
                 'progress' => 100,
                 'has_passed' => true,
             ]);
 
-            $temporary_points->delete();
 
             return response()->json([
                 'success' => true,
@@ -507,7 +507,6 @@ class LearnController extends Controller
             ]);
         }
 
-        $temporary_points->delete();
 
         return response()->json([
             'success' => true,
