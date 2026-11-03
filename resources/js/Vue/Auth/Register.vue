@@ -110,7 +110,6 @@
 
                         <div class="relative">
                             <input id="register-password"
-                                type="password"
                                 :type="showPassword ? 'text' : 'password'"
                                 name="password"
                                 placeholder="••••••••"
