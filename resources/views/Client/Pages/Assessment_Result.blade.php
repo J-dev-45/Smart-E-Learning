@@ -12,7 +12,8 @@
     @vite(['resources/js/app.js'])
     <div id="app" class="w-screen h-screen flex flex-col overflow-hidden">
 
-        <main class="w-full h-full flex items-center justify-center px-4">
+        {{-- Scrolls on short screens; the card centers itself with m-auto --}}
+        <main class="w-full h-full flex overflow-y-auto px-3 py-4 sm:px-4">
 
             <assessment-result
                 subject-name="{{ $subject_name }}"
@@ -24,12 +25,13 @@
                 status="{{ $status }}"
                 assessment-type="{{ $type_of_assessment }}"
                 home-url="{{ route('home') }}"
-                :section-score="{{$section_score}}"
+                :section-score="{{ $section_score }}"
+                :assessment-points="{{ $assessment_points ?? 0 }}"
+                :bonus-points="{{ $bonus_points ?? 0 }}"
+                :total-points="{{ $total_points ?? 'null' }}"
             ></assessment-result>
 
         </main>
     </div>
-
-    
 </body>
 </html>
