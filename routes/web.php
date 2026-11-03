@@ -32,7 +32,6 @@ use App\Models\RecentActivity;
 use App\Models\Subjects;
 use App\Models\SubjectStarted;
 use App\Models\User;
-use App\Models\UserScoreboard;
 use Illuminate\Support\Facades\Route;
 
 
@@ -106,18 +105,10 @@ Route::middleware(['auth'])->group(function(){
         $subjects_started = SubjectStarted::where('user_id', auth()->id())->get();
 
         $user_leaderboard = Leaderboard::where('user_id', auth()->id())->exists();
-        $user_scoreboard = UserScoreboard::where('user_id', auth()->id())->exists();
 
         if(!$user_leaderboard){
             Leaderboard::create([
                 'user_id' => auth()->id(),
-            ]);
-        }
-
-        if(!$user_scoreboard){
-            UserScoreboard::create([
-                'user_id' => auth()->id(),
-                'total_score' => 0
             ]);
         }
 
