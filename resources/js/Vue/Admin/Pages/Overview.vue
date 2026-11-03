@@ -3,9 +3,9 @@
     <div class="w-full shrink-0 md:shrink md:flex-1 md:min-h-0 grid grid-cols-1 md:grid-cols-[1.3fr_1fr] gap-4 md:gap-5">
 
         <!-- RECENT ACTIVITY -->
-        <div class="flex flex-col h-[26rem] md:h-full min-h-0 py-4 pl-4 pr-2 sm:py-5 sm:pl-5 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
+        <div class="flex flex-col h-[26rem] md:h-full min-h-0 py-4 pl-4 pr-2 sm:py-5 sm:pl-5 rounded-2xl sharedSurface shadow-lg sharedShadow transition-all duration-200">
             <div class="flex items-center justify-between mb-3 pr-2">
-                <span class="text-base font-semibold text-white/80">Recent activity</span>
+                <span class="text-base font-semibold sharedTXTBody">Recent activity</span>
             </div>
 
             <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-2">
@@ -14,7 +14,7 @@
                 <li
                     v-for="act in recentActivities"
                     :key="act.id"
-                    class="flex items-start gap-3 py-3 px-2 -mx-2 rounded-xl border-b border-[#CECBF6]/10 last:border-b-0 transition-colors duration-200 hover:bg-white/[0.05]"
+                    class="flex items-start gap-3 py-3 px-2 -mx-2 rounded-xl border-b sharedBorder last:border-b-0 transition-colors duration-200 sharedRowHover"
                 >
                     <!-- ICON -->
                     <div
@@ -29,8 +29,8 @@
                     <!-- NAME, MESSAGE, DETAIL PILLS -->
                     <div class="flex flex-col gap-1.5 min-w-0 flex-1">
                         <span class="text-sm leading-snug break-words">
-                            <strong class="text-white font-semibold">{{ act.name }}</strong>
-                            <span class="text-white/50">{{ ' ' + message(act) }}</span>
+                            <strong class="sharedTXT font-semibold">{{ act.name }}</strong>
+                            <span class="sharedTXTMuted">{{ ' ' + message(act) }}</span>
                         </span>
 
                         <div v-if="pillLeft(act)" class="flex flex-wrap items-center gap-1.5">
@@ -41,7 +41,7 @@
                                 {{ pillLeft(act) }}
                             </span>
                             <template v-if="pillRight(act)">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3 text-white/30 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3 sharedTXTMuted shrink-0">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                                 </svg>
                                 <span
@@ -53,22 +53,22 @@
                             </template>
                         </div>
 
-                        <span class="text-xs font-medium text-white/40">{{ formatTimeAgo(act.created_at) }}</span>
+                        <span class="text-xs font-medium sharedTXTMuted">{{ formatTimeAgo(act.created_at) }}</span>
                     </div>
                 </li>
 
                 <li v-if="recentActivities.length === 0" class="flex flex-col items-center justify-center gap-2 py-10 text-center">
-                    <span class="text-sm text-white/45">No recent activity yet</span>
+                    <span class="text-sm sharedTXTMuted">No recent activity yet</span>
                 </li>
 
             </ul>
         </div>
 
         <!-- LEADERBOARDS -->
-        <div class="flex flex-col h-[26rem] md:h-full min-h-0 py-4 pl-4 pr-2 sm:py-5 sm:pl-5 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]">
+        <div class="flex flex-col h-[26rem] md:h-full min-h-0 py-4 pl-4 pr-2 sm:py-5 sm:pl-5 rounded-2xl sharedSurface shadow-lg sharedShadow transition-all duration-200">
             <div class="flex items-center justify-between mb-3 pr-2">
-                <span class="text-base font-semibold text-white/80">Leaderboards</span>
-                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20">Top 20</span>
+                <span class="text-base font-semibold sharedTXTBody">Leaderboards</span>
+                <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full sharedTXTAccent sharedTile">Top 20</span>
             </div>
 
             <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-2">
@@ -76,7 +76,7 @@
                 <li
                     v-for="(rank, index) in sorted_by_points"
                     :key="rank.id"
-                    class="flex items-center gap-3 py-2.5 px-2 -mx-2 rounded-xl border-b border-[#CECBF6]/10 last:border-b-0 transition-colors duration-200 hover:bg-white/[0.05]"
+                    class="flex items-center gap-3 py-2.5 px-2 -mx-2 rounded-xl border-b sharedBorder last:border-b-0 transition-colors duration-200 sharedRowHover"
                 >
                     <!-- RANK -->
                     <div
@@ -96,15 +96,15 @@
 
                     <!-- NAME AND SCORE -->
                     <div class="flex flex-col min-w-0 flex-1">
-                        <span class="text-sm text-white font-medium truncate">{{ userName(rank.user_id) }}</span>
-                        <span class="text-xs font-medium text-white/45 tabular-nums">{{ rank.points.toLocaleString() }} pts</span>
+                        <span class="text-sm sharedTXT font-medium truncate">{{ userName(rank.user_id) }}</span>
+                        <span class="text-xs font-medium sharedTXTMuted tabular-nums">{{ rank.points.toLocaleString() }} pts</span>
                     </div>
                 </li>
 
                 <li
                     v-if="leaderboard.length === 0"
                     class="flex flex-col items-center justify-center gap-2 py-10 text-center">
-                    <span class="text-sm text-white/45">No rankings yet this month</span>
+                    <span class="text-sm sharedTXTMuted">No rankings yet this month</span>
                 </li>
 
             </ul>
@@ -133,11 +133,11 @@ function profileColor(user_id){
 const sorted_by_points = props.leaderboard.sort((a, b) => b.points - a.points);
 
 const RANK_STYLES = [
-    { badge: 'border-yellow-400/30 bg-yellow-400/10', text: 'text-yellow-400' },
-    { badge: 'border-blue-300/30 bg-blue-300/10', text: 'text-blue-300' },
-    { badge: 'border-green-400/30 bg-green-400/10', text: 'text-green-400' },
+    { badge: 'sharedRank1 sharedRankBox', text: 'sharedRankText' },
+    { badge: 'sharedRank2 sharedRankBox', text: 'sharedRankText' },
+    { badge: 'sharedRank3 sharedRankBox', text: 'sharedRankText' },
 ]
-const DEFAULT_RANK_STYLE = { badge: 'border-[#CECBF6]/20 bg-[#CECBF6]/5', text: 'text-gray-300' }
+const DEFAULT_RANK_STYLE = { badge: 'sharedTile', text: 'sharedTXTMuted' }
 
 function rankStyle(index) {
     return RANK_STYLES[index] ?? DEFAULT_RANK_STYLE
@@ -176,23 +176,23 @@ const svg_d = [
 
 
 const icon_style = [
-    { action: 'deleted_question', badge: 'border-red-500/20 bg-red-500/10 text-red-400'},
-    { action: 'edited_question', badge: 'border-amber-400/20 bg-amber-400/10 text-amber-400'},
-    { action: 'added_question', badge: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-400'},
-    { action: 'promoted_user', badge: 'border-violet-400/20 bg-violet-400/10 text-violet-400'},
-    { action: 'demoted_user', badge: 'border-rose-400/20 bg-rose-400/10 text-rose-400'},
-    { action: 'deleted_user', badge: 'border-red-500/20 bg-red-500/10 text-red-400'},
-    { action: 'added_module', badge: 'border-emerald-400/20 bg-emerald-400/10 text-emerald-400' },
-    { action: 'edited_module', badge: 'border-amber-400/20 bg-amber-400/10 text-amber-400' },
-    { action: 'deleted_module', badge: 'border-red-500/20 bg-red-500/10 text-red-400' },
-    { action: 'added_topic', badge: 'border-sky-400/20 bg-sky-400/10 text-sky-400'},
-    { action: 'edited_topic', badge: 'border-amber-400/20 bg-amber-400/10 text-amber-400'},
-    { action: 'deleted_topic', badge: 'border-red-500/20 bg-red-500/10 text-red-400'},
-    { action: 'added_subject', badge: 'border-cyan-400/20 bg-cyan-400/10 text-cyan-400'},
-    { action: 'edited_subject', badge: 'border-amber-400/20 bg-amber-400/10 text-amber-400'},
-    { action: 'deleted_subject', badge: 'border-red-500/20 bg-red-500/10 text-red-400'},
-    { action: 'replied_feedback', badge: 'border-indigo-400/20 bg-indigo-400/10 text-indigo-400'},
-    { action: 'deleted_feedback', badge: 'border-red-500/20 bg-red-500/10 text-red-400'},
+    { action: 'deleted_question', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
+    { action: 'edited_question', badge: 'sharedStateWarning sharedStateTint sharedStateText'},
+    { action: 'added_question', badge: 'sharedStatePassed sharedStateTint sharedStateText'},
+    { action: 'promoted_user', badge: 'sharedStateOpen sharedStateTint sharedStateText'},
+    { action: 'demoted_user', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
+    { action: 'deleted_user', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
+    { action: 'added_module', badge: 'sharedStatePassed sharedStateTint sharedStateText' },
+    { action: 'edited_module', badge: 'sharedStateWarning sharedStateTint sharedStateText' },
+    { action: 'deleted_module', badge: 'sharedStateDanger sharedStateTint sharedStateText' },
+    { action: 'added_topic', badge: 'sharedStatePassed sharedStateTint sharedStateText'},
+    { action: 'edited_topic', badge: 'sharedStateWarning sharedStateTint sharedStateText'},
+    { action: 'deleted_topic', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
+    { action: 'added_subject', badge: 'sharedStatePassed sharedStateTint sharedStateText'},
+    { action: 'edited_subject', badge: 'sharedStateWarning sharedStateTint sharedStateText'},
+    { action: 'deleted_subject', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
+    { action: 'replied_feedback', badge: 'sharedStateExam sharedStateTint sharedStateText'},
+    { action: 'deleted_feedback', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
 ]
 
 function activity_svg(action){
@@ -286,15 +286,15 @@ function pillRight(act){
 
 function pillLeftStyle(act){
     if (act.action === 'deleted_feedback') {
-        return 'border-red-400/20 bg-red-400/5 text-red-300/70 line-through'
+        return 'sharedStateDanger sharedStatePill line-through'
     }
-    return 'border-[#CECBF6]/20 bg-[#CECBF6]/5 text-gray-300'
+    return 'sharedTile sharedTXTBody'
 }
 
 function pillRightStyle(act){
-    if (act.action === 'promoted_user') return 'border-violet-400/20 bg-violet-400/10 text-violet-300'
-    if (act.action === 'demoted_user') return 'border-rose-400/20 bg-rose-400/10 text-rose-300'
-    return 'border-[#CECBF6]/20 bg-[#CECBF6]/5 text-gray-300'
+    if (act.action === 'promoted_user') return 'sharedStateOpen sharedStatePill'
+    if (act.action === 'demoted_user') return 'sharedStateDanger sharedStatePill'
+    return 'sharedTile sharedTXTBody'
 }
 
 const formatTimeAgo = (date) => {

@@ -4,7 +4,7 @@
             <div class="relative w-full sm:w-[320px]">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 z-10 text-white/50 pointer-events-none">
+                    class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 z-10 sharedTXTMuted pointer-events-none">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
@@ -13,24 +13,24 @@
                     type="search"
                     placeholder="Search by ID or Name..."
                     aria-label="Search users by ID or name"
-                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-xl text-base sm:text-sm text-white placeholder:text-white/40
+                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-xl text-base sm:text-sm
                         appearance-none [color-scheme:dark]
-                        bg-white/[0.03] border border-[#CECBF6]/15 outline-none
-                        focus:border-[#8B5CF6]/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-[#8B5CF6]/30 transition-all duration-200"
+                        sharedInputDark border outline-none
+                        focus:ring-1 transition-all duration-200"
                 >
             </div>
-            <span class="text-xs font-medium text-white/45 sm:shrink-0" aria-live="polite">
+            <span class="text-xs font-medium sharedTXTMuted sm:shrink-0" aria-live="polite">
                 {{ filteredUsers.length }} {{ filteredUsers.length === 1 ? 'user' : 'users' }}
             </span>
         </div>
 
         <div
-            class="w-full min-w-0 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 overflow-hidden
+            class="w-full min-w-0 rounded-2xl border sharedBorder sharedSurfaceBG shadow-lg sharedShadow overflow-hidden
                    md:flex-1 md:min-h-0 md:flex md:flex-col"
         >
             <!-- Column header: table layout only from lg (1024px) up -->
             <div
-                class="hidden lg:grid shrink-0 gap-3 px-4 py-2.5 border-b border-[#CECBF6]/10 text-xs font-medium text-white/45"
+                class="hidden lg:grid shrink-0 gap-3 px-4 py-2.5 border-b sharedBorder text-xs font-medium sharedTXTMuted"
                 :class="gridCols"
             >
                 <span>ID Number</span>
@@ -46,11 +46,11 @@
                     :key="user.id"
                     class="flex flex-col gap-3 px-4 py-3
                            lg:grid lg:items-center lg:gap-3
-                           border-b border-[#CECBF6]/10 last:border-b-0
-                           hover:bg-white/[0.05] transition-colors duration-200"
+                           border-b sharedBorder last:border-b-0
+                           sharedRowHover transition-colors duration-200"
                     :class="gridCols"
                 >
-                    <span class="hidden lg:block text-xs text-white/45 font-mono truncate tabular-nums">
+                    <span class="hidden lg:block text-xs sharedTXTMuted font-mono truncate tabular-nums">
                         {{ user.id_number }}
                     </span>
 
@@ -63,10 +63,10 @@
                         </div>
 
                         <div class="flex flex-col min-w-0 flex-1">
-                            <span class="text-sm font-medium text-white truncate" :title="user.name">
+                            <span class="text-sm font-medium sharedTXT truncate" :title="user.name">
                                 {{ user.name }}
                             </span>
-                            <span class="lg:hidden text-[11px] text-white/45 font-mono truncate tabular-nums">
+                            <span class="lg:hidden text-[11px] sharedTXTMuted font-mono truncate tabular-nums">
                                 {{ user.id_number }}
                             </span>
                         </div>
@@ -81,7 +81,7 @@
                     </div>
 
                     <span
-                        class="text-xs text-white/45 font-mono truncate min-w-0"
+                        class="text-xs sharedTXTMuted font-mono truncate min-w-0"
                         :title="user.email"
                     >
                         {{ user.email }}
@@ -97,7 +97,7 @@
                     </span>
 
                     <div class="flex items-center gap-2 lg:gap-1.5 lg:justify-end">
-                        <!-- PROMOTE (violet) -->
+                        <!-- PROMOTE -->
                         <button
                             v-if="user.role === 'Student'"
                             type="button"
@@ -105,8 +105,7 @@
                             :aria-label="`Promote ${user.name}`"
                             title="Promote"
                             class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
-                                text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20
-                                hover:bg-[#8B5CF6]/25
+                                sharedStateOpen sharedStateChip sharedStateChipLink ring-1
                                 active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -124,8 +123,8 @@
                             :aria-label="`Demote ${user.name}`"
                             title="Demote"
                             class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
-                                text-white/60 bg-white/[0.04] ring-1 ring-[#CECBF6]/15
-                                hover:bg-amber-400/15 hover:ring-amber-400/25 hover:text-amber-300
+                                sharedTXTMuted sharedTile ring-1 sharedRingSoft
+                                sharedStateWarning sharedHoverState
                                 active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -135,15 +134,14 @@
                             <span class="lg:hidden xl:inline">Demote</span>
                         </button>
 
-                        <!-- DELETE (red) -->
+                        <!-- DELETE -->
                         <button
                             type="button"
                             @click="deleteUser(user.id)"
                             :aria-label="`Delete ${user.name}`"
                             title="Delete"
                             class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
-                                text-red-300 bg-red-500/15 ring-1 ring-red-500/20
-                                hover:bg-red-500 hover:ring-red-500 hover:text-white
+                                sharedStateDanger sharedStateChip sharedDangerSolidHover ring-1
                                 active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -158,7 +156,7 @@
 
                 <li
                     v-if="filteredUsers.length === 0"
-                    class="px-4 py-8 text-center text-sm text-white/45"
+                    class="px-4 py-8 text-center text-sm sharedTXTMuted"
                 >
                     No users found.
                 </li>
@@ -237,8 +235,8 @@ function initials(name) {
 
 function roleBadge(role) {
     return role === 'Admin'
-        ? 'bg-[#E04A4A]/15 ring-1 ring-[#E04A4A]/20 text-[#F09595]'
-        : 'bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 text-[#B9A6F0]'
+        ? 'sharedStateDanger sharedStateChip ring-1'
+        : 'sharedStateOpen sharedStateChip ring-1'
 }
 
 function promoteUser(id) {

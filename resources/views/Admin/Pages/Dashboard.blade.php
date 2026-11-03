@@ -15,15 +15,15 @@
             background: transparent;
         }
         .topics-scroll::-webkit-scrollbar-thumb {
-            background-color: #E5E0F0;
+            background-color: var(--light-line);
             border-radius: 999px;
         }
         .topics-scroll::-webkit-scrollbar-thumb:hover {
-            background-color: #C9BEE8;
+            background-color: var(--light-faint);
         }
         .topics-scroll {
             scrollbar-width: thin;
-            scrollbar-color: #E5E0F0 transparent;
+            scrollbar-color: var(--light-line) transparent;
         }
     </style>
 

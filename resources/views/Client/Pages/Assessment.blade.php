@@ -8,7 +8,7 @@
     @vite(['resources/css/app.css'])
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
 </head>
-<body class="w-screen bg-gray-50 overflow-x-hidden">
+<body class="w-screen sharedBG overflow-x-hidden">
     @vite(['resources/js/app.js'])
     <div id="app" class="w-screen h-screen flex flex-col overflow-hidden">
         <taking-pretest-header

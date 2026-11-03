@@ -2,7 +2,7 @@
     <div class="w-full h-full flex flex-col gap-4 min-h-0">
         <div class="w-full flex flex-col sm:flex-row sm:items-center gap-3">
             <div
-                class="flex items-center gap-1 p-1 rounded-xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm w-fit max-w-full overflow-x-auto"
+                class="flex items-center gap-1 p-1 rounded-xl border sharedBorder sharedSurfaceBG w-fit max-w-full overflow-x-auto"
             >
                 <button
                     v-for="tab in statusTabs"
@@ -10,8 +10,8 @@
                     @click="activeTab = tab"
                     class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 cursor-pointer"
                     :class="activeTab === tab
-                        ? 'bg-[#8B5CF6] text-white'
-                        : 'text-white/45 hover:text-white hover:bg-white/[0.05]'"
+                        ? 'sharedBtn'
+                        : 'sharedTXTMuted sharedRowHover sharedHoverTXT'"
                 >
                     {{ tab }}
                 </button>
@@ -24,7 +24,7 @@
                     viewBox="0 0 24 24"
                     stroke-width="1.5"
                     stroke="currentColor"
-                    class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 z-10 text-white/50 pointer-events-none"
+                    class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 z-10 sharedTXTMuted pointer-events-none"
                 >
                     <path
                         stroke-linecap="round"
@@ -37,16 +37,16 @@
                     v-model="search"
                     type="search"
                     placeholder="Search by Name or Date..."
-                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-xl text-base sm:text-sm text-white placeholder:text-white/40 appearance-none [color-scheme:dark] bg-white/[0.03] border border-[#CECBF6]/15 outline-none focus:border-[#8B5CF6]/50 focus:bg-white/[0.05] focus:ring-1 focus:ring-[#8B5CF6]/30 transition-all duration-200"
+                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-xl text-base sm:text-sm appearance-none [color-scheme:dark] sharedInputDark border outline-none focus:ring-1 transition-all duration-200"
                 />
             </div>
         </div>
 
         <div
-            class="w-full flex-1 min-h-0 flex flex-col rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 overflow-hidden"
+            class="w-full flex-1 min-h-0 flex flex-col rounded-2xl border sharedBorder sharedSurfaceBG shadow-lg sharedShadow overflow-hidden"
         >
             <div
-                class="hidden lg:grid shrink-0 grid-cols-[90px_1fr_1fr_110px_100px_170px] px-4 py-3 border-b border-[#CECBF6]/10 text-xs font-medium text-white/45"
+                class="hidden lg:grid shrink-0 grid-cols-[90px_1fr_1fr_110px_100px_170px] px-4 py-3 border-b sharedBorder text-xs font-medium sharedTXTMuted"
             >
                 <span>ID</span>
                 <span>Name</span>
@@ -62,35 +62,35 @@
                 <li
                     v-for="feedback in filteredFeedbacks"
                     :key="feedback.id"
-                    class="flex flex-col gap-3 px-4 py-3.5 lg:grid lg:grid-cols-[90px_1fr_1fr_110px_100px_170px] lg:items-center lg:gap-0 border-b border-[#CECBF6]/10 last:border-b-0 hover:bg-white/[0.05] transition-colors duration-200"
+                    class="flex flex-col gap-3 px-4 py-3.5 lg:grid lg:grid-cols-[90px_1fr_1fr_110px_100px_170px] lg:items-center lg:gap-0 border-b sharedBorder last:border-b-0 sharedRowHover transition-colors duration-200"
                 >
                     <span
-                        class="hidden lg:block text-xs text-white/45 font-mono tabular-nums"
+                        class="hidden lg:block text-xs sharedTXTMuted font-mono tabular-nums"
                     >
                         #{{ String(feedback.id).padStart(3, '0') }}
                     </span>
 
                     <div class="flex items-center gap-3 min-w-0 lg:pr-2">
                         <div
-                            class="w-8 h-8 shrink-0 rounded-xl flex items-center justify-center text-[11px] font-semibold bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 text-[#B9A6F0]"
+                            class="w-8 h-8 shrink-0 rounded-xl flex items-center justify-center text-[11px] font-semibold sharedStateOpen sharedStateChip ring-1"
                         >
                             {{ initials(feedback.student_name) }}
                         </div>
 
                         <div class="flex flex-col min-w-0 flex-1">
-                            <span class="text-sm font-medium text-white truncate">
+                            <span class="text-sm font-medium sharedTXT truncate">
                                 {{ feedback.student_name }}
                             </span>
 
                             <span
-                                class="lg:hidden text-[11px] text-white/45 font-mono truncate tabular-nums"
+                                class="lg:hidden text-[11px] sharedTXTMuted font-mono truncate tabular-nums"
                             >
                                 #{{ String(feedback.id).padStart(3, '0') }}
                                 · {{ formatDate(feedback.created_at) }}
                             </span>
 
                             <span
-                                class="lg:hidden empty:hidden before:content-['Replied_by:_'] text-[11px] text-white/45 truncate"
+                                class="lg:hidden empty:hidden before:content-['Replied_by:_'] text-[11px] sharedTXTMuted truncate"
                             >
                                 {{ feedback.replied_by }}
                             </span>
@@ -104,7 +104,7 @@
                         </span>
                     </div>
 
-                    <span class="hidden lg:block text-xs text-white/60 truncate pr-2">
+                    <span class="hidden lg:block text-xs sharedTXTMuted truncate pr-2">
                         {{ feedback.replied_by }}
                     </span>
 
@@ -117,7 +117,7 @@
                         </span>
                     </span>
 
-                    <span class="hidden lg:block text-xs text-white/45 tabular-nums">
+                    <span class="hidden lg:block text-xs sharedTXTMuted tabular-nums">
                         {{ formatDate(feedback.created_at) }}
                     </span>
 
@@ -126,7 +126,7 @@
                             v-if="feedback.status === 'Done'"
                             type="button"
                             @click="openViewReplied(feedback)"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 hover:bg-[#8B5CF6]/25 active:scale-95 transition-all duration-200 cursor-pointer"
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium sharedStateOpen sharedStateChip sharedStateChipLink ring-1 active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -154,7 +154,7 @@
                             v-else
                             type="button"
                             @click="openReplyToFeedback(feedback)"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-bold text-white bg-[#8B5CF6] hover:bg-[#8B5CF6]/85 active:scale-95 transition-all duration-200 cursor-pointer"
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-bold sharedBtn active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -181,7 +181,7 @@
                         <button
                             type="button"
                             @click="openDeleteFeedback(feedback)"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium text-red-300 bg-red-500/15 ring-1 ring-red-500/20 hover:bg-red-500 hover:ring-red-500 hover:text-white active:scale-95 transition-all duration-200 cursor-pointer"
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium sharedStateDanger sharedStateChip sharedDangerSolidHover ring-1 active:scale-95 transition-all duration-200 cursor-pointer"
                         >
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -204,7 +204,7 @@
 
                 <li
                     v-if="filteredFeedbacks.length === 0"
-                    class="px-4 py-8 text-center text-sm text-white/45"
+                    class="px-4 py-8 text-center text-sm sharedTXTMuted"
                 >
                     No feedbacks found.
                 </li>
@@ -340,13 +340,13 @@ function initials(name) {
 function statusStyle(status) {
     switch (status) {
         case 'Done':
-            return 'bg-emerald-400/15 ring-1 ring-emerald-400/20 text-emerald-300'
+            return 'sharedStatePassed sharedStateChip ring-1'
         case 'New':
-            return 'bg-[#6366F1]/15 ring-1 ring-[#6366F1]/20 text-[#A5A9F5]'
+            return 'sharedStateExam sharedStateChip ring-1'
         case 'Unread':
-            return 'bg-rose-400/15 ring-1 ring-rose-400/20 text-rose-300'
+            return 'sharedStateDanger sharedStateChip ring-1'
         default:
-            return 'bg-white/[0.04] ring-1 ring-[#CECBF6]/15 text-white/60'
+            return 'sharedTile sharedTXTMuted ring-1 sharedRingSoft'
     }
 }
 

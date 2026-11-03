@@ -45,8 +45,10 @@
     --info-color: #7EE3F5;
     --on-info: var(--surface-deeper);
 
-    /* danger (form errors) */
+    /* danger (form errors) and status colors */
     --danger-color: #DC2626;
+    --danger-soft: #F87171;
+    --warning-color: #FBBF24;
 
     /* leaderboard podium */
     --rank1-color: #FFD558;
@@ -74,6 +76,13 @@
     --panel-scroll-thumb: #E9D5FF;
     --panel-scroll-thumb-hover: #8B5CF6;
     --panel-scroll-firefox: #BC9DDE;
+
+    --tok-keyword: var(--accent-solid);
+    --tok-class: var(--primary-color);
+    --tok-string: var(--danger-color);
+    --tok-comment: var(--light-faint);
+    --tok-function: var(--light-success);
+    --tok-number: var(--light-muted);
 }
 
 /* Amber option: --accent-color: #FFC15E; --accent-solid: #FFC15E; --on-accent-solid: #2A2A55; */
@@ -105,6 +114,8 @@ body { color: var(--text-body); }
 .sharedNavBG { background: var(--light-bg); }
 
 .sharedLightFieldBG { background: var(--light-field); }
+.sharedLightLineBG { background: var(--light-line); }
+.sharedBrandTint { background: color-mix(in srgb, var(--accent-color) 25%, transparent); }
 
 .sharedLine { background: var(--border-color); }
 .sharedDivider { background: linear-gradient(to right, transparent, var(--border-color), transparent); }
@@ -136,10 +147,22 @@ body { color: var(--text-body); }
 .sharedCheckAccent { accent-color: var(--primary-color); }
 .sharedInput { border-color: var(--light-line); background: var(--light-field); color: var(--light-ink); }
 .sharedInput::placeholder { color: var(--light-faint); }
-.sharedInput:focus { border-color: color-mix(in srgb, var(--primary-color) 50%, transparent); background: var(--light-bg); }
+.sharedInput:focus { border-color: color-mix(in srgb, var(--primary-color) 50%, transparent); background: var(--light-bg); --tw-ring-color: color-mix(in srgb, var(--primary-color) 10%, transparent); }
+.sharedInputHover:hover:not(:focus) { border-color: color-mix(in srgb, var(--accent-solid) 50%, transparent); }
+
+.sharedInputDark { border-color: var(--border-color); background: var(--surface-color); color: var(--text-main); }
+.sharedInputDark::placeholder { color: var(--text-muted); }
+.sharedInputDark:focus { border-color: color-mix(in srgb, var(--accent-color) 60%, transparent); background: var(--surface-deep); --tw-ring-color: color-mix(in srgb, var(--accent-color) 30%, transparent); }
+
+/* Selectable answer choice (radio inside a label) */
+.sharedChoice { border-color: var(--light-line); }
+.sharedChoice:hover { border-color: color-mix(in srgb, var(--accent-solid) 50%, transparent); background: color-mix(in srgb, var(--accent-color) 10%, transparent); }
+.sharedChoice:has(:checked) { border-color: var(--primary-color); background: color-mix(in srgb, var(--primary-color) 5%, transparent); }
 
 /* Buttons */
-.sharedBtn { background: var(--accent-solid); color: var(--on-accent-solid); }
+.sharedBGSolid,
+.sharedBtn { background: var(--accent-solid); }
+.sharedBtn { color: var(--on-accent-solid); }
 .sharedBtnSuccess { background: var(--success-color); color: var(--on-success); }
 .sharedBtnInfo { background: var(--info-color); color: var(--on-info); }
 .sharedBtnSoft {
@@ -151,6 +174,18 @@ body { color: var(--text-body); }
 .sharedBtnGhostLight { color: var(--light-muted); border-color: var(--light-line); }
 .sharedBtnGhostLight:hover { background: var(--light-field); border-color: var(--light-faint); color: var(--light-ink); }
 
+/* List row hover (dark cards) */
+.sharedRowHover:hover { background: color-mix(in srgb, var(--accent-color) 8%, transparent); }
+.sharedHoverTXT:hover { color: var(--text-main); }
+
+/* Sidebar link and logout hovers (light surfaces) */
+.sharedNavLinkHover:hover { background: color-mix(in srgb, var(--primary-color) 5%, transparent); color: var(--primary-color); }
+.sharedDangerHover:not(:disabled):hover { background: color-mix(in srgb, var(--danger-color) 10%, transparent); color: var(--danger-color); }
+
+/* Icon button on dark header */
+.sharedIconBtn:hover { background: color-mix(in srgb, var(--accent-color) 12%, transparent); }
+.sharedIconBtn:active { background: color-mix(in srgb, var(--accent-color) 18%, transparent); }
+
 /* Shadows and rings */
 .sharedShadow { --tw-shadow-color: color-mix(in srgb, var(--shadow-color) 20%, transparent); }
 .sharedNavShadow { --tw-shadow-color: var(--light-line); }
@@ -158,6 +193,7 @@ body { color: var(--text-body); }
 .sharedRingSoft { --tw-ring-color: color-mix(in srgb, var(--white) 10%, transparent); }
 .sharedRingBG { --tw-ring-color: var(--primary-color); }
 .sharedFocus:focus-visible { outline-color: var(--accent-color); }
+.sharedFocusRing:focus-visible { --tw-ring-color: color-mix(in srgb, var(--accent-solid) 60%, transparent); --tw-ring-offset-color: var(--primary-color); }
 
 /* Navbar active link underline */
 .sharedNavActive::after {
@@ -185,18 +221,28 @@ body { color: var(--text-body); }
 .sharedStatePassed { --state: var(--success-color); }
 .sharedStateOpen   { --state: var(--accent-color); }
 .sharedStateExam   { --state: var(--info-color); }
+.sharedStateDanger  { --state: var(--danger-soft); }
+.sharedStateWarning { --state: var(--warning-color); }
 
 .sharedStateLightPassed { --state: var(--light-success); }
 .sharedStateLightFailed { --state: var(--danger-color); }
+.sharedStateLightBrand  { --state: var(--primary-color); }
+.sharedStateLightAccent { --state: var(--accent-solid); }
 
 .sharedStateText   { color: var(--state); }
+.sharedStateBG     { background: var(--state); }
 .sharedStateTint   { background: color-mix(in srgb, var(--state) 10%, transparent); }
+.sharedStateSolid  { background: var(--state); color: var(--white); }
+.sharedStateBorderSoft { border-color: color-mix(in srgb, var(--state) 30%, transparent); }
 .sharedStateBorder { border-color: var(--state); }
 .sharedStateBox    { border-color: color-mix(in srgb, var(--state) 30%, transparent); background: color-mix(in srgb, var(--state) 8%, transparent); }
 .sharedStateBox:hover { border-color: color-mix(in srgb, var(--state) 50%, transparent); background: color-mix(in srgb, var(--state) 12%, transparent); }
 .sharedStateChip   { color: var(--state); background: color-mix(in srgb, var(--state) 12%, transparent); --tw-ring-color: color-mix(in srgb, var(--state) 25%, transparent); }
 .sharedStatePill   { color: var(--state); border-color: color-mix(in srgb, var(--state) 35%, transparent); background: color-mix(in srgb, var(--state) 10%, transparent); }
 .sharedStatePillLink:hover { border-color: color-mix(in srgb, var(--state) 60%, transparent); background: color-mix(in srgb, var(--state) 18%, transparent); }
+.sharedStateChipLink:hover { background: color-mix(in srgb, var(--state) 25%, transparent); }
+.sharedHoverState:hover { color: var(--state); background: color-mix(in srgb, var(--state) 15%, transparent); --tw-ring-color: color-mix(in srgb, var(--state) 25%, transparent); }
+.sharedDangerSolidHover:hover { background: var(--danger-color); --tw-ring-color: var(--danger-color); color: var(--white); }
 .sharedStateCircle { background: color-mix(in srgb, var(--state) 20%, transparent); --tw-ring-color: color-mix(in srgb, var(--state) 60%, transparent); }
 
 /* Leaderboard podium */
@@ -208,6 +254,19 @@ body { color: var(--text-body); }
 .sharedRankBox   { border-color: color-mix(in srgb, var(--rank) 40%, transparent); background: color-mix(in srgb, var(--rank) 12%, transparent); }
 .sharedRankEmpty { border-color: color-mix(in srgb, var(--rank) 35%, transparent); background: color-mix(in srgb, var(--rank) 8%, transparent); }
 .sharedRankText  { color: var(--rank); }
+
+
+/* Code editor syntax tokens */
+.sharedTokKeyword  { color: var(--tok-keyword); }
+.sharedTokClass    { color: var(--tok-class); }
+.sharedTokString   { color: var(--tok-string); }
+.sharedTokComment  { color: var(--tok-comment); }
+.sharedTokFunction { color: var(--tok-function); }
+.sharedTokNumber   { color: var(--tok-number); }
+ 
+/* Caret and text selection inside the editor */
+.sharedCaret { caret-color: var(--accent-solid); }
+.sharedSelection::selection { background: color-mix(in srgb, var(--accent-solid) 20%, transparent); }
 
 /* ------------------------------------------------------------------
    SCROLLBARS

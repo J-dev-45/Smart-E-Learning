@@ -1,11 +1,11 @@
 <template>
-    <nav class="w-[280px] h-screen fixed top-0 left-0 bg-white border-r border-gray-200 md:flex hidden flex-col overflow-hidden">
+    <nav class="w-[280px] h-screen fixed top-0 left-0 sharedLightBG border-r sharedLightBorder md:flex hidden flex-col overflow-hidden">
 
-        <div class="w-full flex items-center gap-3 h-[60px] px-5 border-b border-gray-200 shrink-0 bg-white">
+        <div class="w-full flex items-center gap-3 h-[60px] px-5 border-b sharedLightBorder shrink-0 sharedLightBG">
 
             <img :src="logo" alt="Smart E-Learning logo" class="size-10 shrink-0 object-contain">
 
-            <span class="font-extrabold text-[#5b21b6] tracking-wide leading-tight text-[17px] truncate">Smart E-Learning</span>
+            <span class="font-extrabold sharedTXTBrand tracking-wide leading-tight text-[17px] truncate">Smart E-Learning</span>
 
         </div>
 
@@ -18,8 +18,8 @@
                     @click="changeLocalStorage(link.linkName)"
                     class="changeLocalStorage flex items-center gap-2.5 mx-1 px-3 py-2 rounded-md border-l-[3px] transition-colors"
                     :class="link.linkName === activePage
-                        ? 'bg-[#4C1D95]/10 text-[#4C1D95] font-semibold border-[#4C1D95]'
-                        : 'text-gray-600 font-medium border-transparent hover:bg-[#4C1D95]/5 hover:text-[#4C1D95]'"
+                        ? 'sharedStateLightBrand sharedStateText sharedStateTint sharedStateBorder font-semibold'
+                        : 'sharedTXTLightMuted font-medium border-transparent sharedNavLinkHover'"
                 >
 
                     <svg
@@ -46,7 +46,7 @@
         </ul>
 
         <!-- User info + logout (UI only) -->
-        <div class="mt-auto w-full border-t border-gray-200 p-3 shrink-0">
+        <div class="mt-auto w-full border-t sharedLightBorder p-3 shrink-0">
 
             <div class="flex items-center gap-2.5 px-2 py-2">
 
@@ -58,9 +58,9 @@
                 </div>
 
                 <div class="flex flex-col gap-0.5 min-w-0 leading-tight">
-                    <span class="text-[13px] font-semibold text-gray-800 truncate">{{ userName }}</span>
-                    <span class="text-[11px] text-gray-400 truncate">{{ userEmail }}</span>
-                    <span class="text-[11px] text-gray-400 truncate">ID: {{ idNumber }}</span>
+                    <span class="text-[13px] font-semibold sharedTXTOnLight truncate">{{ userName }}</span>
+                    <span class="text-[11px] sharedTXTLightMuted truncate">{{ userEmail }}</span>
+                    <span class="text-[11px] sharedTXTLightMuted truncate">ID: {{ idNumber }}</span>
                 </div>
 
             </div>
@@ -70,7 +70,7 @@
                 @click="logout"
                 :disabled="isLoggingOut"
                 :aria-busy="isLoggingOut"
-                class="w-full flex items-center gap-2.5 mt-2 px-3 py-2 rounded-md text-[13px] font-medium text-gray-600 hover:bg-red-50 hover:text-red-600 transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-gray-600"
+                class="w-full flex items-center gap-2.5 mt-2 px-3 py-2 rounded-md text-[13px] font-medium sharedTXTLightMuted sharedDangerHover transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
             >
 
                 <svg

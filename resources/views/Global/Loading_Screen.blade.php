@@ -1,14 +1,14 @@
 <div id="splash-loader"
-     class="w-screen h-screen fixed inset-0 z-200 flex items-center justify-center overflow-hidden bg-[#3b0764]"
+     class="w-screen h-screen fixed inset-0 z-200 flex items-center justify-center overflow-hidden sharedBG"
      style="transition: opacity .4s ease;">
 
     <div class="flex flex-col items-center gap-6">
 
         <!-- Ring mark -->
         <div class="relative" style="width: clamp(96px, 16dvh, 130px); height: clamp(96px, 16dvh, 130px);">
-            <svg viewBox="0 0 130 130" class="w-full h-full -rotate-90">
-                <circle cx="65" cy="65" r="56" fill="none" stroke="#CECBF6" stroke-opacity="0.15" stroke-width="3" />
-                <circle cx="65" cy="65" r="56" fill="none" stroke="#CECBF6" stroke-width="3"
+            <svg viewBox="0 0 130 130" class="w-full h-full -rotate-90 sharedTXTAccent">
+                <circle cx="65" cy="65" r="56" fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="3" />
+                <circle cx="65" cy="65" r="56" fill="none" stroke="currentColor" stroke-width="3"
                         stroke-linecap="round" class="ring-sweep" />
             </svg>
             <div class="absolute inset-0 flex items-center justify-center">
@@ -18,8 +18,8 @@
             </div>
         </div>
 
-        <p class="text-[22px] font-bold tracking-tight text-[#F5F3FF] text-center m-0">
-            Smart <span class="text-[#CECBF6]">E-Learning</span>
+        <p class="text-[22px] font-bold tracking-tight sharedTXT text-center m-0">
+            Smart <span class="sharedTXTAccent">E-Learning</span>
         </p>
 
     </div>

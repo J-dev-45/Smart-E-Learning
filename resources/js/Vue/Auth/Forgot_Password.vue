@@ -1,206 +1,406 @@
 <template>
-    <div class="w-full max-w-[460px] bg-white border border-white/40 rounded-3xl shadow-2xl flex flex-col px-[clamp(1.25rem,3vw,2.5rem)] py-[clamp(1.25rem,4vh,2.5rem)]">
+    <div class="w-full min-h-[100dvh] md:flex md:h-screen md:min-h-0">
 
-        <!-- MOBILE BRAND ROW -->
-        <div class="flex items-center gap-3 mb-[clamp(1rem,3dvh,1.6rem)] md:hidden">
-            <img :src="logo" alt="Smart E-Learning logo" class="size-11 shrink-0 object-contain">
-            <span class="font-extrabold text-[#5b21b6] tracking-wide leading-tight" style="font-size:clamp(1.05rem,2.6dvh,1.35rem)">
+        <!-- DESKTOP BRANDING -->
+        <div class="hidden md:flex w-1/2 h-full flex-col items-center justify-center gap-3 px-8 sharedTXT">
+            <img
+                :src="logo"
+                alt="Smart E-Learning logo"
+                class="object-contain drop-shadow-2xl"
+                style="width:clamp(100px,13vw,190px); height:clamp(90px,11vw,170px)"
+            >
+
+            <h1 class="font-bold m-0 leading-none tracking-wide text-center"
+                style="font-size:clamp(1.5rem,4vw,3rem)">
                 Smart E-Learning
-            </span>
+            </h1>
+
+            <div class="sharedBGAccent rounded-full"
+                style="width:clamp(60px,7vw,110px); height:4px">
+            </div>
+
+            <div class="text-center">
+                <h5 class="font-semibold m-0 leading-none sharedTXTMuted"
+                    style="font-size:clamp(0.8rem,1.4vw,1.15rem)">
+                    Review Smarter, Quiz Better.
+                </h5>
+
+                <h6 class="font-medium m-0 mt-2 leading-none sharedTXTMuted"
+                    style="font-size:clamp(0.65rem,0.9vw,0.8rem)">
+                    Information Technology &amp; Computer Related Course
+                </h6>
+            </div>
         </div>
 
-        <!-- EMAIL STEP -->
-        <template v-if="step === 'email'">
-            <div class="mb-6">
-                <h4 class="text-2xl font-bold tracking-wide text-[#090014]">Forgot Password</h4>
-                <p class="mt-2 text-sm leading-relaxed text-gray-500">
-                    Enter your registered email address and we'll send you a verification code to reset your password.
-                </p>
-            </div>
+        <!-- RESPONSIVE FORM AREA -->
+        <div class="flex w-full min-h-[100vh] min-h-[100dvh] items-center justify-center p-5 overflow-y-auto md:h-full md:min-h-0 md:w-1/2 md:justify-start md:px-8 md:py-6 lg:px-16">
 
-            <div v-if="errors.length" class="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3" role="alert">
-                <p v-for="(error, index) in errors" :key="index" class="text-sm text-red-600">{{ error }}</p>
-            </div>
+            <!-- MOBILE CARD WRAPPER -->
+            <div class="w-full max-w-[400px] flex flex-col rounded-3xl overflow-hidden shadow-2xl border-[1.5px] sharedBorderLight shrink-0 md:contents">
 
-            <div v-if="successMessage" class="mb-4 rounded-xl border border-green-100 bg-green-50 px-4 py-3" role="status">
-                <p class="text-sm text-green-700">{{ successMessage }}</p>
-            </div>
-
-            <div class="mb-5 flex flex-col gap-2">
-                <label for="forgot-email" class="pl-2 text-sm font-semibold text-gray-700">Email Address</label>
-                <input id="forgot-email" v-model.trim="email" type="email" autocomplete="email" placeholder="example@gmail.com" class="auth-input" @keyup.enter="sendOtp">
-            </div>
-
-            <button type="button" :disabled="isSubmitting" class="auth-button" @click="sendOtp">
-                <svg v-if="isSubmitting" class="size-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z" />
-                </svg>
-                <span>{{ isSubmitting ? 'Sending OTP...' : 'Send OTP' }}</span>
-            </button>
-
-            <div class="mt-6 flex flex-wrap items-center justify-center gap-1.5 text-sm">
-                <span class="text-gray-500">Remember your password?</span>
-                <a href="/" class="font-semibold text-[#3b0764] hover:underline" @click="clearFpSession">Log in</a>
-            </div>
-        </template>
-
-        <!-- OTP STEP -->
-        <template v-else-if="step === 'otp'">
-            <div class="mb-5 text-center">
-                <div class="mx-auto mb-4 flex size-14 items-center justify-center rounded-full bg-purple-50 text-[#3b0764]">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" class="size-7">
-                        <rect x="3" y="5" width="18" height="14" rx="2" />
-                        <path d="m3 7 9 6 9-6" />
-                    </svg>
-                </div>
-
-                <h4 class="text-2xl font-bold tracking-wide text-[#090014]">Verify OTP</h4>
-                <p class="mt-2 text-sm leading-relaxed text-gray-500">
-                    Enter the six-digit verification code sent to
-                    <span class="break-words font-semibold text-gray-700">{{ email }}</span>
-                </p>
-                <button type="button" class="mt-2 text-xs font-semibold text-[#3b0764] hover:underline" @click="changeEmail">
-                    Wrong email? Change
-                </button>
-            </div>
-
-            <div v-if="errors.length" class="mb-3 rounded-xl border border-red-100 bg-red-50 px-4 py-3" role="alert">
-                <p v-for="(error, index) in errors" :key="index" class="text-center text-sm text-red-600">{{ error }}</p>
-            </div>
-
-            <div class="otp-grid container-type-inline my-4">
-                <input
-                    v-for="(_, i) in 6"
-                    :key="i"
-                    :ref="el => otpRefs[i] = el"
-                    v-model="otpDigits[i]"
-                    type="text"
-                    maxlength="1"
-                    inputmode="numeric"
-                    pattern="[0-9]*"
-                    autocomplete="one-time-code"
-                    :aria-label="`OTP digit ${i + 1}`"
-                    class="otp-input"
-                    @input="onOtpInput(i)"
-                    @keydown="onOtpKeydown($event, i)"
-                    @paste="onOtpPaste($event, i)"
+                <div
+                    class="sharedLightBG flex flex-col justify-center w-full px-[clamp(1.25rem,5vw,2rem)] py-[clamp(1rem,3dvh,1.75rem)] md:max-w-[460px] md:border-[1.5px] sharedBorderLight md:rounded-3xl md:shadow-2xl md:px-[clamp(1.5rem,3vw,2.5rem)] md:py-[clamp(1.25rem,4vh,2.5rem)]"
                 >
-            </div>
 
-            <button type="button" :disabled="isSubmitting" class="auth-button mt-3" @click="verifyOtp">
-                <svg v-if="isSubmitting" class="size-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z" />
-                </svg>
-                <span>{{ isSubmitting ? 'Verifying...' : 'Verify OTP' }}</span>
-            </button>
+                    <!-- MOBILE BRAND ROW -->
+                    <div class="flex items-center gap-3 mb-[clamp(1rem,3dvh,1.6rem)] md:hidden">
+                        <img
+                            :src="logo"
+                            alt="Smart E-Learning logo"
+                            class="size-11 shrink-0 object-contain"
+                        >
 
-            <div class="mt-6 flex flex-wrap items-center justify-center gap-1.5 text-sm">
-                <span class="text-gray-500">Didn't receive a code?</span>
-                <button
-                    type="button"
-                    :disabled="resendCooldown > 0 || isSubmitting"
-                    class="font-semibold transition-colors"
-                    :class="resendCooldown > 0 || isSubmitting ? 'cursor-not-allowed text-gray-400' : 'cursor-pointer text-[#3b0764] hover:underline'"
-                    @click="resendOtp"
-                >
-                    {{ resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Code' }}
-                </button>
-            </div>
-        </template>
+                        <span class="font-extrabold sharedTXTBrand tracking-wide leading-tight"
+                            style="font-size:clamp(1.05rem,2.6dvh,1.35rem)">
+                            Smart E-Learning
+                        </span>
+                    </div>
 
-        <!-- RESET PASSWORD STEP -->
-        <template v-else-if="step === 'reset'">
-            <div class="mb-6">
-                <h4 class="text-2xl font-bold tracking-wide text-[#090014]">Reset Password</h4>
-                <p class="mt-2 text-sm leading-relaxed text-gray-500">
-                    Create a new password for your account. Make sure your password meets the requirements below.
-                </p>
-            </div>
+                    <!-- EMAIL STEP -->
+                    <template v-if="step === 'email'">
+                        <h4 class="font-bold m-0 sharedTXTOnLight tracking-wide"
+                            style="font-size:clamp(1.15rem,2.6dvh,1.6rem)">
+                            Forgot Password
+                        </h4>
 
-            <div v-if="errors.length" class="mb-4 rounded-xl border border-red-100 bg-red-50 px-4 py-3" role="alert">
-                <p v-for="(error, index) in errors" :key="index" class="text-sm text-red-600">{{ error }}</p>
-            </div>
+                        <p class="sharedTXTLightMuted leading-relaxed mt-1 mb-[clamp(0.8rem,2.5dvh,1.4rem)] md:mt-1.5 md:mb-[clamp(1rem,3vh,2rem)]"
+                            style="font-size:clamp(0.7rem,1.6dvh,0.85rem)">
+                            Enter your registered email address and we'll send you a verification code to reset your password.
+                        </p>
 
-            <div class="mb-5 flex flex-col gap-2">
-                <label for="new-password" class="pl-2 text-sm font-semibold text-gray-700">New Password</label>
+                        <!-- ERRORS -->
+                        <div v-if="errors.length" class="mb-2" role="alert">
+                            <p
+                                v-for="(error, index) in errors"
+                                :key="index"
+                                class="sharedTXTDanger text-sm w-full flex items-center justify-center py-2 text-center"
+                            >
+                                {{ error }}
+                            </p>
+                        </div>
 
-                <div class="relative">
-                    <input id="new-password" v-model="newPassword" :type="showPassword ? 'text' : 'password'" autocomplete="new-password" placeholder="Enter your new password" class="auth-input pr-14" @keyup.enter="resetPassword">
+                        <!-- SUCCESS -->
+                        <div v-if="successMessage" class="mb-2" role="status">
+                            <p class="sharedTXTLightSuccess text-sm w-full flex items-center justify-center py-2 text-center">
+                                {{ successMessage }}
+                            </p>
+                        </div>
 
-                    <button type="button" :aria-label="showPassword ? 'Hide password' : 'Show password'" class="password-toggle" @click="showPassword = !showPassword">
-                        <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.5-6.75 9.75-6.75S21.75 12 21.75 12 18.25 18.75 12 18.75 2.25 12 2.25 12Z" />
-                            <circle cx="12" cy="12" r="3" />
-                        </svg>
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.9 5.4A10.7 10.7 0 0 1 12 5.25c6.25 0 9.75 6.75 9.75 6.75a16.5 16.5 0 0 1-3.15 3.9M6.2 6.2C3.65 8.05 2.25 12 2.25 12s3.5 6.75 9.75 6.75c1.3 0 2.45-.3 3.5-.8" />
-                        </svg>
-                    </button>
+                        <!-- EMAIL -->
+                        <div class="flex flex-col gap-1 mb-[clamp(0.6rem,1.8dvh,1rem)] md:gap-1.5 md:mb-[clamp(0.6rem,2vh,1.1rem)]">
+                            <label for="forgot-email" class="ps-1 font-semibold sharedTXTOnLight md:ps-2"
+                                style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">
+                                Email Address
+                            </label>
+
+                            <input
+                                id="forgot-email"
+                                type="email"
+                                placeholder="example@gmail.com"
+                                v-model.trim="email"
+                                autocomplete="email"
+                                autocapitalize="none"
+                                autocorrect="off"
+                                spellcheck="false"
+                                inputmode="email"
+                                class="auth-input sharedInput border-[1.5px] rounded-full ps-5 pe-5 outline-none w-full transition-all duration-200"
+                                @keyup.enter="sendOtp"
+                            >
+                        </div>
+
+                        <button
+                            type="button"
+                            :disabled="isSubmitting"
+                            class="w-full sharedBtn disabled:opacity-60 disabled:cursor-not-allowed font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all duration-200 tracking-wide touch-manipulation mt-[clamp(0.2rem,1dvh,0.6rem)] flex items-center justify-center gap-2"
+                            style="height:clamp(42px,6.5dvh,54px); font-size:clamp(0.85rem,2dvh,1rem)"
+                            @click="sendOtp"
+                        >
+                            <svg v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z"/>
+                            </svg>
+
+                            <span>{{ isSubmitting ? 'Sending OTP...' : 'Send OTP' }}</span>
+                        </button>
+
+                        <div class="flex justify-center items-center gap-1.5 pt-[clamp(0.1rem,0.8dvh,0.4rem)] mt-[clamp(0.75rem,2vh,1.25rem)]"
+                            style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
+                            <span class="sharedTXTLightMuted">Remember your password?</span>
+                            <a href="/" class="sharedTXTBrand font-semibold hover:underline" @click="clearFpSession">
+                                Log in
+                            </a>
+                        </div>
+                    </template>
+
+                    <!-- OTP STEP -->
+                    <template v-else-if="step === 'otp'">
+                        <div class="text-center mb-[clamp(0.8rem,2.5dvh,1.4rem)]">
+                            <div class="mx-auto mb-3 flex size-14 items-center justify-center rounded-full sharedBrandTint sharedTXTBrand">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" class="size-7">
+                                    <rect x="3" y="5" width="18" height="14" rx="2" />
+                                    <path d="m3 7 9 6 9-6" />
+                                </svg>
+                            </div>
+
+                            <h4 class="font-bold m-0 sharedTXTOnLight tracking-wide"
+                                style="font-size:clamp(1.15rem,2.6dvh,1.6rem)">
+                                Verify OTP
+                            </h4>
+
+                            <p class="sharedTXTLightMuted leading-relaxed mt-1.5"
+                                style="font-size:clamp(0.7rem,1.6dvh,0.85rem)">
+                                Enter the six-digit verification code sent to
+                                <span class="break-words font-semibold sharedTXTOnLight">{{ email }}</span>
+                            </p>
+
+                            <button
+                                type="button"
+                                class="mt-2 font-semibold sharedTXTBrand hover:underline cursor-pointer"
+                                style="font-size:clamp(0.65rem,1.5dvh,0.78rem)"
+                                @click="changeEmail"
+                            >
+                                Wrong email? Change
+                            </button>
+                        </div>
+
+                        <!-- ERRORS -->
+                        <div v-if="errors.length" class="mb-2" role="alert">
+                            <p
+                                v-for="(error, index) in errors"
+                                :key="index"
+                                class="sharedTXTDanger text-sm w-full flex items-center justify-center py-2 text-center"
+                            >
+                                {{ error }}
+                            </p>
+                        </div>
+
+                        <div class="otp-grid container-type-inline mb-[clamp(0.6rem,1.8dvh,1rem)]">
+                            <input
+                                v-for="(_, i) in 6"
+                                :key="i"
+                                :ref="el => otpRefs[i] = el"
+                                v-model="otpDigits[i]"
+                                type="text"
+                                maxlength="1"
+                                inputmode="numeric"
+                                pattern="[0-9]*"
+                                autocomplete="one-time-code"
+                                :aria-label="`OTP digit ${i + 1}`"
+                                class="otp-input sharedInput border-[1.5px]"
+                                @input="onOtpInput(i)"
+                                @keydown="onOtpKeydown($event, i)"
+                                @paste="onOtpPaste($event, i)"
+                            >
+                        </div>
+
+                        <button
+                            type="button"
+                            :disabled="isSubmitting"
+                            class="w-full sharedBtn disabled:opacity-60 disabled:cursor-not-allowed font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all duration-200 tracking-wide touch-manipulation mt-[clamp(0.2rem,1dvh,0.6rem)] flex items-center justify-center gap-2"
+                            style="height:clamp(42px,6.5dvh,54px); font-size:clamp(0.85rem,2dvh,1rem)"
+                            @click="verifyOtp"
+                        >
+                            <svg v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z"/>
+                            </svg>
+
+                            <span>{{ isSubmitting ? 'Verifying...' : 'Verify OTP' }}</span>
+                        </button>
+
+                        <div class="flex justify-center items-center gap-1.5 pt-[clamp(0.1rem,0.8dvh,0.4rem)] mt-[clamp(0.75rem,2vh,1.25rem)]"
+                            style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
+                            <span class="sharedTXTLightMuted">Didn't receive a code?</span>
+                            <button
+                                type="button"
+                                :disabled="resendCooldown > 0 || isSubmitting"
+                                class="font-semibold transition-colors"
+                                :class="resendCooldown > 0 || isSubmitting ? 'cursor-not-allowed sharedTXTLightFaint' : 'cursor-pointer sharedTXTBrand hover:underline'"
+                                @click="resendOtp"
+                            >
+                                {{ resendCooldown > 0 ? `Resend in ${resendCooldown}s` : 'Resend Code' }}
+                            </button>
+                        </div>
+                    </template>
+
+                    <!-- RESET PASSWORD STEP -->
+                    <template v-else-if="step === 'reset'">
+                        <h4 class="font-bold m-0 sharedTXTOnLight tracking-wide"
+                            style="font-size:clamp(1.15rem,2.6dvh,1.6rem)">
+                            Reset Password
+                        </h4>
+
+                        <p class="sharedTXTLightMuted leading-relaxed mt-1 mb-[clamp(0.8rem,2.5dvh,1.4rem)] md:mt-1.5 md:mb-[clamp(1rem,3vh,2rem)]"
+                            style="font-size:clamp(0.7rem,1.6dvh,0.85rem)">
+                            Create a new password for your account. Make sure your password meets the requirements below.
+                        </p>
+
+                        <!-- ERRORS -->
+                        <div v-if="errors.length" class="mb-2" role="alert">
+                            <p
+                                v-for="(error, index) in errors"
+                                :key="index"
+                                class="sharedTXTDanger text-sm w-full flex items-center justify-center py-2 text-center"
+                            >
+                                {{ error }}
+                            </p>
+                        </div>
+
+                        <!-- NEW PASSWORD -->
+                        <div class="flex flex-col gap-1 mb-[clamp(0.6rem,1.8dvh,1rem)] md:gap-1.5 md:mb-[clamp(0.6rem,2vh,1.1rem)]">
+                            <label for="new-password" class="ps-1 font-semibold sharedTXTOnLight md:ps-2"
+                                style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">
+                                New Password
+                            </label>
+
+                            <div class="relative">
+                                <input
+                                    id="new-password"
+                                    :type="showPassword ? 'text' : 'password'"
+                                    placeholder="Enter your new password"
+                                    v-model="newPassword"
+                                    autocomplete="new-password"
+                                    autocapitalize="none"
+                                    autocorrect="off"
+                                    spellcheck="false"
+                                    class="auth-input sharedInput select-text border-[1.5px] rounded-full ps-5 pe-12 outline-none w-full transition-all duration-200"
+                                    @keyup.enter="resetPassword"
+                                >
+
+                                <button
+                                    type="button"
+                                    @mousedown.prevent
+                                    @click="showPassword = !showPassword"
+                                    :aria-label="showPassword ? 'Hide password' : 'Show password'"
+                                    :aria-pressed="showPassword"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 p-1 sharedTXTLightFaint z-10 cursor-pointer touch-manipulation"
+                                >
+                                    <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                        <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd"/>
+                                    </svg>
+
+                                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                        <path d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18ZM22.676 12.553a11.249 11.249 0 0 1-2.631 4.31l-3.099-3.099a5.25 5.25 0 0 0-6.71-6.71L7.759 4.577a11.217 11.217 0 0 1 4.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113Z"/>
+                                        <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0 1 15.75 12ZM12.53 15.713l-4.243-4.244a3.75 3.75 0 0 0 4.244 4.243Z"/>
+                                        <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 0 0-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 0 0 1 6.75 12Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <p class="flex items-center gap-2 ps-1 md:ps-2"
+                                :class="passwordMeetsLength ? 'sharedTXTLightSuccess' : 'sharedTXTLightMuted'"
+                                style="font-size:clamp(0.65rem,1.5dvh,0.78rem)">
+                                <svg v-if="passwordMeetsLength" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-4">
+                                    <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.25a1 1 0 0 1-1.42.006l-3.8-3.75a1 1 0 0 1 1.406-1.422l3.09 3.05 6.505-6.548a1 1 0 0 1 1.413 0Z" clip-rule="evenodd" />
+                                </svg>
+                                <span v-else class="inline-block size-4 text-center">•</span>
+                                At least 8 characters
+                            </p>
+                        </div>
+
+                        <!-- CONFIRM PASSWORD -->
+                        <div class="flex flex-col gap-1 mb-[clamp(0.6rem,1.8dvh,1rem)] md:gap-1.5 md:mb-[clamp(0.6rem,2vh,1.1rem)]">
+                            <label for="confirm-password" class="ps-1 font-semibold sharedTXTOnLight md:ps-2"
+                                style="font-size:clamp(0.7rem,1.7dvh,0.85rem)">
+                                Confirm Password
+                            </label>
+
+                            <div class="relative">
+                                <input
+                                    id="confirm-password"
+                                    :type="showConfirmPassword ? 'text' : 'password'"
+                                    placeholder="Confirm your new password"
+                                    v-model="confirmPassword"
+                                    autocomplete="new-password"
+                                    autocapitalize="none"
+                                    autocorrect="off"
+                                    spellcheck="false"
+                                    class="auth-input sharedInput select-text border-[1.5px] rounded-full ps-5 pe-12 outline-none w-full transition-all duration-200"
+                                    @keyup.enter="resetPassword"
+                                >
+
+                                <button
+                                    type="button"
+                                    @mousedown.prevent
+                                    @click="showConfirmPassword = !showConfirmPassword"
+                                    :aria-label="showConfirmPassword ? 'Hide confirmation password' : 'Show confirmation password'"
+                                    :aria-pressed="showConfirmPassword"
+                                    class="absolute right-3 top-1/2 -translate-y-1/2 p-1 sharedTXTLightFaint z-10 cursor-pointer touch-manipulation"
+                                >
+                                    <svg v-if="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                        <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                                        <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd"/>
+                                    </svg>
+
+                                    <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-6">
+                                        <path d="M3.53 2.47a.75.75 0 0 0-1.06 1.06l18 18a.75.75 0 1 0 1.06-1.06l-18-18ZM22.676 12.553a11.249 11.249 0 0 1-2.631 4.31l-3.099-3.099a5.25 5.25 0 0 0-6.71-6.71L7.759 4.577a11.217 11.217 0 0 1 4.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113Z"/>
+                                        <path d="M15.75 12c0 .18-.013.357-.037.53l-4.244-4.243A3.75 3.75 0 0 1 15.75 12ZM12.53 15.713l-4.243-4.244a3.75 3.75 0 0 0 4.244 4.243Z"/>
+                                        <path d="M6.75 12c0-.619.107-1.213.304-1.764l-3.1-3.1a11.25 11.25 0 0 0-2.63 4.31c-.12.362-.12.752 0 1.114 1.489 4.467 5.704 7.69 10.675 7.69 1.5 0 2.933-.294 4.242-.827l-2.477-2.477A5.25 5.25 0 0 1 6.75 12Z"/>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <p
+                                v-if="confirmPassword.length > 0"
+                                class="ps-1 md:ps-2"
+                                :class="passwordsMatch ? 'sharedTXTLightSuccess' : 'sharedTXTDanger'"
+                                style="font-size:clamp(0.65rem,1.5dvh,0.78rem)"
+                                aria-live="polite"
+                            >
+                                {{ passwordsMatch ? 'Passwords match.' : 'Passwords do not match.' }}
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            :disabled="isSubmitting"
+                            class="w-full sharedBtn disabled:opacity-60 disabled:cursor-not-allowed font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all duration-200 tracking-wide touch-manipulation mt-[clamp(0.2rem,1dvh,0.6rem)] flex items-center justify-center gap-2"
+                            style="height:clamp(42px,6.5dvh,54px); font-size:clamp(0.85rem,2dvh,1rem)"
+                            @click="resetPassword"
+                        >
+                            <svg v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z"/>
+                            </svg>
+
+                            <span>{{ isSubmitting ? 'Resetting...' : 'Reset Password' }}</span>
+                        </button>
+                    </template>
+
+                    <!-- SUCCESS STEP -->
+                    <template v-else-if="step === 'success'">
+                        <div class="flex flex-col items-center justify-center gap-3 text-center">
+                            <div class="flex size-16 items-center justify-center rounded-full sharedStateLightPassed sharedStateTint sharedStateText">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="size-9">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7" />
+                                </svg>
+                            </div>
+
+                            <h4 class="font-bold m-0 sharedTXTOnLight tracking-wide"
+                                style="font-size:clamp(1.15rem,2.6dvh,1.6rem)">
+                                Password Reset!
+                            </h4>
+
+                            <p class="sharedTXTLightMuted leading-relaxed mb-[clamp(0.4rem,1.5dvh,1rem)]"
+                                style="font-size:clamp(0.7rem,1.6dvh,0.85rem)">
+                                Your password has been reset successfully. You can now log in using your new password.
+                            </p>
+
+                            <a
+                                href="/"
+                                class="w-full sharedBtn font-bold rounded-full cursor-pointer shadow-md hover:shadow-lg transition-all duration-200 tracking-wide touch-manipulation no-underline flex items-center justify-center gap-2"
+                                style="height:clamp(42px,6.5dvh,54px); font-size:clamp(0.85rem,2dvh,1rem)"
+                                @click="clearFpSession"
+                            >
+                                Go to Login
+                            </a>
+                        </div>
+                    </template>
+
                 </div>
-
-                <div class="space-y-1 pl-2 pt-1">
-                    <p class="flex items-center gap-2 text-xs" :class="passwordMeetsLength ? 'text-green-600' : 'text-gray-500'">
-                        <svg v-if="passwordMeetsLength" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="size-4">
-                            <path fill-rule="evenodd" d="M16.704 5.29a1 1 0 0 1 .006 1.414l-7.2 7.25a1 1 0 0 1-1.42.006l-3.8-3.75a1 1 0 0 1 1.406-1.422l3.09 3.05 6.505-6.548a1 1 0 0 1 1.413 0Z" clip-rule="evenodd" />
-                        </svg>
-                        <span v-else class="inline-block size-4 text-center">•</span>
-                        At least 8 characters
-                    </p>
-                </div>
             </div>
-
-            <div class="mb-5 flex flex-col gap-2">
-                <label for="confirm-password" class="pl-2 text-sm font-semibold text-gray-700">Confirm Password</label>
-
-                <div class="relative">
-                    <input id="confirm-password" v-model="confirmPassword" :type="showConfirmPassword ? 'text' : 'password'" autocomplete="new-password" placeholder="Confirm your new password" class="auth-input pr-14" @keyup.enter="resetPassword">
-
-                    <button type="button" :aria-label="showConfirmPassword ? 'Hide confirmation password' : 'Show confirmation password'" class="password-toggle" @click="showConfirmPassword = !showConfirmPassword">
-                        <svg v-if="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12s3.5-6.75 9.75-6.75S21.75 12 21.75 12 18.25 18.75 12 18.75 2.25 12 2.25 12Z" />
-                            <circle cx="12" cy="12" r="3" />
-                        </svg>
-                        <svg v-else xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" class="size-5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="m3 3 18 18M10.6 10.6a2 2 0 0 0 2.8 2.8" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9.9 5.4A10.7 10.7 0 0 1 12 5.25c6.25 0 9.75 6.75 9.75 6.75a16.5 16.5 0 0 1-3.15 3.9M6.2 6.2C3.65 8.05 2.25 12 2.25 12s3.5 6.75 9.75 6.75c1.3 0 2.45-.3 3.5-.8" />
-                        </svg>
-                    </button>
-                </div>
-
-                <p v-if="confirmPassword.length > 0" class="pl-2 text-xs" :class="passwordsMatch ? 'text-green-600' : 'text-red-500'" aria-live="polite">
-                    {{ passwordsMatch ? 'Passwords match.' : 'Passwords do not match.' }}
-                </p>
-            </div>
-
-            <button type="button" :disabled="isSubmitting" class="auth-button" @click="resetPassword">
-                <svg v-if="isSubmitting" class="size-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
-                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z" />
-                </svg>
-                <span>{{ isSubmitting ? 'Resetting...' : 'Reset Password' }}</span>
-            </button>
-        </template>
-
-        <!-- SUCCESS STEP -->
-        <template v-else-if="step === 'success'">
-            <div class="flex flex-col items-center justify-center gap-4 py-6">
-                <div class="flex size-16 items-center justify-center rounded-full bg-green-50 text-green-500">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="size-9">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m5 12.5 4.5 4.5L19 7" />
-                    </svg>
-                </div>
-
-                <h4 class="text-center text-2xl font-bold tracking-wide text-[#090014]">Password Reset!</h4>
-                <p class="text-center text-sm leading-relaxed text-gray-500">
-                    Your password has been reset successfully. You can now log in using your new password.
-                </p>
-
-                <a href="/" class="auth-button no-underline" @click="clearFpSession">Go to Login</a>
-            </div>
-        </template>
+        </div>
     </div>
 </template>
 
@@ -472,69 +672,31 @@ onUnmounted(() => {
 });
 </script>
 
+<!-- Layout-only styles. All colors come from the shared classes in app.css. -->
 <style scoped>
 .auth-input {
     width: 100%;
-    height: clamp(44px, 5.5vh, 56px);
-    border: 1.5px solid #e5e7eb;
-    border-radius: 9999px;
-    padding: 0 1.25rem;
-    outline: none;
-    background: #f9fafb;
-    color: #090014;
-    font-size: 0.875rem;
-    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    height: clamp(40px, 6dvh, 52px);
+    font-size: 16px;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
-.auth-input::placeholder { color: #9ca3af; }
-
-.auth-input:focus {
-    border-color: rgb(59 7 100 / 50%);
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgb(59 7 100 / 7%);
+.auth-input::-ms-reveal,
+.auth-input::-ms-clear {
+    display: none;
 }
 
-.auth-button {
-    display: flex;
-    width: 100%;
-    min-height: 44px;
-    height: clamp(42px, 6.5dvh, 54px);
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    border-radius: 9999px;
-    background: #3b0764;
-    padding: 0.75rem 1rem;
-    color: #ffffff;
-    font-size: clamp(0.85rem, 2dvh, 1rem);
-    font-weight: 700;
-    letter-spacing: 0.025em;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgb(0 0 0 / 8%);
-    transition: background-color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+.auth-input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
 }
 
-.auth-button:hover:not(:disabled) {
-    background: rgb(59 7 100 / 88%);
-    box-shadow: 0 6px 12px rgb(0 0 0 / 12%);
+@media (min-width: 768px) {
+    .auth-input {
+        height: clamp(44px, 5.5vh, 56px);
+    }
 }
-
-.auth-button:disabled { cursor: not-allowed; opacity: 0.6; }
-
-.password-toggle {
-    position: absolute;
-    top: 50%;
-    right: 1.1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: translateY(-50%);
-    color: #9ca3af;
-    cursor: pointer;
-    transition: color 0.2s ease;
-}
-
-.password-toggle:hover { color: #3b0764; }
 
 .otp-grid {
     display: grid;
@@ -547,33 +709,15 @@ onUnmounted(() => {
     width: 100%;
     min-width: 0;
     aspect-ratio: 4 / 5;
-    border: 1.5px solid #e5e7eb;
     border-radius: 0.75rem;
-    background: #f9fafb;
     text-align: center;
     font-size: clamp(1rem, 4cqi, 1.6rem);
     font-weight: 700;
-    color: #090014;
     outline: none;
-    transition: border-color 0.15s ease, background-color 0.15s ease, box-shadow 0.15s ease;
-}
-
-.otp-input:focus {
-    border-color: rgb(59 7 100 / 55%);
-    background: #ffffff;
-    box-shadow: 0 0 0 3px rgb(59 7 100 / 7%);
+    transition: border-color 0.15s ease, background-color 0.15s ease;
 }
 
 .container-type-inline { container-type: inline-size; }
-
-input[type='password']::-ms-reveal,
-input[type='password']::-ms-clear { display: none; }
-
-input[type='password']::-webkit-credentials-auto-fill-button {
-    visibility: hidden;
-    display: none !important;
-    pointer-events: none;
-}
 
 @supports not (font-size: 1cqi) {
     .otp-input { font-size: clamp(1rem, 5vw, 1.6rem); }

@@ -2,11 +2,11 @@
 
     <!-- HEADER -->
     <header
-        class="shrink-0 w-full h-[60px] flex items-center justify-between text-white px-6 border-b border-[#CECBF6]/15 bg-[#44136D]"
+        class="relative z-10 shrink-0 w-full h-[60px] flex items-center justify-between gap-3 px-3 sm:px-5 sharedSurfaceBG border-b-[1.5px] sharedBorder shadow-md sharedShadow sharedTXT"
     >
         <a
             href="/subjects"
-            class="cursor-pointer group text-white/60 hover:text-white flex items-center gap-1.5 transition-colors duration-200"
+            class="cursor-pointer group flex items-center gap-1.5 sharedTXTMuted sharedHoverTXT transition-colors duration-200"
         >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 transition-transform group-hover:-translate-x-0.5">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
@@ -19,12 +19,7 @@
             <button
                 type="button"
                 @click="openAddModule"
-                class="flex items-center justify-center gap-1.5 text-white bg-[#8B5CF6] rounded-xl font-bold text-xs whitespace-nowrap cursor-pointer
-                    h-8 w-8 sm:h-9 sm:w-auto sm:px-4
-                    transition-all duration-200
-                    hover:bg-[#8B5CF6]/85
-                    active:scale-95
-                    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#8B5CF6]/60 focus-visible:ring-offset-2 focus-visible:ring-offset-[#090014]"
+                class="flex items-center justify-center gap-1.5 sharedBtn rounded-xl font-bold text-xs whitespace-nowrap cursor-pointer h-8 w-8 sm:h-9 sm:w-auto sm:px-4 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -47,21 +42,21 @@
     </header>
 
     <section
-        class="w-full flex-1 min-h-0 overflow-y-auto scrollbar-thin scroll-smooth p-5 text-white max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden"
+        class="w-full flex-1 min-h-0 overflow-y-auto scrollbar-thin scroll-smooth p-5 sharedTXT max-md:[scrollbar-width:none] max-md:[&::-webkit-scrollbar]:hidden"
     >
 
         <div class="flex items-center justify-between gap-4 flex-wrap">
-            <h1 class="font-bold text-3xl">
+            <h1 class="font-bold text-3xl sharedTXT">
                 {{ props.subjectName }}
             </h1>
 
             <div class="flex items-center gap-3">
 
-                <!-- VIEW ALL QUESTIONS (tinted violet) -->
+                <!-- VIEW ALL QUESTIONS -->
                 <a
                     :href="`/questions/view-subject-questions/${props.subjectName}/${props.subjectId}/none/0`"
                     title="View all questions"
-                    class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-[#B9A6F0] bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 hover:bg-[#8B5CF6]/25 active:scale-95 transition-all duration-200 cursor-pointer whitespace-nowrap"
+                    class="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold sharedStateOpen sharedStateChip sharedStateChipLink ring-1 active:scale-95 transition-all duration-200 cursor-pointer whitespace-nowrap"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -75,22 +70,22 @@
         </div>
 
         <!-- SEPARATOR -->
-        <div class="w-full h-[1px] bg-[#CECBF6]/10 mt-4"></div>
+        <div class="w-full h-px sharedLine mt-4"></div>
 
-        <div class="w-full py-2 ps-2 flex gap-3 text-sm text-white/45 font-medium">
+        <div class="w-full py-2 ps-2 flex gap-3 text-sm sharedTXTMuted font-medium">
 
             <div class="flex items-center gap-1.5">
                 <span>Modules</span>
                 <span>•</span>
-                <span class="tabular-nums text-white/80 font-semibold">{{ localModules.filter(t => t.subject_id === props.subjectId).length }}</span>
+                <span class="tabular-nums sharedTXTBody font-semibold">{{ localModules.filter(t => t.subject_id === props.subjectId).length }}</span>
             </div>
 
-            <span class="text-white/20">|</span>
+            <span class="sharedTXTMuted opacity-40">|</span>
 
             <div class="flex items-center gap-1.5">
                 <span>Questions</span>
                 <span>•</span>
-                <span class="tabular-nums text-white/80 font-semibold">{{ questions.filter(q => localModules.some(m => m.id === q.module_id && m.subject_id === props.subjectId)).length }}</span>
+                <span class="tabular-nums sharedTXTBody font-semibold">{{ questions.filter(q => localModules.some(m => m.id === q.module_id && m.subject_id === props.subjectId)).length }}</span>
             </div>
 
         </div>
@@ -104,42 +99,40 @@
             >
 
                 <div
-                    class="group flex flex-col gap-3 p-4 sm:p-5 rounded-2xl border border-[#CECBF6]/15 bg-white/[0.03] backdrop-blur-sm shadow-lg shadow-black/20 transition-all duration-200 hover:border-[#CECBF6]/30 hover:bg-white/[0.05]"
+                    class="group flex flex-col gap-3 p-4 sm:p-5 rounded-2xl sharedSurface shadow-lg sharedShadow transition-all duration-200"
                 >
 
                     <div class="flex items-center justify-between gap-3">
 
                         <div class="flex flex-col gap-1.5 min-w-0">
 
-                            <span class="text-white text-base font-bold leading-snug truncate">
+                            <span class="sharedTXT text-base font-bold leading-snug truncate">
                                 {{ module.order }}. {{ module.module_name }}
                             </span>
 
                             <template v-if="props.questions.filter(m => m.module_id === module.id).length === 0">
-                                <div class="flex items-center gap-2 text-[11px] text-white/45 font-medium">
+                                <div class="flex items-center gap-2 text-[11px] sharedTXTMuted font-medium">
                                     <span>No Question Available.</span>
                                 </div>
                             </template>
 
                             <template v-else-if="props.questions.filter(m => m.module_id === module.id).length === 1">
-                                <div class="flex items-center gap-2 text-[11px] text-white/45 font-medium">
+                                <div class="flex items-center gap-2 text-[11px] sharedTXTMuted font-medium">
                                     <span>{{ questions.filter(m => m.module_id === module.id).length }} Question</span>
                                 </div>
                             </template>
 
                             <template v-else-if="questions.filter(m => m.module_id === module.id).length >= 2">
-                                <div class="flex items-center gap-2 text-[11px] text-white/45 font-medium">
+                                <div class="flex items-center gap-2 text-[11px] sharedTXTMuted font-medium">
                                     <span>{{ questions.filter(m => m.module_id === module.id).length }} Questions</span>
                                 </div>
                             </template>
 
                         </div>
 
-                        <!-- Icon tile (violet) -->
-                        <div
-                            class="flex items-center justify-center shrink-0 w-10 h-10 rounded-xl bg-[#8B5CF6]/15 ring-1 ring-[#8B5CF6]/20 transition-colors duration-200 group-hover:bg-[#8B5CF6]/25"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-[#B9A6F0]">
+                        <!-- Icon tile -->
+                        <div class="flex items-center justify-center shrink-0 w-10 h-10 rounded-xl sharedTile">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 sharedTXTAccent">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                             </svg>
                         </div>
@@ -148,28 +141,28 @@
 
                     <!-- TOPICS CONTAINER -->
 
-                    <div class="flex flex-col gap-1 bg-black/20 ring-1 ring-[#CECBF6]/10 rounded-xl p-2">
+                    <div class="flex flex-col gap-1 sharedSurfaceDeeper rounded-xl p-2">
 
                         <div class="flex items-center justify-between px-1.5 py-1">
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-[#B9A6F0]/70">Topics</span>
-                            <span class="text-[10px] font-medium text-white/45 tabular-nums">
+                            <span class="text-[10px] font-bold uppercase tracking-widest sharedTXTAccent">Topics</span>
+                            <span class="text-[10px] font-medium sharedTXTMuted tabular-nums">
                                 {{ localTopics.filter(topic => topic.module_id === module.id).length }} Topics
                             </span>
                         </div>
 
-                        <div class="flex items-center gap-1.5 px-1 pb-1.5 mb-1 border-b border-[#CECBF6]/10">
+                        <div class="flex items-center gap-1.5 px-1 pb-1.5 mb-1 border-b sharedBorder">
 
                             <input
                                 type="text"
                                 placeholder="Topic name"
-                                class="flex-1 min-w-0 bg-transparent text-xs text-white placeholder:text-white/40 focus:outline-none px-1.5 py-1"
+                                class="flex-1 min-w-0 sharedInputDark border rounded-lg text-xs px-2 py-1 focus:outline-none focus:ring-2"
                             >
 
-                            <!-- Add Topic (solid violet) -->
+                            <!-- Add Topic -->
                             <button
                                 type="button"
                                 @click="openAddTopic(module)"
-                                class="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-lg bg-[#8B5CF6] text-white text-xs font-semibold hover:bg-[#8B5CF6]/85 active:scale-95 transition-all duration-200 cursor-pointer"
+                                class="shrink-0 flex items-center gap-1 px-2.5 py-1 rounded-lg sharedBtn text-xs font-semibold active:scale-95 transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
@@ -179,15 +172,15 @@
 
                         </div>
 
-                        <div class="flex flex-col divide-y divide-[#CECBF6]/10">
+                        <div class="flex flex-col">
 
                             <div
                                 v-for="topic in localTopics.filter(Tid => Tid.module_id === module.id)"
                                 :key="topic.id"
-                                class="flex items-center justify-between px-1.5 py-1.5 rounded-lg transition-colors duration-200 hover:bg-white/[0.05]"
+                                class="flex items-center justify-between px-1.5 py-1.5 border-t first:border-t-0 sharedBorder rounded-lg sharedRowHover transition-colors duration-200"
                             >
 
-                                <span class="text-xs text-white/70 truncate">
+                                <span class="text-xs sharedTXTBody truncate">
                                     {{ topic.topic_name }}
                                 </span>
 
@@ -197,18 +190,22 @@
                                     <button
                                         type="button"
                                         @click="openEditTopic(topic, module.id)"
-                                        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-lg text-white/45 hover:bg-amber-400/15 hover:text-amber-300 active:scale-95 transition-all duration-200 cursor-pointer"
+                                        aria-label="Edit topic"
+                                        title="Edit"
+                                        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-lg sharedTXTMuted sharedStateWarning sharedHoverState active:scale-95 transition-all duration-200 cursor-pointer"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
                                         </svg>
                                     </button>
 
-                                    <!-- Delete topic (red) -->
+                                    <!-- Delete topic (danger) -->
                                     <button
                                         type="button"
                                         @click="openDeleteTopic(topic.topic_name, topic.id)"
-                                        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-lg text-red-300/70 hover:bg-red-500/15 hover:text-red-300 active:scale-95 transition-all duration-200 cursor-pointer"
+                                        aria-label="Delete topic"
+                                        title="Delete"
+                                        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-lg sharedStateDanger sharedStateText sharedHoverState active:scale-95 transition-all duration-200 cursor-pointer"
                                     >
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
@@ -223,14 +220,14 @@
 
                     </div>
 
-                    <div class="w-full h-[1px] bg-[#CECBF6]/10"></div>
+                    <div class="w-full h-px sharedLine"></div>
 
                     <div class="flex items-center gap-2">
 
-                        <!-- View Questions (solid violet) -->
+                        <!-- View Questions -->
                         <a
                             :href="`/questions/view-module-questions/${props.subjectName.toLowerCase().replace(/\s+/g, '-')}/${props.subjectId}/${module.module_name.toLowerCase().replace(/\s+/g, '-')}/${module.id}`"
-                            class="flex-1 flex items-center justify-center gap-1.5 text-xs font-bold px-2.5 py-2.5 rounded-xl text-white bg-[#8B5CF6] hover:bg-[#8B5CF6]/85 active:scale-95 transition-all duration-200 cursor-pointer"
+                            class="flex-1 flex items-center justify-center gap-1.5 text-xs font-bold px-2.5 py-2.5 rounded-xl sharedBtn active:scale-95 transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
                         >
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
@@ -244,20 +241,24 @@
                         <button
                             type="button"
                             @click="openEditModule(module)"
-                            class="shrink-0 w-9 h-9 flex items-center justify-center rounded-xl text-white/60 bg-white/[0.04] ring-1 ring-[#CECBF6]/15 hover:bg-amber-400/15 hover:ring-amber-400/25 hover:text-amber-300 active:scale-95 transition-all duration-200 cursor-pointer"
+                            aria-label="Edit module"
+                            title="Edit"
+                            class="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-xl sharedTXTMuted sharedTile ring-1 sharedRingSoft sharedStateWarning sharedHoverState transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
                             </svg>
                         </button>
 
-                        <!-- Delete module (red) -->
+                        <!-- Delete module (danger) -->
                         <button
                             type="button"
                             @click="openDeleteModule(module.module_name, module.id, props.subjectName)"
-                            class="shrink-0 w-9 h-9 flex items-center justify-center rounded-xl text-red-300 bg-red-500/15 ring-1 ring-red-500/20 hover:bg-red-500 hover:ring-red-500 hover:text-white active:scale-95 transition-all duration-200 cursor-pointer"
+                            aria-label="Delete module"
+                            title="Delete"
+                            class="flex size-9 shrink-0 cursor-pointer items-center justify-center rounded-xl sharedStateDanger sharedStateChip sharedDangerSolidHover ring-1 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-4">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12-.562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                             </svg>
                         </button>

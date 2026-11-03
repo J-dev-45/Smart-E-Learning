@@ -1,14 +1,14 @@
 <template>
-    <div class="w-screen h-screen fixed inset-0 z-200 flex items-center justify-center overflow-hidden bg-[#3b0764]"
+    <div class="w-screen h-screen fixed inset-0 z-200 flex items-center justify-center overflow-hidden sharedBG"
          >
 
         <div class="flex flex-col items-center gap-6">
 
             <!-- Ring mark -->
             <div class="relative" style="width: clamp(96px, 16dvh, 130px); height: clamp(96px, 16dvh, 130px);">
-                <svg viewBox="0 0 130 130" class="w-full h-full -rotate-90">
-                    <circle cx="65" cy="65" r="56" fill="none" stroke="#CECBF6" stroke-opacity="0.15" stroke-width="3" />
-                    <circle cx="65" cy="65" r="56" fill="none" stroke="#CECBF6" stroke-width="3"
+                <svg viewBox="0 0 130 130" class="w-full h-full -rotate-90 sharedTXTAccent">
+                    <circle cx="65" cy="65" r="56" fill="none" stroke="currentColor" stroke-opacity="0.15" stroke-width="3" />
+                    <circle cx="65" cy="65" r="56" fill="none" stroke="currentColor" stroke-width="3"
                             stroke-linecap="round" class="ring-sweep" />
                 </svg>
                 <div class="absolute inset-0 flex items-center justify-center">
@@ -20,14 +20,14 @@
 
             <!-- Wordmark + status message -->
             <div class="flex flex-col items-center gap-2">
-                <p class="text-[22px] font-bold tracking-tight text-[#F5F3FF] text-center m-0">
-                    Smart <span class="text-[#CECBF6]">E-Learning</span>
+                <p class="text-[22px] font-bold tracking-tight sharedTXT text-center m-0">
+                    Smart <span class="sharedTXTAccent">E-Learning</span>
                 </p>
 
                 <div class="h-5 flex items-center justify-center" aria-live="polite">
                     <Transition name="msg-fade" mode="out-in">
                         <p v-if="cleanMessage" :key="cleanMessage"
-                           class="text-sm font-medium text-[#CECBF6]/70 text-center m-0">
+                           class="text-sm font-medium sharedTXTMuted text-center m-0">
                             {{ cleanMessage }}<span v-if="animateDots" class="dots" aria-hidden="true"><span>.</span><span>.</span><span>.</span></span>
                         </p>
                     </Transition>

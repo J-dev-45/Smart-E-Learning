@@ -1,0 +1,57 @@
+You are helping me re-theme my Laravel + Vue + Tailwind app "Smart E-Learning" (a student quiz/e-learning platform). My adviser and team leader want the page background changed to #40407A. We are converting every file so colors are NOT hardcoded Tailwind utilities anymore. They come from shared CSS classes backed by variables in :root.
+
+I will paste (1) my latest app.css and (2) one file at a time to convert. Read app.css first. It is the source of truth for every class and variable.
+
+STACK
+- Laravel Blade + Vue 3 (script setup) + Tailwind CSS v4 (@import 'tailwindcss' in app.css).
+- Custom classes in app.css are unlayered, so they override Tailwind utilities.
+
+RULES (strict)
+1. Design-only changes. Replace color classes only. Do NOT change layout, spacing, sizing, markup structure, Vue logic, props, fetch calls, or Blade directives. Keep the <script> blocks identical.
+2. Do not add functionality, dynamic logic, or new components. Keep it static, flat HTML with Tailwind utilities for non-color styling.
+3. Same color = same variable = same class. Never write a hex value anywhere except :root in app.css. If a color already exists, reuse its variable/class; if two roles share a value, point one variable at the other (e.g. --text-main: var(--white)).
+4. Remove Tailwind color utilities (text-white/45, bg-[#...], border-gray-200, ring-white/10, shadow-black/20, hover:bg-..., etc.). Keep non-color utilities (size, flex, rounded, tracking...).
+5. Ring/border changes must not shift layout: a ring takes no space, a border does. Never replace ring-1 with a class that adds a border.
+6. Be direct and honest. If something looks visually different after conversion, or you are unsure, tell me. Do not overclaim.
+
+PALETTE (dark theme, from :root in app.css)
+- Page bg --primary-color #40407A; card --surface-color #34346A; --surface-deep #2C2C5E; --surface-deeper #25254F; tile --tile-color #4A4A8F; border --border-color #5C5CA3
+- Text on dark: --text-main white, --text-body #E2E2F5, --text-muted #B9B9E3
+- Accent --accent-color #C4B5FD; button --accent-solid #6D5BD6 with --on-accent-solid white
+- Status: --success-color #34D399 (--on-success #0F3D2E), --info-color #7EE3F5, --danger-color #DC2626, rank colors --rank1/2/3-color
+- Light surfaces (navbar, login/register/verify/result cards): --light-bg white, --light-field #F9FAFB, --light-line #E5E7EB, --light-faint #9CA3AF, --light-muted #6B7280, --light-ink = --surface-deeper, --light-success #15803D
+
+CLASS CATALOG (already defined in app.css)
+- Backgrounds: sharedBG, sharedSurface (bg + 1px border), sharedSurfaceBG (bg only), sharedSurfaceDeep, sharedSurfaceDeeper, sharedDeepBG, sharedTile, sharedBGAccent, sharedLightBG, sharedLightFieldBG, sharedLine, sharedDivider
+- Borders: sharedBorder, sharedBorderLight, sharedLightBorder
+- Text (dark bg): sharedTXT, sharedTXTBody, sharedTXTMuted, sharedTXTAccent, sharedTXTSuccess, sharedTXTBrand, sharedHoverBrand
+- Text (light bg): sharedTXTOnLight, sharedTXTLightMuted, sharedTXTLightFaint, sharedTXTLightSuccess, sharedTXTDanger
+- Buttons: sharedBtn (primary), sharedBtnSoft (secondary), sharedBtnSuccess, sharedBtnInfo, sharedBtnGhostLight
+- Inputs: sharedInput (use with border-[1.5px] for width), sharedCheckAccent
+- Shadows/rings: sharedShadow (replaces shadow-black/*), sharedRingSoft, sharedRingBG, sharedNavRing, sharedNavShadow, sharedFocus
+- Status system: put sharedStatePassed / sharedStateOpen / sharedStateExam (dark bg) or sharedStateLightPassed / sharedStateLightFailed (light bg) on a parent; children use sharedStateText, sharedStateBorder, sharedStateBox, sharedStateChip, sharedStateCircle, sharedStatePill (+ sharedStatePillLink for hover), sharedStateTint
+- Leaderboard: sharedRank1/2/3 on a wrapper; children use sharedRankRing, sharedRankBox, sharedRankEmpty, sharedRankText
+- Navbar: sharedNavBG, sharedNavText, sharedNavActive (underline)
+- Stroke for SVG on light: sharedStrokeLight
+
+GOTCHAS WE ALREADY HIT
+- A shorthand `border: 1.5px solid #hex` in scoped CSS overrides sharedInput's border-color. Use border-width + border-style only and let sharedInput set the color.
+- sharedSurface sets a SOLID border. For dashed borders use `border border-dashed sharedBorder sharedSurfaceBG`.
+- SVG presentation attributes can't use var(). Use stroke="currentColor" with a text color class, or a class like sharedStrokeLight.
+- Tailwind ring color is set via --tw-ring-color (our ring classes do this). Keep the ring-N utility for size.
+- Bright success green is unreadable on white; use the light-surface classes on white cards.
+- Hover/disabled: .sharedBtn uses :not(:disabled):hover so disabled buttons don't brighten.
+- Tailwind `hover:`/`md:` variants can't be applied to custom classes. Use a custom hover class, or leave the class unprefixed when the property is harmless at other breakpoints.
+
+WHAT TO DELIVER FOR EACH FILE I PASTE
+1. The complete converted file (not snippets), with a suggested filename.
+2. A short before/after table of color mappings.
+3. Any NEW variables/classes you had to add, as a ready-to-paste block for app.css (reuse existing ones first; group selectors when two classes share a color).
+4. A list of any visual differences (especially contrast changes, removed hover effects, merged colors).
+5. A sanity check: no leftover hex colors, [#...], text-white, bg-white, gray-*, red-*, green-*, emerald-*, black/*, white/* utilities, and every shared* class you used exists in app.css.
+
+PROGRESS SO FAR
+Converted: home page, subjects card, leaderboard, client navigation (with active underline), student profile, module list page (choose-module + QuizModules), login, register (desktop/mobile/combined), verify OTP, module assessment action bar, assessment result card, app.css.
+Still to convert (I'll paste them): Loading_Screen.vue (+ Blade include Global.Loading_Screen), choose-module-header, Update_Profile.vue, User_Menu.vue, code-playground, the learning/lesson content page, the quiz-taking pages, forgot-password pages, and any admin pages.
+
+START by confirming you've read my app.css and understood the rules, then wait for me to paste the first file.
