@@ -29,6 +29,11 @@
                 :modules='@json($modules)'
                 :topics='@json($topics)'
                 :questions='@json($questions)'
+
+                user-name="{{ auth()->user()->name }}"
+                user-email="{{ auth()->user()->email }}"
+                user-role="{{ auth()->user()->role }}"
+                profile-color="{{ auth()->user()->profile_color }}"
             ></modules>
 
         </main>

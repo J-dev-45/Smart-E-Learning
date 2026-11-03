@@ -45,98 +45,15 @@
 
         </ul>
 
-        <!-- User info + logout (UI only) -->
-        <div class="mt-auto w-full border-t sharedLightBorder p-3 shrink-0">
-
-            <div class="flex items-center gap-2.5 px-2 py-2">
-
-                <div :class="[
-                    'w-10 h-10 rounded-full  flex items-center justify-center shrink-0',
-                    profileColor
-                ]">
-                    <span class="text-[13px] font-semibold">JR</span>
-                </div>
-
-                <div class="flex flex-col gap-0.5 min-w-0 leading-tight">
-                    <span class="text-[13px] font-semibold sharedTXTOnLight truncate">{{ userName }}</span>
-                    <span class="text-[11px] sharedTXTLightMuted truncate">{{ userEmail }}</span>
-                    <span class="text-[11px] sharedTXTLightMuted truncate">ID: {{ idNumber }}</span>
-                </div>
-
-            </div>
-
-            <button
-                type="button"
-                @click="logout"
-                :disabled="isLoggingOut"
-                :aria-busy="isLoggingOut"
-                class="w-full flex items-center gap-2.5 mt-2 px-3 py-2 rounded-md text-[13px] font-medium sharedTXTLightMuted sharedDangerHover transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed"
-            >
-
-                <svg
-                    v-if="isLoggingOut"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    class="size-[17px] shrink-0 animate-spin motion-reduce:animate-none"
-                    aria-hidden="true"
-                >
-                    <circle
-                        cx="12"
-                        cy="12"
-                        r="9"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        class="opacity-25"
-                    />
-                    <path
-                        d="M21 12a9 9 0 0 0-9-9"
-                        stroke="currentColor"
-                        stroke-width="2.5"
-                        stroke-linecap="round"
-                    />
-                </svg>
-
-                <svg
-                    v-else
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-[17px] shrink-0"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15"
-                    />
-                </svg>
-
-                <span>{{ isLoggingOut ? 'Logging out...' : 'Logout' }}</span>
-
-            </button>
-
-
-        </div>
-
     </nav>
-
 </template>
 
 <script setup>
-import { ref } from 'vue'
 
 defineProps({
     activePage: { type: String, default: 'Dashboard' },
-    idNumber: { type: Number, default: 0},
-    userName: { type: String, default: 'Undefined'},
-    userEmail: { type: String, default: 'Undefined'},
-    logo: { type: String, required: true},
-    profileColor: { type: String, required: true}
+    logo: { type: String, required: true }
 });
-
-const isLoggingOut = ref(false)
 
 const changeLocalStorage = (linkName) => {
 
@@ -178,47 +95,4 @@ const links = [
     }
 ];
 
-async function logoutForm(){
-    isLoggingOut.value = true
-
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-
-    if (!csrfToken) {
-        isLoggingOut.value = false
-        throw new Error('CSRF token not found')
-    }
-
-    try{
-        const response = await fetch('/logout',{
-            method: "POST",
-            headers: {
-                'Content-Type' : 'application/json',
-                'X-CSRF-TOKEN' : csrfToken,
-                'Accept' : 'application/json'
-            }
-        });
-
-        const data = await response.json();
-
-        if (response.ok && data.success) { 
-            window.location.href = '/'; 
-        } 
-        else {
-            isLoggingOut.value = false
-            throw new Error(`Logout failed: ${response.status}`)
-        }
-
-    }catch(err){
-        isLoggingOut.value = false
-        throw err
-    }
-}
-
-async function logout(){
-    try {
-        await logoutForm()
-    } catch (err) {
-        console.error(err)
-    }
-}
 </script>

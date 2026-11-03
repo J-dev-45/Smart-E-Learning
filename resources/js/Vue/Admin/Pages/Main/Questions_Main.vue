@@ -17,10 +17,20 @@
                 <span class="text-sm font-medium">Back To Modules</span>
             </a>
 
-            <div class="text-xs font-medium sharedTXTMuted tabular-nums">
-                {{ filteredQuestions.length }}
-                question{{ filteredQuestions.length === 1 ? '' : 's' }}
-            </div>
+            <!-- PROFILE -->
+            <button
+                type="button"
+                @click.stop="toggleUserMenu"
+                aria-label="Open admin menu"
+                aria-haspopup="menu"
+                :aria-expanded="showUserMenu"
+                :class="[
+                    'shrink-0 w-9 h-9 rounded-full sharedTXT flex items-center justify-center text-xs font-semibold cursor-pointer focus:outline-none focus:ring-1 focus:ring-gray-300',
+                    profileColor
+                ]"
+            >
+                {{ initials(userName) }}
+            </button>
         </header>
 
         <!-- TITLE & TOPIC -->
@@ -31,27 +41,36 @@
                     {{ subjectName }}
                 </span>
 
-                <!-- ADD QUESTION BUTTON -->
-                <button
-                    type="button"
-                    @click="openAddQuestionModal"
-                    class="flex items-center justify-center gap-1.5 sharedBtn rounded-xl font-bold text-xs whitespace-nowrap cursor-pointer h-8 w-8 sm:h-9 sm:w-auto sm:px-4 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-3.5 shrink-0">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                    </svg>
+                <!-- ADD QUESTION BUTTON + TOTAL -->
+                <div class="flex flex-col items-end gap-1.5">
+                    <button
+                        type="button"
+                        @click="openAddQuestionModal"
+                        class="flex items-center justify-center gap-1.5 sharedBtn rounded-xl font-bold text-xs whitespace-nowrap cursor-pointer h-8 w-8 sm:h-9 sm:w-auto sm:px-4 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-3.5 shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                        </svg>
 
-                    <span class="hidden sm:inline">Add Question</span>
-                </button>
+                        <span class="hidden sm:inline">Add Question</span>
+                    </button>
+
+                    
+                </div>
             </div>
 
             <!-- MODULE -->
-            <div class="w-full flex items-center gap-3 flex-wrap text-sm">
+            <div class="w-full flex items-center justify-between gap-3 flex-wrap text-sm">
                 <div class="flex items-center gap-2">
                     <span class="font-medium sharedTXTMuted">Module</span>
                     <span class="px-2.5 py-0.5 rounded-full text-xs font-medium sharedStateOpen sharedStateChip ring-1">
                         {{ props.moduleName }}
                     </span>
+                </div>
+
+                <div class="text-xs font-medium sharedTXTMuted tabular-nums">
+                    {{ filteredQuestions.length }}
+                    question{{ filteredQuestions.length === 1 ? '' : 's' }}
                 </div>
 
             </div>
@@ -207,6 +226,18 @@
         </div>
     </main>
 
+    <!-- ADMIN MENU -->
+    <Admin_Menu
+        :show-admin-menu="showUserMenu"
+        :user-name="userName"
+        :user-email="userEmail"
+        :user-role="userRole"
+        :profile-color="profileColor"
+        :profile-picture="profilePicture"
+        :profile-avatar="profileAvatar"
+        @close-admin-menu="showUserMenu = false"
+    />
+
     <!-- VIEW QUESTION MODAL -->
     <View_Question
         :view-question="view_question"
@@ -249,6 +280,7 @@
 </template>
 
 <script setup>
+import Admin_Menu from '../../Pages/Admin_Menu.vue';
 import View_Question from '../../Modal/View_Question.vue';
 import Edit_Question from '../../Modal/Edit_Question.vue';
 import Delete_Question from '../../Modal/Delete_Question.vue';
@@ -262,10 +294,38 @@ const props = defineProps({
     moduleName: { type: String, default: 'All' },
     modules: { type: Array, required: true },
     questions: { type: Array, required: true },
-    choices: { type: Array, required: true }
+    choices: { type: Array, required: true },
+
+    userName: { type: String, default: '' },
+    userEmail: { type: String, default: '' },
+    userRole: { type: String, default: 'Admin' },
+    profileColor: { type: String, default: '' },
+    profilePicture: { type: String, default: '' },
+    profileAvatar: { type: String, default: '' }
 });
 
 const emit = defineEmits(['goBack']);
+
+/*
+|--------------------------------------------------------------------------
+| PROFILE MENU
+|--------------------------------------------------------------------------
+*/
+const showUserMenu = ref(false);
+
+function toggleUserMenu() {
+    showUserMenu.value = !showUserMenu.value;
+}
+
+function initials(name) {
+    return String(name ?? '')
+        .split(' ')
+        .filter(Boolean)
+        .map(part => part[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
+}
 
 const view_question = ref(false);
 const showAddQuestion = ref(false);

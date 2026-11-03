@@ -15,30 +15,20 @@
             <span class="text-sm font-medium">Back To Subjects</span>
         </a>
 
-        <div class="shrink-0 flex items-center">
-            <button
-                type="button"
-                @click="openAddModule"
-                class="flex items-center justify-center gap-1.5 sharedBtn rounded-xl font-bold text-xs whitespace-nowrap cursor-pointer h-8 w-8 sm:h-9 sm:w-auto sm:px-4 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
-            >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="2.5"
-                    stroke="currentColor"
-                    class="size-3.5 shrink-0"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                </svg>
-
-                <span class="hidden sm:inline">Add Module</span>
-            </button>
-        </div>
+        <!-- PROFILE -->
+        <button
+            type="button"
+            @click.stop="toggleUserMenu"
+            aria-label="Open admin menu"
+            aria-haspopup="menu"
+            :aria-expanded="showUserMenu"
+            :class="[
+                'shrink-0 w-9 h-9 rounded-full sharedTXT flex items-center justify-center text-xs font-semibold cursor-pointer focus:outline-none focus:ring-1 focus:ring-gray-300',
+                profileColor
+            ]"
+        >
+            {{ initials(userName) }}
+        </button>
     </header>
 
     <section
@@ -65,6 +55,30 @@
 
                     <span>View All Questions</span>
                 </a>
+
+                <!-- ADD MODULE -->
+                <button
+                    type="button"
+                    @click="openAddModule"
+                    class="flex items-center justify-center gap-1.5 sharedBtn rounded-xl font-bold text-xs whitespace-nowrap cursor-pointer h-8 w-auto px-2 sm:h-9 sm:px-4 transition-all duration-200 active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2.5"
+                        stroke="currentColor"
+                        class="size-3.5 shrink-0"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M12 4.5v15m7.5-7.5h-15"
+                        />
+                    </svg>
+
+                    <span class="text-[10px] sm:text-sm">Add Module</span>
+                </button>
 
             </div>
         </div>
@@ -143,22 +157,9 @@
 
                     <div class="flex flex-col gap-1 sharedSurfaceDeeper rounded-xl p-2">
 
-                        <div class="flex items-center justify-between px-1.5 py-1">
-                            <span class="text-[10px] font-bold uppercase tracking-widest sharedTXTAccent">Topics</span>
-                            <span class="text-[10px] font-medium sharedTXTMuted tabular-nums">
-                                {{ localTopics.filter(topic => topic.module_id === module.id).length }} Topics
-                            </span>
-                        </div>
+                        <div class="flex items-center justify-end px-1 pb-1.5 ">
 
-                        <div class="flex items-center gap-1.5 px-1 pb-1.5 mb-1 border-b sharedBorder">
-
-                            <input
-                                type="text"
-                                placeholder="Topic name"
-                                class="flex-1 min-w-0 sharedInputDark border rounded-lg text-xs px-2 py-1 focus:outline-none focus:ring-2"
-                            >
-
-                            <!-- Add Topic -->
+                            <!-- ADD TOPIC -->
                             <button
                                 type="button"
                                 @click="openAddTopic(module)"
@@ -171,6 +172,15 @@
                             </button>
 
                         </div>
+
+                        <div class="flex items-center justify-between px-1.5 py-1 pb-1.5 mb-1 border-b sharedBorder">
+                            <span class="text-[10px] font-bold uppercase tracking-widest sharedTXTAccent">Topics</span>
+                            <span class="text-[10px] font-medium sharedTXTMuted tabular-nums">
+                                {{ localTopics.filter(topic => topic.module_id === module.id).length }} Topics
+                            </span>
+                        </div>
+
+                        
 
                         <div class="flex flex-col">
 
@@ -274,6 +284,17 @@
     </section>
 
 
+    <Admin_Menu
+        :show-admin-menu="showUserMenu"
+        :user-name="userName"
+        :user-email="userEmail"
+        :user-role="userRole"
+        :profile-color="profileColor"
+        :profile-picture="profilePicture"
+        :profile-avatar="profileAvatar"
+        @close-admin-menu="showUserMenu = false"
+    />
+
     <Add_Modules
         :show-add-module="showAddModule"
         :subject-id="selectedSubjectId"
@@ -330,6 +351,8 @@
 
 import { ref, watch } from 'vue'
 
+import Admin_Menu from '../Pages/Admin_Menu.vue'
+
 import Add_Modules from '../Modal/Add_Modules.vue'
 import Edit_Module from '../Modal/Edit_Module.vue'
 import Delete_Module from '../Modal/Delete_Module.vue'
@@ -356,12 +379,39 @@ const props = defineProps({
     topics: {
         type: Array,
         required: true
-    }
+    },
+
+    userName: { type: String, default: '' },
+    userEmail: { type: String, default: '' },
+    userRole: { type: String, default: 'Admin' },
+    profileColor: { type: String, default: '' },
+    profilePicture: { type: String, default: '' },
+    profileAvatar: { type: String, default: '' },
 })
 
 
 console.log(props.subjectId)
 console.log(props.subjectName)
+
+
+// --------------------------------------------------------------------------------------------------------------->>>>>> PROFILE MENU
+
+
+const showUserMenu = ref(false)
+
+function toggleUserMenu() {
+    showUserMenu.value = !showUserMenu.value
+}
+
+function initials(name) {
+    return String(name ?? '')
+        .split(' ')
+        .filter(Boolean)
+        .map(part => part[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
+}
 
 
 const localModules = ref([...props.modules])

@@ -7,26 +7,59 @@
                 Smart E-Learning
             </span>
 
-            <!-- AVATAR -->
-            <div :class="[
-                'ml-auto shrink-0 w-9 h-9 rounded-full sharedTXT flex items-center justify-center text-xs font-semibold',
-                profileColor
-            ]">
-                {{ initials(userName) }}
+            <div class="ml-auto flex items-center gap-3 shrink-0">
+
+                <!-- PROFILE (mobile + desktop, the only clickable element) -->
+                <button
+                    type="button"
+                    @click.stop="toggleUserMenu"
+                    aria-label="Open admin menu"
+                    aria-haspopup="menu"
+                    :aria-expanded="showUserMenu"
+                    :class="[
+                        'shrink-0 w-9 h-9 rounded-full sharedTXT flex items-center justify-center text-xs font-semibold cursor-pointer focus:outline-none focus:ring-1 focus:ring-gray-300',
+                        profileColor
+                    ]"
+                >
+                    {{ initials(userName) }}
+                </button>
+
             </div>
 
         </header>
+
+        <Admin_Menu
+            :show-admin-menu="showUserMenu"
+            :user-name="userName"
+            :user-email="userEmail"
+            :user-role="userRole"
+            :profile-color="profileColor"
+            :profile-picture="profilePicture"
+            :profile-avatar="profileAvatar"
+            @close-admin-menu="showUserMenu = false"
+        />
 
     </div>
 </template>
 
 <script setup>
+import { ref } from 'vue'
+import Admin_Menu from '../Pages/Admin_Menu.vue'
 
 defineProps({
     userName: { type: String, default: '' },
     userEmail: { type: String, default: '' },
+    userRole: { type: String, default: 'Admin' },
     profileColor: { type: String, default: '' },
+    profilePicture: { type: String, default: '' },
+    profileAvatar: { type: String, default: '' },
 })
+
+const showUserMenu = ref(false)
+
+function toggleUserMenu() {
+    showUserMenu.value = !showUserMenu.value
+}
 
 function initials(name) {
     return String(name ?? '')
@@ -37,5 +70,4 @@ function initials(name) {
         .slice(0, 2)
         .toUpperCase()
 }
-
 </script>

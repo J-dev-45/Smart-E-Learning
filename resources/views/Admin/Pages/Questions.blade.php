@@ -30,6 +30,11 @@
             :modules='@json($modules)'
             :questions='@json($questions)'
             :choices='@json($choices)'
+
+            user-name="{{ auth()->user()->name }}"
+            user-email="{{ auth()->user()->email }}"
+            user-role="{{ auth()->user()->role }}"
+            profile-color="{{ auth()->user()->profile_color }}"
         />
 
     </div>

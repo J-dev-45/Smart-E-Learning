@@ -1,0 +1,240 @@
+<template>
+    <Transition
+        enter-active-class="transition ease-out duration-150"
+        enter-from-class="opacity-0 scale-95 -translate-y-1"
+        enter-to-class="opacity-100 scale-100 translate-y-0"
+        leave-active-class="transition ease-in duration-100"
+        leave-from-class="opacity-100 scale-100"
+        leave-to-class="opacity-0 scale-95"
+    >
+        <div
+            v-if="showAdminMenu"
+            ref="adminMenuRef"
+            role="menu"
+            class="w-[290px] fixed top-[65px] right-3 z-[100] p-3 flex flex-col bg-white rounded-xl shadow-lg ring-1 ring-black/5 gap-3"
+        >
+            <div class="w-full flex items-center gap-3 px-1">
+                <img
+                    v-if="currentProfileImage"
+                    :src="currentProfileImage"
+                    alt="Profile picture"
+                    class="w-11 h-11 shrink-0 rounded-full object-cover ring-1 ring-gray-200"
+                >
+
+                <span
+                    v-else
+                    class="w-11 h-11 shrink-0 rounded-full flex items-center justify-center font-semibold text-sm"
+                    :class="profileColor || 'bg-purple-800 text-white'"
+                >
+                    {{ initials }}
+                </span>
+
+                <div class="flex flex-col leading-tight justify-center min-w-0 flex-1 gap-0.5">
+                    <span class="font-semibold text-sm text-gray-900 truncate">
+                        {{ userName }}
+                    </span>
+
+                    <span class="text-xs text-gray-400 truncate">
+                        {{ userEmail }}
+                    </span>
+                </div>
+
+                <button
+                    type="button"
+                    @click="closeMenu"
+                    :disabled="isLoggingOut"
+                    aria-label="Close menu"
+                    class="w-7 h-7 shrink-0 self-start flex items-center justify-center rounded-full text-gray-400 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="h-px bg-gray-100"></div>
+
+            <div class="flex flex-col gap-1">
+                <button
+                    type="button"
+                    role="menuitem"
+                    @click="openChangePassword"
+                    class="px-3 py-2 text-sm text-gray-700 rounded-lg flex items-center gap-2.5 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 transition-colors cursor-pointer"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4.5 text-gray-500 shrink-0" >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 0 1 3 3m3 0a6 6 0 0 1-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1 1 21.75 8.25Z" />
+                    </svg>
+
+                    <span>Change Password</span>
+                </button>
+            </div>
+
+            <div class="h-px bg-gray-100"></div>
+
+            <div class="flex flex-col gap-1">
+                <button
+                    type="button"
+                    role="menuitem"
+                    @click="logout"
+                    :disabled="isLoggingOut"
+                    :aria-busy="isLoggingOut"
+                    class="px-3 py-2 text-sm text-red-500 rounded-lg flex items-center gap-2.5 hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-red-100 transition-colors cursor-pointer disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+                >
+                    <svg
+                        v-if="isLoggingOut" 
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="size-4.5 shrink-0 animate-spin motion-reduce:animate-none" aria-hidden="true" >
+                        <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2.5" class="opacity-25" />
+                        <path d="M21 12a9 9 0 0 0-9-9" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+                    </svg>
+
+                    <svg
+                        v-else 
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4.5 shrink-0" >
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
+                    </svg>
+
+                    <span>
+                        {{ isLoggingOut ? 'Logging out...' : 'Log out' }}
+                    </span>
+                </button>
+            </div>
+        </div>
+    </Transition>
+
+    <Admin_Change_Password
+        :show-change-password="showChangePassword"
+        @close="showChangePassword = false"
+    />
+</template>
+
+<script setup>
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import Admin_Change_Password from '../components/Admin_Change_Password.vue';
+
+const props = defineProps({
+    showAdminMenu: { type: Boolean, default: false },
+    userName: { type: String, required: true },
+    userEmail: { type: String, required: true },
+    profileColor: { type: String, default: 'bg-purple-800 text-white' },
+    profilePicture: { type: String, default: '' },
+    profileAvatar: { type: String, default: '' },
+})
+
+const emit = defineEmits(['close-admin-menu'])
+
+const adminMenuRef = ref(null)
+
+const currentProfileImage = ref(
+    props.profilePicture || props.profileAvatar || ''
+)
+
+const isLoggingOut = ref(false)
+const showChangePassword = ref(false)
+
+const initials = computed(() =>
+    String(props.userName ?? '')
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(name => name[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase()
+)
+
+watch(
+    () => [props.profilePicture, props.profileAvatar],
+    ([picture, avatar]) => {
+        currentProfileImage.value = picture || avatar || ''
+    }
+)
+
+function closeMenu() {
+    emit('close-admin-menu')
+}
+
+function openChangePassword() {
+    showChangePassword.value = true
+    closeMenu()
+}
+
+function handleOutsideClick(event) {
+    if (!props.showAdminMenu) return
+
+    // Ignore clicks inside the menu itself.
+    if (adminMenuRef.value?.contains(event.target)) return
+
+    // The header's avatar/role buttons use @click.stop,
+    // so this listener never receives those clicks.
+    closeMenu()
+}
+
+function handleKeydown(event) {
+    if (event.key === 'Escape' && props.showAdminMenu && !isLoggingOut.value) {
+        closeMenu()
+    }
+}
+
+function handleProfileUpdate(event) {
+    const { type, imageUrl } = event.detail || {}
+
+    if (!imageUrl) return
+
+    if (type === 'upload' || type === 'preset') {
+        currentProfileImage.value = imageUrl
+    }
+}
+
+onMounted(() => {
+    window.addEventListener('profile-updated', handleProfileUpdate)
+    document.addEventListener('click', handleOutsideClick)
+    document.addEventListener('keydown', handleKeydown)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('profile-updated', handleProfileUpdate)
+    document.removeEventListener('click', handleOutsideClick)
+    document.removeEventListener('keydown', handleKeydown)
+})
+
+async function logoutForm() {
+    isLoggingOut.value = true
+
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute('content')
+
+    if (!csrfToken) {
+        isLoggingOut.value = false
+        throw new Error('CSRF token not found')
+    }
+
+    try {
+        const response = await fetch('/logout', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
+            credentials: 'same-origin'
+        })
+
+        if (!response.ok) {
+            throw new Error(`Logout failed: ${response.status}`)
+        }
+
+        window.location.href = '/'
+
+    } catch (error) {
+        isLoggingOut.value = false
+        throw error
+    }
+}
+
+async function logout() {
+    try {
+        await logoutForm()
+    } catch (error) {
+        console.error(error)
+    }
+}
+</script>

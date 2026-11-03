@@ -364,5 +364,8 @@ Route::middleware(['auth','Admin'])->group(function(){
     Route::put('/editTopic', [TopicController::class, 'editTopic']);
     Route::delete('/deleteTopic', [TopicController::class, 'deleteTopic']);
 
+    // AUTH
     Route::post('/logout', [Logout::class, 'logout']);
+
+    Route::put('/admin-change-password', [PasswordController::class, 'changePassword']);
 });
