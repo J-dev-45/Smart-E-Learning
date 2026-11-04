@@ -9,9 +9,7 @@
     @vite(['resources/css/app.css'])
 </head>
 <body class="w-full min-h-screen sharedBG flex flex-col overflow-x-hidden sharedTXT">
-    @include('Global.Loading_Screen', [
-        'logo' => asset('images/Components/Logo.png')
-    ])
+    
 
     <div id="app" class="flex flex-col overflow-x-hidden sharedTXT">
 

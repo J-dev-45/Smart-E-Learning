@@ -10,9 +10,7 @@
 </head>
 <body class="w-screen sharedBG overflow-x-hidden">
     @vite(['resources/js/app.js'])
-    @include('Global.Loading_Screen', [
-        'logo' => asset('images/Components/Logo.png')
-    ])
+    
     <div id="app" class="w-screen h-screen flex flex-col overflow-hidden">
         <taking-pretest-header
             subject-name="{{$subject_name}}"

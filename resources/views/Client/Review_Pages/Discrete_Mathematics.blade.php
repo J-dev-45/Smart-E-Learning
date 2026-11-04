@@ -27,9 +27,7 @@
 </head>
 <body class="w-screen h-screen overflow-hidden sharedBG">
     @vite(['resources/js/app.js'])
-    @include('Global.Loading_Screen', [
-        'logo' => asset('images/Components/Logo.png')
-    ])
+    
     <div id="app" class="flex flex-col h-screen w-screen overflow-hidden">
 
 

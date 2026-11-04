@@ -29,9 +29,6 @@
 
 </head>
     <body class="h-dvh w-screen overflow-hidden">
-        @include('Global.Loading_Screen', [
-            'logo' => asset('images/Components/Logo.png')
-        ])
         <div id="app" class="h-full">
 
             {{-- COMPUTER --}}
