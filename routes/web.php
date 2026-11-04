@@ -11,6 +11,7 @@ use App\Http\Controllers\Client\AssessmentController;
 use App\Http\Controllers\Client\CodePretestController;
 use App\Http\Controllers\Client\LearnController;
 use App\Http\Controllers\Client\Pretest;
+use App\Http\Controllers\CodeQuizController;
 use App\Http\Controllers\CodeRunnerController;
 use App\Http\Controllers\Logout;
 use App\Http\Controllers\ModuleController;
@@ -35,7 +36,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
-
+Route::post('/run-code', [CodeRunnerController::class, 'run'])
+    ->middleware(['throttle:20,1']);
 
 
 Route::middleware(['guest'])->group(function(){
@@ -233,6 +235,26 @@ Route::middleware(['auth'])->group(function(){
 
     Route::post('/submitAnswer', [AssessmentController::class, 'submitAnswer']);
     Route::post('/submitCode', [CodePretestController::class, 'submitCodeAnswer']);
+
+    // CODE RUNNER (moved inside auth so only logged-in students can use your compiler quota)
+    Route::post('/run-code', [CodeRunnerController::class, 'run'])
+        ->middleware('throttle:20,1');
+
+    // CODE QUIZ
+    Route::get('/code-quiz/{question}', [CodeQuizController::class, 'show']);
+    Route::post('/code-quiz/{question}/check', [CodeQuizController::class, 'check'])
+        ->middleware('throttle:10,1');
+
+    // CODE QUIZ TEST PAGE (local environment only, never registered in production)
+    if (app()->environment('local')) {
+        Route::get('/test/code-quiz/{question}', function (Questions $question) {
+            return view('test.code-quiz', [
+                'question' => $question,
+                'total'    => $question->testCases()->count(),
+                'hidden'   => $question->testCases()->where('is_hidden', true)->count(),
+            ]);
+        });
+    }
 
     Route::get('/pretest/{subject_name}/{subject_id}', [Pretest::class, 'pretestModules']);
     Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('assessment.taking');

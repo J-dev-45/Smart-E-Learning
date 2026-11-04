@@ -11,6 +11,7 @@ export default defineConfig({
                 'resources/css/app.css',
                 'resources/js/app.js',
                 'resources/js/monaco.worker.js',
+                'resources/js/Vue/Client/test-code-quiz.js',
             ],
             refresh: true,
         }),

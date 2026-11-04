@@ -1,4 +1,5 @@
 <template>
+    <div>
     <div
         ref="root"
         class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row h-[680px] lg:h-[520px] rounded-lg overflow-hidden border border-[#cfd9e6] bg-[#fafafa]"
@@ -131,11 +132,28 @@
             </div>
         </div>
     </div>
+
+    <!-- ── Code quiz: Expected Output + SUBMIT + test case results ── -->
+    <Code_Quiz_Panel
+        v-if="questionId"
+        :question-id="questionId"
+        :code="code"
+        :inputs="inputs"
+        :ready="status === 'success'"
+        class="mt-4"
+    />
+    </div>
 </template>
 
 <script setup>
 import { ref, computed, nextTick, onMounted, onBeforeUnmount } from 'vue';
 import axios from 'axios';
+import Code_Quiz_Panel from '../Components/Code_Quiz.vue';
+
+// Pass :question-id="..." from the parent page to enable the quiz panel
+const props = defineProps({
+    questionId: { type: [Number, String], default: null },
+});
 
 // ── Java only ────────────────────────────────────────────────────────────────
 const LANG    = 'openjdk-25';

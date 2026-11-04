@@ -147,9 +147,9 @@
         </form>
     </div>
 
-    <!-- Activity form -->
+    <!-- Activity form (text-answer questions only) -->
     <form
-        v-else
+        v-else-if="textQuestions.length || !codingQuestions.length"
         @submit.prevent="submitAnswers"
         class="flex flex-col mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
     >
@@ -167,7 +167,7 @@
 
         <div class="flex flex-col gap-4 px-6 py-5">
             <div
-                v-for="(quest, index) in questions"
+                v-for="(quest, index) in textQuestions"
                 :key="quest.id"
                 class="group flex flex-col gap-3 p-4 rounded-xl border transition-all duration-200 focus-within:bg-white focus-within:shadow-sm"
                 :class="showErrors && isEmpty(quest.id)
@@ -203,7 +203,7 @@
             </div>
 
             <div
-                v-if="!questions.length"
+                v-if="!textQuestions.length"
                 class="flex flex-col items-center justify-center gap-2 py-10 rounded-xl border border-dashed border-gray-300 bg-gray-50/50"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-gray-300">
@@ -216,7 +216,7 @@
         <div class="flex items-center justify-end px-6 py-4 border-t border-gray-100 bg-gray-50/60">
             <button
                 type="submit"
-                :disabled="isSubmitting || !questions.length"
+                :disabled="isSubmitting || !textQuestions.length"
                 class="group inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold text-white bg-[#8B5CF6] shadow-sm shadow-[#8B5CF6]/30 hover:bg-[#7C3AED] active:bg-[#6D28D9] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/25 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {{ isSubmitting ? 'Submitting...' : 'Submit' }}
@@ -226,10 +226,38 @@
             </button>
         </div>
     </form>
+
+    <!--
+        Coding questions: each one gets the playground + quiz panel.
+        This block is OUTSIDE the <form> on purpose: the playground and quiz
+        buttons would otherwise submit the text-answer form.
+    -->
+    <div v-if="codingQuestions.length" class="flex flex-col gap-5 mt-5">
+        <div
+            v-for="(quest, index) in codingQuestions"
+            :key="quest.id"
+            class="flex flex-col bg-white text-gray-800 rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
+        >
+            <div class="flex items-start gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-violet-50/70 to-white">
+                <span class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold">
+                    {{ textQuestions.length + index + 1 }}
+                </span>
+                <div class="flex flex-col gap-0.5">
+                    <span class="text-xs font-semibold uppercase tracking-wider text-[#8B5CF6]">Coding</span>
+                    <span class="text-sm font-medium text-gray-800 leading-relaxed whitespace-pre-line">{{ quest.question }}</span>
+                </div>
+            </div>
+
+            <div class="px-6 py-5">
+                <CodePlayground :question-id="quest.id" />
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup>
-import { reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
+import CodePlayground from './CodePlayground.vue'
 
 const props = defineProps({
     questions: { type: Array, required: true },
@@ -251,12 +279,20 @@ const score = ref(props.score)
 const answers = reactive({})
 const showErrors = ref(false)
 
+// Text-answer questions go through the form; coding questions use the playground + quiz panel
+const textQuestions = computed(() =>
+    props.questions.filter(quest => quest.question_type !== 'coding')
+)
+const codingQuestions = computed(() =>
+    props.questions.filter(quest => quest.question_type === 'coding')
+)
+
 function isEmpty(questionId) {
     return !String(answers[questionId] ?? '').trim()
 }
 
 watch(
-    () => props.questions,
+    textQuestions,
     (questions) => {
         const questionIds = new Set(questions.map(quest => String(quest.id)))
 
@@ -302,7 +338,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribut
 async function submitAnswers() {
     if (isSubmitting.value) return
 
-    const firstUnanswered = props.questions.find(quest => isEmpty(quest.id))
+    const firstUnanswered = textQuestions.value.find(quest => isEmpty(quest.id))
 
     if (firstUnanswered) {
         showErrors.value = true

@@ -16,6 +16,10 @@ class TestCase extends Model
         'is_hidden',
     ];
 
+    protected $casts = [
+    'is_hidden' => 'boolean',
+    ];
+
     public function question(): BelongsTo
     {
         return $this->belongsTo(Questions::class);

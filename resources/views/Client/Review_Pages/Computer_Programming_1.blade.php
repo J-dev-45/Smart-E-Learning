@@ -85,6 +85,40 @@
                         @include('Client.Review_Pages.Modules.ITECC2_CP.M11_Recursion.Main')
                         @break
 
+                                            {{-- Fallback for modules without a lesson page: show the module's coding questions --}}
+                    @default
+                        @php
+                            $codingQuestions = \App\Models\Questions::where('module_id', $module->id)
+                                ->where('question_type', 'coding')
+                                ->orderBy('created_at')
+                                ->get();
+                        @endphp
+
+                        <div class="flex flex-col justify-center items-center w-full gap-5 text-gray-800">
+                            @forelse ($codingQuestions as $codingQuestion)
+                                <div class="flex flex-col bg-white rounded-2xl border border-gray-200 w-[50%] h-[90%] shadow-sm overflow-hidden">
+                                    <div class="flex items-start gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-violet-50/70 to-white">
+                                        <span class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold">
+                                            {{ $loop->iteration }}
+                                        </span>
+                                        <div class="flex flex-col gap-0.5">
+                                            <span class="text-xs font-semibold uppercase tracking-wider text-[#8B5CF6]">Coding</span>
+                                            <span class="text-sm font-medium text-gray-800 leading-relaxed whitespace-pre-line">{{ $codingQuestion->question }}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="px-6 py-5">
+                                        <code-playground question-id="{{ $codingQuestion->id }}"></code-playground>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="flex flex-col items-center justify-center gap-2 py-10 rounded-2xl bg-white border border-dashed border-gray-300">
+                                    <span class="text-sm text-gray-400">No questions in this module yet.</span>
+                                </div>
+                            @endforelse
+                        </div>
+
+
                 @endswitch
 
             </section>
