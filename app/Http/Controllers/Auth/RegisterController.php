@@ -11,14 +11,23 @@ use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class RegisterController extends Controller
 {
-    public function register(Request $request, MailerService $mailerService){
+    public function register(Request $request, MailerService $mailerService)
+    {
         $validated_data = $request->validate([
-            'name' => 'required|string',
+            'name' => [
+                'required',
+                'string',
+                Rule::unique('users', 'name')->where('role', 'Student'),
+            ],
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed'
+        ], [
+            'name.unique' => 'This name is already taken. Please choose a different name.',
+            'email.unique' => 'This email already exists. Please try logging in instead.',
         ]);
 
         $profile_colors = [
