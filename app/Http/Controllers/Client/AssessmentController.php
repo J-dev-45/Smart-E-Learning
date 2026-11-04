@@ -13,7 +13,6 @@ use App\Models\PretestSavedCodes;
 use App\Models\Questions;
 use App\Models\StudentAttempts;
 use App\Models\Subjects;
-use App\Models\TemporaryPoints;
 use App\Models\TestCase;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -941,12 +940,6 @@ class AssessmentController extends Controller
             ]);
 
             if ($is_correct) {
-                $open_temporary_points = TemporaryPoints::where('user_id', auth()->id())->value('points') ?? 0;
-
-                TemporaryPoints::updateOrCreate(
-                    ['user_id' => auth()->id()],
-                    ['points' => $open_temporary_points + $question->points]
-                );
 
                 $score->increment('scored');
             }
@@ -1009,14 +1002,6 @@ class AssessmentController extends Controller
                 ->where('is_correct', true)
                 ->count();
 
-            if ($is_correct) {
-                $open_temporary_points = TemporaryPoints::where('user_id', auth()->id())->value('points') ?? 0;
-
-                TemporaryPoints::updateOrCreate(
-                    ['user_id' => auth()->id()],
-                    ['points' => $open_temporary_points + $question->points]
-                );
-            }
 
             $answered_questions_ids = AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $request->subject_id)
