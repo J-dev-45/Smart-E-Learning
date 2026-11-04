@@ -10,7 +10,6 @@ export default defineConfig({
             input: [
                 'resources/css/app.css',
                 'resources/js/app.js',
-                'resources/js/Auth.js',
                 'resources/js/monaco.worker.js',
             ],
             refresh: true,
