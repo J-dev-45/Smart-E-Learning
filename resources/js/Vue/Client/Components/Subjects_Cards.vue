@@ -25,7 +25,7 @@
                 {{ subject.subject_code }}
             </span>
             <h3 class="text-base font-bold leading-snug">{{ subject.subject_name }}</h3>
-            <p class="text-xs font-medium sharedTXTMuted">{{ getAvailableModulesCount(subject.id) }} quizzes available</p>
+            <p class="text-xs font-medium sharedTXTMuted">{{ getAvailableModulesCount(subject.id) }} Learning Modules</p>
         </div>
 
         <div class="flex items-center gap-2 pt-1">
