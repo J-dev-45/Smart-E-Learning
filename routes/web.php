@@ -259,7 +259,7 @@ Route::middleware(['auth','Admin'])->group(function(){
             ->take(20)
             ->get();
 
-        $users = User::whereIn('id', $leaderboard->pluck('user_id'))->select('id','name','profile_color')->get();
+        $users = User::whereIn('id', $leaderboard->pluck('user_id'))->select('id','name','profile_color', 'profile_picture', 'profile_avatar')->get();
 
         $total_feedbacks = Feedback::count();
 

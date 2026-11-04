@@ -86,13 +86,25 @@
                         <span class="font-bold text-sm tabular-nums" :class="rankStyle(index).text">{{ index + 1 }}</span>
                     </div>
 
-                    <!-- AVATAR -->
-                    <div :class="[
+                    <!-- User photo -->
+                    <img
+                        v-if="getProfileImage(rank.user_id)"
+                        :src="getProfileImage(rank.user_id)"
+                        :alt="getName(rank.user_id)"
+                        class=" w-8 h-8 rounded-full object-cover shrink-0"
+                    />
+
+                    <!-- INITIAL -->
+                    <div v-else :class="[
                         'shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold',
                         profileColor(rank.user_id)
                     ]">
                         {{ initials(userName(rank.user_id)) }}
                     </div>
+
+                    
+
+
 
                     <!-- NAME AND SCORE -->
                     <div class="flex flex-col min-w-0 flex-1">
@@ -129,6 +141,16 @@ function userName(user_id){
 function profileColor(user_id){
     return props.users.find(uid => uid.id === user_id)?.profile_color;
 }
+
+const getName = (userId) => {
+    return props.users.find(u => u.id === userId)?.name;
+};
+
+const getProfileImage = (userId) => {
+    const user = props.users.find(u => u.id === userId);
+
+    return user?.profile_picture || user?.profile_avatar || '';
+};
 
 const sorted_by_points = props.leaderboard.sort((a, b) => b.points - a.points);
 
