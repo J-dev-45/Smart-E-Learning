@@ -12,6 +12,7 @@ use App\Models\Modules;
 use App\Models\PretestSavedCodes;
 use App\Models\Questions;
 use App\Models\StudentAttempts;
+use App\Models\SubjectProgress;
 use App\Models\Subjects;
 use App\Models\TestCase;
 use Carbon\Carbon;
@@ -26,9 +27,22 @@ class AssessmentController extends Controller
         $module_id = $request->module_id;
         $module_name = $request->module_name;
         $type_of_assessment = $request->type_of_assessment;
+
+        $subject = Subjects::findOrFail($subject_id);
         
-        $subject_name = Subjects::where('id', $subject_id)
-                ->value('subject_name');
+        $subject_name = $subject->subject_name;
+
+        if ($subject->pre_requisite) {
+            $pre_req_has_passed = SubjectProgress::where('user_id', auth()->id())
+                ->where('subject_id', $subject->pre_requisite)
+                ->where('progress', '>=', 100)
+                ->where('has_passed', true)
+                ->exists();
+
+            if (!$pre_req_has_passed) {
+                return redirect()->route('home');
+            }
+        }
 
         if($request->type_of_assessment === 'quiz'){
             
@@ -140,12 +154,32 @@ class AssessmentController extends Controller
             // 
             // ===========================
             if($request->to_take === 'question_type'){
-                $questions = Questions::where('module_id', $request->module_id)
+                $multipleChoiceQuestions = Questions::where('module_id', $request->module_id)
                     ->whereNotIn('id', $answered_question_ids)
-                    ->whereIn('question_type', ['multipleChoice', 'TorF', 'identification'])
+                    ->where('question_type', 'multipleChoice')
                     ->inRandomOrder()
-                    ->limit($remaining_questions)
+                    ->take(5)
                     ->get();
+
+                $trueOrFalseQuestions = Questions::where('module_id', $request->module_id)
+                    ->whereNotIn('id', $answered_question_ids)
+                    ->where('question_type', 'TorF')
+                    ->inRandomOrder()
+                    ->take(5)
+                    ->get();
+
+                $identificationQuestions = Questions::where('module_id', $request->module_id)
+                    ->whereNotIn('id', $answered_question_ids)
+                    ->where('question_type', 'identification')
+                    ->inRandomOrder()
+                    ->take(5)
+                    ->get();
+
+                $questions = $multipleChoiceQuestions
+                    ->concat($trueOrFalseQuestions)
+                    ->concat($identificationQuestions)
+                    ->shuffle()
+                    ->values();
 
                 $choices = Choices::whereIn('question_id', $questions->pluck('id'))->get();
 
@@ -240,12 +274,32 @@ class AssessmentController extends Controller
 
             $score = $answered_questions_data->where('is_correct', true)->count(); 
 
-            $questions = Questions::whereIn('module_id', $modules->pluck('id'))
-                ->whereNotIn('id', $answered_question_ids)
-                ->whereIn('question_type', ['multipleChoice', 'TorF', 'identification'])
-                ->inRandomOrder()
-                ->limit($remaining_questions)
-                ->get();
+            $multipleChoiceQuestions = Questions::where('module_id', $request->module_id)
+                    ->whereNotIn('id', $answered_question_ids)
+                    ->where('question_type', 'multipleChoice')
+                    ->inRandomOrder()
+                    ->take(20)
+                    ->get();
+
+                $trueOrFalseQuestions = Questions::where('module_id', $request->module_id)
+                    ->whereNotIn('id', $answered_question_ids)
+                    ->where('question_type', 'TorF')
+                    ->inRandomOrder()
+                    ->take(10)
+                    ->get();
+
+                $identificationQuestions = Questions::where('module_id', $request->module_id)
+                    ->whereNotIn('id', $answered_question_ids)
+                    ->where('question_type', 'identification')
+                    ->inRandomOrder()
+                    ->take(10)
+                    ->get();
+
+                $questions = $multipleChoiceQuestions
+                    ->concat($trueOrFalseQuestions)
+                    ->concat($identificationQuestions)
+                    ->shuffle()
+                    ->values();
 
             $choices = Choices::whereIn('question_id', $questions->pluck('id'))->get();
 
@@ -315,6 +369,18 @@ class AssessmentController extends Controller
         $to_take = $validated['type'] ?? 'question_type';
     
         $subject = Subjects::findOrFail($validated['subject_id']);
+
+        if ($subject->pre_requisite) {
+            $pre_req_has_passed = SubjectProgress::where('user_id', auth()->id())
+                ->where('subject_id', $subject->pre_requisite)
+                ->where('progress', '>=', 100)
+                ->where('has_passed', true)
+                ->exists();
+
+            if (!$pre_req_has_passed) {
+                return redirect()->route('home');
+            }
+        }
     
         if ($type_of_assessment === 'quiz') {
     
@@ -479,9 +545,9 @@ class AssessmentController extends Controller
     //  ██████╗ ███████╗███████╗██╗   ██╗██╗  ████████╗    ██████╗  █████╗  ██████╗ ███████╗
     //  ██╔══██╗██╔════╝██╔════╝██║   ██║██║  ╚══██╔══╝    ██╔══██╗██╔══██╗██╔════╝ ██╔════╝
     //  ██████╔╝█████╗  ███████╗██║   ██║██║     ██║       ██████╔╝███████║██║  ███╗█████╗
-    //  ██╔══██╗██╔══╝  ╚════██║╚██╗ ██╔╝██║     ██║       ██╔═══╝ ██╔══██║██║   ██║██╔══╝
-    //  ██║  ██║███████╗███████║ ╚████╔╝ ███████╗██║       ██║     ██║  ██║╚██████╔╝███████╗
-    //  ╚═╝  ╚═╝╚══════╝╚══════╝  ╚═══╝  ╚══════╝╚═╝       ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
+    //  ██╔══██╗██╔══╝  ╚════██║██║   ██║██║     ██║       ██╔═══╝ ██╔══██║██║   ██║██╔══╝
+    //  ██║  ██║███████╗███████║╚██████╔╝███████╗██║       ██║     ██║  ██║╚██████╔╝███████╗
+    //  ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═════╝ ╚══════╝╚═╝       ╚═╝     ╚═╝  ╚═╝ ╚═════╝ ╚══════╝
     // 
     // =================================================================================================
 
@@ -593,34 +659,82 @@ class AssessmentController extends Controller
             $total_points = 0;
             if ($status === 'Passed') {
 
-                if ($request->type === 'coding') {
-                    $module_quiz->update([
-                        'coding_passed' => true
-                    ]);
+                
+                // SUBJECT PROGRESS
+                $subject_progress = SubjectProgress::where('user_id', auth()->id())
+                    ->where('subject_id', $request->subject_id)
+                    ->firstOrFail();
+
+                $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
+                    ->where('subject_id', $request->subject_id)
+                    ->get();
+
+                $module = Modules::findOrFail($request->module_id);
+
+                $total_modules = $module_quizzes->count();
+
+                if ($total_modules === 0) {
+                    return redirect()->route('home');
+                }
+
+                $module_weight = 80;
+                $completed_modules = $module_quizzes->where('has_passed', true)->count();
+                $has_coding = $module->has_coding;
+
+                $percent_per_module = $module_weight / $total_modules;
+
+                if (!$has_coding) {
+                    $component_progress = $percent_per_module / 3;
                 } else {
-                    $module_quiz->update([
-                        'questions_type_passed' => true
-                    ]);
+                    $component_progress = $percent_per_module / 4;
+                }
+
+                if ($request->type === 'coding') {
+
+                    if (!$module_quiz->coding_passed) {
+                        $module_quiz->update([
+                            'coding_passed' => true
+                        ]);
+
+                        $subject_progress->progress += (float) $component_progress;
+                        $subject_progress->save();
+                    }
+
+                } else {
+
+                    if (!$module_quiz->questions_type_passed) {
+                        $module_quiz->update([
+                            'questions_type_passed' => true
+                        ]);
+
+                        $subject_progress->progress += (float) $component_progress;
+                        $subject_progress->save();
+                    }
                 }
 
                 $module_quiz->refresh();
+
                 $module_passed = false;
 
                 if ($module->has_question_type && $module->has_coding) {
+
                     if ($module_quiz->questions_type_passed && $module_quiz->coding_passed) {
                         $module_passed = true;
                     }
 
                 } elseif ($module->has_question_type && !$module->has_coding) {
+
                     if ($module_quiz->questions_type_passed) {
                         $module_passed = true;
                     }
 
                 } elseif (!$module->has_question_type && $module->has_coding) {
+
                     if ($module_quiz->coding_passed) {
                         $module_passed = true;
                     }
                 }
+
 
                 $leaderboard = Leaderboard::where('user_id', auth()->id())->first();
                 
@@ -700,10 +814,11 @@ class AssessmentController extends Controller
                     'total_points'
                 )
             );
+        }
         // ========================================================
         // EXAM
         // ========================================================
-        } elseif ($type_of_assessment === 'exam') {
+        elseif ($type_of_assessment === 'exam') {
 
             $modules = Modules::where('subject_id', $request->subject_id)->get();
 
@@ -771,7 +886,12 @@ class AssessmentController extends Controller
             $total_points = 0;
             if ($status === 'Passed') {
 
-                $student_attempts->update([
+                $subject_progress = SubjectProgress::where('user_id', auth()->id())
+                    ->where('subject_id', $request->subject_id)
+                    ->firstOrFail();
+
+                $subject_progress->update([
+                    'progress' => 100,
                     'has_passed' => true
                 ]);
 

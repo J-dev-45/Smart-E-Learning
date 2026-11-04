@@ -12,8 +12,8 @@ use App\Models\Modules;
 use App\Models\ModuleStarted;
 use App\Models\Questions;
 use App\Models\StudentAttempts;
+use App\Models\SubjectProgress;
 use App\Models\Subjects;
-use App\Models\SubjectStarted;
 use App\Models\Topics;
 use Illuminate\Http\Request;
 
@@ -25,7 +25,20 @@ class LearnController extends Controller
     // =================================================================================================================================
 
     public function learn(Request $request){
+
         $subject = Subjects::findOrFail($request->subject_id);
+
+        if ($subject->pre_requisite) {
+            $pre_req_has_passed = SubjectProgress::where('user_id', auth()->id())
+                ->where('subject_id', $subject->pre_requisite)
+                ->where('progress', '>=', 100)
+                ->where('has_passed', true)
+                ->exists();
+
+            if (!$pre_req_has_passed) {
+                return redirect()->route('home');
+            }
+        }
 
         $modules = Modules::where('subject_id', $subject->id)
             ->orderBy('order', 'asc')
@@ -62,16 +75,6 @@ class LearnController extends Controller
             }
         }
 
-        $subject_started = SubjectStarted::where('user_id', auth()->id())
-            ->where('subject_id', $subject->id)
-            ->exists();
-
-        if (!$subject_started) {
-            SubjectStarted::create([
-                'user_id' => auth()->id(),
-                'subject_id' => $subject->id
-            ]);
-        }
 
         $user_modules = ModuleQuiz::select('module_quiz.*')
             ->join('modules', 'module_quiz.module_id', '=', 'modules.id')
@@ -115,8 +118,6 @@ class LearnController extends Controller
 
         $subject_id = $subject->id;
 
-        
-
         $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $subject->id)
             ->get();
@@ -148,6 +149,23 @@ class LearnController extends Controller
                 $exam_passed = false;
             }
         }
+
+
+        $subject_progress = SubjectProgress::where('user_id', auth()->id())
+            ->where('subject_id', $subject->id)
+            ->exists();
+
+        if (!$subject_progress) {
+            SubjectProgress::create([
+                'user_id' => auth()->id(),
+                'subject_id' => $subject->id
+            ]);
+        }
+
+        $subject_started = $subject_progress;
+
+        $total_modules = $module_quizzes->count();
+
 
         $remaining_modules = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $subject_id)
@@ -227,6 +245,19 @@ class LearnController extends Controller
     public function learnModule(Request $request)
     {
         $subject = Subjects::where('id', $request->subject_id)->firstOrFail();
+
+        if ($subject->pre_requisite) {
+            $pre_req_has_passed = SubjectProgress::where('user_id', auth()->id())
+                ->where('subject_id', $subject->pre_requisite)
+                ->where('progress', '>=', 100)
+                ->where('has_passed', true)
+                ->exists();
+
+            if (!$pre_req_has_passed) {
+                return redirect()->route('home');
+            }
+        }
+
         $module = Modules::where('id', $request->module_id)->firstOrFail();
         $topics = Topics::where('module_id', $module->id)->orderBy('order', 'ASC')->get();
 
@@ -357,10 +388,18 @@ class LearnController extends Controller
         }
     }
 
-    // =================================================================================================================================
-    // SCROLL MODULE PROGRESS
-    // =================================================================================================================================
+    // =================================================================================================
+    // 
+    //  ███████╗ ██████╗██████╗  ██████╗ ██╗     ██╗         ██████╗ ██████╗  ██████╗  ██████╗ ██████╗ ███████╗███████╗███████╗
+    //  ██╔════╝██╔════╝██╔══██╗██╔═══██╗██║     ██║         ██╔══██╗██╔══██╗██╔═══██╗██╔════╝ ██╔══██╗██╔════╝██╔════╝██╔════╝
+    //  ███████╗██║     ██████╔╝██║   ██║██║     ██║         ██████╔╝██████╔╝██║   ██║██║  ███╗██████╔╝█████╗  ███████╗███████╗
+    //  ╚════██║██║     ██╔══██╗██║   ██║██║     ██║         ██╔═══╝ ██╔══██╗██║   ██║██║   ██║██╔══██╗██╔══╝  ╚════██║╚════██║
+    //  ███████║╚██████╗██║  ██║╚██████╔╝███████╗███████╗    ██║     ██║  ██║╚██████╔╝╚██████╔╝██║  ██║███████╗███████║███████║
+    //  ╚══════╝ ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝    ╚═╝     ╚═╝  ╚═╝ ╚═════╝  ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝╚══════╝
+    // 
+    // =================================================================================================
 
+    
     public function scrollModuleProgress(Request $request)
     {
         $request->validate([
@@ -369,9 +408,68 @@ class LearnController extends Controller
             'module_percent' => 'required|numeric|min:0|max:85',
         ]);
 
+        $subject_progress = SubjectProgress::where('user_id', auth()->id())
+            ->where('subject_id', $request->subject_id)
+            ->first();
+
+        if (!$subject_progress) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Subject progress record not found.'
+            ], 404);
+        }
+
+        $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $request->subject_id)
+            ->get();
+
+        $module = Modules::find($request->module_id);
+
+        if (!$module) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Module not found.'
+            ], 404);
+        }
+
+        $total_modules = $module_quizzes->count();
+
+        if ($total_modules === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No modules found.'
+            ], 422);
+        }
+
+        $module_weight = 80;
+
+        $completed_modules = $module_quizzes->where('has_passed', true)->count();
+
+        $has_coding = $module->has_coding;
+
+        $percent_per_module = $module_weight / $total_modules;
+
+        $module_progress = $percent_per_module;
+
+        $scroll_progress = 0.0;
+        $activity_progress = 0.0;
+        $quiz_progress = 0.0;
+        $coding_progress = 0.0;
+
+        if (!$has_coding) {
+            $scroll_progress = $module_progress / 3;
+            $activity_progress = $module_progress / 3;
+            $quiz_progress = $module_progress / 3;
+        } else {
+            $scroll_progress = $module_progress / 4;
+            $activity_progress = $module_progress / 4;
+            $quiz_progress = $module_progress / 4;
+            $coding_progress = $module_progress / 4;
+        }
+
         $modulePercent = (float) $request->module_percent;
 
-        if ($modulePercent % 5 !== 0) {
+        if (fmod($modulePercent, 5.0) != 0.0) {
             return response()->json([
                 'success' => false,
                 'message' => 'Progress must use 5% increments.'
@@ -393,19 +491,34 @@ class LearnController extends Controller
         $currentProgress = (float) ($module_progress->progress ?? 0);
 
         if ($modulePercent > $currentProgress) {
+
             $module_progress->progress = $modulePercent;
             $module_progress->save();
+
+            if ($modulePercent >= 85 && $currentProgress < 85) {
+                $subject_progress->progress += (float) $scroll_progress;
+                $subject_progress->save();
+            }
         }
 
         return response()->json([
             'success' => true,
-            'module_progress' => $module_progress->fresh()
+            'module_progress' => $module_progress->fresh(),
+            'subject_progress' => $subject_progress->fresh(),
         ]);
     }
 
-    // =================================================================================================================================
-    // SUBMIT MODULE ACTIVITY
-    // =================================================================================================================================
+    // =================================================================================================
+    // 
+    //  ███████╗██╗   ██╗██████╗ ███╗   ███╗██╗████████╗    █████╗  ██████╗████████╗██╗██╗   ██╗██╗████████╗██╗   ██╗
+    //  ██╔════╝██║   ██║██╔══██╗████╗ ████║██║╚══██╔══╝   ██╔══██╗██╔════╝╚══██╔══╝██║██║   ██║██║╚══██╔══╝╚██╗ ██╔╝
+    //  ███████╗██║   ██║██████╔╝██╔████╔██║██║   ██║      ███████║██║        ██║   ██║██║   ██║██║   ██║    ╚████╔╝ 
+    //  ╚════██║██║   ██║██╔══██╗██║╚██╔╝██║██║   ██║      ██╔══██║██║        ██║   ██║╚██╗ ██╔╝██║   ██║     ╚██╔╝  
+    //  ███████║╚██████╔╝██████╔╝██║ ╚═╝ ██║██║   ██║      ██║  ██║╚██████╗   ██║   ██║ ╚████╔╝ ██║   ██║      ██║   
+    //  ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝     ╚═╝╚═╝   ╚═╝      ╚═╝  ╚═╝ ╚═════╝   ╚═╝   ╚═╝  ╚═══╝  ╚═╝   ╚═╝      ╚═╝   
+    // 
+    // =================================================================================================
+    
     
     
     public function submitModuleActivity(Request $request)
@@ -458,6 +571,10 @@ class LearnController extends Controller
             ->where('module_id', $validated['module_id'])
             ->firstOrFail();
 
+        $subject_progress = SubjectProgress::where('user_id', auth()->id())
+            ->where('subject_id', $validated['subject_id'])
+            ->firstOrFail();
+
         foreach ($validated['answers'] as $item) {
             $questionId = $item['question_id'];
             $answer = strtolower(trim($item['answer'] ?? ''));
@@ -475,8 +592,7 @@ class LearnController extends Controller
 
             if ($normalizeAnswer($answer) === $normalizeAnswer($question->answer)) {
                 $score++;
-
-                $points = $points + $question->points;
+                $points += $question->points;
             }
         }
 
@@ -486,18 +602,52 @@ class LearnController extends Controller
 
         $passing_score = (int) ceil($total_questions * ($passing_percent / 100));
 
+        // SUBJECT PROGRESS
+
+        $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $validated['subject_id'])
+            ->get();
+
+        $module = Modules::findOrFail($validated['module_id']);
+
+        $total_modules = $module_quizzes->count();
+
+        if ($total_modules === 0) {
+            return response()->json([
+                'success' => false,
+                'message' => 'No modules found.'
+            ], 422);
+        }
+
+        $module_weight = 80;
+        $completed_modules = $module_quizzes->where('has_passed', true)->count();
+        $has_coding = $module->has_coding;
+
+        $percent_per_module = $module_weight / $total_modules;
+
+        $module_weight_progress = $percent_per_module;
+
+        if (!$has_coding) {
+            $activity_progress = $module_weight_progress / 3;
+        } else {
+            $activity_progress = $module_weight_progress / 4;
+        }
+
         if ($score >= $passing_score) {
 
-            $leaderboard->increment(
-                    'points',
-                    (int) $points
-                );
+            if (!$module_progress->has_passed) {
 
-            $module_progress->update([
-                'progress' => 100,
-                'has_passed' => true,
-            ]);
+                $leaderboard->increment('points', (int) $points);
 
+                $module_progress->update([
+                    'progress' => 100,
+                    'has_passed' => true,
+                ]);
+
+                $subject_progress->progress += (float) $activity_progress;
+                $subject_progress->save();
+
+            }
 
             return response()->json([
                 'success' => true,
@@ -506,7 +656,6 @@ class LearnController extends Controller
                 'answers' => $answered_questions,
             ]);
         }
-
 
         return response()->json([
             'success' => true,
@@ -517,9 +666,17 @@ class LearnController extends Controller
     }
 
 
-    // =================================================================================================================================
-    // RETAKE
-    // =================================================================================================================================
+
+    // =================================================================================================
+    // 
+    //  ██████╗ ███████╗████████╗ █████╗ ██╗  ██╗███████╗     █████╗  ██████╗████████╗██╗██╗   ██╗██╗████████╗██╗   ██╗
+    //  ██╔══██╗██╔════╝╚══██╔══╝██╔══██╗██║ ██╔╝██╔════╝    ██╔══██╗██╔════╝╚══██╔══╝██║██║   ██║██║╚══██╔══╝╚██╗ ██╔╝
+    //  ██████╔╝█████╗     ██║   ███████║█████╔╝ █████╗      ███████║██║        ██║   ██║██║   ██║██║   ██║    ╚████╔╝ 
+    //  ██╔══██╗██╔══╝     ██║   ██╔══██║██╔═██╗ ██╔══╝      ██╔══██║██║        ██║   ██║╚██╗ ██╔╝██║   ██║     ╚██╔╝  
+    //  ██║  ██║███████╗   ██║   ██║  ██║██║  ██╗███████╗    ██║  ██║╚██████╗   ██║   ██║ ╚████╔╝ ██║   ██║      ██║   
+    //  ╚═╝  ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝    ╚═╝  ╚═╝ ╚═════╝   ╚═╝   ╚═╝  ╚═══╝  ╚═╝   ╚═╝      ╚═╝   
+    // 
+    // =================================================================================================
 
     public function retakeActivity(Request $request)
     {
