@@ -22,7 +22,7 @@
             profile-color="{{auth()->user()->profile_color}}"
         ></left-navigation>
 
-        <questions-main
+        <questions-bank
             module-id="{{ $moduleId }}"
             :subject-id='@json($subject_id)'
             :subject-name='@json($subject_name)'
@@ -35,7 +35,7 @@
             user-email="{{ auth()->user()->email }}"
             user-role="{{ auth()->user()->role }}"
             profile-color="{{ auth()->user()->profile_color }}"
-        />
+        ></questions-bank>
 
     </div>
 

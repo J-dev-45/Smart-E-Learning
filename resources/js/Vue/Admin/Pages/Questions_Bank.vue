@@ -277,11 +277,11 @@
 </template>
 
 <script setup>
-import Admin_Menu from '../../Pages/Admin_Menu.vue';
-import View_Question from '../../Modal/View_Question.vue';
-import Edit_Question from '../../Modal/Edit_Question.vue';
-import Delete_Question from '../../Modal/Delete_Question.vue';
-import Add_Question from '../../Modal/Add_Question.vue';
+import Admin_Menu from './Admin_Menu.vue';
+import View_Question from '../Modal/View_Question.vue';
+import Edit_Question from '../Modal/Edit_Question.vue';
+import Delete_Question from '../Modal/Delete_Question.vue';
+import Add_Question from '../Modal/Add_Question.vue';
 import { ref, computed } from 'vue';
 
 const props = defineProps({
