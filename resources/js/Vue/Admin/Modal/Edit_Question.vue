@@ -601,7 +601,7 @@ function closeModal() {
     emit('close-edit');
 }
 
-async function editQuestionForm(Sname, Tname) {
+async function editQuestionForm(Sname, Mname) {
     if (isSubmitting.value) {
         return;
     }
@@ -645,7 +645,8 @@ async function editQuestionForm(Sname, Tname) {
         correct_choice: correct_choice.value || null,
 
         subject_name: Sname,
-        topic_name: Tname
+        // The controller reads $request->module_name
+        module_name: Mname
     };
 
     try {
@@ -674,12 +675,24 @@ async function editQuestionForm(Sname, Tname) {
         }
 
         if (data.success) {
-            emit('question-updated', {
+            const updated = {
                 id: props.questionData.id,
                 question: props.questionData.question,
                 answer: answer,
                 explanation: props.questionData.explanation
-            });
+            };
+
+            // Send the saved choices back so the parent can update its copy
+            if (props.questionData.question_type === 'multipleChoice') {
+                updated.choices = {
+                    choice_A: props.choicesData?.choice_A ?? '',
+                    choice_B: props.choicesData?.choice_B ?? '',
+                    choice_C: props.choicesData?.choice_C ?? '',
+                    choice_D: props.choicesData?.choice_D ?? ''
+                };
+            }
+
+            emit('question-updated', updated);
 
             showToast.value = true;
             message.value = data.message;

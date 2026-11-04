@@ -54,8 +54,6 @@
 
                         <span class="hidden sm:inline">Add Question</span>
                     </button>
-
-                    
                 </div>
             </div>
 
@@ -255,7 +253,6 @@
         :subject-id="props.subjectId"
         @close-add="closeAddQuestionModal"
         @questions-added="questionsAdded"
-        
     />
 
     <!-- EDIT QUESTION MODAL -->
@@ -338,6 +335,29 @@ const delete_question = ref(null);
 
 const localQuestions = ref([...props.questions]);
 
+/*
+|--------------------------------------------------------------------------
+| LOCAL CHOICES
+|--------------------------------------------------------------------------
+| props.choices only holds what Blade rendered on page load. Keep our own
+| copy so newly added / edited questions are reflected without a refresh.
+|--------------------------------------------------------------------------
+*/
+const localChoices = ref([...props.choices]);
+
+const EMPTY_CHOICES = {
+    choice_A: '',
+    choice_B: '',
+    choice_C: '',
+    choice_D: ''
+};
+
+function findChoicesFor(questionId) {
+    return localChoices.value.find(
+        c => String(c.question_id) === String(questionId)
+    );
+}
+
 const searchQuery = ref('');
 
 const QUESTION_TYPE_LABELS = {
@@ -356,7 +376,7 @@ function questionTypeLabel(type) {
 | ADD QUESTIONS
 |--------------------------------------------------------------------------
 */
-function questionsAdded(newQuestions) {
+function questionsAdded(newQuestions, newChoices = []) {
     if (!Array.isArray(newQuestions)) {
         return;
     }
@@ -378,6 +398,20 @@ function questionsAdded(newQuestions) {
     });
 
     localQuestions.value.push(...questionsToAdd);
+
+    // Keep the choices for every new question, even if it is hidden by the
+    // current module filter, so it is correct if the filter changes later.
+    if (Array.isArray(newChoices) && newChoices.length) {
+        const existingChoiceIds = new Set(
+            localChoices.value.map(c => String(c.question_id))
+        );
+
+        const choicesToAdd = newChoices.filter(
+            c => c?.question_id && !existingChoiceIds.has(String(c.question_id))
+        );
+
+        localChoices.value.push(...choicesToAdd);
+    }
 }
 
 /*
@@ -426,20 +460,19 @@ function questionsDeleted(deletedQuestion) {
         q => String(q.id) !== deletedId
     );
 
+    localChoices.value = localChoices.value.filter(
+        c => String(c.question_id) !== deletedId
+    );
+
     delete_question.value = null;
 }
 
 /*
 |--------------------------------------------------------------------------
-| CHOICES
+| CHOICES (state for the edit modal)
 |--------------------------------------------------------------------------
 */
-const q_choices = ref({
-    choice_A: '',
-    choice_B: '',
-    choice_C: '',
-    choice_D: ''
-});
+const q_choices = ref({ ...EMPTY_CHOICES });
 
 /*
 |--------------------------------------------------------------------------
@@ -486,9 +519,7 @@ const filteredQuestions = computed(() => {
 |--------------------------------------------------------------------------
 */
 function openViewModal(question) {
-    const choice = props.choices.find(
-        ch => String(ch.question_id) === String(question.id)
-    );
+    const choice = findChoicesFor(question.id);
 
     selectedQuestion.value = {
         ...question,
@@ -539,21 +570,20 @@ function editQuestionOpen(id) {
     }
 
     if (question.value.question_type === 'multipleChoice') {
-        q_choices.value = props.choices.find(
-            c => String(c.question_id) === String(id)
-        ) || {
-            choice_A: '',
-            choice_B: '',
-            choice_C: '',
-            choice_D: ''
-        };
+        const found = findChoicesFor(id);
+
+        // Copy, so typing in the edit inputs never mutates the stored choices
+        // (cancelling an edit must not change what View shows).
+        q_choices.value = found
+            ? {
+                choice_A: found.choice_A ?? '',
+                choice_B: found.choice_B ?? '',
+                choice_C: found.choice_C ?? '',
+                choice_D: found.choice_D ?? ''
+            }
+            : { ...EMPTY_CHOICES };
     } else {
-        q_choices.value = {
-            choice_A: '',
-            choice_B: '',
-            choice_C: '',
-            choice_D: ''
-        };
+        q_choices.value = { ...EMPTY_CHOICES };
     }
 
     showEditQuestion.value = true;
@@ -563,6 +593,8 @@ function updateQuestionInTable(updatedQuestion) {
     if (!updatedQuestion?.id) {
         return;
     }
+
+    const { choices, ...questionFields } = updatedQuestion;
 
     const index = localQuestions.value.findIndex(
         q => String(q.id) === String(updatedQuestion.id)
@@ -574,8 +606,27 @@ function updateQuestionInTable(updatedQuestion) {
 
     localQuestions.value[index] = {
         ...localQuestions.value[index],
-        ...updatedQuestion
+        ...questionFields
     };
+
+    // Write the saved choices back so View / Edit show them next time
+    if (choices) {
+        const choiceIndex = localChoices.value.findIndex(
+            c => String(c.question_id) === String(updatedQuestion.id)
+        );
+
+        if (choiceIndex !== -1) {
+            localChoices.value[choiceIndex] = {
+                ...localChoices.value[choiceIndex],
+                ...choices
+            };
+        } else {
+            localChoices.value.push({
+                question_id: updatedQuestion.id,
+                ...choices
+            });
+        }
+    }
 }
 
 function closeEditQuestionModal() {
@@ -583,12 +634,7 @@ function closeEditQuestionModal() {
 
     question.value = null;
 
-    q_choices.value = {
-        choice_A: '',
-        choice_B: '',
-        choice_C: '',
-        choice_D: ''
-    };
+    q_choices.value = { ...EMPTY_CHOICES };
 }
 
 /*
@@ -613,10 +659,6 @@ function closeDeleteQuestionModal() {
     showDeleteQuestion.value = false;
     delete_question.value = null;
 }
-
-
-
-
 
 function url(url_name) {
     return url_name.replace(/\s+/g, "_");

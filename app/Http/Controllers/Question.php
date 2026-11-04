@@ -39,10 +39,11 @@ class Question extends Controller
             'test_cases.*.is_hidden' => 'boolean',
         ]);
 
-    
-
         try {
-            $question = DB::transaction(function () use ($input) {
+            // Filled inside the transaction when the question is multiple choice
+            $choices = null;
+
+            $question = DB::transaction(function () use ($input, &$choices) {
                 $questionType = $input['question_type'];
 
                 if ($questionType === 'multipleChoice') {
@@ -62,7 +63,7 @@ class Question extends Controller
                         'points' => 3,
                     ]);
 
-                    Choices::create([
+                    $choices = Choices::create([
                         'question_id' => $question->id,
                         'choice_A' => $input['choice_A'],
                         'choice_B' => $input['choice_B'],
@@ -133,6 +134,9 @@ class Question extends Controller
 
             $question = $question->fresh();
 
+            // Reload so the response has the same shape as the Blade $choices rows
+            $newChoices = $choices ? [$choices->fresh()] : [];
+
             RecentActivity::create([
                 'name' => auth()->user()->name,
                 'action' => 'added_question',
@@ -144,6 +148,7 @@ class Question extends Controller
                 'success' => true,
                 'message' => 'Question added successfully!',
                 'new_questions' => [$question],
+                'new_choices' => $newChoices,
             ]);
         } catch (\Throwable $e) {
             \Log::error('ADD QUESTION ERROR', [

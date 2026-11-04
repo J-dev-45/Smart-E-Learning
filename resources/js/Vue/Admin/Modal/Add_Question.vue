@@ -818,8 +818,9 @@ function cancelModuleChange() {
   }
 }
 
-function handleQuestionsAdded(newQuestions) {
-  emit('questions-added', newQuestions);
+// Forwards questions (and their choices, if any) from the upload preview
+function handleQuestionsAdded(newQuestions, newChoices = []) {
+  emit('questions-added', newQuestions, newChoices);
 }
 
 const question = ref('');
@@ -1072,7 +1073,12 @@ async function addQuestionForm(Mname, Sname) {
     showToast.value = true;
 
     if (Array.isArray(data.new_questions)) {
-      emit('questions-added', data.new_questions);
+      // Send the choices along so View / Edit work without a page refresh
+      emit(
+        'questions-added',
+        data.new_questions,
+        Array.isArray(data.new_choices) ? data.new_choices : []
+      );
     }
 
     resetQuestionForm();
