@@ -103,6 +103,9 @@ Route::middleware(['auth'])->group(function(){
         $module_pretests = ModuleQuiz::where('user_id', auth()->user()->id)->get();
 
         $subjects_progress = SubjectProgress::where('user_id', auth()->id())->get();
+        $completed_subjects = $subjects_progress->where('progress', '>=', 100)
+            ->where('has_passed', true)
+            ->count();
 
         $user_leaderboard = Leaderboard::where('user_id', auth()->id())->exists();
 
@@ -191,7 +194,8 @@ Route::middleware(['auth'])->group(function(){
             'users',
             'subjects_progress',
             'total_score',
-            'accuracy'
+            'accuracy',
+            'completed_subjects'
         ));
     })->name('home');
 

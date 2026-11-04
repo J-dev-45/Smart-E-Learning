@@ -96,7 +96,7 @@
                                 </svg>
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-2xl font-bold leading-tight tabular-nums">0</span>
+                                <span class="text-2xl font-bold leading-tight tabular-nums">{{ $completed_subjects }}</span>
                                 <p class="text-xs font-medium sharedTXTMuted">Completed Subjects</p>
                             </div>
                         </div>
