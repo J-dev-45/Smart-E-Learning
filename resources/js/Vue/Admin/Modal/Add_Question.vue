@@ -3,17 +3,17 @@
     <div
       v-if="showAddQuestion"
       id="addQuestion"
-      class="fixed inset-0 w-screen h-screen bg-black/60 backdrop-blur-sm z-[99] flex items-center justify-center p-4"
+      class="fixed inset-0 w-screen h-screen sharedOverlay backdrop-blur-sm z-[99] flex items-center justify-center p-4"
     >
       <Transition name="modal-scale" appear>
         <div
-          class="relative w-[30%] min-w-[380px] max-w-lg bg-white rounded-xl shadow-2xl shadow-black/30 flex flex-col p-6 gap-5 max-h-[90vh] overflow-hidden"
+          class="relative w-[30%] min-w-[380px] max-w-lg sharedLightBG rounded-xl shadow-2xl sharedShadow flex flex-col p-6 gap-5 max-h-[90vh] overflow-hidden"
         >
           <button
             type="button"
             @click="closeModal"
             aria-label="Close"
-            class="absolute right-4 top-4 p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+            class="absolute right-4 top-4 p-1.5 rounded-md sharedTXTLightFaint sharedLightIconBtn transition-colors cursor-pointer"
           >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
               <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -24,35 +24,35 @@
 
           <div class="w-full flex flex-col gap-1 pr-6 shrink-0">
             <div class="flex items-center gap-3">
-              <div class="shrink-0 w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#8B5CF6" class="size-5">
+              <div class="shrink-0 w-10 h-10 rounded-full sharedStateLightAccent sharedStateTint flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 sharedStateText">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
               </div>
 
               <div class="flex flex-col gap-0.5">
-                <span class="text-lg font-semibold text-gray-900">
+                <span class="text-lg font-semibold sharedTXTOnLight">
                   Add New Question
                 </span>
-                <span class="text-sm text-gray-500">
+                <span class="text-sm sharedTXTLightMuted">
                   Create a new question for your Students.
                 </span>
               </div>
             </div>
 
-            <div class="w-full flex flex-col gap-2 border-b border-gray-100 pb-2 mt-1">
-              <span class="font-semibold text-sm text-gray-700">
+            <div class="w-full flex flex-col gap-2 border-b sharedLightBorder pb-2 mt-1">
+              <span class="font-semibold text-sm sharedTXTOnLight">
                 Question Details
               </span>
 
               <div class="w-full flex items-center flex-wrap shrink-0 gap-2">
-                <span class="py-1 px-2.5 text-xs font-semibold shrink-0 text-blue-600 rounded-md border border-blue-200 bg-blue-50">
+                <span class="py-1 px-2.5 text-xs font-semibold shrink-0 rounded-md border sharedStateLightBrand sharedStatePill">
                   {{ subjectName }}
                 </span>
 
                 <span
                   v-if="effectiveModuleName"
-                  class="py-1 px-2.5 text-xs font-semibold shrink-0 text-purple-600 rounded-md border border-purple-200 bg-purple-100"
+                  class="py-1 px-2.5 text-xs font-semibold shrink-0 rounded-md border sharedStateLightAccent sharedStatePill"
                 >
                   {{ effectiveModuleName }}
                 </span>
@@ -61,7 +61,7 @@
                   v-if="hasModule && subject_modules.length > 1"
                   type="button"
                   @click="changeModule"
-                  class="py-1 px-2.5 text-xs font-semibold shrink-0 text-gray-600 rounded-md border border-gray-200 bg-white hover:bg-gray-50 transition-colors cursor-pointer"
+                  class="py-1 px-2.5 text-xs font-semibold shrink-0 rounded-md border sharedBtnGhostLight sharedLightBG transition-colors cursor-pointer"
                 >
                   Change Module
                 </button>
@@ -70,7 +70,7 @@
 
             <div
               v-if="hasModule"
-              class="w-full flex items-center gap-1 mt-3 p-1 rounded-lg bg-gray-100"
+              class="w-full flex items-center gap-1 mt-3 p-1 rounded-lg sharedLightLineBG"
             >
               <button
                 type="button"
@@ -78,8 +78,8 @@
                 :class="[
                   'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer',
                   entryMode === 'manual'
-                    ? 'bg-white text-[#8B5CF6] shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'sharedLightBG sharedStateLightAccent sharedStateText shadow-sm'
+                    : 'sharedTXTLightMuted sharedHoverBrand'
                 ]"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
@@ -94,8 +94,8 @@
                 :class="[
                   'flex-1 flex items-center justify-center gap-1.5 py-1.5 rounded-md text-xs font-semibold transition-colors cursor-pointer',
                   entryMode === 'upload'
-                    ? 'bg-white text-[#8B5CF6] shadow-sm'
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'sharedLightBG sharedStateLightAccent sharedStateText shadow-sm'
+                    : 'sharedTXTLightMuted sharedHoverBrand'
                 ]"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
@@ -108,7 +108,7 @@
 
           <div v-if="!hasModule" class="w-full flex flex-col gap-4">
             <div class="flex flex-col gap-1.5">
-              <label for="moduleSelect" class="text-sm font-medium text-gray-700">
+              <label for="moduleSelect" class="text-sm font-medium sharedTXTOnLight">
                 Module
               </label>
 
@@ -117,7 +117,7 @@
                   id="moduleSelect"
                   v-model="selected_module_id"
                   @change="finishModuleChange"
-                  class="w-full appearance-none rounded-md border border-gray-300 bg-white py-2 pl-3 pr-9 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]/40 focus:border-[#8B5CF6] hover:border-gray-400 transition-colors cursor-pointer"
+                  class="sharedInput sharedInputHover w-full appearance-none rounded-md border py-2 pl-3 pr-9 text-sm focus:outline-none focus:ring-2 transition-colors cursor-pointer"
                 >
                   <option value="" disabled>Select a module for your question</option>
 
@@ -130,7 +130,7 @@
                   </option>
                 </select>
 
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sharedTXTLightFaint absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                   <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                 </svg>
               </div>
@@ -139,7 +139,7 @@
                 v-if="changingModule"
                 type="button"
                 @click="cancelModuleChange"
-                class="self-start text-xs font-medium text-gray-500 hover:text-gray-700 cursor-pointer mt-1"
+                class="self-start text-xs font-medium sharedTXTLightMuted sharedHoverBrand cursor-pointer mt-1"
               >
                 Cancel module change
               </button>
@@ -157,7 +157,7 @@
               class="w-full flex flex-col gap-2"
             >
               <div class="w-full flex flex-col gap-2 mt-3">
-                <label for="question" class="text-sm font-medium text-gray-700">
+                <label for="question" class="text-sm font-medium sharedTXTOnLight">
                   Question
                 </label>
 
@@ -166,12 +166,12 @@
                   id="question"
                   placeholder="Enter Question"
                   rows="2"
-                  class="w-full border border-gray-300 rounded-md p-2 outline-none text-sm bg-transparent placeholder:text-gray-400 focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors resize-y min-h-[64px]"
+                  class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors resize-y min-h-[64px]"
                 ></textarea>
               </div>
 
               <div class="flex flex-col gap-1.5 py-3">
-                <label for="quizType" class="text-sm font-medium text-gray-700">
+                <label for="quizType" class="text-sm font-medium sharedTXTOnLight">
                   Question Type
                 </label>
 
@@ -179,7 +179,7 @@
                   <select
                     id="quizType"
                     v-model="selected_questionType"
-                    class="w-full appearance-none rounded-md border border-gray-300 bg-white py-2 pl-3 pr-9 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-[#8B5CF6]/40 focus:border-[#8B5CF6] hover:border-gray-400 transition-colors cursor-pointer"
+                    class="sharedInput sharedInputHover w-full appearance-none rounded-md border py-2 pl-3 pr-9 text-sm focus:outline-none focus:ring-2 transition-colors cursor-pointer"
                   >
                     <option value="">Select Question Type</option>
                     <option value="multipleChoice">Multiple Choice</option>
@@ -188,7 +188,7 @@
                     <option value="coding">Coding</option>
                   </select>
 
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-gray-400 absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sharedTXTLightFaint absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                   </svg>
                 </div>
@@ -197,18 +197,18 @@
               <Transition name="mc-slide">
                 <div
                   v-if="mc"
-                  class="w-full flex flex-col gap-2 overflow-hidden rounded-lg border border-gray-200 bg-gray-50 p-4"
+                  class="w-full flex flex-col gap-2 overflow-hidden rounded-lg border sharedLightBorder sharedLightFieldBG p-4"
                 >
                   <div class="flex items-center justify-between">
-                    <label class="text-sm font-medium text-gray-700">Multiple Choice</label>
-                    <span class="text-xs text-gray-400">Select the correct answer</span>
+                    <label class="text-sm font-medium sharedTXTOnLight">Multiple Choice</label>
+                    <span class="text-xs sharedTXTLightFaint">Select the correct answer</span>
                   </div>
 
                   <div class="w-full flex flex-col gap-1">
                     <div class="w-full flex items-center gap-2">
                       <label
                         for="correct_a"
-                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 has-[:checked]:bg-[#8B5CF6] has-[:checked]:text-white has-[:checked]:border-[#8B5CF6]"
+                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors border sharedChoiceLetter"
                       >
                         <input
                           v-model="correct_choice"
@@ -228,15 +228,15 @@
                         placeholder="Enter Choice A"
                         @input="emptyChoices.A = false"
                         :class="[
-                          'w-full border rounded-md p-2 outline-none text-sm bg-white placeholder:text-gray-400 focus:ring-2 transition-colors',
+                          'sharedInput w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors',
                           emptyChoices.A
-                            ? 'border-red-400 bg-red-50/60 focus:border-red-400 focus:ring-red-400/20'
-                            : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'
+                            ? 'sharedStateLightFailed sharedStateBox'
+                            : 'sharedInputHover'
                         ]"
                       >
                     </div>
 
-                    <span v-if="emptyChoices.A" class="pl-11 text-xs text-red-500">
+                    <span v-if="emptyChoices.A" class="pl-11 text-xs sharedTXTDanger">
                       This choice can't be empty
                     </span>
                   </div>
@@ -245,7 +245,7 @@
                     <div class="w-full flex items-center gap-2">
                       <label
                         for="correct_b"
-                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 has-[:checked]:bg-[#8B5CF6] has-[:checked]:text-white has-[:checked]:border-[#8B5CF6]"
+                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors border sharedChoiceLetter"
                       >
                         <input
                           v-model="correct_choice"
@@ -265,15 +265,15 @@
                         placeholder="Enter Choice B"
                         @input="emptyChoices.B = false"
                         :class="[
-                          'w-full border rounded-md p-2 outline-none text-sm bg-white placeholder:text-gray-400 focus:ring-2 transition-colors',
+                          'sharedInput w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors',
                           emptyChoices.B
-                            ? 'border-red-400 bg-red-50/60 focus:border-red-400 focus:ring-red-400/20'
-                            : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'
+                            ? 'sharedStateLightFailed sharedStateBox'
+                            : 'sharedInputHover'
                         ]"
                       >
                     </div>
 
-                    <span v-if="emptyChoices.B" class="pl-11 text-xs text-red-500">
+                    <span v-if="emptyChoices.B" class="pl-11 text-xs sharedTXTDanger">
                       This choice can't be empty
                     </span>
                   </div>
@@ -282,7 +282,7 @@
                     <div class="w-full flex items-center gap-2">
                       <label
                         for="correct_c"
-                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 has-[:checked]:bg-[#8B5CF6] has-[:checked]:text-white has-[:checked]:border-[#8B5CF6]"
+                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors border sharedChoiceLetter"
                       >
                         <input
                           v-model="correct_choice"
@@ -302,15 +302,15 @@
                         placeholder="Enter Choice C"
                         @input="emptyChoices.C = false"
                         :class="[
-                          'w-full border rounded-md p-2 outline-none text-sm bg-white placeholder:text-gray-400 focus:ring-2 transition-colors',
+                          'sharedInput w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors',
                           emptyChoices.C
-                            ? 'border-red-400 bg-red-50/60 focus:border-red-400 focus:ring-red-400/20'
-                            : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'
+                            ? 'sharedStateLightFailed sharedStateBox'
+                            : 'sharedInputHover'
                         ]"
                       >
                     </div>
 
-                    <span v-if="emptyChoices.C" class="pl-11 text-xs text-red-500">
+                    <span v-if="emptyChoices.C" class="pl-11 text-xs sharedTXTDanger">
                       This choice can't be empty
                     </span>
                   </div>
@@ -319,7 +319,7 @@
                     <div class="w-full flex items-center gap-2">
                       <label
                         for="correct_d"
-                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors bg-white text-gray-600 border border-gray-300 hover:bg-gray-100 has-[:checked]:bg-[#8B5CF6] has-[:checked]:text-white has-[:checked]:border-[#8B5CF6]"
+                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors border sharedChoiceLetter"
                       >
                         <input
                           v-model="correct_choice"
@@ -339,32 +339,32 @@
                         placeholder="Enter Choice D"
                         @input="emptyChoices.D = false"
                         :class="[
-                          'w-full border rounded-md p-2 outline-none text-sm bg-white placeholder:text-gray-400 focus:ring-2 transition-colors',
+                          'sharedInput w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors',
                           emptyChoices.D
-                            ? 'border-red-400 bg-red-50/60 focus:border-red-400 focus:ring-red-400/20'
-                            : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'
+                            ? 'sharedStateLightFailed sharedStateBox'
+                            : 'sharedInputHover'
                         ]"
                       >
                     </div>
 
-                    <span v-if="emptyChoices.D" class="pl-11 text-xs text-red-500">
+                    <span v-if="emptyChoices.D" class="pl-11 text-xs sharedTXTDanger">
                       This choice can't be empty
                     </span>
                   </div>
 
                   <div
                     v-if="emptyChoiceAnswer"
-                    class="w-full flex items-start gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2.5 mt-1"
+                    class="w-full flex items-start gap-2 rounded-md border sharedStateLightFailed sharedStateBox px-3 py-2.5 mt-1"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-red-500 shrink-0 mt-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sharedTXTDanger shrink-0 mt-0.5">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0Zm-8.99-3.75h.008v.008h-.008V8.25Z" />
                     </svg>
 
                     <div class="flex flex-col">
-                      <span class="text-red-600 font-semibold text-xs">
+                      <span class="sharedTXTDanger font-semibold text-xs">
                         Assign Correct Answer!
                       </span>
-                      <span class="text-red-500 text-xs">
+                      <span class="sharedTXTDanger text-xs">
                         Please assign the correct answer by choosing A, B, C, or D.
                       </span>
                     </div>
@@ -375,14 +375,14 @@
                   v-else-if="torf"
                   class="w-full flex flex-col gap-2"
                 >
-                  <span class="text-sm font-medium text-gray-700">
+                  <span class="text-sm font-medium sharedTXTOnLight">
                     True or False
                   </span>
 
                   <div class="grid grid-cols-2 gap-3">
                     <label
                       for="answer-true"
-                      class="relative flex items-center justify-center h-12 rounded-lg border cursor-pointer select-none transition-colors text-sm font-medium border-gray-300 text-gray-700 hover:border-gray-400 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:text-violet-700"
+                      class="relative flex items-center justify-center h-12 rounded-lg border cursor-pointer select-none transition-colors text-sm font-medium sharedChoice sharedTXTOnLight"
                     >
                       <input
                         v-model="correct_answer"
@@ -397,7 +397,7 @@
 
                     <label
                       for="answer-false"
-                      class="relative flex items-center justify-center h-12 rounded-lg border cursor-pointer select-none transition-colors text-sm font-medium border-gray-300 text-gray-700 hover:border-gray-400 has-[:checked]:border-violet-500 has-[:checked]:bg-violet-50 has-[:checked]:text-violet-700"
+                      class="relative flex items-center justify-center h-12 rounded-lg border cursor-pointer select-none transition-colors text-sm font-medium sharedChoice sharedTXTOnLight"
                     >
                       <input
                         v-model="correct_answer"
@@ -416,7 +416,7 @@
                   v-else-if="identification"
                   class="w-full flex flex-col gap-2"
                 >
-                  <label for="identification" class="text-sm font-medium text-gray-700">
+                  <label for="identification" class="text-sm font-medium sharedTXTOnLight">
                     Identification
                   </label>
 
@@ -425,7 +425,7 @@
                     type="text"
                     id="identification"
                     placeholder="Enter Identification Answer"
-                    class="w-full border border-gray-300 rounded-md p-2 outline-none text-sm bg-transparent placeholder:text-gray-400 focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors"
+                    class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors"
                   >
                 </div>
 
@@ -434,14 +434,14 @@
                   class="w-full flex flex-col gap-2 mt-3"
                 >
                   <div class="flex items-center justify-between">
-                    <label class="text-sm font-medium text-gray-700">
+                    <label class="text-sm font-medium sharedTXTOnLight">
                       Test Cases
                     </label>
 
                     <button
                       type="button"
                       @click="addTestCase"
-                      class="text-xs font-semibold text-[#8B5CF6] hover:text-[#7C3AED] cursor-pointer"
+                      class="text-xs font-semibold sharedStateLightAccent sharedStateText hover:underline cursor-pointer"
                     >
                       + Add
                     </button>
@@ -452,7 +452,7 @@
                     :key="index"
                     class="w-full flex items-start gap-2"
                   >
-                    <span class="shrink-0 flex items-center justify-center w-6 h-8 rounded-md bg-gray-100 text-xs font-semibold text-gray-500 mt-0.5">
+                    <span class="shrink-0 flex items-center justify-center w-6 h-8 rounded-md sharedLightLineBG text-xs font-semibold sharedTXTLightMuted mt-0.5">
                       {{ index + 1 }}
                     </span>
 
@@ -461,14 +461,14 @@
                         v-model="testCase.scanner_input"
                         placeholder="Scanner Input"
                         rows="3"
-                        class="w-full border border-gray-300 rounded-md p-2 outline-none text-sm bg-transparent placeholder:text-gray-400 focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors resize-y min-h-[72px] font-mono"
+                        class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors resize-y min-h-[72px] font-mono"
                       ></textarea>
 
                       <textarea
                         v-model="testCase.expected_output"
                         placeholder="Expected Output"
                         rows="3"
-                        class="w-full border border-gray-300 rounded-md p-2 outline-none text-sm bg-transparent placeholder:text-gray-400 focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors resize-y min-h-[72px] font-mono scrollbar-thin"
+                        class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors resize-y min-h-[72px] font-mono scrollbar-thin"
                       ></textarea>
                     </div>
 
@@ -477,7 +477,7 @@
                       @click="removeTestCase(index)"
                       :disabled="testCases.length === 1"
                       aria-label="Remove test case"
-                      class="shrink-0 p-1.5 mt-0.5 rounded-md text-gray-400 hover:text-red-500 hover:bg-red-50 transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                      class="shrink-0 p-1.5 mt-0.5 rounded-md sharedTXTLightFaint sharedDangerHover transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -495,7 +495,7 @@
                 "
                 class="w-full flex flex-col gap-2 mt-3"
               >
-                <label for="explanation" class="text-sm font-medium text-gray-700">
+                <label for="explanation" class="text-sm font-medium sharedTXTOnLight">
                   Explanation
                 </label>
 
@@ -504,7 +504,7 @@
                   id="explanation"
                   placeholder="Enter Explanation"
                   rows="2"
-                  class="w-full border border-gray-300 rounded-md p-2 outline-none text-sm bg-transparent placeholder:text-gray-400 focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors resize-y min-h-[64px]"
+                  class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors resize-y min-h-[64px]"
                 ></textarea>
               </div>
 
@@ -512,7 +512,7 @@
                 <button
                   type="button"
                   @click="closeModal"
-                  class="w-1/3 py-2.5 rounded-md text-sm font-medium text-gray-600 border border-gray-300 hover:bg-gray-100 transition-colors cursor-pointer"
+                  class="w-1/3 py-2.5 rounded-md text-sm font-medium border sharedBtnGhostLight transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -520,7 +520,7 @@
                 <button
                   type="submit"
                   :disabled="isSubmitting"
-                  class="w-2/3 py-2.5 rounded-md text-sm font-medium text-white bg-[#8B5CF6] hover:bg-[#7C3AED] active:bg-[#6D28D9] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  class="w-2/3 py-2.5 rounded-md text-sm font-medium sharedBtn transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   <svg
                     v-if="isSubmitting"
@@ -544,11 +544,11 @@
               class="w-full flex flex-col gap-2"
             >
               <div class="w-full flex flex-col gap-2 mt-3">
-                <label class="text-sm font-medium text-gray-700">
+                <label class="text-sm font-medium sharedTXTOnLight">
                   Question File
                 </label>
 
-                <span class="text-xs text-gray-400 -mt-1">
+                <span class="text-xs sharedTXTLightFaint -mt-1">
                   Accepts .docx, and .pdf files containing your questions.
                 </span>
 
@@ -561,22 +561,22 @@
                   :class="[
                     'w-full flex flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed p-8 cursor-pointer transition-colors',
                     isDragging
-                      ? 'border-[#8B5CF6] bg-violet-50'
-                      : 'border-gray-300 bg-gray-50 hover:border-gray-400 hover:bg-gray-100'
+                      ? 'sharedStateLightAccent sharedStateBorder sharedStateTint'
+                      : 'sharedLightFieldBG sharedChoice'
                   ]"
                 >
-                  <div class="shrink-0 w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#8B5CF6" class="size-5">
+                  <div class="shrink-0 w-10 h-10 rounded-full sharedStateLightAccent sharedStateTint flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 sharedStateText">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
                     </svg>
                   </div>
 
                   <div class="flex flex-col items-center gap-0.5 text-center">
-                    <span class="text-sm font-medium text-gray-700">
-                      Drop your file here, or <span class="text-[#8B5CF6]">browse</span>
+                    <span class="text-sm font-medium sharedTXTOnLight">
+                      Drop your file here, or <span class="sharedStateLightAccent sharedStateText">browse</span>
                     </span>
 
-                    <span class="text-xs text-gray-400">
+                    <span class="text-xs sharedTXTLightFaint">
                       Max file size 10MB
                     </span>
                   </div>
@@ -592,20 +592,20 @@
 
                 <div
                   v-else
-                  class="w-full flex items-center gap-3 rounded-lg border border-gray-200 bg-gray-50 p-3"
+                  class="w-full flex items-center gap-3 rounded-lg border sharedLightBorder sharedLightFieldBG p-3"
                 >
-                  <div class="shrink-0 w-9 h-9 rounded-md bg-violet-50 flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#8B5CF6" class="size-4">
+                  <div class="shrink-0 w-9 h-9 rounded-md sharedStateLightAccent sharedStateTint flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sharedStateText">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                     </svg>
                   </div>
 
                   <div class="flex flex-col flex-1 min-w-0">
-                    <span class="text-sm font-medium text-gray-700 truncate">
+                    <span class="text-sm font-medium sharedTXTOnLight truncate">
                       {{ selectedFile.name }}
                     </span>
 
-                    <span class="text-xs text-gray-400">
+                    <span class="text-xs sharedTXTLightFaint">
                       {{ formattedFileSize }}
                     </span>
                   </div>
@@ -614,7 +614,7 @@
                     type="button"
                     @click="removeFile"
                     aria-label="Remove file"
-                    class="shrink-0 p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-200 transition-colors cursor-pointer"
+                    class="shrink-0 p-1.5 rounded-md sharedTXTLightFaint sharedLightIconBtn transition-colors cursor-pointer"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -624,18 +624,18 @@
 
                 <div
                   v-if="emptyFileError"
-                  class="w-full flex items-start gap-2 rounded-md border border-red-200 bg-red-50 px-3 py-2.5 mt-1"
+                  class="w-full flex items-start gap-2 rounded-md border sharedStateLightFailed sharedStateBox px-3 py-2.5 mt-1"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 text-red-500 shrink-0 mt-0.5">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sharedTXTDanger shrink-0 mt-0.5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0Zm-8.99-3.75h.008v.008h-.008V8.25Z" />
                   </svg>
 
                   <div class="flex flex-col">
-                    <span class="text-red-600 font-semibold text-xs">
+                    <span class="sharedTXTDanger font-semibold text-xs">
                       Select a file!
                     </span>
 
-                    <span class="text-red-500 text-xs">
+                    <span class="sharedTXTDanger text-xs">
                       Please choose or drop a file to extract questions from.
                     </span>
                   </div>
@@ -646,7 +646,7 @@
                 <button
                   type="button"
                   @click="closeModal"
-                  class="w-1/3 py-2.5 rounded-md text-sm font-medium text-gray-600 border border-gray-300 hover:bg-gray-100 transition-colors cursor-pointer"
+                  class="w-1/3 py-2.5 rounded-md text-sm font-medium border sharedBtnGhostLight transition-colors cursor-pointer"
                 >
                   Cancel
                 </button>
@@ -654,7 +654,7 @@
                 <button
                   type="submit"
                   :disabled="isSubmitting"
-                  class="w-2/3 py-2.5 rounded-md text-sm font-medium text-white bg-[#8B5CF6] hover:bg-[#7C3AED] active:bg-[#6D28D9] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  class="w-2/3 py-2.5 rounded-md text-sm font-medium sharedBtn transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   <svg
                     v-if="isSubmitting"
@@ -926,6 +926,38 @@ function closeModal() {
   emit('close-add');
 }
 
+function resetQuestionForm() {
+  question.value = '';
+  selected_questionType.value = '';
+  explanation.value = '';
+  correct_choice.value = '';
+  correct_answer.value = '';
+
+  choices.value = {
+    A: '',
+    B: '',
+    C: '',
+    D: ''
+  };
+
+  emptyChoiceAnswer.value = false;
+
+  emptyChoices.value = {
+    A: false,
+    B: false,
+    C: false,
+    D: false
+  };
+
+  testCases.value = [
+    {
+      scanner_input: '',
+      expected_output: '',
+      is_hidden: false
+    }
+  ];
+}
+
 async function addQuestionForm(Mname, Sname) {
   if (!effectiveModuleId.value) {
     message.value = 'Please select a module.';
@@ -1042,6 +1074,8 @@ async function addQuestionForm(Mname, Sname) {
     if (Array.isArray(data.new_questions)) {
       emit('questions-added', data.new_questions);
     }
+
+    resetQuestionForm();
 
     emit('close-add');
 

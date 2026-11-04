@@ -5,14 +5,14 @@
         <div
             v-if="showAddModule"
             id="addModule"
-            class="fixed inset-0 w-screen h-screen bg-black/60 backdrop-blur-sm z-[99] flex items-center justify-center p-4"
+            class="fixed inset-0 w-screen h-screen sharedOverlay backdrop-blur-sm z-[99] flex items-center justify-center p-4"
         >
 
             <Transition name="modal-pop" appear>
 
                 <form
                     @submit.prevent="addModule(subjectName)"
-                    class="relative w-[30%] min-w-[380px] max-w-[440px] bg-white rounded-2xl shadow-2xl shadow-black/30 ring-1 ring-black/5 flex flex-col p-6 gap-5"
+                    class="relative w-[30%] min-w-[380px] max-w-[440px] sharedLightBG rounded-2xl shadow-2xl sharedShadow ring-1 sharedNavRing flex flex-col p-6 gap-5"
                 >
 
                     <!-- CLOSE BUTTON -->
@@ -21,7 +21,7 @@
                         type="button"
                         @click="closeModal"
                         aria-label="Close"
-                        class="absolute right-4 top-4 p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+                        class="absolute right-4 top-4 p-1.5 rounded-md sharedTXTLightFaint sharedLightIconBtn transition-colors cursor-pointer"
                     >
 
                         <svg
@@ -48,15 +48,15 @@
 
                     <div class="w-full flex items-start gap-3 pr-6">
 
-                        <div class="shrink-0 w-10 h-10 rounded-lg bg-[#8B5CF6]/10 flex items-center justify-center">
+                        <div class="shrink-0 w-10 h-10 rounded-lg sharedStateLightAccent sharedStateTint flex items-center justify-center">
 
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="none"
                                 viewBox="0 0 24 24"
                                 stroke-width="1.5"
-                                stroke="#8B5CF6"
-                                class="size-5"
+                                stroke="currentColor"
+                                class="size-5 sharedStateText"
                             >
 
                                 <path
@@ -71,11 +71,11 @@
 
                         <div class="flex flex-col gap-0.5">
 
-                            <span class="text-lg font-semibold text-gray-900 leading-tight">
+                            <span class="text-lg font-semibold sharedTXTOnLight leading-tight">
                                 Add New Module
                             </span>
 
-                            <span class="text-sm text-gray-500">
+                            <span class="text-sm sharedTXTLightMuted">
                                 Create a new module for this subject.
                             </span>
 
@@ -88,11 +88,11 @@
 
                     <div class="w-full flex items-center gap-2">
 
-                        <span class="text-sm font-medium text-gray-700">
+                        <span class="text-sm font-medium sharedTXTOnLight">
                             Subject
                         </span>
 
-                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-[#8B5CF6]/10 text-[#6D28D9]">
+                        <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium sharedStateLightAccent sharedStateTint sharedStateText">
                             {{ subjectName }}
                         </span>
 
@@ -105,7 +105,7 @@
 
                         <label
                             for="module"
-                            class="text-sm font-medium text-gray-700"
+                            class="text-sm font-medium sharedTXTOnLight"
                         >
                             Module Name
                         </label>
@@ -116,10 +116,8 @@
                             placeholder="e.g. Recursion and Backtracking"
                             v-model="module_name"
                             autocomplete="off"
-                            class="w-full px-3 py-2.5 text-sm outline-none border border-gray-300 bg-gray-50 rounded-lg
-                            placeholder:text-gray-400 transition-all duration-150
-                            focus:border-[#8B5CF6] focus:bg-white focus:ring-4 focus:ring-[#8B5CF6]/15
-                            hover:border-gray-400"
+                            class="sharedInput sharedInputHover w-full px-3 py-2.5 text-sm outline-none border rounded-lg
+                            transition-all duration-150 focus:ring-4"
                         >
 
                         <input
@@ -137,8 +135,8 @@
                         <button
                             type="button"
                             @click="closeModal"
-                            class="w-1/3 py-2.5 rounded-lg text-sm font-medium text-gray-600 border border-gray-300
-                            hover:bg-gray-100 hover:border-gray-400 active:bg-gray-200 transition-colors cursor-pointer"
+                            class="w-1/3 py-2.5 rounded-lg text-sm font-medium border sharedBtnGhostLight
+                            transition-colors cursor-pointer"
                         >
                             Cancel
                         </button>
@@ -147,10 +145,9 @@
                         <button
                             type="submit"
                             :disabled="!module_name.trim() || isSubmitting"
-                            class="w-2/3 py-2.5 rounded-lg text-sm font-medium text-white bg-[#8B5CF6]
-                                shadow-sm shadow-[#8B5CF6]/30
-                                hover:bg-[#7C3AED] active:bg-[#6D28D9] transition-colors cursor-pointer
-                                disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-[#8B5CF6]
+                            class="w-2/3 py-2.5 rounded-lg text-sm font-medium sharedBtn
+                                shadow-sm sharedShadow transition-all cursor-pointer
+                                disabled:opacity-50 disabled:cursor-not-allowed
                                 flex items-center justify-center gap-1.5"
                         >
 

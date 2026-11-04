@@ -284,6 +284,16 @@ body { color: var(--text-body); }
 .sharedCaret { caret-color: var(--accent-solid); }
 .sharedSelection::selection { background: color-mix(in srgb, var(--accent-solid) 20%, transparent); }
 
+/* Dark backdrop behind a modal (black at 60%) */
+.sharedOverlay { background: color-mix(in srgb, var(--shadow-color) 60%, transparent); }
+
+/* Close (X) icon button on a white card */
+.sharedLightIconBtn:hover { color: var(--light-muted); background: color-mix(in srgb, var(--light-line) 60%, transparent); }
+
+.sharedChoiceLetter { background: var(--light-bg); color: var(--light-muted); border-color: var(--light-line); }
+.sharedChoiceLetter:hover { background: var(--light-field); }
+.sharedChoiceLetter:has(:checked) { background: var(--accent-solid); color: var(--on-accent-solid); border-color: var(--accent-solid); }
+
 /* ------------------------------------------------------------------
    SCROLLBARS
 ------------------------------------------------------------------- */

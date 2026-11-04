@@ -3,20 +3,20 @@
         <div
             v-if="showEditQuestion"
             id="editQuestion"
-            class="fixed inset-0 w-screen h-screen bg-black/60 backdrop-blur-sm z-[99] flex items-center justify-center p-4"
+            class="fixed inset-0 w-screen h-screen sharedOverlay backdrop-blur-sm z-[99] flex items-center justify-center p-4"
         >
             <Transition name="modal-scale" appear>
                 <form
                     @submit.prevent="editQuestionForm(subjectName, moduleName)"
                     id="whiteBG"
-                    class="relative w-[30%] min-w-[380px] max-w-lg bg-white rounded-xl shadow-2xl shadow-black/30 flex flex-col max-h-[90vh]"
+                    class="relative w-[30%] min-w-[380px] max-w-lg sharedLightBG rounded-xl shadow-2xl sharedShadow flex flex-col max-h-[90vh]"
                 >
                     <!-- CLOSE BUTTON -->
                     <button
                         type="button"
                         @click="closeModal"
                         aria-label="Close"
-                        class="absolute right-4 top-4 p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
+                        class="absolute right-4 top-4 p-1.5 rounded-md sharedTXTLightFaint sharedLightIconBtn transition-colors cursor-pointer"
                     >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -35,16 +35,16 @@
                     </button>
 
                     <!-- HEADER (fixed, matches View_Question.vue) -->
-                    <div class="w-full flex flex-col gap-1 px-6 pt-6 pb-4 pr-12 border-b border-gray-100">
+                    <div class="w-full flex flex-col gap-1 px-6 pt-6 pb-4 pr-12 border-b sharedLightBorder">
                         <div class="flex items-center gap-3">
-                            <div class="shrink-0 w-10 h-10 rounded-full bg-violet-50 flex items-center justify-center">
+                            <div class="shrink-0 w-10 h-10 rounded-full sharedStateLightAccent sharedStateTint flex items-center justify-center">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
                                     stroke-width="1.5"
-                                    stroke="#8B5CF6"
-                                    class="size-5"
+                                    stroke="currentColor"
+                                    class="size-5 sharedStateText"
                                 >
                                     <path
                                         stroke-linecap="round"
@@ -54,12 +54,12 @@
                                 </svg>
                             </div>
 
-                            <span class="text-lg font-semibold text-gray-900">
+                            <span class="text-lg font-semibold sharedTXTOnLight">
                                 Update Question
                             </span>
                         </div>
 
-                        <span class="text-sm text-gray-500 pl-[52px] -mt-1">
+                        <span class="text-sm sharedTXTLightMuted pl-[52px] -mt-1">
                             Update the question for your students.
                         </span>
                     </div>
@@ -68,21 +68,21 @@
                     <div class="w-full flex flex-col px-6 pb-6 pt-4 gap-5 overflow-y-auto scrollbar-thin">
 
                         <!-- QUESTION DETAILS BADGES -->
-                        <div class="w-full flex flex-col gap-2 border-b border-gray-100 pb-2">
-                            <span class="font-semibold text-sm text-gray-700">
+                        <div class="w-full flex flex-col gap-2 border-b sharedLightBorder pb-2">
+                            <span class="font-semibold text-sm sharedTXTOnLight">
                                 Question Details
                             </span>
 
                             <div class="w-full flex items-center flex-wrap shrink-0 gap-2">
-                                <span class="py-1 px-2.5 text-xs font-semibold shrink-0 text-blue-600 rounded-md border border-blue-200 bg-blue-50">
+                                <span class="py-1 px-2.5 text-xs font-semibold shrink-0 rounded-md border sharedStateLightBrand sharedStatePill">
                                     {{ subjectName }}
                                 </span>
 
-                                <span class="py-1 px-2.5 text-xs font-semibold shrink-0 text-yellow-600 rounded-md border border-yellow-200 bg-yellow-50">
+                                <span class="py-1 px-2.5 text-xs font-semibold shrink-0 rounded-md border sharedStateLightAccent sharedStatePill">
                                     {{ moduleName }}
                                 </span>
 
-                                <span class="py-1 px-2.5 text-xs font-semibold shrink-0 text-purple-600 rounded-md border border-purple-200 bg-purple-50">
+                                <span class="py-1 px-2.5 text-xs font-semibold shrink-0 rounded-md border sharedLightBorder sharedLightLineBG sharedTXTLightMuted">
                                     {{ questionTypeLabel }}
                                 </span>
                             </div>
@@ -92,7 +92,7 @@
                         <div class="w-full flex flex-col gap-2">
                             <label
                                 for="question"
-                                class="text-sm font-medium text-gray-700"
+                                class="text-sm font-medium sharedTXTOnLight"
                             >
                                 Question
                             </label>
@@ -102,21 +102,21 @@
                                 type="text"
                                 id="question"
                                 placeholder="Enter Question"
-                                class="w-full border border-gray-300 rounded-md p-2 outline-none text-sm bg-transparent placeholder:text-gray-400 focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors"
+                                class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors"
                             />
                         </div>
 
                         <!-- MULTIPLE CHOICE -->
                         <div
                             v-if="questionData.question_type === 'multipleChoice'"
-                            class="flex flex-col gap-3 rounded-lg border border-gray-200 bg-gray-50 p-4"
+                            class="flex flex-col gap-3 rounded-lg border sharedLightBorder sharedLightFieldBG p-4"
                         >
                             <div class="flex items-center justify-between">
-                                <label class="text-sm font-medium text-gray-700">
+                                <label class="text-sm font-medium sharedTXTOnLight">
                                     Multiple Choice
                                 </label>
 
-                                <span class="text-xs text-gray-400">
+                                <span class="text-xs sharedTXTLightFaint">
                                     Select the correct answer
                                 </span>
                             </div>
@@ -126,13 +126,13 @@
                                 <div class="w-full flex items-center gap-2">
                                     <label
                                         for="correct_a"
-                                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors"
+                                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md border text-xs font-semibold cursor-pointer select-none transition-colors"
                                         :class="
                                             correct_choice === 'A'
-                                                ? 'bg-violet-500 text-white border border-violet-500'
+                                                ? 'sharedStateLightAccent sharedStateSolid sharedStateBorder'
                                                 : choicesData?.choice_A === questionData.answer
-                                                    ? 'bg-green-600 text-white border border-green-600'
-                                                    : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
+                                                    ? 'sharedStateLightPassed sharedStateSolid sharedStateBorder'
+                                                    : 'sharedLightBG sharedBtnGhostLight'
                                         "
                                     >
                                         <input
@@ -153,17 +153,17 @@
                                         placeholder="Enter Choice A"
                                         @input="emptyChoices.A = false"
                                         :class="[
-                                            'w-full border rounded-md p-2 outline-none text-sm bg-white placeholder:text-gray-400 focus:ring-2 transition-colors',
+                                            'sharedInput w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors',
                                             emptyChoices.A
-                                                ? 'border-red-400 bg-red-50/60 focus:border-red-400 focus:ring-red-400/20'
-                                                : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'
+                                                ? 'sharedStateLightFailed sharedStateBox'
+                                                : 'sharedInputHover'
                                         ]"
                                     />
                                 </div>
 
                                 <span
                                     v-if="emptyChoices.A"
-                                    class="pl-11 text-xs text-red-500"
+                                    class="pl-11 text-xs sharedTXTDanger"
                                 >
                                     This choice can't be empty
                                 </span>
@@ -174,13 +174,13 @@
                                 <div class="w-full flex items-center gap-2">
                                     <label
                                         for="correct_b"
-                                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors"
+                                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md border text-xs font-semibold cursor-pointer select-none transition-colors"
                                         :class="
                                             correct_choice === 'B'
-                                                ? 'bg-violet-500 text-white border border-violet-500'
+                                                ? 'sharedStateLightAccent sharedStateSolid sharedStateBorder'
                                                 : choicesData?.choice_B === questionData.answer
-                                                    ? 'bg-green-600 text-white border border-green-600'
-                                                    : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
+                                                    ? 'sharedStateLightPassed sharedStateSolid sharedStateBorder'
+                                                    : 'sharedLightBG sharedBtnGhostLight'
                                         "
                                     >
                                         <input
@@ -201,17 +201,17 @@
                                         placeholder="Enter Choice B"
                                         @input="emptyChoices.B = false"
                                         :class="[
-                                            'w-full border rounded-md p-2 outline-none text-sm bg-white placeholder:text-gray-400 focus:ring-2 transition-colors',
+                                            'sharedInput w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors',
                                             emptyChoices.B
-                                                ? 'border-red-400 bg-red-50/60 focus:border-red-400 focus:ring-red-400/20'
-                                                : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'
+                                                ? 'sharedStateLightFailed sharedStateBox'
+                                                : 'sharedInputHover'
                                         ]"
                                     />
                                 </div>
 
                                 <span
                                     v-if="emptyChoices.B"
-                                    class="pl-11 text-xs text-red-500"
+                                    class="pl-11 text-xs sharedTXTDanger"
                                 >
                                     This choice can't be empty
                                 </span>
@@ -222,13 +222,13 @@
                                 <div class="w-full flex items-center gap-2">
                                     <label
                                         for="correct_c"
-                                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors"
+                                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md border text-xs font-semibold cursor-pointer select-none transition-colors"
                                         :class="
                                             correct_choice === 'C'
-                                                ? 'bg-violet-500 text-white border border-violet-500'
+                                                ? 'sharedStateLightAccent sharedStateSolid sharedStateBorder'
                                                 : choicesData?.choice_C === questionData.answer
-                                                    ? 'bg-green-600 text-white border border-green-600'
-                                                    : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
+                                                    ? 'sharedStateLightPassed sharedStateSolid sharedStateBorder'
+                                                    : 'sharedLightBG sharedBtnGhostLight'
                                         "
                                     >
                                         <input
@@ -249,17 +249,17 @@
                                         placeholder="Enter Choice C"
                                         @input="emptyChoices.C = false"
                                         :class="[
-                                            'w-full border rounded-md p-2 outline-none text-sm bg-white placeholder:text-gray-400 focus:ring-2 transition-colors',
+                                            'sharedInput w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors',
                                             emptyChoices.C
-                                                ? 'border-red-400 bg-red-50/60 focus:border-red-400 focus:ring-red-400/20'
-                                                : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'
+                                                ? 'sharedStateLightFailed sharedStateBox'
+                                                : 'sharedInputHover'
                                         ]"
                                     />
                                 </div>
 
                                 <span
                                     v-if="emptyChoices.C"
-                                    class="pl-11 text-xs text-red-500"
+                                    class="pl-11 text-xs sharedTXTDanger"
                                 >
                                     This choice can't be empty
                                 </span>
@@ -270,13 +270,13 @@
                                 <div class="w-full flex items-center gap-2">
                                     <label
                                         for="correct_d"
-                                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md text-xs font-semibold cursor-pointer select-none transition-colors"
+                                        class="relative flex items-center justify-center w-9 h-9 shrink-0 rounded-md border text-xs font-semibold cursor-pointer select-none transition-colors"
                                         :class="
                                             correct_choice === 'D'
-                                                ? 'bg-violet-500 text-white border border-violet-500'
+                                                ? 'sharedStateLightAccent sharedStateSolid sharedStateBorder'
                                                 : choicesData?.choice_D === questionData.answer
-                                                    ? 'bg-green-600 text-white border border-green-600'
-                                                    : 'bg-white text-gray-600 border border-gray-300 hover:bg-gray-100'
+                                                    ? 'sharedStateLightPassed sharedStateSolid sharedStateBorder'
+                                                    : 'sharedLightBG sharedBtnGhostLight'
                                         "
                                     >
                                         <input
@@ -297,17 +297,17 @@
                                         placeholder="Enter Choice D"
                                         @input="emptyChoices.D = false"
                                         :class="[
-                                            'w-full border rounded-md p-2 outline-none text-sm bg-white placeholder:text-gray-400 focus:ring-2 transition-colors',
+                                            'sharedInput w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors',
                                             emptyChoices.D
-                                                ? 'border-red-400 bg-red-50/60 focus:border-red-400 focus:ring-red-400/20'
-                                                : 'border-gray-300 focus:border-[#8B5CF6] focus:ring-[#8B5CF6]/20'
+                                                ? 'sharedStateLightFailed sharedStateBox'
+                                                : 'sharedInputHover'
                                         ]"
                                     />
                                 </div>
 
                                 <span
                                     v-if="emptyChoices.D"
-                                    class="pl-11 text-xs text-red-500"
+                                    class="pl-11 text-xs sharedTXTDanger"
                                 >
                                     This choice can't be empty
                                 </span>
@@ -319,7 +319,7 @@
                             v-else-if="questionData.question_type === 'TorF'"
                             class="w-full flex flex-col gap-2"
                         >
-                            <span class="text-sm font-medium text-gray-700">
+                            <span class="text-sm font-medium sharedTXTOnLight">
                                 True or False
                             </span>
 
@@ -330,10 +330,10 @@
                                     class="relative flex items-center justify-center h-12 rounded-lg border cursor-pointer select-none transition-colors text-sm font-medium"
                                     :class="
                                         question_answer === 'True'
-                                            ? 'border-violet-500 bg-violet-50 text-violet-700'
+                                            ? 'sharedStateLightAccent sharedStateBorder sharedStateTint sharedStateText'
                                             : questionData.answer === 'True'
-                                                ? 'border-green-300 bg-green-50 text-green-600 hover:border-green-400'
-                                                : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                                                ? 'sharedStateLightPassed sharedStateBox sharedStateText'
+                                                : 'sharedLightBG sharedChoice sharedTXTOnLight'
                                     "
                                 >
                                     <input
@@ -354,10 +354,10 @@
                                     class="relative flex items-center justify-center h-12 rounded-lg border cursor-pointer select-none transition-colors text-sm font-medium"
                                     :class="
                                         question_answer === 'False'
-                                            ? 'border-violet-500 bg-violet-50 text-violet-700'
+                                            ? 'sharedStateLightAccent sharedStateBorder sharedStateTint sharedStateText'
                                             : questionData.answer === 'False'
-                                                ? 'border-green-300 bg-green-50 text-green-600 hover:border-green-400'
-                                                : 'border-gray-300 bg-white text-gray-700 hover:border-gray-400'
+                                                ? 'sharedStateLightPassed sharedStateBox sharedStateText'
+                                                : 'sharedLightBG sharedChoice sharedTXTOnLight'
                                     "
                                 >
                                     <input
@@ -381,7 +381,7 @@
                         >
                             <label
                                 for="identification"
-                                class="text-sm font-medium text-gray-700"
+                                class="text-sm font-medium sharedTXTOnLight"
                             >
                                 Identification
                             </label>
@@ -391,7 +391,7 @@
                                 type="text"
                                 id="identification"
                                 placeholder="Enter Identification Answer"
-                                class="w-full border border-gray-300 rounded-md p-2 outline-none text-sm bg-transparent placeholder:text-gray-400 focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors"
+                                class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors"
                             />
                         </div>
 
@@ -402,7 +402,7 @@
                         >
                             <label
                                 for="explanation"
-                                class="text-sm font-medium text-gray-700"
+                                class="text-sm font-medium sharedTXTOnLight"
                             >
                                 Explanation
                             </label>
@@ -412,7 +412,7 @@
                                 id="explanation"
                                 rows="3"
                                 placeholder="Explain why this is the correct answer"
-                                class="w-full border border-gray-300 rounded-md p-2 outline-none text-sm bg-transparent placeholder:text-gray-400 focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors resize-none"
+                                class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors resize-none"
                             ></textarea>
                         </div>
 
@@ -423,7 +423,7 @@
                         >
                             <label
                                 for="expected_output"
-                                class="text-sm font-medium text-gray-700"
+                                class="text-sm font-medium sharedTXTOnLight"
                             >
                                 Expected Output
                             </label>
@@ -433,7 +433,7 @@
                                 id="expected_output"
                                 rows="3"
                                 placeholder="Enter Expected Output"
-                                class="w-full border border-green-200 rounded-lg p-2.5 outline-none text-sm font-mono text-green-700 bg-green-50 placeholder:text-green-400/60 placeholder:font-sans focus:border-[#8B5CF6] focus:ring-2 focus:ring-[#8B5CF6]/20 transition-colors resize-y min-h-[80px]"
+                                class="sharedInput sharedStateLightPassed sharedStateBox sharedTXTLightSuccess w-full border rounded-lg p-2.5 outline-none text-sm font-mono placeholder:font-sans focus:ring-2 transition-colors resize-y min-h-[80px]"
                             ></textarea>
                         </div>
 
@@ -442,7 +442,7 @@
                             <button
                                 type="button"
                                 @click="closeModal"
-                                class="w-1/3 py-2.5 rounded-md text-sm font-medium text-gray-600 border border-gray-300 hover:bg-gray-100 transition-colors cursor-pointer"
+                                class="w-1/3 py-2.5 rounded-md text-sm font-medium border sharedBtnGhostLight transition-colors cursor-pointer"
                             >
                                 Cancel
                             </button>
@@ -450,7 +450,7 @@
                             <button
                                 type="submit"
                                 :disabled="isSubmitting"
-                                class="w-2/3 py-2.5 rounded-md text-sm font-medium text-white bg-[#8B5CF6] hover:bg-[#7C3AED] active:bg-[#6D28D9] transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                                class="w-2/3 py-2.5 rounded-md text-sm font-medium sharedBtn transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                             >
                                 <svg
                                     v-if="isSubmitting"
