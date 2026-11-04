@@ -13,6 +13,7 @@ class Subjects extends Model
         'order',
         'subject_name',
         'subject_code',
+        'pre_requisite',
         'slug'
     ];
 }

@@ -1,3 +1,4 @@
+
 <template>
     <Transition name="modal-fade">
         <div
@@ -33,7 +34,7 @@
                                 Update Subject
                             </span>
                             <span class="text-sm sharedTXTLightMuted">
-                                Update subject name and code.
+                                Update subject name, code and prerequisite.
                             </span>
                         </div>
                     </div>
@@ -66,6 +67,41 @@
                             required
                             class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors"
                         />
+                    </div>
+
+                    <div class="w-full flex flex-col gap-2">
+                        <div class="flex items-center justify-between">
+                            <label for="prerequisite" class="text-sm font-medium sharedTXTOnLight">
+                                Prerequisite
+                            </label>
+                            <span class="text-xs sharedTXTLightFaint">Optional</span>
+                        </div>
+
+                        <div class="relative">
+                            <select
+                                id="prerequisite"
+                                v-model="prerequisite_id"
+                                class="sharedInput sharedInputHover w-full appearance-none border rounded-md p-2 pr-9 outline-none text-sm focus:ring-2 transition-colors cursor-pointer"
+                            >
+                                <option value="">None</option>
+
+                                <option
+                                    v-for="subject in availableSubjects"
+                                    :key="subject.id"
+                                    :value="String(subject.id)"
+                                >
+                                    {{ subject.subject_code ? `${subject.subject_code} - ${subject.subject_name}` : subject.subject_name }}
+                                </option>
+                            </select>
+
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sharedTXTLightFaint absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                            </svg>
+                        </div>
+
+                        <span class="text-xs sharedTXTLightFaint">
+                            Students must pass this subject before they can take this one.
+                        </span>
                     </div>
 
                     <div class="w-full flex gap-3 mt-0.5">
@@ -109,7 +145,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 import Toast from '../components/Toast.vue'
 
 const props = defineProps({
@@ -120,6 +156,10 @@ const props = defineProps({
     subjectData: {
         type: Object,
         default: () => ({})
+    },
+    subjects: {
+        type: Array,
+        default: () => []
     }
 })
 
@@ -131,6 +171,74 @@ const emit = defineEmits([
 const showToast = ref(false)
 const message = ref('')
 const isSubmitting = ref(false)
+const prerequisite_id = ref('')
+
+watch(
+    () => [
+        props.showEditSubject,
+        props.subjectData?.id,
+        props.subjectData?.prerequisite_id
+    ],
+    () => {
+        if (props.showEditSubject) {
+            const value = props.subjectData?.prerequisite_id
+
+            prerequisite_id.value =
+                value !== null && value !== undefined && value !== ''
+                    ? String(value)
+                    : ''
+        }
+    },
+    { immediate: true }
+)
+
+const availableSubjects = computed(() => {
+    const currentId = String(props.subjectData?.id ?? '')
+    const selectedPrerequisiteId = String(prerequisite_id.value ?? '')
+
+    const byId = new Map(
+        props.subjects.map(s => [String(s.id), s])
+    )
+
+    const dependsOnCurrent = (subject) => {
+        const seen = new Set()
+        let cursor = subject
+
+        while (cursor) {
+            const cursorId = String(cursor.id)
+
+            if (cursorId === currentId) return true
+            if (seen.has(cursorId)) break
+
+            seen.add(cursorId)
+
+            const prerequisiteId = cursor.prerequisite_id
+
+            if (
+                prerequisiteId === null ||
+                prerequisiteId === undefined ||
+                prerequisiteId === ''
+            ) {
+                break
+            }
+
+            cursor = byId.get(String(prerequisiteId))
+        }
+
+        return false
+    }
+
+    return props.subjects.filter(subject => {
+        const subjectId = String(subject.id)
+
+        if (subjectId === currentId) return false
+
+        return (
+            !dependsOnCurrent(subject) ||
+            subjectId === selectedPrerequisiteId
+        )
+    })
+})
 
 function closeModal() {
     emit('close')
@@ -160,6 +268,12 @@ async function editSubjectForm(id) {
         .querySelector('meta[name="csrf-token"]')
         ?.getAttribute('content')
 
+    const selectedPrereq = props.subjects.find(
+        s => String(s.id) === prerequisite_id.value
+    )
+
+    const prerequisiteId = selectedPrereq ? selectedPrereq.id : null
+
     try {
         const response = await fetch('/editSubject', {
             method: 'PUT',
@@ -171,7 +285,8 @@ async function editSubjectForm(id) {
             body: JSON.stringify({
                 subject_id: id,
                 new_subject_name: subjectName,
-                new_subject_code: subjectCode
+                new_subject_code: subjectCode,
+                new_prerequisite_id: prerequisiteId
             })
         })
 
@@ -184,7 +299,8 @@ async function editSubjectForm(id) {
             emit('subject-updated', {
                 id: id,
                 subject_name: subjectName,
-                subject_code: subjectCode
+                subject_code: subjectCode,
+                prerequisite_id: prerequisiteId
             })
 
             emit('close')

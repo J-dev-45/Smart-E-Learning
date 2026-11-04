@@ -1,3 +1,4 @@
+
 <template>
     <div class="col-span-full flex items-center justify-end">
         <button
@@ -12,6 +13,7 @@
         </button>
     </div>
 
+    <!-- SUBJECT CARDS -->
     <div
         v-for="subject in localSubjects"
         :key="subject.id"
@@ -54,12 +56,13 @@
                     class="flex min-w-0 flex-1 items-center justify-center gap-2 rounded-xl sharedBtn py-2.5 text-center text-xs font-bold transition-all duration-200 active:scale-[0.98] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
                 >
                     View
+
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-3.5 transition-transform duration-300 group-hover:translate-x-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                     </svg>
                 </a>
 
-                <!-- Edit (neutral, amber on hover, same as Demote) -->
+                <!-- Edit -->
                 <button
                     type="button"
                     @click="openEditSubject(subject)"
@@ -88,19 +91,24 @@
         </div>
     </div>
 
+    <!-- ADD SUBJECT -->
     <Add_Subject
         :show-add-subject="addSubject"
+        :subjects="localSubjects"
         @close-add="closeAdd"
         @new-subject="handleNewSubject"
     />
 
+    <!-- EDIT SUBJECT -->
     <Edit_Subject
         :show-edit-subject="showEditSubject"
         :subject-data="selectedEditSubject"
+        :subjects="localSubjects"
         @close="closeEditSubject"
         @subject-updated="handleSubjectUpdated"
     />
 
+    <!-- DELETE SUBJECT -->
     <Delete_Subject
         :show-delete-subject="showDeleteSubject"
         :subject-id="selectedDeleteSubject_id"
@@ -112,17 +120,27 @@
 
 <script setup>
 import { ref, watch } from 'vue'
+
 import Add_Subject from '../Modal/Add_Subject.vue'
 import Edit_Subject from '../Modal/Edit_Subject.vue'
 import Delete_Subject from '../Modal/Delete_Subject.vue'
 
 const props = defineProps({
-    subjectsData: { type: Array, required: true },
-    modulesData: { type: Array, required: true },
+    subjectsData: {
+        type: Array,
+        required: true
+    },
+
+    modulesData: {
+        type: Array,
+        required: true
+    }
 })
 
+// Shared reactive subject list
 const localSubjects = ref([...props.subjectsData])
 
+// Sync when parent provides updated subjects
 watch(
     () => props.subjectsData,
     (newSubjects) => {
@@ -131,11 +149,14 @@ watch(
     { deep: true }
 )
 
+// ADD SUBJECT STATE
 const addSubject = ref(false)
 
+// EDIT SUBJECT STATE
 const showEditSubject = ref(false)
 const selectedEditSubject = ref(null)
 
+// DELETE SUBJECT STATE
 const showDeleteSubject = ref(false)
 const selectedDeleteSubject_id = ref(null)
 const selectedDeleteSubject_name = ref('')
@@ -149,7 +170,11 @@ function closeAdd() {
 }
 
 function handleNewSubject(subject) {
-    if (localSubjects.value.some(item => item.id === subject.id)) return
+    const exists = localSubjects.value.some(
+        item => String(item.id) === String(subject.id)
+    )
+
+    if (exists) return
 
     localSubjects.value.push(subject)
 }
@@ -166,7 +191,7 @@ function closeEditSubject() {
 
 function handleSubjectUpdated(updatedSubject) {
     const index = localSubjects.value.findIndex(
-        subject => subject.id === updatedSubject.id
+        subject => String(subject.id) === String(updatedSubject.id)
     )
 
     if (index !== -1) {
@@ -191,7 +216,7 @@ function closeDeleteSubject() {
 
 function handleSubjectDeleted(deletedSubjectId) {
     localSubjects.value = localSubjects.value.filter(
-        subject => subject.id !== deletedSubjectId
+        subject => String(subject.id) !== String(deletedSubjectId)
     )
 
     closeDeleteSubject()
@@ -207,10 +232,11 @@ function url(url_name) {
     return url_name.replace(/\s+/g, '_')
 }
 
+// SUBJECT ICONS
 const icons = [
     {
         subject: 'Discrete Mathematics',
-        d: 'M12 5 5 17M12 5l7 12M5 17h14M12 5v7M5 17l7-5M19 17l-7-5M10.7 5a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 1 0-2.6 0M3.7 17a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 1 0-2.6 0M17.7 17a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 1 0-2.6 0M10.7 12a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 1 0-2.6 0'
+        d: 'M12 5 5 17M12 5l7 12M5 17h14M12 5v7M5 17l7-5M19 17l-7-5M10.7 5a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 0 0-2.6 0M3.7 17a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 0 0-2.6 0M17.7 17a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 0 0-2.6 0M10.7 12a1.3 1.3 0 1 0 2.6 0 1.3 1.3 0 0 0-2.6 0'
     },
     {
         subject: 'Introduction to Computing',
@@ -227,6 +253,6 @@ const icons = [
     {
         subject: 'Computer Programming 2',
         d: 'm14.25 9.75 3 3-3 3m-4.5 0-3-3 3-3M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z'
-    },
+    }
 ]
 </script>

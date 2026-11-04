@@ -72,6 +72,46 @@
                 >
             </div>
 
+            <!-- PREREQUISITE -->
+            <div class="w-full flex flex-col gap-1.5">
+                <div class="flex items-center justify-between">
+                    <label
+                        for="prerequisite"
+                        class="text-sm font-medium sharedTXTOnLight"
+                    >
+                        Prerequisite
+                    </label>
+
+                    <span class="text-xs sharedTXTLightFaint">Optional</span>
+                </div>
+
+                <div class="relative">
+                    <select
+                        id="prerequisite"
+                        v-model="prerequisite_id"
+                        class="w-full appearance-none px-3 py-2.5 pr-9 text-sm outline-none border sharedInput sharedInputHover rounded-lg transition-all duration-150 focus:ring-4 cursor-pointer"
+                    >
+                        <option value="">None</option>
+
+                        <option
+                            v-for="subject in subjects"
+                            :key="subject.id"
+                            :value="String(subject.id)"
+                        >
+                            {{ subject.subject_code ? `${subject.subject_code} - ${subject.subject_name}` : subject.subject_name }}
+                        </option>
+                    </select>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sharedTXTLightFaint absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </div>
+
+                <span class="text-xs sharedTXTLightFaint">
+                    Students must pass this subject before they can take the new one.
+                </span>
+            </div>
+
             <div class="w-full flex gap-3 mt-1">
                 <button
                     type="button"
@@ -111,7 +151,9 @@ defineProps({
     showAddSubject: {
         type: Boolean,
         default: false
-    }
+    },
+    // Existing subjects, used as the prerequisite options
+    subjects: { type: Array, default: () => []}
 })
 
 const emit = defineEmits(['close-add', 'new-subject'])
@@ -122,6 +164,7 @@ function closeAdd() {
 
 const subject_name = ref('')
 const subject_code = ref('')
+const prerequisite_id = ref('')
 const message = ref('')
 const showToast = ref(false)
 const isSubmitting = ref(false)
@@ -163,7 +206,8 @@ async function addSubject() {
             },
             body: JSON.stringify({
                 subject_name: subject_name.value.trim(),
-                subject_code: subject_code.value.trim()
+                subject_code: subject_code.value.trim(),
+                prerequisite_id: prerequisite_id.value || null
             })
         })
 
@@ -181,6 +225,7 @@ async function addSubject() {
 
             subject_name.value = ''
             subject_code.value = ''
+            prerequisite_id.value = ''
 
             emit('new-subject', data.subject)
             emit('close-add')

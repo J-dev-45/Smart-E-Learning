@@ -43,6 +43,7 @@ class SubjectController extends Controller
         $validated = $request->validate([
             'subject_name' => 'required|string|max:100',
             'subject_code' => 'required|string|max:10',
+            'prerequisite_id' => 'nullable|uuid|exists:subjects,id'
         ]);
 
         $max_order = Subjects::max('order');
@@ -51,10 +52,12 @@ class SubjectController extends Controller
         $subjects = Subjects::create([
             'subject_name' => $validated['subject_name'],
             'subject_code' => $validated['subject_code'],
+            'pre_requisite' => $validated['prerequisite_id'],
             'slug' => Str::slug($validated['subject_name']),
             'order' => $next_order
         ]);
 
+        $subjects->setAttribute('prerequisite_id', $subjects->pre_requisite);
         RecentActivity::create([
             'name' => auth()->user()->name,
             'action' => 'added_subject',
@@ -74,14 +77,17 @@ class SubjectController extends Controller
         $input = $request->validate([
             'new_subject_name' => 'required|string|max:255',
             'new_subject_code' => 'required|string|max:10',
+            'new_prerequisite_id' => 'nullable|uuid|exists:subjects,id'
         ]);
         $subject = Subjects::find($request->subject_id);
 
         $subject->update([
             'subject_name' => $input['new_subject_name'],
             'subject_code' => $input['new_subject_code'],
+            'pre_requisite' => $input['new_prerequisite_id'],
             'slug' => Str::slug($input['new_subject_name'])
         ]);
+
 
         RecentActivity::create([
             'name' => auth()->user()->name,
@@ -105,8 +111,8 @@ class SubjectController extends Controller
         if (!$subject) {
             return response()->json([
                 'success' => false,
-                'message' => 'subject not found!'
-            ], 444);
+                'message' => 'Subject not found!'
+            ], 404);
         }
 
         $subjectName = $subject->subject_name;
@@ -117,13 +123,12 @@ class SubjectController extends Controller
         RecentActivity::create([
             'name' => auth()->user()->name,
             'action' => 'deleted_subject',
-            'subject' => $request->subject_name,
             'subject' => $subjectName
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'subject deleted Successfully!',
+            'message' => 'Subject deleted successfully!',
             'deleted_subject_id' => $subjectId
         ]);
     }

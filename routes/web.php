@@ -29,8 +29,8 @@ use App\Models\ModuleQuiz;
 use App\Models\Modules;
 use App\Models\Questions;
 use App\Models\RecentActivity;
+use App\Models\SubjectProgress;
 use App\Models\Subjects;
-use App\Models\SubjectStarted;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -102,7 +102,7 @@ Route::middleware(['auth'])->group(function(){
         $modules = Modules::all();
         $module_pretests = ModuleQuiz::where('user_id', auth()->user()->id)->get();
 
-        $subjects_started = SubjectStarted::where('user_id', auth()->id())->get();
+        $subjects_progress = SubjectProgress::where('user_id', auth()->id())->get();
 
         $user_leaderboard = Leaderboard::where('user_id', auth()->id())->exists();
 
@@ -139,7 +139,7 @@ Route::middleware(['auth'])->group(function(){
                 return $user;
         });
 
-        $subjects_passed_ids = SubjectStarted::where('user_id', auth()->id())
+        $subjects_passed_ids = SubjectProgress::where('user_id', auth()->id())
             ->where('has_passed', true)
             ->pluck('subject_id');
 
@@ -189,7 +189,7 @@ Route::middleware(['auth'])->group(function(){
             'module_pretests',
             'leaderboard',
             'users',
-            'subjects_started',
+            'subjects_progress',
             'total_score',
             'accuracy'
         ));
@@ -287,7 +287,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     Route::get('/subjects', function(){
 
-        $subjects = Subjects::select('id', 'subject_name', 'subject_code', 'slug', 'order')
+        $subjects = Subjects::select('id', 'subject_name', 'subject_code', 'pre_requisite as prerequisite_id','slug', 'order')
             ->orderBy('order', 'asc')
             ->get();
         $modules = Modules::select( 'id', 'order', 'subject_id', 'module_name' )

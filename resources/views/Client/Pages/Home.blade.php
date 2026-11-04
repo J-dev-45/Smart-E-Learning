@@ -124,7 +124,7 @@
                         :subjects-data='@json($subjects)'
                         :modules-data='@json($modules)'
                         :pretest-data='@json($module_pretests)'
-                        :subjects-started='@json($subjects_started)'
+                        :subjects-progress='@json($subjects_progress)'
                     ></subjects-card>
 
                 </div>
