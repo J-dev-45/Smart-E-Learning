@@ -10,6 +10,9 @@
 
 </head>
 <body class="w-full h-screen overflow-hidden sharedBG">
+    @include('Global.Loading_Screen', [
+        'logo' => asset('images/Components/Logo.png')
+    ])
     <div id="app" class="flex flex-col h-screen w-screen overflow-hidden">
 
 

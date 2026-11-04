@@ -10,7 +10,10 @@
 </head>
 <body class="w-screen min-h-screen overflow-x-hidden ">
     @vite(['resources/js/app.js'])
-    @include('Global.Skeleton_Loading.Client_Navigation')
+    {{-- @include('Global.Skeleton_Loading.Client_Navigation') --}}
+    @include('Global.Loading_Screen', [
+        'logo' => asset('images/Components/Logo.png')
+    ])
     <div id="app" class="w-screen flex flex-col overflow-x-hidden min-h-screen relative ">
 
      

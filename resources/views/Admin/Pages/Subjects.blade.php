@@ -11,6 +11,9 @@
 <body class="h-dvh w-full overflow-hidden">
 
     @vite(['resources/js/app.js'])
+    @include('Global.Loading_Screen', [
+        'logo' => asset('images/Components/Logo.png')
+    ])
     <div id="app" class="h-full">
 
         <left-navigation

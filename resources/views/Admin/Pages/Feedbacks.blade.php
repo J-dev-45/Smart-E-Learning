@@ -9,7 +9,9 @@
     @vite(['resources/css/app.css'])
 </head>
 <body class="h-dvh w-full overflow-hidden">
-
+    @include('Global.Loading_Screen', [
+        'logo' => asset('images/Components/Logo.png')
+    ])
     <div id="app" class="h-full">
 
         <left-navigation
