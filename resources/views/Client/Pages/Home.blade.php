@@ -97,7 +97,7 @@
                             </div>
                             <div class="flex flex-col">
                                 <span class="text-2xl font-bold leading-tight tabular-nums">0</span>
-                                <p class="text-xs font-medium sharedTXTMuted">Completed</p>
+                                <p class="text-xs font-medium sharedTXTMuted">Completed Subjects</p>
                             </div>
                         </div>
 
