@@ -70,7 +70,8 @@
 
 <script setup>
 import { ref } from 'vue';
-import Update_Profile from './Update_Profile.vue';
+import Update_Profile from '../Modals/Update_Profile.vue';
+
 
 const props = defineProps({
     profileColor: {

@@ -186,8 +186,8 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
-import Feedback_Form from './Feedback_Form.vue'
-import Change_Password from './Change_Password.vue'
+import Feedback_Form from '../Modals/Feedback_Form.vue';
+import Change_Password from '../Modals/Change_Password.vue';
 
 const props = defineProps({
     showUserMenu: { type: Boolean, default: true },

@@ -5,23 +5,22 @@ use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\QuestionImportController;
 use App\Http\Controllers\Admin\SubjectController;
+use App\Http\Controllers\Admin\TopicController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\ResendOTP;
+use App\Http\Controllers\Auth\VerifyOTPController;
 use App\Http\Controllers\Client\AssessmentController;
 use App\Http\Controllers\Client\CodePretestController;
+use App\Http\Controllers\Client\CodeQuizController;
+use App\Http\Controllers\Client\CodeRunnerController;
 use App\Http\Controllers\Client\LearnController;
 use App\Http\Controllers\Client\Pretest;
-use App\Http\Controllers\CodeQuizController;
-use App\Http\Controllers\CodeRunnerController;
-use App\Http\Controllers\Logout;
-use App\Http\Controllers\Pages\QuestionsPage;
-use App\Http\Controllers\ProfileAvatarController;
-use App\Http\Controllers\TopicController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\VerifyOTP;
+use App\Http\Controllers\Client\ProfileAvatarController;
 use App\Models\AnsweredAssessmentQuestions;
 use App\Models\AnsweredModuleQuestions;
 use App\Models\Feedback;
@@ -63,7 +62,7 @@ Route::middleware(['guest'])->group(function(){
 
     Route::post('/login',[LoginController::class, 'login'])->middleware('throttle:3,1');
     Route::post('/register', [RegisterController::class, 'register'])->middleware('throttle:3,1');
-    Route::post('/verify_otp', [VerifyOTP::class, 'verify'])
+    Route::post('/verify_otp', [VerifyOTPController::class, 'verify'])
     ->middleware('throttle:otp-verify');
 
     Route::get('/otp/resend-status', [ResendOTP::class, 'status'])
@@ -255,7 +254,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('assessment.taking');
 
     Route::put('/change-password', [PasswordController::class, 'changePassword']);
-    Route::post('/logout_student', [Logout::class, 'logout']);
+    Route::post('/logout_student', [LogoutController::class, 'logout']);
 
 });
 
@@ -372,7 +371,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     Route::post('/extractQuestions', [QuestionImportController::class, 'extractQuestions']);
     Route::post('/importQuestions', [QuestionImportController::class, 'importQuestions']); 
 
-    Route::get('/questions/{to_view}/{subject_name}/{subject_id}/{module_name}/{module_id}',[QuestionsPage::class, 'questions']);
+    Route::get('/questions/{to_view}/{subject_name}/{subject_id}/{module_name}/{module_id}',[QuestionController::class, 'questionsBank']);
 
 
     // MODULES
@@ -386,7 +385,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     Route::delete('/deleteTopic', [TopicController::class, 'deleteTopic']);
 
     // AUTH
-    Route::post('/logout', [Logout::class, 'logout']);
+    Route::post('/logout', [LogoutController::class, 'logout']);
 
     Route::put('/admin-change-password', [PasswordController::class, 'changePassword']);
 });

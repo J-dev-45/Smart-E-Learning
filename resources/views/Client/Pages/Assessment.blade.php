@@ -12,13 +12,13 @@
     @vite(['resources/js/app.js'])
     
     <div id="app" class="w-screen h-screen flex flex-col overflow-hidden">
-        <taking-pretest-header
+        <taking-assessment-header
             subject-name="{{$subject_name}}"
             subject-id="{{ $subject_id }}"
             module-id="{{ $module_id }}"
             module-name="{{$module_name}}"
             assessment-type="{{$type_of_assessment}}"
-        ></taking-pretest-header>
+        ></taking-assessment-header>
 
         <main class="w-full h-[calc(100%-56px)] flex items-start justify-center pt-[30px] px-4 overflow-y-auto scrollbar-thin">
             <assessment-form 
