@@ -32,7 +32,6 @@
             :show-admin-menu="showUserMenu"
             :user-name="userName"
             :user-email="userEmail"
-            :user-role="userRole"
             :profile-color="profileColor"
             :profile-picture="profilePicture"
             :profile-avatar="profileAvatar"
@@ -49,7 +48,6 @@ import Admin_Menu from '../Pages/Admin_Menu.vue'
 defineProps({
     userName: { type: String, default: '' },
     userEmail: { type: String, default: '' },
-    userRole: { type: String, default: 'Admin' },
     profileColor: { type: String, default: '' },
     profilePicture: { type: String, default: '' },
     profileAvatar: { type: String, default: '' },
