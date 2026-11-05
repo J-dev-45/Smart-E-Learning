@@ -376,27 +376,21 @@ function closeReplyToFeedback() {
     show_reply.value = false
 }
 
-function handleNewReply(reply) {
-    const feedback = feedbackList.value.find(
-        f => String(f.id) === String(feedback_id.value)
-    )
+const handleNewReply = (reply) => {
+    const index = feedbackList.value.findIndex(
+        feedback => feedback.id === reply.feedback_id
+    );
 
-    if (!feedback) return
-
-    feedback.status = 'Done'
-
-    if (reply?.replied_by) {
-        feedback.replied_by = reply.replied_by
-    } else if (reply?.user?.name) {
-        feedback.replied_by = reply.user.name
+    if (index !== -1) {
+        feedbackList.value[index] = {
+            ...feedbackList.value[index],
+            replied_by: reply.replied_by,
+            reply_message: reply.reply_message,
+            status: reply.status,
+            updated_at: reply.updated_at
+        };
     }
-
-    if (reply?.reply_message) {
-        feedback.reply_message = reply.reply_message
-    }
-
-    feedback.updated_at = reply?.updated_at ?? new Date().toISOString()
-}
+};
 
 const show_replied = ref(false)
 

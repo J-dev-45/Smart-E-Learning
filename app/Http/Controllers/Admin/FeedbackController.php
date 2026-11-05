@@ -45,8 +45,10 @@ class FeedbackController extends Controller
         $student = User::findOrFail($validated['student_id']);
         $feedback = Feedback::findOrFail($validated['feedback_id']);
 
+        $repliedBy = auth()->user()->name;
+
         $feedback->update([
-            'replied_by' => auth()->user()->name,
+            'replied_by' => $repliedBy,
             'reply_message' => $validated['reply_message'],
             'status' => 'Done',
             'updated_at' => now()
@@ -71,7 +73,11 @@ class FeedbackController extends Controller
                 ? 'Reply saved and email sent successfully.'
                 : 'Reply saved, but the email could not be sent.',
             'reply' => [
-                'replied_by' => auth()->user()->name,
+                'feedback_id' => $feedback->id,
+                'replied_by' => $repliedBy,
+                'reply_message' => $feedback->reply_message,
+                'status' => $feedback->status,
+                'updated_at' => $feedback->updated_at,
             ],
         ]);
     }
