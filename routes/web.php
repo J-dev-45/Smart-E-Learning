@@ -297,7 +297,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     // ===========================================================
     Route::get('/users', function(){
-        $users = User::select('id','id_number', 'name', 'email','role', 'status','profile_color', 'profile_picture')->get();
+        $users = User::select('id','id_number', 'name', 'email','role', 'status','profile_color', 'profile_picture', 'profile_avatar')->get();
         return view('Admin.Pages.Users', compact(
             'users'
         ));
@@ -325,8 +325,11 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     Route::get('/feedbacks', function(){
 
-        $feedbacks = Feedback::select('id', 'user_id', 'student_name', 'feedback_message', 'question_id', 'replied_by', 'reply_message', 'status', 'created_at', 'updated_at')->get();
-
+        $feedbacks = Feedback::select('id', 'user_id', 'student_name', 'feedback_message', 'question_id', 'replied_by', 'reply_message', 'status', 'created_at', 'updated_at')
+            ->get();
+        $users = User::whereIn('id', $feedbacks->pluck('user_id'))
+            ->select('id', 'profile_color', 'profile_avatar', 'profile_picture')
+            ->get();
         $questions = Questions::whereIn('id', $feedbacks->pluck('question_id'))->get();
 
         $total_feedbacks = $feedbacks->count();
@@ -338,6 +341,7 @@ Route::middleware(['auth','Admin'])->group(function(){
             'total_feedbacks',
             'total_new_feedbacks',
             'total_done_feedbacks',
+            'users'
         ));
     })->name('feedbacks_page');
 

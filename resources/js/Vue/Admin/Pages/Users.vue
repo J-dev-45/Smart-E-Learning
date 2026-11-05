@@ -55,10 +55,19 @@
                     </span>
 
                     <div class="flex items-center gap-3 min-w-0">
-                        <div v-if="user.profile_picture === null"
-                            class="w-8 h-8 shrink-0 rounded-full flex items-center justify-center text-[11px] font-semibold"
-                            :class="user.profile_color"
-                        >
+                        <!-- User photo -->
+                        <img
+                            v-if="user.profile_avatar || user.profile_picture || ''"
+                            :src="user.profile_avatar || user.profile_picture || ''"
+                            :alt="user.name"
+                            class=" w-8 h-8 rounded-full object-cover shrink-0"
+                        />
+
+                        <!-- INITIAL -->
+                        <div v-else :class="[
+                            'shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold',
+                            user.profile_color
+                        ]">
                             {{ initials(user.name) }}
                         </div>
 
@@ -199,6 +208,12 @@ const props = defineProps({
         default: () => []
     }
 });
+
+const getProfileImage = (userId) => {
+    const user = props.users.find(u => u.id === userId);
+
+    return user?.profile_picture || user?.profile_avatar || '';
+};
 
 const gridCols =
     'lg:grid-cols-[100px_minmax(0,1.2fr)_minmax(0,1fr)_124px] ' +

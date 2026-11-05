@@ -71,9 +71,19 @@
                     </span>
 
                     <div class="flex items-center gap-3 min-w-0 lg:pr-2">
-                        <div
-                            class="w-8 h-8 shrink-0 rounded-xl flex items-center justify-center text-[11px] font-semibold sharedStateOpen sharedStateChip ring-1"
-                        >
+                        <!-- User photo -->
+                        <img
+                            v-if="getProfileImage(feedback.user_id)"
+                            :src="getProfileImage(feedback.user_id)"
+                            :alt="feedback.student_name"
+                            class=" w-8 h-8 rounded-full object-cover shrink-0"
+                        />
+
+                        <!-- INITIAL -->
+                        <div v-else :class="[
+                            'shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold',
+                            profileColor(feedback.user_id)
+                        ]">
                             {{ initials(feedback.student_name) }}
                         </div>
 
@@ -266,8 +276,22 @@ const props = defineProps({
     userId: {
         type: Number,
         required: true
-    }
+    },
+    users: {
+        type: Array,
+        default: () => []
+    },
 })
+
+function profileColor(user_id){
+    return props.users.find(uid => uid.id === user_id)?.profile_color;
+}
+
+const getProfileImage = (userId) => {
+    const user = props.users.find(u => u.id === userId);
+
+    return user?.profile_picture || user?.profile_avatar || '';
+};
 
 const search = ref('')
 const statusTabs = ['All', 'New', 'Unread', 'Done']

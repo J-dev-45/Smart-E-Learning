@@ -82,6 +82,7 @@
                     :feedbacks='@json($feedbacks)'
                     :questions='@json($questions)'
                     :user-id="{{auth()->id()}}"
+                    :users='@json($users)'
                 ></feedbacks-page>
             </div>
 
