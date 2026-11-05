@@ -1,6 +1,6 @@
 <template>
     <nav
-        class="w-full h-[calc(64px+env(safe-area-inset-bottom))] pb-[env(safe-area-inset-bottom)] fixed bottom-0 left-0 bg-white border-t border-gray-200 flex md:hidden items-center justify-between px-2 z-50"
+        class="w-full h-[calc(64px+env(safe-area-inset-bottom))] pb-[env(safe-area-inset-bottom)] fixed bottom-0 left-0 sharedLightBG border-t sharedLightBorder flex md:hidden items-center justify-between px-2 z-50"
         aria-label="Main navigation"
     >
         <a
@@ -11,20 +11,20 @@
             :aria-current="isActive(link) ? 'page' : undefined"
             class="group relative flex-1 min-w-0 h-full flex flex-col items-center justify-center gap-1 transition-colors duration-200 motion-reduce:transition-none focus-visible:outline-none"
             :class="isActive(link)
-                ? 'text-[#4C1D95] font-semibold'
-                : 'text-gray-500 font-medium hover:text-[#4C1D95]'"
+                ? 'sharedTXTBrand font-semibold'
+                : 'sharedTXTLightMuted font-medium sharedHoverBrand'"
         >
             <span
                 aria-hidden="true"
-                class="absolute top-0 h-[3px] rounded-b-full bg-[#4C1D95] transition-all duration-300 motion-reduce:transition-none"
+                class="absolute top-0 h-[3px] rounded-b-full sharedBG transition-all duration-300 motion-reduce:transition-none"
                 :class="isActive(link) ? 'w-8 opacity-100' : 'w-0 opacity-0'"
             />
 
             <span
-                class="flex items-center justify-center h-7 w-14 rounded-full transition-all duration-200 motion-reduce:transition-none group-active:scale-95 group-focus-visible:ring-2 group-focus-visible:ring-[#4C1D95]/40"
+                class="flex items-center justify-center h-7 w-14 rounded-full transition-all duration-200 motion-reduce:transition-none group-active:scale-95 group-focus-visible:ring-2 sharedGroupFocusRing"
                 :class="isActive(link)
-                    ? 'bg-[#4C1D95]/10'
-                    : 'bg-transparent group-hover:bg-gray-100'"
+                    ? 'sharedStateLightBrand sharedStateTint'
+                    : 'bg-transparent sharedGroupHoverBG'"
             >
                 <svg
                     xmlns="http://www.w3.org/2000/svg"

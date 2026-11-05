@@ -294,6 +294,11 @@ body { color: var(--text-body); }
 .sharedChoiceLetter:hover { background: var(--light-field); }
 .sharedChoiceLetter:has(:checked) { background: var(--accent-solid); color: var(--on-accent-solid); border-color: var(--accent-solid); }
 
+.group:hover .sharedGroupHoverBG { background: color-mix(in srgb, var(--light-line) 60%, transparent); }
+ 
+/* Keyboard focus ring on the icon pill when the link (.group) has focus */
+.group:focus-visible .sharedGroupFocusRing { --tw-ring-color: color-mix(in srgb, var(--primary-color) 40%, transparent); }
+
 /* ------------------------------------------------------------------
    SCROLLBARS
 ------------------------------------------------------------------- */
