@@ -1,31 +1,32 @@
 <template>
-    <div>
+    <!-- w-full is required: parents like the home page use flex + items-center, which would shrink this wrapper -->
+    <div class="w-full min-w-0">
     <div
         ref="root"
-        class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row h-[680px] lg:h-[520px] rounded-lg overflow-hidden border border-[#cfd9e6] bg-[#fafafa]"
+        class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row h-[600px] sm:h-[640px] lg:h-[520px] rounded-lg overflow-hidden border border-[#cfd9e6] bg-[#fafafa]"
         :class="{ 'select-none': dragging }"
     >
         <!-- ── Left pane: editor ── -->
         <div
-            class="flex flex-col min-w-0 min-h-0 max-lg:flex-1"
+            class="flex flex-col min-w-0 min-h-0 max-lg:flex-[3] max-lg:min-h-[220px]"
             :style="isDesktop ? { width: leftWidth + '%' } : null"
         >
             <!-- Tab bar -->
             <div class="flex items-stretch justify-between border-b border-[#d9e1ec] bg-[#fcfcfd]">
-                <div class="flex items-center px-4 py-3 text-sm sharedTXTBrand bg-[#fafafa] border-r border-[#d9e1ec] -mb-px">
+                <div class="flex items-center px-3 sm:px-4 py-3 text-sm text-[#6b5b95] bg-[#fafafa] border-r border-[#d9e1ec] -mb-px">
                     Main.java
                 </div>
-                <div class="flex items-center gap-2 pr-3 py-2">
+                <div class="flex items-center gap-1 sm:gap-2 pr-2 sm:pr-3 py-2">
                     <button
                         @click="clearAll"
-                        class="px-3 py-1.5 text-sm sharedTXTLightMuted sharedHoverBrand transition-colors cursor-pointer"
+                        class="px-2 sm:px-3 py-1.5 text-sm text-[#6b5b95] hover:text-[#4f00f5] transition-colors"
                     >
                         Reset
                     </button>
                     <button
                         @click="runCode"
                         :disabled="running"
-                        class="flex items-center gap-1.5 px-5 py-1.5 rounded text-sm font-medium sharedBtn disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 sharedFocusRing"
+                        class="flex items-center gap-1.5 px-4 sm:px-5 py-1.5 rounded text-sm font-medium text-white bg-[#4f00f5] hover:bg-[#4300cf] disabled:opacity-60 disabled:cursor-not-allowed transition-colors"
                     >
                         Run
                         <svg v-if="running" class="animate-spin size-3.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -49,14 +50,14 @@
                     ></div>
 
                     <!-- Line numbers -->
-                    <div class="relative select-none pt-3 pb-3 pl-3 pr-4 text-right code-font sharedTXTLightFaint">
-                        <div v-for="n in lineCount" :key="n" :class="{ 'sharedTXTLightMuted': n === activeLine }">{{ n }}</div>
+                    <div class="relative select-none pt-3 pb-3 pl-2 sm:pl-3 pr-3 sm:pr-4 text-right code-font text-[#8da2bd]">
+                        <div v-for="n in lineCount" :key="n" :class="{ 'text-[#5d7491]': n === activeLine }">{{ n }}</div>
                     </div>
 
                     <!-- Highlighted layer + textarea -->
                     <div class="relative grid">
                         <pre
-                            class="col-start-1 row-start-1 m-0 p-3 pl-0 pointer-events-none code-font whitespace-pre sharedTXTOnLight"
+                            class="col-start-1 row-start-1 m-0 p-3 pl-0 pointer-events-none code-font whitespace-pre text-[#1f2430]"
                             aria-hidden="true"
                             v-html="highlighted + '\n'"
                         ></pre>
@@ -68,7 +69,7 @@
                             autocomplete="off"
                             autocorrect="off"
                             autocapitalize="off"
-                            class="col-start-1 row-start-1 w-full h-full m-0 p-3 pl-0 code-font whitespace-pre bg-transparent text-transparent sharedCaret sharedSelection resize-none outline-none overflow-hidden"
+                            class="col-start-1 row-start-1 w-full h-full m-0 p-3 pl-0 code-font whitespace-pre bg-transparent text-transparent caret-[#4f00f5] resize-none outline-none overflow-hidden selection:bg-[#4f00f5]/20"
                             @keydown.tab.prevent="insertTab"
                             @keydown="onKeydown"
                             @keydown.ctrl.enter.prevent="runCode"
@@ -104,14 +105,14 @@
         </div>
 
         <!-- ── Right pane: output ── -->
-        <div class="flex-1 flex flex-col min-w-0 min-h-0 bg-[#f5f5f5]">
-            <div class="flex items-center justify-between px-5 py-3 border-b border-[#d9e1ec] bg-[#fcfcfd]">
-                <span class="text-sm sharedTXTBrand">Output</span>
+        <div class="flex flex-col min-w-0 min-h-0 bg-[#f5f5f5] lg:flex-1 max-lg:flex-[2] max-lg:min-h-[160px]">
+            <div class="flex items-center justify-between px-4 sm:px-5 py-3 border-b border-[#d9e1ec] bg-[#fcfcfd]">
+                <span class="text-sm text-[#6b5b95]">Output</span>
                 
             </div>
 
             <div
-                class="flex-1 m-0 p-5 overflow-auto whitespace-pre-wrap break-words code-font"
+                class="flex-1 min-h-0 m-0 p-4 sm:p-5 overflow-auto whitespace-pre-wrap break-words code-font"
                 :class="outputTextClass"
                 @click="inlineInput?.focus()"
             >
@@ -125,15 +126,15 @@
                         @keydown.enter.prevent="submitInput"
                         spellcheck="false"
                         autocomplete="off"
-                        class="code-font w-48 max-w-full bg-transparent outline-none sharedStateLightAccent sharedStateText sharedStateBorderSoft sharedCaret border-b"
+                        class="code-font w-40 sm:w-48 max-w-full bg-transparent outline-none text-[#4f00f5] caret-[#4f00f5] border-b border-[#4f00f5]/30"
                     />
-                    <div v-if="stderrText" class="mt-4 sharedTXTDanger">{{ stderrText }}</div>
+                    <div v-if="stderrText" class="mt-4 text-red-600">{{ stderrText }}</div>
                 </template>
             </div>
         </div>
     </div>
 
-    <!-- ── Code quiz: Expected Output + SUBMIT + test case results ── -->
+    <!-- ── Code quiz: Expected Output + Submit + test case results ── -->
     <Code_Quiz_Panel
         v-if="questionId"
         :question-id="questionId"
@@ -201,19 +202,13 @@ const TOKEN_RE = new RegExp(
 
 const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 
-// Token classes live in app.css (sharedTok*), so colors stay in one place.
 function highlight(src) {
     let out = '';
     let last = 0;
     for (const m of src.matchAll(TOKEN_RE)) {
         out += esc(src.slice(last, m.index));
-        const cls = m[1] ? 'sharedTokComment'
-                  : m[2] ? 'sharedTokString'
-                  : m[3] ? 'sharedTokKeyword'
-                  : m[4] ? 'sharedTokClass'
-                  : m[5] ? 'sharedTokFunction'
-                  :        'sharedTokNumber';
-        out += `<span class="${cls}">${esc(m[0])}</span>`;
+        const cls = m[1] ? 'cm' : m[2] ? 'st' : m[3] ? 'kw' : m[4] ? 'cn' : m[5] ? 'fn' : 'nm';
+        out += `<span class="tok-${cls}">${esc(m[0])}</span>`;
         last = m.index + m[0].length;
     }
     return out + esc(src.slice(last));
@@ -382,7 +377,7 @@ const transcript = computed(() => {
 });
 
 const outputTextClass = computed(() =>
-    status.value === 'idle' ? 'sharedTXTLightFaint' : 'sharedTXTOnLight'
+    status.value === 'idle' ? 'text-[#9aa6b8]' : 'text-[#1f2430]'
 );
 
 // ── Actions ──────────────────────────────────────────────────────────────────
@@ -473,10 +468,25 @@ async function copyOutput() {
 </script>
 
 <style scoped>
+/* line-height stays 22px at every size: the line numbers and the active-line band depend on it */
 .code-font {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
     font-size: 13px;
     line-height: 22px;
     tab-size: 4;
 }
+
+@media (max-width: 639px) {
+    .code-font {
+        font-size: 12px;
+    }
+}
+
+/* v-html content isn't scoped, so use :deep */
+:deep(.tok-kw) { color: #c000c0; }
+:deep(.tok-cn) { color: #f2a33a; }
+:deep(.tok-st) { color: #e5384a; }
+:deep(.tok-cm) { color: #9aa6b8; }
+:deep(.tok-fn) { color: #3f63e0; }
+:deep(.tok-nm) { color: #1d7fd6; }
 </style>

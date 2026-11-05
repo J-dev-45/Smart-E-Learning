@@ -105,20 +105,20 @@ async function submitCode() {
     class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row lg:h-[360px] rounded-lg overflow-hidden border border-[#cfd9e6] bg-[#fafafa]"
   >
     <!-- ── Left pane: expected output ── -->
-    <div class="flex flex-col min-w-0 min-h-[200px] lg:min-h-0 lg:w-1/2">
+    <div class="flex flex-col min-w-0 min-h-[200px] max-lg:max-h-[320px] lg:min-h-0 lg:w-1/2">
       <div class="flex items-stretch border-b border-[#d9e1ec] bg-[#fcfcfd]">
-        <div class="flex items-center px-4 py-3 text-sm text-[#6b5b95] bg-[#fafafa] border-r border-[#d9e1ec] -mb-px">
+        <div class="flex items-center px-3 sm:px-4 py-3 text-sm text-[#6b5b95] bg-[#fafafa] border-r border-[#d9e1ec] -mb-px">
           Expected Output
         </div>
       </div>
 
       <pre
         v-if="loadError"
-        class="flex-1 min-h-0 m-0 p-5 overflow-auto whitespace-pre-wrap break-words code-font text-red-600"
+        class="flex-1 min-h-0 m-0 p-4 sm:p-5 overflow-auto whitespace-pre-wrap break-words code-font text-red-600"
       >{{ loadError }}</pre>
       <pre
         v-else-if="quiz"
-        class="flex-1 min-h-0 m-0 p-5 overflow-auto whitespace-pre-wrap break-words code-font text-[#1f2430]"
+        class="flex-1 min-h-0 m-0 p-4 sm:p-5 overflow-auto whitespace-pre-wrap break-words code-font text-[#1f2430]"
       ><template v-for="(t, i) in tests" :key="t.id">Test Case {{ i + 1 }}
 Input: {{ formatInput(t.scanner_input) }}
 Expected: {{ clean(t.expected_output) }}
@@ -126,7 +126,7 @@ Expected: {{ clean(t.expected_output) }}
 </template><template v-if="hiddenCount > 0">+ {{ hiddenCount }} hidden test case(s)</template></pre>
       <pre
         v-else
-        class="flex-1 min-h-0 m-0 p-5 overflow-auto whitespace-pre-wrap break-words code-font text-[#9aa6b8]"
+        class="flex-1 min-h-0 m-0 p-4 sm:p-5 overflow-auto whitespace-pre-wrap break-words code-font text-[#9aa6b8]"
       >Loading…</pre>
     </div>
 
@@ -134,8 +134,8 @@ Expected: {{ clean(t.expected_output) }}
     <div class="shrink-0 bg-[#cfd9e6] max-lg:h-px max-lg:w-full lg:w-px"></div>
 
     <!-- ── Right pane: result ── -->
-    <div class="flex-1 flex flex-col min-w-0 min-h-[200px] lg:min-h-0 bg-[#f5f5f5]">
-      <div class="flex items-center justify-between px-5 py-2 border-b border-[#d9e1ec] bg-[#fcfcfd]">
+    <div class="flex-1 flex flex-col min-w-0 min-h-[200px] max-lg:max-h-[320px] lg:min-h-0 bg-[#f5f5f5]">
+      <div class="flex items-center justify-between px-4 sm:px-5 py-2 border-b border-[#d9e1ec] bg-[#fcfcfd]">
         <span class="text-sm text-[#6b5b95]">Result</span>
 
         <button
@@ -157,11 +157,11 @@ Expected: {{ clean(t.expected_output) }}
 
       <pre
         v-if="errorMsg"
-        class="flex-1 min-h-0 m-0 p-5 overflow-auto whitespace-pre-wrap break-words code-font text-red-600"
+        class="flex-1 min-h-0 m-0 p-4 sm:p-5 overflow-auto whitespace-pre-wrap break-words code-font text-red-600"
       >{{ errorMsg }}</pre>
       <pre
         v-else-if="result"
-        class="flex-1 min-h-0 m-0 p-5 overflow-auto whitespace-pre-wrap break-words code-font text-[#1f2430]"
+        class="flex-1 min-h-0 m-0 p-4 sm:p-5 overflow-auto whitespace-pre-wrap break-words code-font text-[#1f2430]"
       >Your run
 Input: {{ typedInputs }}
 Output: {{ myOutput }}
@@ -172,7 +172,7 @@ Output: {{ myOutput }}
 <span :class="verdictClass">{{ verdict }}</span></pre>
       <pre
         v-else
-        class="flex-1 min-h-0 m-0 p-5 overflow-auto whitespace-pre-wrap break-words code-font text-[#9aa6b8]"
+        class="flex-1 min-h-0 m-0 p-4 sm:p-5 overflow-auto whitespace-pre-wrap break-words code-font text-[#9aa6b8]"
       >Click Run, type your inputs in the Output box, then press Submit.</pre>
     </div>
   </div>
