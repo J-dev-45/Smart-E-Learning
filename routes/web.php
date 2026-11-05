@@ -297,7 +297,9 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     // ===========================================================
     Route::get('/users', function(){
-        $users = User::select('id','id_number', 'name', 'email','role', 'status','profile_color', 'profile_picture', 'profile_avatar')->get();
+        $users = User::select('id','id_number', 'name', 'email','role', 'status','profile_color', 'profile_picture', 'profile_avatar')
+            ->orderBy('id', 'ASC')
+            ->get();
         return view('Admin.Pages.Users', compact(
             'users'
         ));
