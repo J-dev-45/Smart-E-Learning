@@ -1,7 +1,7 @@
 <template>
     <header class="sticky top-0 shrink-0 z-10 w-full h-14 flex items-center justify-between sharedTXT px-3 sm:px-5 border-b sharedBorder sharedSurfaceBG backdrop-blur-md">
         <div class="flex items-center">
-            <a 
+            <a v-if="assessmentType === 'quiz'"
                 :href="`/learning/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}/`"
                 class="group inline-flex items-center gap-2 rounded-full border-[1.5px] sharedStateOpen sharedStatePill sharedStatePillLink py-1.5 pl-2.5 pr-4 text-sm font-semibold transition-all duration-300 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:-translate-x-0.5">
@@ -10,9 +10,20 @@
                 <span class="hidden sm:inline">Back to Learn</span>
                 <span class="sm:hidden">Back</span>
             </a>
+
+            <a v-if="assessmentType === 'exam'"
+                :href="`/learn/${url(subjectName)}/${subjectId}`"
+                class="group inline-flex items-center gap-2 rounded-full border-[1.5px] sharedStateOpen sharedStatePill sharedStatePillLink py-1.5 pl-2.5 pr-4 text-sm font-semibold transition-all duration-300 cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:-translate-x-0.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+                </svg>
+                <span class="hidden sm:inline">Back to Modules</span>
+                <span class="sm:hidden">Back</span>
+            </a>
+
+            
         </div>
 
-        <!-- Title: absolutely centered on the header, independent of side button widths -->
         <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center justify-center min-w-0 px-2 max-w-[50vw] sm:max-w-[40vw]">
             <span class="sharedTXT font-semibold text-sm leading-tight truncate w-full text-center">
                 {{ subjectName }}
