@@ -1,4 +1,3 @@
-{-- MODULE --}
 <div class="w-full max-w-5xl mx-auto">
     <div class="w-full">
         <h4 class="text-xl font-bold pt-5">{$module->module_name}</h4>
