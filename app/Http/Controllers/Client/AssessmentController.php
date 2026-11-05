@@ -371,7 +371,8 @@ class AssessmentController extends Controller
         $to_take = $validated['type'] ?? 'question_type';
     
         $subject = Subjects::findOrFail($validated['subject_id']);
-
+        $module_id = '';
+        $module_name = '';
         if ($subject->pre_requisite) {
             $pre_req_has_passed = SubjectProgress::where('user_id', auth()->id())
                 ->where('subject_id', $subject->pre_requisite)
@@ -417,7 +418,7 @@ class AssessmentController extends Controller
             $module_name = str_replace(' ', '_', $module->module_name);
             $module_id = $module->id;
     
-        } else {
+        } elseif($type_of_assessment === 'exam') {
     
             AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $subject->id)

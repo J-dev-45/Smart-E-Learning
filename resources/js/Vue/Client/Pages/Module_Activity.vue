@@ -40,34 +40,34 @@
                 v-for="(item, index) in results"
                 :key="item.question_id"
                 class="flex flex-col gap-3 p-4 rounded-xl border-2"
-                :class="isCorrect(item) ? 'border-emerald-200 bg-emerald-50/40' : 'border-rose-300 bg-rose-50 shadow-sm shadow-rose-500/10'"
+                :class="item.is_correct ? 'border-emerald-200 bg-emerald-50/40' : 'border-rose-300 bg-rose-50 shadow-sm shadow-rose-500/10'"
             >
                 <div class="flex items-start gap-3 text-sm font-medium text-gray-800 leading-relaxed">
                     <span
                         class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white"
-                        :class="isCorrect(item) ? 'bg-emerald-500' : 'bg-rose-500'"
+                        :class="item.is_correct ? 'bg-emerald-500' : 'bg-rose-500'"
                     >
                         {{ index + 1 }}
                     </span>
                     <span class="pt-0.5 flex-1">{{ questionText(item.question_id) }}</span>
                     <span
                         class="shrink-0 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide"
-                        :class="isCorrect(item) ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-500 text-white'"
+                        :class="item.is_correct ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-500 text-white'"
                     >
-                        <svg v-if="isCorrect(item)" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="size-3">
+                        <svg v-if="item.is_correct" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="size-3">
                             <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
                         </svg>
                         <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="size-3">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                         </svg>
-                        {{ isCorrect(item) ? 'Correct' : 'Wrong' }}
+                        {{ item.is_correct ? 'Correct' : 'Wrong' }}
                     </span>
                 </div>
 
                 <div class="flex flex-col gap-1 w-full sm:ml-9 sm:max-w-[calc(100%-2.25rem)]">
                     <span
                         class="text-xs font-semibold uppercase tracking-wider"
-                        :class="isCorrect(item) ? 'text-emerald-700' : 'text-rose-700'"
+                        :class="item.is_correct ? 'text-emerald-700' : 'text-rose-700'"
                     >
                         Your answer
                     </span>
@@ -77,7 +77,7 @@
                         tabindex="-1"
                         :value="item.user_answer"
                         class="w-full border-2 rounded-lg px-3.5 py-2.5 text-sm font-semibold outline-none cursor-default"
-                        :class="isCorrect(item) ? 'border-emerald-300 bg-white text-emerald-800' : 'border-rose-400 bg-white text-rose-700'"
+                        :class="item.is_correct ? 'border-emerald-300 bg-white text-emerald-800' : 'border-rose-400 bg-white text-rose-700'"
                     >
                 </div>
 
@@ -322,9 +322,6 @@ function questionText(questionId) {
     )?.question ?? 'Question'
 }
 
-function isCorrect(item) {
-    return String(item.user_answer ?? '').trim().toLowerCase() === String(item.correct_answer ?? '').trim().toLowerCase()
-}
 
 function clearAnswers() {
     Object.keys(answers).forEach(key => {

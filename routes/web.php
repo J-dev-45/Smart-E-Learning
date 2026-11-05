@@ -32,6 +32,7 @@ use App\Models\RecentActivity;
 use App\Models\SubjectProgress;
 use App\Models\Subjects;
 use App\Models\User;
+use App\Support\AnswerNormalizer;
 use Illuminate\Support\Facades\Route;
 
 
@@ -173,7 +174,7 @@ Route::middleware(['auth'])->group(function(){
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())->get();
         $activity_score = 0;
         foreach($answered_module_questions as $amq){
-            if(strtolower($amq->user_answer) === strtolower($amq->correct_answer)){
+            if(AnswerNormalizer::isCorrect($amq->user_answer, $amq->correct_answer)){
                 $activity_score++;
             }
         }

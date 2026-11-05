@@ -330,21 +330,38 @@ class LearnController extends Controller
 
         if ($answered_module_questions->isNotEmpty()) {
 
-            $answered_questions = Questions::whereIn('id', $answered_module_questions->pluck('question_id'))
-                ->get();
+        foreach ($answered_module_questions as $answered) {
 
-            foreach ($answered_module_questions as $answered) {
-                if (AnswerNormalizer::isCorrect($answered->user_answer, $answered->correct_answer)) {
-                    $score++;
+            if (AnswerNormalizer::isCorrect(
+                $answered->user_answer,
+                $answered->correct_answer
+            )) {
+
+                $score++;
+
+                if ($answered->is_correct !== true) {
+                    $answered->is_correct = true;
+                    $answered->save();
                 }
-            }
 
-            $passing_score = (int) ceil($total_questions * ($passing_percent / 100));
+            } else {
 
-            if ($score < $passing_score) {
-                $failed = true;
+                if ($answered->is_correct !== false) {
+                    $answered->is_correct = false;
+                    $answered->save();
+                }
+
             }
         }
+
+        $passing_score = (int) ceil(
+            $total_questions * ($passing_percent / 100)
+        );
+
+        if ($score < $passing_score) {
+            $failed = true;
+        }
+    }
 
         $viewData = compact(
             'module',
