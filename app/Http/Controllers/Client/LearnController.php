@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Support\AnswerNormalizer;
 use App\Models\AnsweredAssessmentQuestions;
 use App\Models\AnsweredModuleQuestions;
 use App\Models\Leaderboard;
@@ -208,7 +209,7 @@ class LearnController extends Controller
 
         $activity_score = 0;
         foreach($answered_module_questions as $amq){
-            if(strtolower($amq->user_answer) === strtolower($amq->correct_answer)){
+            if (AnswerNormalizer::isCorrect($amq->user_answer, $amq->correct_answer)) {
                 $activity_score++;
             }
         }
@@ -333,7 +334,7 @@ class LearnController extends Controller
                 ->get();
 
             foreach ($answered_module_questions as $answered) {
-                if (strtolower($answered->user_answer) === strtolower($answered->correct_answer)) {
+                if (AnswerNormalizer::isCorrect($answered->user_answer, $answered->correct_answer)) {
                     $score++;
                 }
             }
@@ -536,34 +537,6 @@ class LearnController extends Controller
         $passing_percent = 80;
         $total_questions = count($validated['answers']);
 
-        $normalizeAnswer = static function ($answer) {
-            $answer = (string) ($answer ?? '');
-
-            if (class_exists(\Normalizer::class)) {
-                $normalized = \Normalizer::normalize($answer, \Normalizer::FORM_KC);
-
-                if ($normalized !== false) {
-                    $answer = $normalized;
-                }
-            }
-
-            $answer = mb_strtolower(trim($answer), 'UTF-8');
-
-            $answer = str_replace(
-                ["'", '’', '‘', '`', '´', 'ʻ', 'ʼ', '"', '“', '”', '„', '‟'],
-                '',
-                $answer
-            );
-
-            $answer = str_replace(
-                ['‐', '‑', '‒', '–', '—', '−'],
-                '-',
-                $answer
-            );
-
-            return preg_replace('/\s+/u', ' ', trim($answer)) ?? trim($answer);
-        };
-
         $leaderboard = Leaderboard::where('user_id', auth()->id())->firstOrFail();
 
         $module_progress = ModuleProgress::where('user_id', auth()->id())
@@ -590,7 +563,7 @@ class LearnController extends Controller
                 'explanation' => $question->explanation,
             ]);
 
-            if ($normalizeAnswer($answer) === $normalizeAnswer($question->answer)) {
+            if (AnswerNormalizer::isCorrect($answer, $question->answer)) {
                 $score++;
                 $points += $question->points;
             }

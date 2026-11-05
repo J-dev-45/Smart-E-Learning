@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Support\AnswerNormalizer;
 use App\Models\AnsweredAssessmentQuestions;
 use App\Models\Choices;
 use App\Models\Leaderboard;
@@ -988,8 +989,8 @@ class AssessmentController extends Controller
         $student_answer = strtolower(trim($request->student_answer));
         $correct_answer = strtolower(trim($question->answer));
 
-        // FIX: compute correctness once, up front, for both quiz and exam
-        $is_correct = $correct_answer === $student_answer;
+        // Use the shared normalizer for both quiz and exam grading.
+        $is_correct = AnswerNormalizer::isCorrect($student_answer, $correct_answer);
         $correct = $is_correct ? 'yes' : 'no';
 
         // ===========================================================================================
