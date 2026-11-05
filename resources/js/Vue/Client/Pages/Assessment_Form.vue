@@ -3,7 +3,12 @@
     <form v-if="timeLeft === 0" method="POST" action="/submit-unanswered" class="w-full max-w-2xl mb-[50px] sharedLightBG rounded-2xl shadow-xl sharedShadow border sharedLightBorder flex flex-col gap-5 p-6">
         <input type="hidden" name="_token" :value="csrfToken">
         <input type="hidden" name="subject_id" :value="subjectId">
-        <input type="hidden" name="module_id" :value="moduleId ?? '0'">
+        <input
+            v-if="assessmentType === 'quiz'"
+            type="hidden"
+            name="module_id"
+            :value="moduleId"
+        >
         <input type="hidden" name="type_of_assessment" :value="assessmentType">
         <input v-for="q in available_questions" :key="q.id" type="hidden" name="question_ids[]" :value="q.id">
 
