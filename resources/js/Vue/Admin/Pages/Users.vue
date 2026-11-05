@@ -57,17 +57,20 @@
                     <div class="flex items-center gap-3 min-w-0">
                         <!-- User photo -->
                         <img
-                            v-if="user.profile_avatar || user.profile_picture || ''"
-                            :src="user.profile_avatar || user.profile_picture || ''"
+                            v-if="getProfileImage(user)"
+                            :src="getProfileImage(user)"
                             :alt="user.name"
-                            class=" w-8 h-8 rounded-full object-cover shrink-0"
+                            class="w-8 h-8 rounded-full object-cover shrink-0"
                         />
 
                         <!-- INITIAL -->
-                        <div v-else :class="[
-                            'shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold',
-                            user.profile_color
-                        ]">
+                        <div
+                            v-else
+                            :class="[
+                                'shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold',
+                                user.profile_color || 'sharedTile'
+                            ]"
+                        >
                             {{ initials(user.name) }}
                         </div>
 
@@ -206,13 +209,36 @@ const props = defineProps({
     users: {
         type: Array,
         default: () => []
-    }
+    },
+    supabaseUrl: { type: String, default: '' },
+    avatarBucket: { type: String, default: 'pictures' },
 });
 
-const getProfileImage = (userId) => {
-    const user = props.users.find(u => u.id === userId);
+const SUPABASE_URL = props.supabaseUrl;
+const AVATAR_BUCKET = props.avatarBucket;
 
-    return user?.profile_picture || user?.profile_avatar || '';
+const getProfileImage = (user) => {
+    if (!user) return '';
+
+    if (user.profile_picture) {
+        const picture = user.profile_picture;
+
+        if (/^https?:\/\//i.test(picture)) {
+            return picture;
+        }
+
+        if (picture.startsWith('profiles/')) {
+            return `${props.supabaseUrl}/storage/v1/object/public/${props.avatarBucket}/${picture}`;
+        }
+
+        return picture;
+    }
+
+    if (user.profile_avatar) {
+        return `/${user.profile_avatar.replace(/^\/+/, '')}`;
+    }
+
+    return '';
 };
 
 const gridCols =

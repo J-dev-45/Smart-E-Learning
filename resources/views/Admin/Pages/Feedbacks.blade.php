@@ -81,8 +81,11 @@
                 <feedbacks-page
                     :feedbacks='@json($feedbacks)'
                     :questions='@json($questions)'
-                    :user-id="{{auth()->id()}}"
+                    :user-id="{{ auth()->id() }}"
                     :users='@json($users)'
+                    supabase-url="{{ rtrim(config('services.supabase.url'), '/') }}"
+                    avatar-bucket="{{ config('services.supabase.avatar_bucket', 'pictures') }}"
+                    asset-base="{{ rtrim(asset(''), '/') }}"
                 ></feedbacks-page>
             </div>
 

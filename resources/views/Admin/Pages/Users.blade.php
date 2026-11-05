@@ -81,6 +81,8 @@
             </div>
             <users-page
                 :users='@json($users)'
+                supabase-url="{{ rtrim(config('services.supabase.url'), '/') }}"
+                avatar-bucket="{{ config('services.supabase.avatar_bucket', 'pictures') }}"
             ></users-page>
 
             <div class="h-[calc(4rem+env(safe-area-inset-bottom))] shrink-0 md:hidden"></div>

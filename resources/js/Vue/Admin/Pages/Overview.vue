@@ -8,7 +8,7 @@
                 <span class="text-base font-semibold sharedTXTBody">Recent activity</span>
             </div>
 
-            <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-2">
+            <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin px-2">
 
                 <!-- ACTIVITY ITEM -->
                 <li
@@ -71,7 +71,7 @@
                 <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full sharedTXTAccent sharedTile">Top 20</span>
             </div>
 
-            <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin pr-2">
+            <ul class="flex flex-col flex-1 min-h-0 overflow-y-auto scrollbar-thin px-2">
 
                 <li
                     v-for="(rank, index) in sorted_by_points"
@@ -102,10 +102,6 @@
                         {{ initials(userName(rank.user_id)) }}
                     </div>
 
-                    
-
-
-
                     <!-- NAME AND SCORE -->
                     <div class="flex flex-col min-w-0 flex-1">
                         <span class="text-sm sharedTXT font-medium truncate">{{ userName(rank.user_id) }}</span>
@@ -132,7 +128,12 @@ const props = defineProps({
     recentActivities: { type: Array, default: ()=>[]},
     leaderboard: { type: Array, default: ()=>[]},
     users: { type: Array, default: ()=>[]},
+    supabaseUrl: { type: String, default: '' },
+    avatarBucket: { type: String, default: 'pictures' },
 })
+
+const SUPABASE_URL = props.supabaseUrl;
+const AVATAR_BUCKET = props.avatarBucket;
 
 function userName(user_id){
     return props.users.find(u => u.id === user_id)?.name;
@@ -147,9 +148,25 @@ const getName = (userId) => {
 };
 
 const getProfileImage = (userId) => {
-    const user = props.users.find(u => u.id === userId);
+    const user = props.users.find(
+        u => String(u.id) === String(userId)
+    );
 
-    return user?.profile_picture || user?.profile_avatar || '';
+    if (!user) return '';
+
+    if (user.profile_picture) {
+        if (user.profile_picture.startsWith('profiles/')) {
+            return `${SUPABASE_URL}/storage/v1/object/public/${AVATAR_BUCKET}/${user.profile_picture}`;
+        }
+
+        return user.profile_picture;
+    }
+
+    if (user.profile_avatar) {
+        return `/${user.profile_avatar.replace(/^\/+/, '')}`;
+    }
+
+    return '';
 };
 
 const sorted_by_points = props.leaderboard.sort((a, b) => b.points - a.points);

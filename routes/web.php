@@ -170,7 +170,6 @@ Route::middleware(['auth'])->group(function(){
 
         $total_assessment_score = $total_quizzes_score + $total_exams_score;
 
-        // $total_assessment_score = $answered_assessment_questions->where('is_correct', true)->count();
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())->get();
         $activity_score = 0;
         foreach($answered_module_questions as $amq){

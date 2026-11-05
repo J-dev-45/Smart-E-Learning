@@ -65,6 +65,8 @@
                 :recent-activities='@json($recent_activities)'
                 :leaderboard='@json($leaderboard)'
                 :users='@json($users)'
+                supabase-url="{{ rtrim(config('services.supabase.url'), '/') }}"
+                avatar-bucket="{{ config('services.supabase.avatar_bucket', 'pictures') }}"
                 ></overview>
 
                 <div class="h-[calc(4rem+env(safe-area-inset-bottom))] shrink-0 md:hidden"></div>

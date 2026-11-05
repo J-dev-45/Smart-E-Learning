@@ -281,18 +281,57 @@ const props = defineProps({
         type: Array,
         default: () => []
     },
-})
+    supabaseUrl: {
+        type: String,
+        default: ''
+    },
+    avatarBucket: {
+        type: String,
+        default: 'pictures'
+    },
+    assetBase: {
+        type: String,
+        default: ''
+    }
+});
 
 function profileColor(user_id){
     return props.users.find(uid => uid.id === user_id)?.profile_color;
 }
 
 const getProfileImage = (userId) => {
-    const user = props.users.find(u => u.id === userId);
+    const user = props.users.find(
+        u => String(u.id) === String(userId)
+    );
 
-    return user?.profile_picture || user?.profile_avatar || '';
+    if (!user) return '';
+
+    if (user.profile_picture) {
+        const picture = user.profile_picture;
+
+        if (/^https?:\/\//i.test(picture)) {
+            return picture;
+        }
+
+        if (picture.startsWith('profiles/')) {
+            return `${props.supabaseUrl}/storage/v1/object/public/${props.avatarBucket}/${picture}`;
+        }
+
+        return picture;
+    }
+
+    if (user.profile_avatar) {
+        const avatar = user.profile_avatar;
+
+        if (/^https?:\/\//i.test(avatar)) {
+            return avatar;
+        }
+
+        return `${props.assetBase}/${avatar.replace(/^\/+/, '')}`;
+    }
+
+    return '';
 };
-
 const search = ref('')
 const statusTabs = ['All', 'New', 'Unread', 'Done']
 const activeTab = ref('All')
