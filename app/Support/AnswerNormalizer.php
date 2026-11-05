@@ -4,14 +4,11 @@ namespace App\Support;
 
 class AnswerNormalizer
 {
-    /**
-     * Normalize common formatting differences without changing the stored answer.
-     */
+
     public static function normalize($answer): string
     {
         $answer = (string) ($answer ?? '');
 
-        // Normalize compatible Unicode characters when PHP's intl extension exists.
         if (class_exists(\Normalizer::class)) {
             $normalized = \Normalizer::normalize($answer, \Normalizer::FORM_KC);
 
@@ -25,14 +22,12 @@ class AnswerNormalizer
             ? mb_strtolower($answer, 'UTF-8')
             : strtolower($answer);
 
-        // Treat straight, curly, and backtick-style apostrophes as equivalent.
         $answer = str_replace(
             ["'", '’', '‘', '`', '´', 'ʻ', 'ʼ', '"', '“', '”', '„', '‟'],
             '',
             $answer
         );
 
-        // Treat common dash characters consistently.
         $answer = str_replace(
             ['‐', '‑', '‒', '–', '—', '−'],
             '-',
@@ -42,7 +37,6 @@ class AnswerNormalizer
         $answer = preg_replace('/\s+/u', ' ', $answer) ?? $answer;
         $answer = trim($answer);
 
-        // Convert standalone number words to digits (two = 2).
         $numbers = [
             'zero' => '0', 'one' => '1', 'two' => '2', 'three' => '3',
             'four' => '4', 'five' => '5', 'six' => '6', 'seven' => '7',
@@ -56,11 +50,7 @@ class AnswerNormalizer
         return trim($answer);
     }
 
-    /**
-     * Compare exact normalized answers, or accept a meaningful word/phrase
-     * contained in a longer official answer. Generic words are not accepted
-     * by themselves to reduce accidental matches (for example, "law").
-     */
+   
     public static function isCorrect($studentAnswer, $correctAnswer): bool
     {
         $student = self::normalize($studentAnswer);
@@ -74,8 +64,7 @@ class AnswerNormalizer
             return true;
         }
 
-        // A student's shortened answer may be a contiguous phrase from the
-        // official answer, provided it includes at least one meaningful term.
+    
         $genericWords = [
             'a', 'an', 'the', 'of', 'in', 'on', 'for', 'to', 'and', 'or',
             'law', 'rule', 'property', 'principle', 'theorem', 'method',
@@ -89,7 +78,6 @@ class AnswerNormalizer
             return false;
         }
 
-        // Every student word must be present in the same order and adjacent.
         $phraseFound = false;
         $studentCount = count($studentWords);
         $correctCount = count($correctWords);
