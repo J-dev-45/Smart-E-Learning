@@ -610,7 +610,7 @@ async function editQuestionForm(Sname, Mname) {
 
     const csrfElement = document.querySelector(
         'meta[name="csrf-token"]'
-    );
+    )?.getAttribute('content');
 
     const csrfToken = csrfElement?.getAttribute('content');
 
@@ -645,7 +645,6 @@ async function editQuestionForm(Sname, Mname) {
         correct_choice: correct_choice.value || null,
 
         subject_name: Sname,
-        // The controller reads $request->module_name
         module_name: Mname
     };
 
@@ -682,7 +681,6 @@ async function editQuestionForm(Sname, Mname) {
                 explanation: props.questionData.explanation
             };
 
-            // Send the saved choices back so the parent can update its copy
             if (props.questionData.question_type === 'multipleChoice') {
                 updated.choices = {
                     choice_A: props.choicesData?.choice_A ?? '',
