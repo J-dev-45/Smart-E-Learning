@@ -130,7 +130,7 @@ class AssessmentController extends Controller
                 ->value('scored');
 
 
-            $total_seconds = 60 * 60;
+            $total_seconds = 30 * 60;
 
             $start = now();
 
@@ -305,7 +305,7 @@ class AssessmentController extends Controller
 
             $choices = Choices::whereIn('question_id', $questions->pluck('id'))->get();
 
-            $total_seconds = 90 * 60;
+            $total_seconds = 60 * 60;
 
             $start = now();
 
@@ -400,7 +400,7 @@ class AssessmentController extends Controller
                 $student_attempt->update([
                     'started_at' => $start,
                     'ends_at' => $start->copy()->addSeconds(
-                        $type_of_assessment === 'quiz' ? 3600 : 5400
+                        $type_of_assessment === 'quiz' ? 1800 : 3600
                     ),
                     'finished_at' => null,
                 ]);
@@ -419,6 +419,26 @@ class AssessmentController extends Controller
             $module_id = $module->id;
     
         } elseif($type_of_assessment === 'exam') {
+
+            $student_attempt = StudentAttempts::where('user_id', auth()->id())
+                ->where('subject_id', $validated['subject_id'])
+                ->where('type_of_assessment', 'exam')
+                ->first();
+
+            if ($student_attempt) {
+                $start = now();
+
+                $student_attempt->update([
+                    'started_at' => $start,
+                    'ends_at' => $start->copy()->addSeconds(
+                        $type_of_assessment === 'quiz' ? 1800 : 3600
+                    ),
+                    'finished_at' => null,
+                ]);
+
+                $student_attempt->increment('attempts_count');
+                $student_attempt->refresh();
+            }
     
             AnsweredAssessmentQuestions::where('user_id', auth()->id())
                 ->where('subject_id', $subject->id)
