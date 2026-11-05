@@ -275,21 +275,22 @@ class AssessmentController extends Controller
 
             $score = $answered_questions_data->where('is_correct', true)->count(); 
 
-            $multipleChoiceQuestions = Questions::where('module_id', $request->module_id)
+
+            $multipleChoiceQuestions = Questions::whereIn('module_id', $modules->pluck('id'))
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'multipleChoice')
                     ->inRandomOrder()
                     ->take(20)
                     ->get();
 
-                $trueOrFalseQuestions = Questions::where('module_id', $request->module_id)
+                $trueOrFalseQuestions = Questions::whereIn('module_id', $modules->pluck('id'))
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'TorF')
                     ->inRandomOrder()
                     ->take(10)
                     ->get();
 
-                $identificationQuestions = Questions::where('module_id', $request->module_id)
+                $identificationQuestions = Questions::whereIn('module_id', $modules->pluck('id'))
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'identification')
                     ->inRandomOrder()
