@@ -191,7 +191,7 @@ class QuestionController extends Controller
                         'question_type' => $questionType,
                         'answer' => null,
                         'explanation' => null,
-                        'points' => 10,
+                        'points' => 60,
                     ]);
 
                     foreach ($input['test_cases'] as $testCase) {

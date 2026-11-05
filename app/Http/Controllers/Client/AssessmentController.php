@@ -206,7 +206,7 @@ class AssessmentController extends Controller
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'coding')
                     ->inRandomOrder()
-                    ->limit($remaining_questions)
+                    ->limit(1)
                     ->get();
 
                 $saved_codes = PretestSavedCodes::where('user_id', auth()->user()->id)
