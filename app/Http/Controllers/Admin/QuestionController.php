@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Choices;
 use App\Models\Modules;
 use App\Models\Questions;
@@ -11,7 +12,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class Question extends Controller
+class QuestionController extends Controller
 {
     // ADD QUESTION
     public function addQuestion(Request $request)

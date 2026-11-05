@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\ModuleController;
+use App\Http\Controllers\Admin\QuestionController;
+use App\Http\Controllers\Admin\QuestionImportController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
@@ -14,11 +17,8 @@ use App\Http\Controllers\Client\Pretest;
 use App\Http\Controllers\CodeQuizController;
 use App\Http\Controllers\CodeRunnerController;
 use App\Http\Controllers\Logout;
-use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\Pages\QuestionsPage;
 use App\Http\Controllers\ProfileAvatarController;
-use App\Http\Controllers\Question;
-use App\Http\Controllers\QuestionImport;
 use App\Http\Controllers\TopicController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VerifyOTP;
@@ -36,8 +36,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
-Route::post('/run-code', [CodeRunnerController::class, 'run'])
-    ->middleware(['throttle:20,1']);
+
 
 
 Route::middleware(['guest'])->group(function(){
@@ -205,10 +204,6 @@ Route::middleware(['auth'])->group(function(){
     // ===========================================================
     // ===========================================================
 
-
-    Route::post('/run-code', [CodeRunnerController::class, 'run'])
-    ->middleware(['throttle:20,1']);
-
     Route::post('/profile/avatar', [
         ProfileAvatarController::class,
         'update'
@@ -371,11 +366,11 @@ Route::middleware(['auth','Admin'])->group(function(){
     
 
     // QUESTIONS
-    Route::post('/addQuestion', [Question::class, 'addQuestion']);
-    Route::put('/editQuestion', [Question::class, 'editQuestion']);
-    Route::delete('/deleteQuestion', [Question::class, 'deleteQuestion']);
-    Route::post('/extractQuestions', [QuestionImport::class, 'extractQuestions']);
-    Route::post('/importQuestions', [QuestionImport::class, 'importQuestions']); 
+    Route::post('/addQuestion', [QuestionController::class, 'addQuestion']);
+    Route::put('/editQuestion', [QuestionController::class, 'editQuestion']);
+    Route::delete('/deleteQuestion', [QuestionController::class, 'deleteQuestion']);
+    Route::post('/extractQuestions', [QuestionImportController::class, 'extractQuestions']);
+    Route::post('/importQuestions', [QuestionImportController::class, 'importQuestions']); 
 
     Route::get('/questions/{to_view}/{subject_name}/{subject_id}/{module_name}/{module_id}',[QuestionsPage::class, 'questions']);
 
