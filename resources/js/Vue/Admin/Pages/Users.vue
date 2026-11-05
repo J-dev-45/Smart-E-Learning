@@ -168,23 +168,27 @@
         :show-promote-user="showPromoteUser"
         :user-data="userData"
         @close-promote="closePromote"
+        @user-promoted="handleUserPromoted"
     />
 
     <Demote_User
         :show-demote-user="showDemoteUser"
         :user-data="userData"
         @close-demote="closeDemote"
+        @user-demoted="handleUserDemoted"
     />
 
     <Delete_User
         :show-delete-user="showDeleteUser"
         :user-data="userData"
         @close-delete="closeDelete"
+        @user-deleted="handleUserDeleted"
     />
 </template>
 
+
 <script setup>
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
 import Promote_User from '../Modal/Promote_User.vue';
 import Demote_User from '../Modal/Demote_User.vue';
 import Delete_User from '../Modal/Delete_User.vue';
@@ -196,12 +200,21 @@ const props = defineProps({
     }
 });
 
-
 const gridCols =
     'lg:grid-cols-[100px_minmax(0,1.2fr)_minmax(0,1fr)_124px] ' +
     'xl:grid-cols-[110px_minmax(0,1.2fr)_minmax(0,1fr)_100px_264px]';
 
 const searchQuery = ref('');
+
+const usersList = ref([...props.users]);
+
+watch(
+    () => props.users,
+    (newUsers) => {
+        usersList.value = [...newUsers];
+    },
+    { deep: true }
+);
 
 const showPromoteUser = ref(false);
 const showDemoteUser = ref(false);
@@ -213,10 +226,10 @@ const filteredUsers = computed(() => {
     const search = searchQuery.value.trim().toLowerCase();
 
     if (!search) {
-        return props.users;
+        return usersList.value;
     }
 
-    return props.users.filter(user => {
+    return usersList.value.filter(user => {
         const name = String(user.name ?? '').toLowerCase();
         const idNumber = String(user.id_number ?? '').toLowerCase();
 
@@ -236,12 +249,15 @@ function initials(name) {
 function roleBadge(role) {
     return role === 'Admin'
         ? 'sharedStateDanger sharedStateChip ring-1'
-        : 'sharedStateOpen sharedStateChip ring-1'
+        : 'sharedStateOpen sharedStateChip ring-1';
 }
 
 function promoteUser(id) {
-    userData.value = props.users.find(user => user.id === id);
-    showPromoteUser.value = true;
+    userData.value = usersList.value.find(user => user.id === id);
+
+    if (userData.value) {
+        showPromoteUser.value = true;
+    }
 }
 
 function closePromote() {
@@ -249,8 +265,11 @@ function closePromote() {
 }
 
 function demoteUser(id) {
-    userData.value = props.users.find(user => user.id === id);
-    showDemoteUser.value = true;
+    userData.value = usersList.value.find(user => user.id === id);
+
+    if (userData.value) {
+        showDemoteUser.value = true;
+    }
 }
 
 function closeDemote() {
@@ -258,11 +277,34 @@ function closeDemote() {
 }
 
 function deleteUser(id) {
-    userData.value = props.users.find(user => user.id === id);
-    showDeleteUser.value = true;
+    userData.value = usersList.value.find(user => user.id === id);
+
+    if (userData.value) {
+        showDeleteUser.value = true;
+    }
 }
 
 function closeDelete() {
     showDeleteUser.value = false;
+}
+
+function handleUserPromoted(id) {
+    const user = usersList.value.find(user => user.id === id);
+
+    if (user) {
+        user.role = 'Admin';
+    }
+}
+
+function handleUserDemoted(id) {
+    const user = usersList.value.find(user => user.id === id);
+
+    if (user) {
+        user.role = 'Student';
+    }
+}
+
+function handleUserDeleted(id) {
+    usersList.value = usersList.value.filter(user => user.id !== id);
 }
 </script>

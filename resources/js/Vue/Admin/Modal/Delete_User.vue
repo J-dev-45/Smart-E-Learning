@@ -1,3 +1,4 @@
+
 <template>
     <Transition name="modal-fade">
         <div
@@ -6,71 +7,92 @@
         >
             <Transition name="modal-scale" appear>
                 <form
-                    @submit.prevent="deleteUserForm(props.userData.id)"
+                    @submit.prevent="deleteUserForm(userData.id)"
                     class="relative w-[30%] min-w-[380px] max-w-lg bg-white rounded-xl shadow-2xl shadow-black/30 flex flex-col p-6 gap-5"
                 >
-                    <!-- CLOSE BUTTON -->
                     <button
                         type="button"
                         @click="closeModal"
                         aria-label="Close"
                         class="absolute right-4 top-4 p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer"
                     >
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5" >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                         </svg>
                     </button>
 
-                    <!-- ICON + HEADER -->
                     <div class="w-full flex items-start gap-3 pr-6">
                         <div class="shrink-0 w-10 h-10 rounded-full bg-red-50 flex items-center justify-center">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#E04A4A" class="size-5">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                             </svg>
                         </div>
+
                         <div class="flex flex-col gap-0.5 pt-1">
-                            <span class="text-lg font-semibold text-gray-900">Delete Account?</span>
-                            <span class="text-sm text-gray-500">This action cannot be undone.</span>
+                            <span class="text-lg font-semibold text-gray-900">
+                                Delete Account?
+                            </span>
+
+                            <span class="text-sm text-gray-500">
+                                This action cannot be undone.
+                            </span>
                         </div>
                     </div>
 
-                    <!-- DETAILS -->
                     <div class="w-full flex flex-col gap-2 rounded-lg border border-gray-200 bg-gray-50 p-4">
                         <div class="w-full flex items-center gap-1.5">
-                            <span class="text-xs font-medium uppercase tracking-wide text-gray-400">ID Number: </span>
-                            <span id="subject_name" class="text-xs text-gray-700">{{ userData.id_number }}</span>
+                            <span class="text-xs font-medium uppercase tracking-wide text-gray-400">
+                                ID Number:
+                            </span>
+
+                            <span class="text-xs text-gray-700">
+                                {{ userData.id_number }}
+                            </span>
                         </div>
+
                         <div class="w-full flex items-center gap-1.5">
-                            <span class="text-xs font-medium uppercase tracking-wide text-gray-400">Name: </span>
-                            <span id="topic_name" class="text-xs text-gray-700">{{ userData.name }}</span>
+                            <span class="text-xs font-medium uppercase tracking-wide text-gray-400">
+                                Name:
+                            </span>
+
+                            <span class="text-xs text-gray-700">
+                                {{ userData.name }}
+                            </span>
                         </div>
+
                         <div class="w-full flex items-center gap-1.5">
-                            <span class="text-xs font-medium uppercase tracking-wide text-gray-400">Role: </span>
-                            <span id="topic_name" class="text-xs text-gray-700">{{ userData.role }}</span>
+                            <span class="text-xs font-medium uppercase tracking-wide text-gray-400">
+                                Role:
+                            </span>
+
+                            <span class="text-xs text-gray-700">
+                                {{ userData.role }}
+                            </span>
                         </div>
                     </div>
 
-                    <!-- ACTIONS -->
                     <div class="w-full flex gap-3 mt-1">
-                        <button type="button"
+                        <button
+                            type="button"
                             @click="closeModal"
-                            class="deleteQuestionCancel w-1/3 py-2.5 rounded-md text-sm font-medium text-gray-600 border border-gray-300
-                                hover:bg-gray-100 transition-colors cursor-pointer">
+                            class="deleteQuestionCancel w-1/3 py-2.5 rounded-md text-sm font-medium text-gray-600 border border-gray-300 hover:bg-gray-100 transition-colors cursor-pointer"
+                        >
                             Cancel
                         </button>
+
                         <button
                             type="submit"
                             :disabled="isSubmitting"
                             class="w-2/3 py-2.5 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 active:bg-red-700 transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                            >
+                        >
                             <svg v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z"></path>
                             </svg>
+
                             {{ isSubmitting ? 'Deleting...' : 'Yes, Delete' }}
                         </button>
                     </div>
-
                 </form>
             </Transition>
         </div>
@@ -81,62 +103,74 @@
         :message="message"
         @close="showToast = false"
     />
-
 </template>
 
 <script setup>
-import Toast from '../components/Toast.vue'
-
-
 import { ref } from 'vue';
+import Toast from '../components/Toast.vue';
 
 const showToast = ref(false);
 const message = ref('');
 const isSubmitting = ref(false);
 
-const emit = defineEmits(['close-delete'])
+const emit = defineEmits(['close-delete', 'user-deleted']);
+
 const props = defineProps({
     showDeleteUser: {
         type: Boolean,
         default: false
     },
-    userData: { type: Object, default: ()=>({})}
-})
+    userData: {
+        type: Object,
+        default: () => ({})
+    }
+});
 
-async function deleteUserForm(id){
-    if(isSubmitting.value) return;
+async function deleteUserForm(id) {
+    if (isSubmitting.value) return;
+
     isSubmitting.value = true;
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
-    try{
-        const response = await fetch('/deleteUser',{
-            method: "DELETE",
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+
+    try {
+        const response = await fetch('/deleteUser', {
+            method: 'DELETE',
             headers: {
-                'Content-Type' : 'application/json',
-                'X-CSRF-TOKEN' : csrfToken,
-                'Accept' : 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
             },
             body: JSON.stringify({
-                user_id : id
+                user_id: id
             })
-        })
+        });
 
         const data = await response.json();
 
-        if(data.success){
-            showToast.value = true
+        if (response.ok && data.success) {
+            showToast.value = true;
             message.value = data.message;
+
+            emit('user-deleted', id);
             emit('close-delete');
+        } else {
+            message.value = data.message || 'Failed to delete user.';
+            showToast.value = true;
         }
-    }finally{
+    } catch (error) {
+        console.error('Error deleting user:', error);
+
+        message.value = 'Something went wrong while deleting the user.';
+        showToast.value = true;
+    } finally {
         isSubmitting.value = false;
     }
 }
 
-function closeModal(){
-    emit('close-delete')
+function closeModal() {
+    emit('close-delete');
 }
-
 </script>
 
 <style scoped>
@@ -144,6 +178,7 @@ function closeModal(){
 .modal-fade-leave-active {
     transition: opacity 0.15s ease;
 }
+
 .modal-fade-enter-from,
 .modal-fade-leave-to {
     opacity: 0;
@@ -152,6 +187,7 @@ function closeModal(){
 .modal-scale-enter-active {
     transition: opacity 0.15s ease, transform 0.15s ease;
 }
+
 .modal-scale-enter-from {
     opacity: 0;
     transform: scale(0.96) translateY(4px);
