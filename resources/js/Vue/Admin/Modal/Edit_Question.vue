@@ -608,11 +608,9 @@ async function editQuestionForm(Sname, Mname) {
 
     isSubmitting.value = true;
 
-    const csrfElement = document.querySelector(
-        'meta[name="csrf-token"]'
-    )?.getAttribute('content');
-
-    const csrfToken = csrfElement?.getAttribute('content');
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute('content')
 
     let answer = props.questionData.answer || '';
 
