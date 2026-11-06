@@ -1,5 +1,5 @@
 <template>
-    <!-- Result (Passed / Failed) -->
+    <!-- RESULT -->
     <div
         v-if="hasPassed || failed"
         class="flex flex-col mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-clip"
@@ -108,7 +108,6 @@
             </div>
         </div>
 
-        <!-- Sticky footer: score + status/retake -->
         <form
             @submit.prevent="retakeActivity"
             class="sticky bottom-0 z-10 flex items-center justify-between gap-3 px-6 py-3.5 border-t border-gray-200 bg-white/90 backdrop-blur-md shadow-[0_-6px_16px_-8px_rgba(0,0,0,0.12)]"
@@ -147,7 +146,6 @@
         </form>
     </div>
 
-    <!-- Activity form (text-answer questions only) -->
     <form
         v-else-if="textQuestions.length || !codingQuestions.length"
         @submit.prevent="submitAnswers"
@@ -227,11 +225,6 @@
         </div>
     </form>
 
-    <!--
-        Coding questions: each one gets the playground + quiz panel.
-        This block is OUTSIDE the <form> on purpose: the playground and quiz
-        buttons would otherwise submit the text-answer form.
-    -->
     <div v-if="codingQuestions.length" class="flex flex-col gap-5 mt-5">
         <div
             v-for="(quest, index) in codingQuestions"
@@ -279,7 +272,6 @@ const score = ref(props.score)
 const answers = reactive({})
 const showErrors = ref(false)
 
-// Text-answer questions go through the form; coding questions use the playground + quiz panel
 const textQuestions = computed(() =>
     props.questions.filter(quest => quest.question_type !== 'coding')
 )

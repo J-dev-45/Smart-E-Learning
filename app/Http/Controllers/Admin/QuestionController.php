@@ -112,7 +112,6 @@ class QuestionController extends Controller
             'correct_choice' => 'exclude_unless:question_type,multipleChoice|required|string|in:A,B,C,D',
             'correct_answer' => 'exclude_if:question_type,coding|nullable|string|max:6000',
 
-            // Only validate test cases for coding questions
             'test_cases' => 'exclude_unless:question_type,coding|required|array|min:1',
             'test_cases.*.scanner_input' => 'nullable|string|max:6000',
             'test_cases.*.expected_output' => 'required|string|max:6000',
@@ -121,7 +120,6 @@ class QuestionController extends Controller
         ]);
 
         try {
-            // Filled inside the transaction when the question is multiple choice
             $choices = null;
 
             $question = DB::transaction(function () use ($input, &$choices) {
@@ -215,7 +213,6 @@ class QuestionController extends Controller
 
             $question = $question->fresh();
 
-            // Reload so the response has the same shape as the Blade $choices rows
             $newChoices = $choices ? [$choices->fresh()] : [];
 
             RecentActivity::create([

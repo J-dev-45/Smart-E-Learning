@@ -61,7 +61,6 @@ class ProfileAvatarController extends Controller
         }
 
         try {
-            // Upload image to Supabase Storage.
             $response = Http::withHeaders([
                 'apikey' => $secretKey,
                 'Authorization' => 'Bearer ' . $secretKey,
@@ -86,7 +85,6 @@ class ProfileAvatarController extends Controller
                 ], 500);
             }
 
-            // Save uploaded picture and clear the other columns.
             DB::table('users')
                 ->where('id', $user->id)
                 ->update([
@@ -116,6 +114,10 @@ class ProfileAvatarController extends Controller
         }
     }
 
+
+
+    
+
     public function savePreset(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -137,7 +139,6 @@ class ProfileAvatarController extends Controller
             ], 401);
         }
 
-        // Accept only the ten predefined avatar filenames.
         $filename = basename(
             parse_url($request->input('avatar'), PHP_URL_PATH) ?? ''
         );
@@ -148,11 +149,9 @@ class ProfileAvatarController extends Controller
             ], 422);
         }
 
-        // Save preset avatar path.
         $path = '/images/Profile_Avatars/' . $filename;
 
         try {
-            // Save preset avatar and clear the other columns.
             DB::table('users')
                 ->where('id', $user->id)
                 ->update([

@@ -1,5 +1,4 @@
 <template>
-    <!-- Time is up: submits unanswered questions via controller, then redirects to result -->
     <form v-if="timeLeft === 0" method="POST" action="/submit-unanswered" class="w-full max-w-2xl mb-[50px] sharedLightBG rounded-2xl shadow-xl sharedShadow border sharedLightBorder flex flex-col gap-5 p-6">
         <input type="hidden" name="_token" :value="csrfToken">
         <input type="hidden" name="subject_id" :value="subjectId">

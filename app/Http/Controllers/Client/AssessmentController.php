@@ -706,7 +706,6 @@ class AssessmentController extends Controller
             if ($status === 'Passed') {
 
                 
-                // SUBJECT PROGRESS
                 $subject_progress = SubjectProgress::where('user_id', auth()->id())
                     ->where('subject_id', $request->subject_id)
                     ->firstOrFail();
@@ -1023,7 +1022,6 @@ class AssessmentController extends Controller
 
         $question = Questions::find($request->question_id);
 
-        // FIX: null check BEFORE touching $question->answer
         if (!$question) {
             return response()->json([
                 'success' => false,
@@ -1034,7 +1032,6 @@ class AssessmentController extends Controller
         $student_answer = strtolower(trim($request->student_answer));
         $correct_answer = strtolower(trim($question->answer));
 
-        // Use the shared normalizer for both quiz and exam grading.
         $is_correct = AnswerNormalizer::isCorrect($student_answer, $correct_answer);
         $correct = $is_correct ? 'yes' : 'no';
 

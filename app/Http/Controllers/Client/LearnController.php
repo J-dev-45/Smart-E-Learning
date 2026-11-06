@@ -595,7 +595,6 @@ class LearnController extends Controller
 
         $passing_score = (int) ceil($total_questions * ($passing_percent / 100));
 
-        // SUBJECT PROGRESS
 
         $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $validated['subject_id'])

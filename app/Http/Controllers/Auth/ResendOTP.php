@@ -30,9 +30,7 @@ class ResendOTP extends Controller
         return 'otp-resend:' . $userId;
     }
 
-    /**
-     * Return the remaining cooldown for the current verification session.
-     */
+
     public function status(Request $request)
     {
         $otpSession = $this->getOtpSession($request);
@@ -63,9 +61,7 @@ class ResendOTP extends Controller
         ]);
     }
 
-    /**
-     * Generate and email a replacement OTP.
-     */
+  
     public function resend(
         Request $request,
         MailerService $mailerService

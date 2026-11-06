@@ -29,7 +29,6 @@
             </div>
         </div>
 
-        <!-- Points breakdown -->
         <div class="w-full mt-4 sm:mt-5 rounded-xl border sharedLightBorder overflow-hidden text-left">
             <div class="flex items-center justify-between gap-2 px-4 py-2">
                 <span class="sharedTXTLightMuted text-xs sm:text-sm">
@@ -52,7 +51,6 @@
             </div>
         </div>
 
-        <!-- Failed notice -->
         <div v-if="!isPassed" class="w-full flex items-start gap-1.5 text-left sharedTXTDanger text-[11px] sm:text-xs font-semibold mt-2">
             <svg class="w-3.5 h-3.5 shrink-0 mt-px" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m0 3.75h.008M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -149,7 +147,6 @@ const offset = computed(() => circumference - (circumference * props.scorePercen
 
 const displayScore = computed(() => Math.round(props.scorePercent));
 
-// Always shows the total (crossed out in the template when failed). Uses the backend total if provided, otherwise sums assessment + bonus.
 const totalPointsDisplay = computed(() =>
     props.totalPoints ?? (props.assessmentPoints + props.bonusPoints)
 );
