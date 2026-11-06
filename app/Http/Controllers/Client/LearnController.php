@@ -571,16 +571,19 @@ class LearnController extends Controller
 
             $question = Questions::findOrFail($questionId);
 
-            AnsweredModuleQuestions::create([
+            $isCorrect = AnswerNormalizer::isCorrect($answer, $question->answer);
+
+            $answered = AnsweredModuleQuestions::create([
                 'user_id' => auth()->id(),
                 'module_id' => $validated['module_id'],
                 'question_id' => $questionId,
                 'user_answer' => $answer,
                 'correct_answer' => $question->answer,
                 'explanation' => $question->explanation,
+                'is_correct' => $isCorrect,
             ]);
 
-            if (AnswerNormalizer::isCorrect($answer, $question->answer)) {
+            if ($isCorrect) {
                 $score++;
                 $points += $question->points;
             }
