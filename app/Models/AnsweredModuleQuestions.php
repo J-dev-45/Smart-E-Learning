@@ -13,6 +13,7 @@ class AnsweredModuleQuestions extends Model
         'question_id',
         'user_answer',
         'correct_answer',
+        'is_correct',
         'explanation',
     ];
 }
