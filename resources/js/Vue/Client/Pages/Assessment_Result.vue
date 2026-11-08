@@ -94,7 +94,7 @@
 
             <a
                 v-else
-                :href="`/learning/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}`"
+                :href="`/learn/${url(subjectName)}/${subjectId}`"
                 class="inline-flex items-center gap-1 sharedBtn font-semibold text-xs sm:text-sm px-4 sm:px-6 py-2 rounded-lg shadow-sm hover:shadow-md active:scale-[0.98] transition-all"
             >
                 Done
@@ -136,7 +136,6 @@ const errorMessage = ref('');
 
 const isPassed = computed(() => props.status.toLowerCase() === 'passed');
 
-// Colors come from the shared state classes (set once on the card, read by the badge, ring and status text)
 const stateClass = computed(() => (isPassed.value ? 'sharedStateLightPassed' : 'sharedStateLightFailed'));
 const textColor  = 'sharedStateText';
 const badgeBg    = 'sharedStateTint';

@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class StudentAttempts extends Model
 {
     protected $table = 'student_attempts';
+
     protected $fillable = [
         'user_id',
         'subject_id',
@@ -15,6 +16,11 @@ class StudentAttempts extends Model
         'attempts_count',
         'started_at',
         'ends_at',
-        'finished_at'
+        'finished_at',
+        'selected_question_ids'
+    ];
+
+    protected $casts = [
+        'selected_question_ids' => 'array'
     ];
 }

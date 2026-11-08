@@ -1,24 +1,45 @@
 <template>
     <div class="w-full min-w-0 shrink-0 md:shrink md:flex-1 md:min-h-[320px] flex flex-col gap-4">
         <div class="w-full shrink-0 flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
-            <div class="relative w-full sm:w-[320px]">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 z-10 sharedTXTMuted pointer-events-none">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-                <input
-                    v-model="searchQuery"
-                    type="search"
-                    placeholder="Search by ID or Name..."
-                    aria-label="Search users by ID or name"
-                    class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-xl text-base sm:text-sm
-                        appearance-none [color-scheme:dark]
-                        sharedInputDark border outline-none
-                        focus:ring-1 transition-all duration-200"
+            <div class="flex flex-col sm:flex-row sm:items-center gap-3 min-w-0">
+                <!-- ROLE FILTER -->
+                <div
+                    class="flex items-center gap-1 p-1 rounded-xl border sharedBorder sharedSurfaceBG w-fit max-w-full overflow-x-auto"
                 >
+                    <button
+                        v-for="tab in roleTabs"
+                        :key="tab"
+                        type="button"
+                        @click="activeTab = tab"
+                        class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 cursor-pointer"
+                        :class="activeTab === tab
+                            ? 'sharedBtn'
+                            : 'sharedTXTMuted sharedRowHover sharedHoverTXT'"
+                    >
+                        {{ tab }}
+                    </button>
+                </div>
+
+                <div class="relative w-full sm:w-[320px]">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-4 absolute left-3.5 top-1/2 -translate-y-1/2 z-10 sharedTXTMuted pointer-events-none">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    </svg>
+                    <input
+                        v-model="searchQuery"
+                        type="search"
+                        placeholder="Search by ID or Name..."
+                        aria-label="Search users by ID or name"
+                        class="w-full h-10 sm:h-[36px] pl-10 pr-3 rounded-xl text-base sm:text-sm
+                            appearance-none [color-scheme:dark]
+                            sharedInputDark border outline-none
+                            focus:ring-1 transition-all duration-200"
+                    >
+                </div>
             </div>
+
             <span class="text-xs font-medium sharedTXTMuted sm:shrink-0" aria-live="polite">
                 {{ filteredUsers.length }} {{ filteredUsers.length === 1 ? 'user' : 'users' }}
             </span>
@@ -247,6 +268,14 @@ const gridCols =
 
 const searchQuery = ref('');
 
+// Role filter tabs -> the role value stored on each user
+const roleTabs = ['All', 'Students', 'Admins'];
+const tabRoles = {
+    Students: 'Student',
+    Admins: 'Admin',
+};
+const activeTab = ref('All');
+
 const usersList = ref([...props.users]);
 
 watch(
@@ -266,11 +295,19 @@ const userData = ref(null);
 const filteredUsers = computed(() => {
     const search = searchQuery.value.trim().toLowerCase();
 
-    if (!search) {
-        return usersList.value;
-    }
-
     return usersList.value.filter(user => {
+        const matchesTab =
+            activeTab.value === 'All' ||
+            user.role === tabRoles[activeTab.value];
+
+        if (!matchesTab) {
+            return false;
+        }
+
+        if (!search) {
+            return true;
+        }
+
         const name = String(user.name ?? '').toLowerCase();
         const idNumber = String(user.id_number ?? '').toLowerCase();
 

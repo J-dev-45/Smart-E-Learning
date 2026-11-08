@@ -64,24 +64,33 @@
             </template>
         </div>
 
-        <!-- RIGHT: Next -->
-        <!-- NEXT: OPEN -->
-        <a v-if="moduleQuiz.has_passed" :href="`/learning/${url(subject.subject_name)}/${subject.id}/${url(nextModule.module_name)}/${nextModule.id}`"
-            class="group inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm font-bold sharedBtn rounded-full py-2.5 px-6 transition-colors whitespace-nowrap">
-            Next
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-        </a>
+        <template v-if="!nextModule">
+            <a :href="`/assessment/exam/question_type/${url(subject.subject_name)}/${subject.id}/none/0`"
+                class="w-full md:w-auto text-center text-xs sm:text-sm font-bold sharedBtnInfo rounded-xl py-2.5 px-4 sm:px-6 transition-colors duration-200 whitespace-nowrap">
+                Take Exam
+            </a>
+        </template>
+        
+         <template v-else>
+            <!-- NEXT: OPEN -->
+            <a v-if="moduleQuiz.has_passed" :href="`/learning/${url(subject.subject_name)}/${subject.id}/${url(nextModule.module_name)}/${nextModule.id}`"
+                class="group inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm font-bold sharedBtn rounded-full py-2.5 px-6 transition-colors whitespace-nowrap">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-300 group-hover:translate-x-0.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+            </a>
 
-        <!-- NEXT: LOCKED -->
-        <span v-else
-            class="inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm font-bold sharedTXTMuted border-[1.5px] sharedBorder sharedSurfaceBG rounded-full py-2.5 px-6 whitespace-nowrap cursor-not-allowed select-none">
-            Next
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-            </svg>
-        </span>
+            <!-- NEXT: LOCKED -->
+            <span v-else
+                class="inline-flex w-full sm:w-auto items-center justify-center gap-2 text-sm font-bold sharedTXTMuted border-[1.5px] sharedBorder sharedSurfaceBG rounded-full py-2.5 px-6 whitespace-nowrap cursor-not-allowed select-none">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+            </span>
+         </template>
+        
     </div>
 </template>
 
@@ -105,7 +114,7 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    nextModule: { type: Object, required: true}
+    nextModule: { type: Object, default: () => []}
 })
 
 const activityPassedLocally = ref(false)

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\FeedbackController;
+use App\Http\Controllers\Admin\LessonContentController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\QuestionImportController;
@@ -19,7 +20,6 @@ use App\Http\Controllers\Client\CodePretestController;
 use App\Http\Controllers\Client\CodeQuizController;
 use App\Http\Controllers\Client\CodeRunnerController;
 use App\Http\Controllers\Client\LearnController;
-use App\Http\Controllers\Client\Pretest;
 use App\Http\Controllers\Client\ProfileAvatarController;
 use App\Models\AnsweredAssessmentQuestions;
 use App\Models\AnsweredModuleQuestions;
@@ -250,7 +250,6 @@ Route::middleware(['auth'])->group(function(){
         });
     }
 
-    Route::get('/pretest/{subject_name}/{subject_id}', [Pretest::class, 'pretestModules']);
     Route::get('/assessment/{type_of_assessment}/{to_take}/{subject_name}/{subject_id}/{module_name}/{module_id}', [AssessmentController::class, 'taking_assessment'])->name('assessment.taking');
 
     Route::put('/change-password', [PasswordController::class, 'changePassword']);
@@ -352,6 +351,22 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     // ===========================================================
 
+
+    // LESSON MANAGEMENT
+    Route::get('/lesson-management/{subject_name}/{subject_id}/{topic_name}/{topic_id}', function ($subject_name, $subject_id, $topic_name, $topic_id) {
+        return view('Admin.Pages.Lesson_Management', compact(
+            'subject_name',
+            'subject_id',
+            'topic_name',
+            'topic_id'
+        ));
+    })->name('lesson_management_page');
+
+
+
+    // ===========================================================
+    // ===========================================================
+
     // USERS
     Route::put('/promoteUser', [UserController::class, 'promoteUser']);
     Route::put('/demoteUser', [UserController::class, 'demoteUser']);
@@ -386,9 +401,18 @@ Route::middleware(['auth','Admin'])->group(function(){
     Route::delete('deleteModule', [ModuleController::class, 'deleteModule']);
 
     // TOPICS
+    Route::get('/getTopic/{topic_id}', [TopicController::class, 'getTopic']);
     Route::post('/addTopic', [TopicController::class, 'addTopic']);
     Route::put('/editTopic', [TopicController::class, 'editTopic']);
     Route::delete('/deleteTopic', [TopicController::class, 'deleteTopic']);
+
+    // LESSON CONTENT
+    Route::post('/lesson-content/extract-document', [LessonContentController::class, 'extractDocument']);
+    Route::get('/lesson-content/topic/{topicId}', [LessonContentController::class, 'index']);
+    Route::get('/lesson-content/{lessonId}', [LessonContentController::class, 'show']);
+    Route::post('/lesson-content', [LessonContentController::class, 'store']);
+    Route::put('/lesson-content/{lessonId}', [LessonContentController::class, 'update']);
+    Route::delete('/lesson-content/{lessonId}', [LessonContentController::class, 'destroy']);
 
     // AUTH
     Route::post('/logout', [LogoutController::class, 'logout']);

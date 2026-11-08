@@ -9,7 +9,6 @@
 
             <div class="ml-auto flex items-center gap-3 shrink-0">
 
-                <!-- PROFILE (mobile + desktop, the only clickable element) -->
                 <button
                     type="button"
                     @click.stop="toggleUserMenu"

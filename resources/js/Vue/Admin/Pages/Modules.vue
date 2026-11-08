@@ -196,8 +196,19 @@
 
                                 <div class="flex items-center gap-1 shrink-0">
 
-                                    <!-- Edit topic (neutral, amber on hover) -->
-                                    <button
+                                    <a
+                                        :href="`/lesson-management/${url(props.subjectName)}/${props.subjectId}/${topic.topic_name}/${topic.id}`"
+                                        aria-label="Manage lessons"
+                                        title="Manage Lessons"
+                                        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-lg sharedTXTMuted sharedTile sharedStateOpen sharedHoverState active:scale-95 transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 sharedFocusRing"
+                                    >
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5" >
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                                        </svg>
+                                    </a>
+
+                                    <!-- Edit topic -->
+                                    <!-- <button
                                         type="button"
                                         @click="openEditTopic(topic, module.id)"
                                         aria-label="Edit topic"
@@ -207,9 +218,9 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
                                         </svg>
-                                    </button>
+                                    </button> -->
 
-                                    <!-- Delete topic (danger) -->
+                                    <!-- Delete topic  -->
                                     <button
                                         type="button"
                                         @click="openDeleteTopic(topic.topic_name, topic.id)"
@@ -327,13 +338,13 @@
         @new_topics="handelNewTopic"
     />
 
-    <Edit_Topic
+    <!-- <Edit_Topic
         :show-edit-topic="showEditTopic"
         :topic-data="selectedEditTopic"
         :module-id="m_id"
         @close-edit-topic="closeEditTopic"
         @topic-updated="handleTopicUpdated"
-    />
+    /> -->
 
     <Delete_Topic
         :show-delete-topic="showDeleteTopic"
@@ -390,9 +401,9 @@ const props = defineProps({
 })
 
 
-console.log(props.subjectId)
-console.log(props.subjectName)
-
+function url(url_name) {
+    return url_name.replace(/\s+/g, '_')
+}
 
 // --------------------------------------------------------------------------------------------------------------->>>>>> PROFILE MENU
 

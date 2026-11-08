@@ -13,6 +13,7 @@ class Modules extends Model
         'order',
         'subject_id',
         'module_name',
+        'description',
         'has_coding',
         'has_question_type'
     ];

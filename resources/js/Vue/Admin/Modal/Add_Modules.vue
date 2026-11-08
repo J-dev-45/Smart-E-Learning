@@ -16,55 +16,25 @@
                 >
 
                     <!-- CLOSE BUTTON -->
-
                     <button
                         type="button"
                         @click="closeModal"
                         aria-label="Close"
                         class="absolute right-4 top-4 p-1.5 rounded-md sharedTXTLightFaint sharedLightIconBtn transition-colors cursor-pointer"
                     >
-
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            class="size-5"
-                        >
-
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M6 18 18 6M6 6l12 12"
-                            />
-
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5" >
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                         </svg>
 
                     </button>
 
-
                     <!-- HEADER -->
-
                     <div class="w-full flex items-start gap-3 pr-6">
 
                         <div class="shrink-0 w-10 h-10 rounded-lg sharedStateLightAccent sharedStateTint flex items-center justify-center">
 
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke-width="1.5"
-                                stroke="currentColor"
-                                class="size-5 sharedStateText"
-                            >
-
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    d="M12 4.5v15m7.5-7.5h-15"
-                                />
-
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 sharedStateText" >
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                             </svg>
 
                         </div>
@@ -85,24 +55,17 @@
 
 
                     <!-- SUBJECT -->
-
                     <div class="w-full flex items-center gap-2">
-
                         <span class="text-sm font-medium sharedTXTOnLight">
                             Subject
                         </span>
-
                         <span class="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium sharedStateLightAccent sharedStateTint sharedStateText">
                             {{ subjectName }}
                         </span>
-
                     </div>
 
-
                     <!-- module -->
-
                     <div class="w-full flex flex-col gap-1.5">
-
                         <label
                             for="module"
                             class="text-sm font-medium sharedTXTOnLight"
@@ -124,6 +87,37 @@
                             type="hidden"
                             v-model="subject_id"
                         >
+
+                    </div>
+
+
+                    <!-- MODULE DESCRIPTION -->
+                    <div class="w-full flex flex-col gap-1.5">
+
+                        <div class="flex items-center justify-between">
+
+                            <label
+                                for="module_description"
+                                class="text-sm font-medium sharedTXTOnLight"
+                            >
+                                Description
+                            </label>
+
+                            <span class="text-xs tabular-nums sharedTXTLightFaint">
+                                {{ module_description.length }}/{{ descriptionLimit }}
+                            </span>
+
+                        </div>
+
+                        <textarea
+                            id="module_description"
+                            rows="3"
+                            :maxlength="descriptionLimit"
+                            placeholder="Briefly describe what this module covers"
+                            v-model="module_description"
+                            class="sharedInput sharedInputHover w-full px-3 py-2.5 text-sm outline-none border rounded-lg
+                            resize-none transition-all duration-150 focus:ring-4"
+                        ></textarea>
 
                     </div>
 
@@ -173,6 +167,7 @@
     <Toast
         :show="showToast"
         :message="message"
+        :type="toastType"
         @close="showToast = false"
     />
 
@@ -204,10 +199,14 @@ const emit = defineEmits([
     'new_modules'
 ])
 
+const descriptionLimit = 500
+
 const module_name = ref('')
+const module_description = ref('')
 const subject_id = ref(null)
 const showToast = ref(false)
 const message = ref('')
+const toastType = ref('')
 
 const isSubmitting = ref(false)
 
@@ -222,6 +221,7 @@ watch(
 
 function closeModal() {
     module_name.value = ''
+    module_description.value = ''
     emit('close')
 }
 
@@ -251,6 +251,7 @@ async function addModule(Sname) {
             body: JSON.stringify({
                 subject_id: subject_id.value,
                 module_name: module_name.value,
+                module_description: module_description.value.trim(),
                 subject_name: Sname
             })
         });
@@ -259,10 +260,14 @@ async function addModule(Sname) {
 
         if (data.success) {
             module_name.value = ''
+            module_description.value = ''
             showToast.value= true
             message.value = data.message
+            toastType.value = 'success'
             emit('close')
             emit('new_modules', data.new_modules)
+        }else{
+            toastType.value = 'error'
         }
 
     } finally{

@@ -1,8 +1,9 @@
+
 <template>
     <div
-    ref="headerEl"
-    class="relative left-0 right-2 shrink-0 sharedBG w-auto h-[60px] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20 flex items-center justify-between text-white px-5"
->
+        ref="headerEl"
+        class="relative left-0 right-2 shrink-0 sharedBG w-auto h-[60px] border-b-[1.5px] border-b-[#CECBF6]/15 shadow-md shadow-black/20 flex items-center justify-between text-white px-5"
+    >
         <div class="flex items-center">
             <a
                 :href="`/learn/${url(subjectName)}/${subjectId}`"
@@ -316,7 +317,7 @@ async function scrollModuleProgress() {
 
 // Lifecycle Hooks
 onMounted(() => {
-    scroller = headerEl.value?.closest('main')
+    scroller = document.getElementById('page-scroll')
 
     window.addEventListener(
         'module-progress-updated',

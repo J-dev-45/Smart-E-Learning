@@ -93,13 +93,29 @@ class AssessmentController extends Controller
 
             $questions_count = Questions::where('module_id', $request->module_id)->count();
 
+            // 'TorF', 'multipleChoice', 'identification', 'coding'
+            $answered_mc_questions = Questions::whereIn('id', $answered_questions_data->pluck('question_id'))
+                ->where('question_type', 'multipleChoice')
+                ->count();
+            $answered_TorF_questions = Questions::whereIn('id', $answered_questions_data->pluck('question_id'))
+                ->where('question_type', 'TorF')
+                ->count();
+            $answered_identification_questions = Questions::whereIn('id', $answered_questions_data->pluck('question_id'))
+                ->where('question_type', 'identification')
+                ->count();
+
             $total_questions = min($questions_count, 15);
 
             $answered_count = $answered_questions_data
                 ->whereIn('question_id', Questions::where('module_id', $request->module_id)->pluck('id'))
                 ->count();
 
+            $remaining_mc_questions = max(0, 5 - $answered_mc_questions);
+            $remaining_TorF_questions = max(0, 5 - $answered_TorF_questions);
+            $remaining_identification_questions = max(0, 5 - $answered_identification_questions);
+
             $remaining_questions = max(0, $total_questions - $answered_count);
+            $remaining_coding_question = max(0, 1);
 
             if($remaining_questions === 0){
                 return redirect()->route('assessment.result', [
@@ -159,21 +175,21 @@ class AssessmentController extends Controller
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'multipleChoice')
                     ->inRandomOrder()
-                    ->take(5)
+                    ->take($remaining_mc_questions)
                     ->get();
 
                 $trueOrFalseQuestions = Questions::where('module_id', $request->module_id)
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'TorF')
                     ->inRandomOrder()
-                    ->take(5)
+                    ->take($remaining_TorF_questions)
                     ->get();
 
                 $identificationQuestions = Questions::where('module_id', $request->module_id)
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'identification')
                     ->inRandomOrder()
-                    ->take(5)
+                    ->take($remaining_identification_questions)
                     ->get();
 
                 $questions = $multipleChoiceQuestions
@@ -207,7 +223,7 @@ class AssessmentController extends Controller
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'coding')
                     ->inRandomOrder()
-                    ->limit(1)
+                    ->limit($remaining_coding_question)
                     ->get();
 
                 $saved_codes = PretestSavedCodes::where('user_id', auth()->user()->id)
@@ -254,8 +270,21 @@ class AssessmentController extends Controller
 
             $questions_count = Questions::whereIn('module_id', $modules->pluck('id'))->count();
 
+             $answered_mc_questions = Questions::whereIn('id', $answered_questions_data->pluck('question_id'))
+                ->where('question_type', 'multipleChoice')
+                ->count();
+            $answered_TorF_questions = Questions::whereIn('id', $answered_questions_data->pluck('question_id'))
+                ->where('question_type', 'TorF')
+                ->count();
+            $answered_identification_questions = Questions::whereIn('id', $answered_questions_data->pluck('question_id'))
+                ->where('question_type', 'identification')
+                ->count();
+
             $total_questions = min($questions_count, 40);
 
+            $remaining_mc_questions = max(0, 15 - $answered_mc_questions);
+            $remaining_TorF_questions = max(0, 15 - $answered_TorF_questions);
+            $remaining_identification_questions = max(0, 10 - $answered_identification_questions);
             $remaining_questions = max(0, $total_questions - $answered_count);
 
             if($remaining_questions === 0){
@@ -280,21 +309,21 @@ class AssessmentController extends Controller
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'multipleChoice')
                     ->inRandomOrder()
-                    ->take(20)
+                    ->take($remaining_mc_questions)
                     ->get();
 
                 $trueOrFalseQuestions = Questions::whereIn('module_id', $modules->pluck('id'))
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'TorF')
                     ->inRandomOrder()
-                    ->take(10)
+                    ->take($remaining_TorF_questions)
                     ->get();
 
                 $identificationQuestions = Questions::whereIn('module_id', $modules->pluck('id'))
                     ->whereNotIn('id', $answered_question_ids)
                     ->where('question_type', 'identification')
                     ->inRandomOrder()
-                    ->take(10)
+                    ->take($remaining_identification_questions)
                     ->get();
 
                 $questions = $multipleChoiceQuestions
@@ -817,10 +846,12 @@ class AssessmentController extends Controller
                         'scored' => 0
                     ]);                    
 
-                    $nextmodule = ModuleQuiz::where('user_id', auth()->id())
-                        ->where('subject_id', $request->subject_id)
-                        ->where('module_id', '>', $module->id)
-                        ->orderBy('module_id', 'asc')
+                    $nextmodule = ModuleQuiz::select('module_quiz.*')
+                        ->join('modules', 'module_quiz.module_id', '=', 'modules.id')
+                        ->where('module_quiz.user_id', auth()->id())
+                        ->where('module_quiz.subject_id', $request->subject_id)
+                        ->where('modules.order', '>', $module->order)
+                        ->orderBy('modules.order', 'asc')
                         ->first();
 
                     if ($nextmodule) {

@@ -35,7 +35,7 @@
 
             {{-- HEADER (stays visible while scrolling) --}}
             <div class="sticky top-0 z-20 shrink-0 sharedBG">
-                <learn-header
+                {{-- <learn-header
                     :user-id="{{ auth()->id() }}"
                     user-name="{{ auth()->user()->name }}"
                     user-email="{{ auth()->user()->email }}"
@@ -48,7 +48,7 @@
                     :initial-progress="{{ (float) ($module_progress->progress ?? 0) }}"
                     :subject-id='@json((string) $subject->id)'
                     :subject-name='@json($subject->subject_name)'
-                ></learn-header>
+                ></learn-header> --}}
             </div>
 
 
@@ -56,40 +56,44 @@
                 class="shrink-0 w-full sharedTXT p-5 flex flex-col"
             >
 
-                @switch($module->module_name)
+                @foreach ($modules as $module)
+                    
+                
+                    @switch($module->module_name)
 
-                    @case('Data Structures and Algorithms')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M1_Data_Structures_And_Algorithms.Main')
-                        @break
-                    @case('Queues')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M2_Queues.Main')
-                        @break
-                    @case('Linked Lists and Arrays')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M3_Linked_Lists_And_Arrays.Main')
-                        @break
-                    @case('Big O Notation and Searching Algorithms')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M4_Big_O_Searching_Algorithms.Main')
-                        @break
-                    @case('Sorting Algorithms')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M5_Sorting_Algorithms.Main')
-                        @break
-                    @case('Recursion and Advanced Sorting Algorithms')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M6_Recursion_Advanced_Sorting.Main')
-                        @break
-                    @case('Hash Tables and Graphs')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M7_Hash_Tables_Graphs.Main')
-                        @break
-                    @case('Graphs II')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M8_Graphs_Traversal.Main')
-                        @break
-                    @case('Tree Data Structures and Performance Analysis')
-                        @include('Client.Review_Pages.Modules.ITECC4_DSA.M9_Tree_Data_Structures.Main')
-                        @break
+                        @case('Data Structures and Algorithms')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M1_Data_Structures_And_Algorithms.Main')
+                            @break
+                        @case('Queues')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M2_Queues.Main')
+                            @break
+                        @case('Linked Lists and Arrays')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M3_Linked_Lists_And_Arrays.Main')
+                            @break
+                        @case('Big O Notation and Searching Algorithms')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M4_Big_O_Searching_Algorithms.Main')
+                            @break
+                        @case('Sorting Algorithms')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M5_Sorting_Algorithms.Main')
+                            @break
+                        @case('Recursion and Advanced Sorting Algorithms')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M6_Recursion_Advanced_Sorting.Main')
+                            @break
+                        @case('Hash Tables and Graphs')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M7_Hash_Tables_Graphs.Main')
+                            @break
+                        @case('Graphs II')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M8_Graphs_Traversal.Main')
+                            @break
+                        @case('Tree Data Structures and Performance Analysis')
+                            @include('Client.Review_Pages.Modules.ITECC4_DSA.M9_Tree_Data_Structures.Main')
+                            @break
 
 
-                    @default
-                        
-                @endswitch
+                        @default
+                            
+                    @endswitch
+                @endforeach
             </section>
 
         </main>

@@ -116,6 +116,38 @@
                     </div>
 
 
+                    <!-- TOPIC DESCRIPTION -->
+                    <div class="w-full flex flex-col gap-1.5">
+
+                        <div class="flex items-center justify-between">
+
+                            <label
+                                for="topic_description"
+                                class="text-sm font-medium sharedTXTOnLight"
+                            >
+                                Description
+                                <span class="font-normal sharedTXTLightFaint">(optional)</span>
+                            </label>
+
+                            <span class="text-xs tabular-nums sharedTXTLightFaint">
+                                {{ topic_description.length }}/{{ descriptionLimit }}
+                            </span>
+
+                        </div>
+
+                        <textarea
+                            id="topic_description"
+                            rows="3"
+                            :maxlength="descriptionLimit"
+                            placeholder="Briefly describe what this topic covers"
+                            v-model="topic_description"
+                            class="sharedInput sharedInputHover w-full px-3 py-2.5 text-sm outline-none border rounded-lg
+                            resize-none transition-all duration-150 focus:ring-4"
+                        ></textarea>
+
+                    </div>
+
+
                     <!-- BUTTONS -->
                     <div class="w-full flex gap-3 mt-1">
 
@@ -211,8 +243,10 @@ const emit = defineEmits([
     'new_topics'
 ])
 
+const descriptionLimit = 1000
 
 const topic_name = ref('')
+const topic_description = ref('')
 const module_id = ref(null)
 
 const showToast = ref(false)
@@ -230,6 +264,7 @@ watch(
 
 function closeModal() {
     topic_name.value = ''
+    topic_description.value = ''
     emit('close')
 }
 
@@ -258,7 +293,8 @@ async function addTopic() {
             body: JSON.stringify({
 
                 module_id: module_id.value,
-                topic_name: topic_name.value
+                topic_name: topic_name.value,
+                description: topic_description.value.trim()
 
             })
         })
@@ -267,6 +303,7 @@ async function addTopic() {
 
         if (data.success) {
             topic_name.value = ''
+            topic_description.value = ''
             showToast.value = true
             message.value = data.message
             emit('close')

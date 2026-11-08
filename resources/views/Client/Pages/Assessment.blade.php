@@ -34,6 +34,10 @@
                 :remaining-seconds="{{ $remaining_seconds }}"
                 :total-seconds="{{ $total_seconds }}"
                 assessment-type="{{$type_of_assessment}}"
+
+                user-id="{{auth()->id()}}"
+                user-name="{{auth()->user()->name}}"
+                user-email="{{auth()->user()->email}}"
             ></assessment-form>
         </main>
     </div>

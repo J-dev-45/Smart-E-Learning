@@ -12,22 +12,45 @@ use Illuminate\Support\Str;
 
 class TopicController extends Controller
 {
-    public function addTopic(Request $request){
+
+    public function getTopic($topic_id)
+    {
+        $topic = Topics::findOrFail($topic_id);
+
+        return response()->json([
+            'success' => true,
+            'topic' => $topic
+        ]);
+    }
+
+    public function addTopic(Request $request)
+    {
         $input = $request->validate([
-            'module_id'          => ['required', 'uuid', 'exists:modules,id'],
-            'topic_name' => 'required|string|max:255'
+            'module_id' => ['required', 'uuid', 'exists:modules,id'],
+            'topic_name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:1000'
         ]);
 
-        $module = Modules::find($input['module_id']);
-        $subject_code = Subjects::where('id', $module->subject_id)->value('subject_code');
+        $module = Modules::findOrFail($input['module_id']);
 
-        $maxOrder = Topics::where('module_id', $input['module_id'])->max('order');
+        $subject_code = Subjects::where(
+            'id',
+            $module->subject_id
+        )->value('subject_code');
+
+        $maxOrder = Topics::where(
+            'module_id',
+            $input['module_id']
+        )->max('order');
+
         $nextOrder = is_null($maxOrder) ? 1 : $maxOrder + 1;
+
         $topics = Topics::create([
             'order' => $nextOrder,
             'module_id' => $input['module_id'],
             'topic_name' => $input['topic_name'],
-            'slug' => $subject_code.'-'.'topic-'. Str::slug($input['topic_name'])
+            'description' => $input['description'],
+            'slug' => $subject_code . '-topic-' . Str::slug($input['topic_name'])
         ]);
 
         RecentActivity::create([
@@ -42,23 +65,36 @@ class TopicController extends Controller
             'message' => 'Topic added Successfully',
             'new_topics' => $topics
         ]);
-
     }
 
-
-    
-    public function editTopic(Request $request){
+    public function editTopic(Request $request)
+    {
         $input = $request->validate([
-            'module_id'          => ['required', 'uuid', 'exists:modules,id'],
-            'new_topic_name' => 'required|string|max:255'
+            'topic_id' => ['required', 'uuid', 'exists:topics,id'],
+            'module_id' => ['required', 'uuid', 'exists:modules,id'],
+            'new_topic_name' => 'required|string|max:255',
+            'new_description' => 'nullable|string|max:1000'
         ]);
 
-        $topic = Topics::find($request->topic_id);
-        $module = Modules::find($input['module_id']);
+        $module = Modules::findOrFail($input['module_id']);
 
-        $subject_code = Subjects::where('id', $module->subject_id)->value('subject_code');
+        $topic = Topics::where('id', $input['topic_id'])
+            ->where('module_id', $input['module_id'])
+            ->first();
 
-        $slug = $subject_code.'-'.'topic-'. Str::slug($input['new_topic_name']);
+        if (!$topic) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Topic not found in the selected module.'
+            ], 404);
+        }
+
+        $subject_code = Subjects::where(
+            'id',
+            $module->subject_id
+        )->value('subject_code');
+
+        $slug = $subject_code . '-topic-' . Str::slug($input['new_topic_name']);
 
         $existingSlug = Topics::where('slug', $slug)
             ->where('id', '!=', $topic->id)
@@ -73,8 +109,12 @@ class TopicController extends Controller
 
         $topic->update([
             'topic_name' => $input['new_topic_name'],
-            'slug' => $slug
+            'slug' => $slug,
+            'description' => $input['new_description']
         ]);
+
+        // Refresh the model to retrieve the latest database values.
+        $topic->refresh();
 
         RecentActivity::create([
             'name' => auth()->user()->name,
@@ -84,12 +124,11 @@ class TopicController extends Controller
         ]);
 
         return response()->json([
-            'success'=> true,
-            'message'=> 'Topic updated successfully!'
+            'success' => true,
+            'message' => 'Topic updated successfully!',
+            'updated_topic' => $topic
         ]);
     }
-
-
 
     public function deleteTopic(Request $request)
     {
@@ -98,8 +137,8 @@ class TopicController extends Controller
         if (!$topic) {
             return response()->json([
                 'success' => false,
-                'message' => 'topic not found!'
-            ], 444);
+                'message' => 'Topic not found!'
+            ], 404);
         }
 
         $topicName = $topic->topic_name;
@@ -116,7 +155,7 @@ class TopicController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'topic deleted Successfully!',
+            'message' => 'Topic deleted Successfully!',
             'deleted_topic_id' => $topicId
         ]);
     }

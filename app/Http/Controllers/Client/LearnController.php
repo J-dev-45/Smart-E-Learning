@@ -260,7 +260,11 @@ class LearnController extends Controller
         }
 
         $module = Modules::where('id', $request->module_id)->firstOrFail();
-        $topics = Topics::where('module_id', $module->id)->orderBy('order', 'ASC')->get();
+
+        $topics = Topics::where('module_id', $module->id)
+            ->with('lessonContent')
+            ->orderBy('order', 'ASC')
+            ->get();
 
         $module_already_started = ModuleStarted::where('user_id', auth()->id())
             ->where('module_id', $module->id)
@@ -321,12 +325,20 @@ class LearnController extends Controller
         $passing_percent = 80;
         $total_questions = $answered_module_questions->count();
         $failed = false;
-        $answered_questions = [];
+        $answered_questions = Questions::whereIn(
+            'id',
+            $answered_module_questions->pluck('question_id')
+        )->get();
+
 
         $next_module = Modules::where('subject_id', $subject->id)
             ->where('order', '>', $module->order)
             ->orderBy('order', 'ASC')
             ->first();
+        
+        if (!$next_module) {
+            $next_module = null;
+        }
 
         if ($answered_module_questions->isNotEmpty()) {
 
@@ -377,33 +389,7 @@ class LearnController extends Controller
             'next_module',
         );
 
-        switch ($subject->subject_name) {
-            case "Discrete Mathematics":
-                return view(
-                    'Client.Review_Pages.Discrete_Mathematics',$viewData);
-                break;
-            
-            case "Data Structures and Algorithms":
-                return view(
-                    'Client.Review_Pages.Data_Structures_And_Algorithms',$viewData);
-                break;
-            
-            case "Introduction to Computing":
-                return view(
-                    'Client.Review_Pages.Introduction_To_Computing',$viewData);
-                break;
-
-            case "Computer Programming 1":
-                return view(
-                    'Client.Review_Pages.Computer_Programming_1',$viewData);
-                break;
-            
-            case "Computer Programming 2":
-                return view(
-                    'Client.Review_Pages.Computer_Programming_2',$viewData);
-                break;
-
-        }
+        return view('Client.Pages.Lesson_Content', $viewData);
     }
 
     // =================================================================================================

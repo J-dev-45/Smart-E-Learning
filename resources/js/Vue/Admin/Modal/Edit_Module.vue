@@ -60,7 +60,7 @@
                             </span>
 
                             <span class="text-sm sharedTXTLightMuted">
-                                Update module name.
+                                Update module name and description.
                             </span>
                         </div>
                     </div>
@@ -83,6 +83,31 @@
                         />
                     </div>
 
+                    <!-- DESCRIPTION -->
+                    <div class="w-full flex flex-col gap-2" id="whiteBG">
+                        <div class="flex items-center justify-between">
+                            <label
+                                for="module_description"
+                                class="text-sm font-medium sharedTXTOnLight"
+                            >
+                                Description
+                            </label>
+
+                            <span class="text-xs tabular-nums sharedTXTLightFaint">
+                                {{ (moduleData.description || '').length }}/{{ descriptionLimit }}
+                            </span>
+                        </div>
+
+                        <textarea
+                            id="module_description"
+                            rows="3"
+                            :maxlength="descriptionLimit"
+                            v-model="moduleData.description"
+                            placeholder="Briefly describe what this module covers"
+                            class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm resize-none focus:ring-2 transition-colors"
+                        ></textarea>
+                    </div>
+
 
                     <!-- BUTTONS -->
                     <div class="w-full flex gap-3 mt-0.5">
@@ -100,26 +125,9 @@
                             class="w-2/3 py-2.5 rounded-md text-sm font-medium sharedBtn transition-all cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                         >
                             <svg
-                                v-if="isSubmitting"
-                                class="animate-spin size-4"
-                                xmlns="http://www.w3.org/2000/svg"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                            >
-                                <circle
-                                    class="opacity-25"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                    stroke="currentColor"
-                                    stroke-width="4"
-                                />
-
-                                <path
-                                    class="opacity-75"
-                                    fill="currentColor"
-                                    d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z"
-                                />
+                                v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" >
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z" />
                             </svg>
 
                             {{ isSubmitting ? 'Updating...' : 'Save Changes' }}
@@ -133,6 +141,7 @@
     <Toast
         :show="showToast"
         :message="message"
+        :type="toastType"
         @close="showToast = false"
     />
 </template>
@@ -152,9 +161,11 @@ const props = defineProps({
 
 const emit = defineEmits(['close']);
 
+const descriptionLimit = 1000;
 
 const showToast = ref(false);
 const message = ref('');
+const toastType = ref('')
 const isSubmitting = ref(false);
 
 function closeModal() {
@@ -182,7 +193,8 @@ async function editModuleForm(id) {
 
             body: JSON.stringify({
                 module_id : id,
-                new_module_name : props.moduleData.module_name
+                new_module_name : props.moduleData.module_name,
+                new_description : (props.moduleData.description || '').trim()
             })
         });
 
@@ -192,8 +204,13 @@ async function editModuleForm(id) {
 
             showToast.value = true;
             message.value = data.message;
+            toastType.value = 'success'
 
             emit('close');
+        }else{
+            showToast.value = true;
+            message.value = data.message;
+            toastType.value = 'error'
         }
     }
     finally {

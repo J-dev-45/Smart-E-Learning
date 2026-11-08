@@ -1,3 +1,4 @@
+
 <template>
     <Transition name="modal-fade">
         <div
@@ -58,7 +59,7 @@
                             </span>
 
                             <span class="text-sm sharedTXTLightMuted">
-                                Update Topic name.
+                                Update topic name and description.
                             </span>
                         </div>
                     </div>
@@ -79,6 +80,28 @@
                             required
                             class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors"
                         />
+                    </div>
+
+                    <div class="w-full flex flex-col gap-2" id="whiteBG">
+                        <label
+                            for="topic_description"
+                            class="text-sm font-medium sharedTXTOnLight"
+                        >
+                            Description
+                        </label>
+
+                        <textarea
+                            v-model="formTopicDescription"
+                            id="topic_description"
+                            rows="4"
+                            maxlength="1000"
+                            placeholder="Enter topic description"
+                            class="sharedInput sharedInputHover w-full border rounded-md p-2 outline-none text-sm focus:ring-2 transition-colors resize-none"
+                        ></textarea>
+
+                        <span class="text-xs sharedTXTLightMuted self-end">
+                            {{ formTopicDescription.length }}/1000
+                        </span>
                     </div>
 
                     <div class="w-full flex gap-3 mt-0.5">
@@ -135,33 +158,51 @@
 
 <script setup>
 import { ref, watch } from 'vue';
-import Toast from '../components/Toast.vue'
+import Toast from '../components/Toast.vue';
 
 const props = defineProps({
     showEditTopic: {
         type: Boolean,
         default: true
     },
-    moduleId: {type: String, default: null},
+    moduleId: {
+        type: String,
+        default: null
+    },
     topicData: {
         type: Object,
         default: () => ({})
-    },
+    }
 });
 
-const emit = defineEmits(['close-edit-topic', 'topic-updated']);
+const emit = defineEmits([
+    'close-edit-topic',
+    'topic-updated'
+]);
 
 const showToast = ref(false);
 const message = ref('');
 const isSubmitting = ref(false);
+
 const formTopicName = ref('');
+const formTopicDescription = ref(props.topicData?.description || '');
 
 watch(
-    () => props.topicData,
-    (newTopic) => {
-        formTopicName.value = newTopic?.topic_name ?? '';
+    () => [
+        props.showEditTopic,
+        props.topicData?.id,
+        props.topicData?.topic_name,
+        props.topicData?.description
+    ],
+    () => {
+        if (props.showEditTopic && props.topicData?.id) {
+            formTopicName.value = props.topicData.topic_name ?? '';
+            formTopicDescription.value = props.topicData.description ?? '';
+        }
     },
-    { immediate: true, deep: true }
+    {
+        immediate: true
+    }
 );
 
 function closeModal() {
@@ -174,6 +215,7 @@ async function editTopicForm() {
     }
 
     const newTopicName = formTopicName.value.trim();
+    const newTopicDescription = formTopicDescription.value.trim();
 
     if (!newTopicName) {
         message.value = 'Topic name cannot be empty.';
@@ -189,7 +231,9 @@ async function editTopicForm() {
 
     isSubmitting.value = true;
 
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    const csrfToken = document
+        .querySelector('meta[name="csrf-token"]')
+        ?.getAttribute('content');
 
     try {
         const response = await fetch('/editTopic', {
@@ -204,7 +248,8 @@ async function editTopicForm() {
             body: JSON.stringify({
                 topic_id: props.topicData.id,
                 module_id: props.moduleId,
-                new_topic_name: newTopicName
+                new_topic_name: newTopicName,
+                new_description: newTopicDescription
             })
         });
 
@@ -216,12 +261,12 @@ async function editTopicForm() {
             return;
         }
 
-        emit('topic-updated', {
-            id: props.topicData.id,
-            topic_name: newTopicName
-        });
+        formTopicName.value = newTopicName;
+        formTopicDescription.value = newTopicDescription;
 
-        message.value = data.message;
+        emit('topic-updated', data.updated_topic);
+
+        message.value = data.message || 'Topic updated successfully.';
         showToast.value = true;
 
         emit('close-edit-topic');

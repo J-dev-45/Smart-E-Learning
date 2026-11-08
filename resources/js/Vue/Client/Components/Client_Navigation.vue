@@ -1,12 +1,12 @@
 <template>
     <nav
-        class="sharedNavBG w-full max-w-2xl h-[50px] fixed md:top-[15px] left-1/2 -translate-x-1/2 z-50 flex items-center justify-between md:px-4 px-6 md:rounded-full shadow-xs sharedNavShadow"
+        class="sharedNavBG w-full h-[56px] fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 md:px-10 shadow-xs sharedNavShadow"
     >
         <div class="font-bold text-[15px] tracking-tight sharedTXTBrand">
             Smart E-Learning
         </div>
 
-        <ul class="hidden md:flex items-center justify-center gap-4 text-[13px] font-semibold sharedNavText">
+        <ul class="hidden md:flex items-center justify-center gap-6 text-[13px] font-semibold sharedNavText md:absolute md:left-1/2 md:-translate-x-1/2">
             <li>
                 <a
                     href="#hero"

@@ -12,7 +12,8 @@ class ModuleController extends Controller
     public function addModule(Request $request){
         $input = $request->validate([
             'subject_id' => 'required|uuid',
-            'module_name' => 'required|string|max:255'
+            'module_name' => 'required|string|max:255',
+            'module_description' => 'nullable|string|max:1000'
         ]);
 
         $maxOrder = Modules::where('subject_id', $input['subject_id'])->max('order');
@@ -20,7 +21,8 @@ class ModuleController extends Controller
         $module = Modules::create([
             'order' => $nextOrder,
             'subject_id' => $input['subject_id'],
-            'module_name' => $input['module_name']
+            'module_name' => $input['module_name'],
+            'description' => $input['module_description']
         ]);
 
         RecentActivity::create([
@@ -40,12 +42,14 @@ class ModuleController extends Controller
 
     public function editModule(Request $request){
         $input = $request->validate([
-            'new_module_name' => 'required|string|max:255'
+            'new_module_name' => 'required|string|max:255',
+            'new_description' => 'nullable|string|max:1000'
         ]);
         $module = Modules::find($request->module_id);
 
         $module->update([
-            'module_name' => $input['new_module_name']
+            'module_name' => $input['new_module_name'],
+            'description' => $input['new_description']
         ]);
 
         RecentActivity::create([

@@ -53,11 +53,25 @@
                 </div>
             </div>
 
-            <div class="flex">
+            <div class="flex items-center justify-between gap-3">
                 <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide border sharedStateText sharedStateTint sharedStateBorderSoft"
                     :class="question.question_type === 'multipleChoice' ? 'sharedStateLightBrand' : 'sharedStateLightAccent'">
                     {{ question.question_type === 'multipleChoice' ? 'Multiple Choice' : question.question_type === 'TorF' ? 'True or False' : question.question_type === 'identification' ? 'Identification' : '' }}
                 </span>
+
+                <!-- FEEDBACK BUTTON -->
+                <button
+                    type="button"
+                    @click="openFeedback"
+                    aria-label="Send feedback about this question"
+                    title="Send feedback about this question"
+                    class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border sharedLightBorder sharedTXTBrand sharedBrandTint hover:opacity-80 active:scale-[0.98] focus:outline-none focus:ring-4 transition-all shadow-sm cursor-pointer"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 shrink-0">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                    </svg>
+                    Feedback
+                </button>
             </div>
 
             <!-- @copy.prevent
@@ -231,10 +245,23 @@
             You have completed all available questions for this quiz!
         </div>
     </form>
+
+    <!-- SHARED FEEDBACK MODAL -->
+    <Feedback_Form
+        :show-feedback="showFeedback"
+        :user-id="userId"
+        :user-name="userName"
+        :user-email="userEmail"
+        :question-id="feedbackQuestionId"
+        :question-label="feedbackQuestionLabel"
+        :question-text="feedbackQuestionText"
+        @close="closeFeedback"
+    />
 </template>
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from 'vue';
+import Feedback_Form from '../Modals/Feedback_Form.vue'; // <- adjust the path if this file lives elsewhere
 
 const props = defineProps({
     questionsData: { type: Array, required: true },
@@ -248,7 +275,12 @@ const props = defineProps({
     score: { type: Number, default: 0 },
     remainingSeconds: { type: Number, required: true },
     totalSeconds: { type: Number, default: 60 * 60 },
-    assessmentType: { type: String, required:true}
+    assessmentType: { type: String, required:true},
+
+    // Needed by the feedback modal
+    userId: { type: Number, default: null },
+    userName: { type: String, default: '' },
+    userEmail: { type: String, default: '' }
 })
 
 
@@ -271,6 +303,27 @@ const correctAnswer = computed(() => question.value?.answer)
 const total_questions = props.questionsData.length + answered_count.value
 const passing_score = 75
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+
+// ===== Feedback modal =====
+const showFeedback = ref(false)
+const feedbackQuestionId = ref(null)
+const feedbackQuestionLabel = ref('')
+const feedbackQuestionText = ref('')
+
+function openFeedback() {
+    if (!question.value) return
+
+    // The modal's questionId prop is a String
+    feedbackQuestionId.value = String(question.value.id)
+    feedbackQuestionLabel.value = `Question ${question_number.value + answered_count.value}`
+    feedbackQuestionText.value = question.value.question
+    showFeedback.value = true
+}
+
+function closeFeedback() {
+    showFeedback.value = false
+}
+// ===== End Feedback modal =====
 
 // ===== Timer =====
 const TOTAL_SECONDS = props.totalSeconds

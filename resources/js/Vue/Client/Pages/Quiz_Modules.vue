@@ -154,12 +154,12 @@
                         <p class="text-xs sm:text-sm font-medium sharedTXTMuted mt-0.5">You passed the final assessment for this subject.</p>
                     </div>
 
-                    <div class="flex flex-wrap gap-2 md:justify-end md:shrink-0">
-                        <a href="#"
+                    <!-- <div class="flex flex-wrap gap-2 md:justify-end md:shrink-0">
+                        <span
                             class="w-full md:w-auto text-center text-xs sm:text-sm font-bold sharedBtnSuccess rounded-xl py-2.5 px-4 sm:px-6 transition-colors duration-200 whitespace-nowrap">
-                            Review
-                        </a>
-                    </div>
+                            Passed
+                        </span>
+                    </div> -->
                 </div>
             </li>
 

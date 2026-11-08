@@ -62,6 +62,20 @@
                         </svg>
                         {{ item.is_correct ? 'Correct' : 'Wrong' }}
                     </span>
+
+                    <!-- FEEDBACK BUTTON (result) -->
+                    <button
+                        type="button"
+                        @click="openFeedback(item.question_id, `Question ${index + 1}`, questionText(item.question_id))"
+                        :aria-label="`Send feedback about question ${index + 1}`"
+                        title="Send feedback about this question"
+                        class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                        </svg>
+                        Feedback
+                    </button>
                 </div>
 
                 <div class="flex flex-col gap-1 w-full sm:ml-9 sm:max-w-[calc(100%-2.25rem)]">
@@ -172,15 +186,32 @@
                     ? 'border-rose-300 bg-rose-50/40 focus-within:border-rose-400'
                     : 'border-gray-200 bg-gray-50/50 hover:border-gray-300 focus-within:border-[#8B5CF6]/50'"
             >
-                <label
-                    :for="`question-${quest.id}`"
-                    class="flex items-start gap-3 text-sm font-medium text-gray-800 leading-relaxed cursor-pointer"
-                >
-                    <span class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold transition-colors duration-200 group-focus-within:bg-[#8B5CF6] group-focus-within:text-white">
-                        {{ index + 1 }}
-                    </span>
-                    <span class="pt-0.5">{{ quest.question }}</span>
-                </label>
+                <!-- The button sits beside the label (not inside it) so clicking it doesn't focus the input -->
+                <div class="flex items-start gap-3">
+                    <label
+                        :for="`question-${quest.id}`"
+                        class="flex flex-1 items-start gap-3 text-sm font-medium text-gray-800 leading-relaxed cursor-pointer"
+                    >
+                        <span class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold transition-colors duration-200 group-focus-within:bg-[#8B5CF6] group-focus-within:text-white">
+                            {{ index + 1 }}
+                        </span>
+                        <span class="pt-0.5">{{ quest.question }}</span>
+                    </label>
+
+                    <!-- FEEDBACK BUTTON (text question) -->
+                    <button
+                        type="button"
+                        @click="openFeedback(quest.id, `Question ${index + 1}`, quest.question)"
+                        :aria-label="`Send feedback about question ${index + 1}`"
+                        title="Send feedback about this question"
+                        class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                        </svg>
+                        Feedback
+                    </button>
+                </div>
 
                 <input
                     :id="`question-${quest.id}`"
@@ -235,10 +266,24 @@
                 <span class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold">
                     {{ textQuestions.length + index + 1 }}
                 </span>
-                <div class="flex flex-col gap-0.5">
+                <div class="flex flex-1 flex-col gap-0.5">
                     <span class="text-xs font-semibold uppercase tracking-wider text-[#8B5CF6]">Coding</span>
                     <span class="text-sm font-medium text-gray-800 leading-relaxed whitespace-pre-line">{{ quest.question }}</span>
                 </div>
+
+                <!-- FEEDBACK BUTTON (coding question) -->
+                <button
+                    type="button"
+                    @click="openFeedback(quest.id, `Question ${textQuestions.length + index + 1}`, quest.question)"
+                    :aria-label="`Send feedback about question ${textQuestions.length + index + 1}`"
+                    title="Send feedback about this question"
+                    class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                    </svg>
+                    Feedback
+                </button>
             </div>
 
             <div class="px-6 py-5">
@@ -246,11 +291,25 @@
             </div>
         </div>
     </div>
+
+    <!-- ONE SHARED FEEDBACK MODAL (opened by any question's button) -->
+    <Feedback_Form
+        :show-feedback="showFeedback"
+        :user-id="userId"
+        :user-name="userName"
+        :user-email="userEmail"
+        :question-id="feedbackQuestionId"
+        :question-label="feedbackQuestionLabel"
+        :question-text="feedbackQuestionText"
+        @close="closeFeedback"
+        @new_feedback="onNewFeedback"
+    />
 </template>
 
 <script setup>
 import { computed, reactive, ref, watch } from 'vue'
 import CodePlayground from './CodePlayground.vue'
+import Feedback_Form from '../Modals/Feedback_Form.vue'
 
 const props = defineProps({
     questions: { type: Array, required: true },
@@ -259,8 +318,15 @@ const props = defineProps({
     failed: { type: Boolean, default: false },
     answeredModuleQuestions: { type: Array, required: true },
     answeredQuestions: { type: Array, default: () => []},
-    score: { type: Number, default: 0 }
+    score: { type: Number, default: 0 },
+
+    // Needed by the feedback modal
+    userId: { type: Number, default: null },
+    userName: { type: String, default: '' },
+    userEmail: { type: String, default: '' }
 })
+
+const emit = defineEmits(['new_feedback'])
 
 const hasPassed = ref(props.moduleProgress?.has_passed ?? false)
 const failed = ref(props.failed)
@@ -271,6 +337,12 @@ const score = ref(props.score)
 
 const answers = reactive({})
 const showErrors = ref(false)
+
+// Feedback modal state
+const showFeedback = ref(false)
+const feedbackQuestionId = ref(null)
+const feedbackQuestionLabel = ref('')
+const feedbackQuestionText = ref('')
 
 const textQuestions = computed(() =>
     props.questions.filter(quest => quest.question_type !== 'coding')
@@ -314,6 +386,21 @@ function questionText(questionId) {
     )?.question ?? 'Question'
 }
 
+function openFeedback(questionId, label, text = '') {
+    // The modal's questionId prop is a String
+    feedbackQuestionId.value = String(questionId)
+    feedbackQuestionLabel.value = label
+    feedbackQuestionText.value = text
+    showFeedback.value = true
+}
+
+function closeFeedback() {
+    showFeedback.value = false
+}
+
+function onNewFeedback(feedback) {
+    emit('new_feedback', feedback)
+}
 
 function clearAnswers() {
     Object.keys(answers).forEach(key => {

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
+use App\Models\Questions;
 use App\Models\RecentActivity;
 use App\Models\User;
 use App\Services\MailerService;
@@ -18,16 +19,22 @@ class FeedbackController extends Controller
             'feedback_message' => 'required|string|min:10|max:1000',
         ]);
 
-        Feedback::create([
+        $questionText = $request->question_id
+            ? Questions::whereKey($request->question_id)->value('question')
+            : null;
+
+        $feedback = Feedback::create([
             'user_id' => auth()->id(),
             'student_name' => auth()->user()->name,
             'question_id' => $request->question_id,
+            'question' => $questionText,
             'feedback_message' => $request->feedback_message
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => 'Feedback Sent Successfully!'
+            'message' => 'Feedback Sent Successfully!',
+            'feedback' => $feedback
         ]);
 
     }

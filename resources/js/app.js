@@ -45,6 +45,7 @@ import Modules from './Vue/Admin/Pages/Modules.vue';
 import Subjects_Cards_Admin from './Vue/Admin/Pages/Subjects_Cards_Admin.vue';
 import Admin_Header from './Vue/Admin/components/Admin_Header.vue';
 import Questions_Bank from './Vue/Admin/Pages/Questions_Bank.vue';
+import Lesson_Management from './Vue/Admin/Pages/Lesson_Management.vue';
 
 app.component('dashboard-cards', Dashboard_Cards);
 app.component('overview', Overview);
@@ -56,6 +57,7 @@ app.component('subjects-cards-admin', Subjects_Cards_Admin);
 app.component('feedbacks-page', Feedbacks);
 app.component('modules', Modules);
 app.component('questions-bank', Questions_Bank);
+app.component('lesson-management', Lesson_Management);
 app.component('admin-header', Admin_Header);
 
 // ===================================================================================================|CLIENT
@@ -77,6 +79,7 @@ import Module_Activity from './Vue/Client/Pages/Module_Activity.vue';
 import Module_Quiz_Buttons from './Vue/Client/Components/Module_Quiz_Buttons.vue';
 import Feedback_Form from './Vue/Client/Modals/Feedback_Form.vue';
 import Student_Profile from './Vue/Client/Components/Student_Profile.vue';
+import Lesson_Content from './Vue/Client/Pages/Lesson_Content.vue';
 
 app.component('subjects-card', Subjects_Cards);
 app.component('assessment-form', Assessment_Form);
@@ -93,6 +96,7 @@ app.component('module-activity', Module_Activity);
 app.component('module-quiz-buttons', Module_Quiz_Buttons);
 app.component('feedback-form', Feedback_Form);
 app.component('student-profile', Student_Profile);
+app.component('lesson-content', Lesson_Content);
 
 // | AUTH |===================================================================================================
 // | AUTH |===================================================================================================

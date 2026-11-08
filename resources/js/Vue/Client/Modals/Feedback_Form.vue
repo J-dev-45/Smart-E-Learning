@@ -8,7 +8,7 @@
             >
                 <Transition name="modal-pop" appear>
                     <div
-                        class="relative w-[30%] min-w-[380px] max-w-[440px] bg-white rounded-2xl shadow-2xl shadow-black/30 ring-1 ring-black/5 flex flex-col p-6"
+                        class="relative w-[30%] min-w-[380px] max-w-[440px] max-h-[90vh] overflow-y-auto bg-white rounded-2xl shadow-2xl shadow-black/30 ring-1 ring-black/5 flex flex-col p-6"
                     >
                         <!-- CLOSE BUTTON -->
                         <button
@@ -124,6 +124,17 @@
                                 </div>
                             </div>
 
+                            <!-- THE QUESTION BEING REPORTED -->
+                            <div
+                                v-if="questionId && questionText"
+                                class="w-full flex flex-col gap-1.5"
+                            >
+                                <span class="text-sm font-medium text-gray-700">Question</span>
+                                <div class="max-h-28 overflow-y-auto rounded-lg border border-gray-200 bg-gray-50 px-3 py-2.5 text-sm text-gray-600 leading-relaxed whitespace-pre-line">
+                                    {{ questionText }}
+                                </div>
+                            </div>
+
                             <!-- MESSAGE -->
                             <div class="w-full flex flex-col gap-1.5">
                                 <div class="flex items-center justify-between">
@@ -214,7 +225,7 @@ const props = defineProps({
 
     userId: {
         type: Number,
-        default: ''
+        default: null
     },
 
     userName: {
@@ -233,6 +244,12 @@ const props = defineProps({
     },
 
     questionLabel: {
+        type: String,
+        default: ''
+    },
+
+    // Full text of the question the feedback is about
+    questionText: {
         type: String,
         default: ''
     }
@@ -313,7 +330,9 @@ async function sendFeedback() {
             },
             body: JSON.stringify({
                 feedback_message: feedback_message.value.trim(),
-                question_id: props.questionId
+                // Only set when the feedback is about a question
+                question_id: props.questionId || null,
+                question: props.questionId ? (props.questionText || null) : null
             })
         })
 
