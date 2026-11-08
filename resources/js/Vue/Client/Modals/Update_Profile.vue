@@ -1,4 +1,3 @@
-
 <template>
     <div
         v-if="showUpdateProfile"
@@ -58,26 +57,50 @@
             </div>
 
             <!-- AVATAR OPTIONS -->
-            <div class="w-full grid grid-cols-5 gap-3 place-items-center">
-                <button
-                    v-for="(src, i) in avatars"
-                    :key="i"
-                    type="button"
-                    :aria-label="`Avatar ${i + 1}`"
-                    @click="selectAvatar(src)"
-                    :class="[
-                        'w-12 h-12 rounded-full overflow-hidden cursor-pointer outline-none transition duration-200 hover:scale-110',
-                        selectedAvatar === src
-                            ? 'ring-2 ring-offset-2 ring-[#8B5CF6]'
-                            : ''
-                    ]"
-                >
-                    <img
-                        :src="src"
-                        alt=""
-                        class="w-full h-full object-cover"
+            <div class="w-full flex flex-col gap-3">
+                <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                    Choose an avatar
+                </span>
+
+                <div class="w-full grid grid-cols-5 gap-3 place-items-center">
+                    <button
+                        v-for="(src, i) in avatars"
+                        :key="i"
+                        type="button"
+                        :aria-label="`Avatar ${i + 1}`"
+                        :disabled="avatarState[i] === 'error'"
+                        @click="selectAvatar(src)"
+                        :class="[
+                            'relative w-12 h-12 rounded-full overflow-hidden cursor-pointer outline-none transition duration-200 disabled:cursor-not-allowed',
+                            avatarState[i] === 'loaded' ? 'hover:scale-110' : '',
+                            selectedAvatar === src
+                                ? 'ring-2 ring-offset-2 ring-[#8B5CF6]'
+                                : ''
+                        ]"
                     >
-                </button>
+                        <!-- SKELETON + SHIMMER (shown until the image has loaded) -->
+                        <span
+                            v-if="avatarState[i] !== 'loaded'"
+                            aria-hidden="true"
+                            :class="[
+                                'absolute inset-0 rounded-full bg-gray-200',
+                                avatarState[i] === 'error' ? '' : 'avatar-skeleton'
+                            ]"
+                        ></span>
+
+                        <img
+                            :ref="el => markIfLoaded(el, i)"
+                            :src="src"
+                            alt=""
+                            @load="avatarState[i] = 'loaded'"
+                            @error="avatarState[i] = 'error'"
+                            :class="[
+                                'w-full h-full object-cover transition-opacity duration-300',
+                                avatarState[i] === 'loaded' ? 'opacity-100' : 'opacity-0'
+                            ]"
+                        >
+                    </button>
+                </div>
             </div>
 
             <!-- UPLOAD -->
@@ -150,7 +173,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onBeforeUnmount } from 'vue';
+import { ref, reactive, computed, onBeforeUnmount } from 'vue';
 
 const emit = defineEmits(['close', 'save']);
 
@@ -225,6 +248,17 @@ const avatars = computed(() => [
     props.avatar9,
     props.avatar10
 ]);
+
+// Load state per avatar index: undefined (loading) | 'loaded' | 'error'
+const avatarState = reactive({});
+
+// Cached images can finish loading before the @load listener is attached,
+// so check the element directly when it is mounted.
+function markIfLoaded(el, i) {
+    if (el && !avatarState[i] && el.complete && el.naturalWidth > 0) {
+        avatarState[i] = 'loaded';
+    }
+}
 
 const fileInput = ref(null);
 const selectedAvatar = ref(null);
@@ -426,3 +460,27 @@ function initials(name) {
 
 onBeforeUnmount(clearUpload);
 </script>
+
+<style scoped>
+.avatar-skeleton {
+    background-image: linear-gradient(
+        90deg,
+        #e5e7eb 25%,
+        #f9fafb 50%,
+        #e5e7eb 75%
+    );
+    background-size: 200% 100%;
+    animation: avatar-shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes avatar-shimmer {
+    0%   { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .avatar-skeleton {
+        animation: none;
+    }
+}
+</style>
