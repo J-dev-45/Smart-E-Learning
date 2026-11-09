@@ -178,14 +178,14 @@ class LearnController extends Controller
             ->where('has_passed', true)
             ->count();
 
-        $modules_passed = ModuleQuiz::where('user_id', auth()->id())
+        $answered_modules = ModuleQuiz::where('user_id', auth()->id())
             ->where('subject_id', $subject_id)
-            ->where('has_passed', true)
             ->get();
+
 
         $answered_assessment_questions_quiz = AnsweredAssessmentQuestions::where('user_id', auth()->id())
             ->where('subject_id', $subject_id)
-            ->whereIn('module_id', $modules_passed->pluck('module_id'))
+            ->whereIn('module_id', $answered_modules->pluck('module_id'))
             ->where('type_of_assessment', 'quiz')
             ->get();
 
@@ -202,7 +202,7 @@ class LearnController extends Controller
 
 
         $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())
-            ->whereIn('module_id', $modules_passed->pluck('module_id'))
+            ->whereIn('module_id', $answered_modules->pluck('module_id'))
             ->get();
 
         $total_answered = $total_answered_assessment + $answered_module_questions->count();
