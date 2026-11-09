@@ -34,15 +34,29 @@
         </header>
 
         <!-- TITLE & TOPIC -->
-        <div class="sharedTXT px-7 pt-6 pb-2 flex flex-col gap-3">
+        <div class="sharedTXT px-5 sm:px-7 pt-4 pb-1 flex flex-col gap-3">
+            <!-- ROW 1: SUBJECT + MODULE (left) | COUNT + ADD BUTTON (right) -->
             <div class="w-full flex items-center justify-between gap-3 flex-wrap">
-                <!-- SUBJECT NAME -->
-                <span class="text-2xl font-bold tracking-tight sharedTXT">
-                    {{ subjectName }}
-                </span>
+                <div class="flex items-center gap-3 min-w-0 flex-wrap">
+                    <!-- SUBJECT NAME -->
+                    <span class="text-2xl font-bold tracking-tight sharedTXT truncate">
+                        {{ subjectName }}
+                    </span>
 
-                <!-- ADD QUESTION BUTTON + TOTAL -->
-                <div class="flex flex-col items-end gap-1.5">
+                    <!-- MODULE -->
+                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium sharedStateOpen sharedStateChip ring-1 whitespace-nowrap">
+                        {{ props.moduleName }}
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-3">
+                    <!-- TOTAL -->
+                    <span class="text-xs font-medium sharedTXTMuted tabular-nums whitespace-nowrap" aria-live="polite">
+                        {{ filteredQuestions.length }}
+                        question{{ filteredQuestions.length === 1 ? '' : 's' }}
+                    </span>
+
+                    <!-- ADD QUESTION BUTTON -->
                     <button
                         type="button"
                         @click="openAddQuestionModal"
@@ -57,51 +71,56 @@
                 </div>
             </div>
 
-            <!-- MODULE -->
-            <div class="w-full flex items-center justify-between gap-3 flex-wrap text-sm">
-                <div class="flex items-center gap-2">
-                    <span class="font-medium sharedTXTMuted">Module</span>
-                    <span class="px-2.5 py-0.5 rounded-full text-xs font-medium sharedStateOpen sharedStateChip ring-1">
-                        {{ props.moduleName }}
-                    </span>
-                </div>
-
-                <div class="text-xs font-medium sharedTXTMuted tabular-nums">
-                    {{ filteredQuestions.length }}
-                    question{{ filteredQuestions.length === 1 ? '' : 's' }}
-                </div>
-
-            </div>
-
-            <!-- SEARCH -->
-            <div class="relative w-full">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 size-5 sharedTXTMuted pointer-events-none">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                </svg>
-
-                <input
-                    v-model="searchQuery"
-                    type="text"
-                    placeholder="Search by question..."
-                    class="w-full pl-11 pr-10 py-3 rounded-xl border sharedInputDark text-sm outline-none focus:ring-1 transition-all duration-200"
-                />
-
-                <button
-                    v-if="searchQuery"
-                    type="button"
-                    @click="searchQuery = ''"
-                    title="Clear search"
-                    class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center sharedTXTMuted sharedHoverTXT transition-colors duration-200 cursor-pointer"
+            <!-- ROW 2: FILTER (left) + SEARCH (right, takes all remaining space) -->
+            <div class="w-full flex flex-col sm:flex-row sm:items-stretch gap-3">
+                <!-- QUESTION TYPE FILTER -->
+                <div
+                    class="flex items-center gap-1 p-1 rounded-xl border sharedBorder sharedSurfaceBG w-fit max-w-full overflow-x-auto shrink-0"
                 >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                    <button
+                        v-for="tab in typeTabs"
+                        :key="tab"
+                        type="button"
+                        @click="activeTab = tab"
+                        class="px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all duration-200 cursor-pointer"
+                        :class="activeTab === tab
+                            ? 'sharedBtn'
+                            : 'sharedTXTMuted sharedRowHover sharedHoverTXT'"
+                    >
+                        {{ tab }}
+                    </button>
+                </div>
+
+                <!-- SEARCH -->
+                <div class="relative w-full sm:flex-1 min-w-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="absolute left-4 top-1/2 -translate-y-1/2 z-10 size-5 sharedTXTMuted pointer-events-none">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                     </svg>
-                </button>
+
+                    <input
+                        v-model="searchQuery"
+                        type="text"
+                        placeholder="Search by question..."
+                        class="w-full h-full min-h-[46px] pl-11 pr-10 py-3 rounded-xl border sharedInputDark text-sm outline-none focus:ring-1 transition-all duration-200"
+                    />
+
+                    <button
+                        v-if="searchQuery"
+                        type="button"
+                        @click="searchQuery = ''"
+                        title="Clear search"
+                        class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center justify-center sharedTXTMuted sharedHoverTXT transition-colors duration-200 cursor-pointer"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
             </div>
         </div>
 
         <!-- QUESTIONS TABLE -->
-        <div class="p-5 flex-1 min-h-0 flex flex-col">
+        <div class="px-5 pb-5 pt-3 flex-1 min-h-0 flex flex-col">
             <div
                 class="w-full rounded-2xl sharedSurface shadow-lg sharedShadow overflow-hidden flex-1 min-h-0 flex flex-col"
             >
@@ -144,7 +163,8 @@
 
                         <span class="md:flex hidden">
                             <span
-                                class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-medium sharedStateExam sharedStateChip ring-1"
+                                class="inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-medium ring-1"
+                                :class="questionTypeBadge(question.question_type)"
                             >
                                 {{ questionTypeLabel(question.question_type) }}
                             </span>
@@ -324,6 +344,17 @@ function initials(name) {
         .toUpperCase();
 }
 
+const QUESTION_TYPE_BADGES = {
+    multipleChoice: 'bg-sky-500/10 text-sky-400 ring-sky-500/30',
+    TorF: 'bg-emerald-500/10 text-emerald-400 ring-emerald-500/30',
+    identification: 'bg-violet-500/10 text-violet-400 ring-violet-500/30',
+    coding: 'bg-amber-500/10 text-amber-400 ring-amber-500/30'
+};
+
+function questionTypeBadge(type) {
+    return QUESTION_TYPE_BADGES[type] || 'bg-gray-500/10 text-gray-400 ring-gray-500/30';
+}
+
 const view_question = ref(false);
 const showAddQuestion = ref(false);
 const showEditQuestion = ref(false);
@@ -338,9 +369,6 @@ const localQuestions = ref([...props.questions]);
 /*
 |--------------------------------------------------------------------------
 | LOCAL CHOICES
-|--------------------------------------------------------------------------
-| props.choices only holds what Blade rendered on page load. Keep our own
-| copy so newly added / edited questions are reflected without a refresh.
 |--------------------------------------------------------------------------
 */
 const localChoices = ref([...props.choices]);
@@ -359,6 +387,15 @@ function findChoicesFor(questionId) {
 }
 
 const searchQuery = ref('');
+
+// Question type filter tabs -> the question_type value stored on each question
+const typeTabs = ['All', 'Multiple Choice', 'True or False', 'Identification'];
+const tabTypes = {
+    'Multiple Choice': 'multipleChoice',
+    'True or False': 'TorF',
+    'Identification': 'identification'
+};
+const activeTab = ref('All');
 
 const QUESTION_TYPE_LABELS = {
     multipleChoice: 'Multiple Choice',
@@ -431,11 +468,6 @@ function belongsToCurrentFilter(q) {
 |--------------------------------------------------------------------------
 | DELETE QUESTION
 |--------------------------------------------------------------------------
-| IMPORTANT:
-| Do NOT replace localQuestions with data.questions.
-| The backend may return ALL questions.
-| Remove only the question that was deleted.
-|--------------------------------------------------------------------------
 */
 function questionsDeleted(deletedQuestion) {
     if (!deletedQuestion) {
@@ -494,9 +526,6 @@ const module_name = computed(() => {
 |--------------------------------------------------------------------------
 | FILTER QUESTIONS
 |--------------------------------------------------------------------------
-| Filters using BOTH module_id and topic_id, plus the search query
-| against the question text.
-|--------------------------------------------------------------------------
 */
 const filteredQuestions = computed(() => {
     const query = searchQuery.value.trim().toLowerCase();
@@ -506,10 +535,14 @@ const filteredQuestions = computed(() => {
             String(props.moduleId) === '0' ||
             String(q.module_id) === String(props.moduleId);
 
+        const typeMatches =
+            activeTab.value === 'All' ||
+            q.question_type === tabTypes[activeTab.value];
+
         const searchMatches =
             !query || (q.question || '').toLowerCase().includes(query);
 
-        return moduleMatches && searchMatches;
+        return moduleMatches && typeMatches && searchMatches;
     });
 });
 
@@ -572,8 +605,6 @@ function editQuestionOpen(id) {
     if (question.value.question_type === 'multipleChoice') {
         const found = findChoicesFor(id);
 
-        // Copy, so typing in the edit inputs never mutates the stored choices
-        // (cancelling an edit must not change what View shows).
         q_choices.value = found
             ? {
                 choice_A: found.choice_A ?? '',
@@ -609,7 +640,6 @@ function updateQuestionInTable(updatedQuestion) {
         ...questionFields
     };
 
-    // Write the saved choices back so View / Edit show them next time
     if (choices) {
         const choiceIndex = localChoices.value.findIndex(
             c => String(c.question_id) === String(updatedQuestion.id)

@@ -319,10 +319,10 @@ function initials(name) {
     return String(name ?? '')
         .split(' ')
         .filter(Boolean)
-        .map(part => part[0])
-        .join('')
+        .map(n => n[0])
         .slice(0, 2)
-        .toUpperCase()
+        .join('')
+        .toUpperCase();
 }
 
 function roleBadge(role) {
