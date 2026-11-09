@@ -20,19 +20,8 @@
                 @click="closeModal"
                 class="absolute right-4 top-4 z-10 p-1.5 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer outline-none"
             >
-                <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-5"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M6 18 18 6M6 6l12 12"
-                    />
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5" >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
             </button>
 
@@ -78,7 +67,7 @@
                                 : ''
                         ]"
                     >
-                        <!-- SKELETON + SHIMMER (shown until the image has loaded) -->
+                        <!-- SKELETON + SHIMMER -->
                         <span
                             v-if="avatarState[i] !== 'loaded'"
                             aria-hidden="true"
@@ -107,18 +96,8 @@
             <label
                 class="w-full inline-flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium text-gray-700 bg-gray-50 hover:bg-gray-100 transition-colors cursor-pointer"
             >
-                <svg
-                    class="size-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.5"
-                >
-                    <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 7.5L12 3m0 0l4.5 4.5M12 3v13.5"
-                    />
+                <svg class="size-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" >
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 7.5L12 3m0 0l4.5 4.5M12 3v13.5" />
                 </svg>
 
                 Upload From this Device
@@ -249,11 +228,9 @@ const avatars = computed(() => [
     props.avatar10
 ]);
 
-// Load state per avatar index: undefined (loading) | 'loaded' | 'error'
 const avatarState = reactive({});
 
-// Cached images can finish loading before the @load listener is attached,
-// so check the element directly when it is mounted.
+
 function markIfLoaded(el, i) {
     if (el && !avatarState[i] && el.complete && el.naturalWidth > 0) {
         avatarState[i] = 'loaded';
@@ -275,7 +252,6 @@ const preview = computed(() =>
     props.currentImage
 );
 
-// Clear uploaded image and revoke its temporary URL.
 function clearUpload() {
     if (uploadedUrl.value) {
         URL.revokeObjectURL(uploadedUrl.value);
@@ -289,7 +265,6 @@ function clearUpload() {
     }
 }
 
-// Select a preset avatar.
 function selectAvatar(src) {
     clearUpload();
 
@@ -298,7 +273,6 @@ function selectAvatar(src) {
     successMessage.value = '';
 }
 
-// Handle device image selection.
 function onFileChange(event) {
     const file = event.target.files?.[0];
 
@@ -332,7 +306,6 @@ function onFileChange(event) {
     selectedAvatar.value = null;
 }
 
-// Save the selected profile image.
 async function save() {
     if (saving.value) return;
 
@@ -354,7 +327,6 @@ async function save() {
         let data;
 
         if (uploadedFile.value) {
-            // OPTION 1: Upload a picture from the user's device.
             const formData = new FormData();
 
             formData.append('avatar', uploadedFile.value);
@@ -390,7 +362,6 @@ async function save() {
             });
 
         } else {
-            // OPTION 2: Save a selected preset avatar.
             response = await fetch('/profile/avatar/preset', {
                 method: 'POST',
                 headers: {
@@ -435,7 +406,6 @@ async function save() {
     }
 }
 
-// Close the modal.
 function closeModal() {
     if (saving.value) return;
 
@@ -447,7 +417,6 @@ function closeModal() {
     emit('close');
 }
 
-// Generate initials.
 function initials(name) {
     return String(name ?? '')
         .split(/\s+/)
