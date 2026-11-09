@@ -39,7 +39,6 @@
             </span>
         </div>
 
-        <!-- Profile Button and User Menu -->
         <div ref="userMenuContainer" class="relative shrink-0">
             <button
                 type="button"
@@ -109,13 +108,8 @@ const props = defineProps({
     subjectName: { type: String, required: true }
 })
 
-// Header DOM reference
 const headerEl = ref(null)
-
-// User menu container reference
 const userMenuContainer = ref(null)
-
-// User Menu
 const showUserMenu = ref(false)
 
 function toggleUserMenu() {
@@ -126,7 +120,6 @@ function closeUserMenu() {
     showUserMenu.value = false
 }
 
-// Profile Initials
 function initials(name) {
     return String(name ?? '')
         .split(/\s+/)
@@ -137,12 +130,10 @@ function initials(name) {
         .toUpperCase()
 }
 
-// URL Formatter
 function url(url_name) {
     return String(url_name ?? '').replace(/\s+/g, '_')
 }
 
-// Module Progress
 const normalizeProgress = value =>
     Math.min(100, Math.max(0, Number(value) || 0))
 

@@ -144,12 +144,7 @@
 
                         </div>
 
-                        <!-- Icon tile -->
-                        <div class="flex items-center justify-center shrink-0 w-10 h-10 rounded-xl sharedTile">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 sharedTXTAccent">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
-                            </svg>
-                        </div>
+                        
 
                     </div>
 
@@ -207,18 +202,7 @@
                                         </svg>
                                     </a>
 
-                                    <!-- Edit topic -->
-                                    <!-- <button
-                                        type="button"
-                                        @click="openEditTopic(topic, module.id)"
-                                        aria-label="Edit topic"
-                                        title="Edit"
-                                        class="shrink-0 w-6 h-6 flex items-center justify-center rounded-lg sharedTXTMuted sharedStateWarning sharedHoverState active:scale-95 transition-all duration-200 cursor-pointer"
-                                    >
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125" />
-                                        </svg>
-                                    </button> -->
+                                    
 
                                     <!-- Delete topic  -->
                                     <button
@@ -258,7 +242,7 @@
                             View Questions
                         </a>
 
-                        <!-- Edit module (neutral, amber on hover) -->
+                        <!-- Edit module -->
                         <button
                             type="button"
                             @click="openEditModule(module)"
@@ -271,7 +255,7 @@
                             </svg>
                         </button>
 
-                        <!-- Delete module (danger) -->
+                        <!-- Delete module -->
                         <button
                             type="button"
                             @click="openDeleteModule(module.module_name, module.id, props.subjectName)"
@@ -338,13 +322,6 @@
         @new_topics="handelNewTopic"
     />
 
-    <!-- <Edit_Topic
-        :show-edit-topic="showEditTopic"
-        :topic-data="selectedEditTopic"
-        :module-id="m_id"
-        @close-edit-topic="closeEditTopic"
-        @topic-updated="handleTopicUpdated"
-    /> -->
 
     <Delete_Topic
         :show-delete-topic="showDeleteTopic"
@@ -369,7 +346,6 @@ import Edit_Module from '../Modal/Edit_Module.vue'
 import Delete_Module from '../Modal/Delete_Module.vue'
 
 import Add_Topics from '../Modal/Add_Topics.vue'
-import Edit_Topic from '../Modal/Edit_Topic.vue'
 import Delete_Topic from '../Modal/Delete_Topic.vue'
 
 
@@ -556,38 +532,6 @@ function handelNewTopic(newTopic) {
     })
 }
 
-
-const showEditTopic = ref(false)
-const selectedEditTopic = ref(null)
-const m_id = ref(null)
-
-function openEditTopic(topic, mod_id) {
-    console.log('Topic:', topic)
-    console.log('Module ID:', mod_id)
-
-    selectedEditTopic.value = topic
-    m_id.value = mod_id
-    showEditTopic.value = true
-
-    console.log('m_id:', m_id.value)
-}
-
-
-function closeEditTopic() {
-    showEditTopic.value = false
-    selectedEditTopic.value = null
-}
-
-
-function handleTopicUpdated(updatedTopic) {
-    const index = localTopics.value.findIndex(
-        topic => String(topic.id) === String(updatedTopic.id)
-    )
-
-    if (index !== -1) {
-        localTopics.value[index].topic_name = updatedTopic.topic_name
-    }
-}
 
 
 const showDeleteTopic = ref(false)
