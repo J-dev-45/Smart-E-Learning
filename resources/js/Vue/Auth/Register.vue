@@ -48,7 +48,7 @@
                 <h4 class="font-bold m-0 sharedTXTOnLight tracking-wide"
                     style="font-size:clamp(1.2rem,2.2vw,1.75rem)">
                     <span class="md:hidden">CREATE ACCOUNT</span>
-                    <span class="hidden md:inline">Create Account!</span>
+                    <span class="hidden md:inline">Create Account</span>
                 </h4>
 
                 <p class="sharedTXTLightMuted mt-1.5 mb-[clamp(0.8rem,2.5vh,1.75rem)] text-sm">
