@@ -61,20 +61,65 @@ class UserController extends Controller
         ]);
     }
 
+    public function disableAccount(Request $request)
+    {
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id'
+        ]);
 
-    public function deleteUser(Request $request){
-        $user = User::find($request->user_id);
-        $user->delete();
+        $user = User::findOrFail($data['user_id']);
+
+        if ($user->disabled) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This account is already disabled.'
+            ], 422);
+        }
+
+        $user->disabled = true;
+        $user->save();
 
         RecentActivity::create([
             'name' => auth()->user()->name,
-            'action' => 'deleted_user',
+            'action' => 'disabled_user',
             'target' => $user->name,
         ]);
 
         return response()->json([
             'success' => true,
-            'message' => "$user->name's Account has been deleted successfully!"
+            'disabled' => true,
+            'message' => "{$user->name}'s account has been disabled successfully!"
+        ]);
+    }
+
+    public function enableAccount(Request $request)
+    {
+        $data = $request->validate([
+            'user_id' => 'required|exists:users,id'
+        ]);
+
+        $user = User::findOrFail($data['user_id']);
+
+        if (!$user->disabled) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This account is already enabled.'
+            ], 422);
+        }
+
+        $user->disabled = false;
+        $user->save();
+
+        RecentActivity::create([
+            'name' => auth()->user()->name,
+            'action' => 'enabled_user',
+            'target' => $user->name,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'disabled' => false,
+            'message' => "{$user->name}'s account has been enabled successfully!"
         ]);
     }
 }

@@ -1,7 +1,10 @@
 <template>
     <div class="w-full min-w-0 shrink-0 md:shrink md:flex-1 md:min-h-[320px] flex flex-col gap-4">
+
         <div class="w-full shrink-0 flex flex-col-reverse gap-2 sm:flex-row sm:items-center sm:justify-between">
+
             <div class="flex flex-col sm:flex-row sm:items-center gap-3 min-w-0">
+
                 <!-- ROLE FILTER -->
                 <div
                     class="flex items-center gap-1 p-1 rounded-xl border sharedBorder sharedSurfaceBG w-fit max-w-full overflow-x-auto"
@@ -49,6 +52,7 @@
             class="w-full min-w-0 rounded-2xl border sharedBorder sharedSurfaceBG shadow-lg sharedShadow overflow-hidden
                    md:flex-1 md:min-h-0 md:flex md:flex-col"
         >
+
             <!-- Column header: table layout only from lg (1024px) up -->
             <div
                 class="hidden lg:grid shrink-0 gap-3 px-4 py-2.5 border-b sharedBorder text-xs font-medium sharedTXTMuted"
@@ -76,6 +80,7 @@
                     </span>
 
                     <div class="flex items-center gap-3 min-w-0">
+
                         <!-- User photo -->
                         <img
                             v-if="getProfileImage(user)"
@@ -130,6 +135,7 @@
                     </span>
 
                     <div class="flex items-center gap-2 lg:gap-1.5 lg:justify-end">
+
                         <!-- PROMOTE -->
                         <button
                             v-if="user.role === 'Student'"
@@ -147,8 +153,8 @@
                             </svg>
                             <span>Role ➞ Admin</span>
                         </button>
-                        <!-- DEMOTE -->
 
+                        <!-- DEMOTE -->
                         <button
                             v-else
                             type="button"
@@ -167,22 +173,31 @@
                             <span>Role ➞ Student</span>
                         </button>
 
-                        <!-- DELETE -->
+                        <!-- ACCOUNT CONTROL -->
                         <button
                             type="button"
                             @click="deleteUser(user.id)"
-                            :aria-label="`Delete ${user.name}`"
-                            title="Delete"
-                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium
-                                sharedStateDanger sharedStateChip sharedDangerSolidHover ring-1
+                            :aria-label="`${user.disabled ? 'Enable' : 'Disable'} ${user.name}`"
+                            :title="user.disabled ? 'Enable Account' : 'Disable Account'"
+                            class="flex-1 lg:flex-none flex items-center justify-center gap-1.5 px-2.5 min-h-10 lg:min-h-0 lg:py-1.5 rounded-xl text-xs font-medium ring-1
                                 active:scale-95 transition-all duration-200 cursor-pointer"
+                            :class="user.disabled
+                                ? 'sharedStateOpen sharedStateChip sharedStateChipLink'
+                                : 'sharedStateDanger sharedStateChip sharedDangerSolidHover'"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-3.5 shrink-0">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.682-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-3.5 shrink-0" aria-hidden="true" >
+                                <!-- Enable: lock-open -->
+                                <path
+                                    v-if="user.disabled" stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+
+                                <!-- Disable: no-symbol (circle with slash) -->
+                                <path
+                                    v-else stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
                             </svg>
-                            <span class="lg:hidden xl:inline">Delete</span>
+
+                            <span class="lg:hidden xl:inline">
+                                {{ user.disabled ? 'Enable' : 'Disable' }}
+                            </span>
                         </button>
                     </div>
                 </li>
@@ -211,20 +226,20 @@
         @user-demoted="handleUserDemoted"
     />
 
-    <Delete_User
-        :show-delete-user="showDeleteUser"
+    <EnableOrDisableAccount
+        :show-disable-account="showDisableAccount"
         :user-data="userData"
         @close-delete="closeDelete"
-        @user-deleted="handleUserDeleted"
+        @account-status-changed="handleAccountStatusChanged"
     />
-</template>
 
+</template>
 
 <script setup>
 import { ref, computed, watch } from 'vue';
 import Promote_User from '../Modal/Promote_User.vue';
 import Demote_User from '../Modal/Demote_User.vue';
-import Delete_User from '../Modal/Delete_User.vue';
+import EnableOrDisableAccount from '../Modal/EnableOrDisableAccount.vue';
 
 const props = defineProps({
     users: {
@@ -234,9 +249,6 @@ const props = defineProps({
     supabaseUrl: { type: String, default: '' },
     avatarBucket: { type: String, default: 'pictures' },
 });
-
-const SUPABASE_URL = props.supabaseUrl;
-const AVATAR_BUCKET = props.avatarBucket;
 
 const getProfileImage = (user) => {
     if (!user) return '';
@@ -268,12 +280,13 @@ const gridCols =
 
 const searchQuery = ref('');
 
-// Role filter tabs -> the role value stored on each user
-const roleTabs = ['All', 'Students', 'Admins'];
+const roleTabs = ['All', 'Students', 'Admins', 'Disabled'];
 const tabRoles = {
     Students: 'Student',
     Admins: 'Admin',
 };
+
+
 const activeTab = ref('All');
 
 const usersList = ref([...props.users]);
@@ -288,17 +301,21 @@ watch(
 
 const showPromoteUser = ref(false);
 const showDemoteUser = ref(false);
-const showDeleteUser = ref(false);
+const showDisableAccount = ref(false);
 
 const userData = ref(null);
+
+
 
 const filteredUsers = computed(() => {
     const search = searchQuery.value.trim().toLowerCase();
 
     return usersList.value.filter(user => {
         const matchesTab =
-            activeTab.value === 'All' ||
-            user.role === tabRoles[activeTab.value];
+        activeTab.value === 'All' ||
+        (activeTab.value === 'Disabled'
+            ? Boolean(user.disabled)
+            : user.role === tabRoles[activeTab.value]);
 
         if (!matchesTab) {
             return false;
@@ -359,12 +376,12 @@ function deleteUser(id) {
     userData.value = usersList.value.find(user => user.id === id);
 
     if (userData.value) {
-        showDeleteUser.value = true;
+        showDisableAccount.value = true;
     }
 }
 
 function closeDelete() {
-    showDeleteUser.value = false;
+    showDisableAccount.value = false;
 }
 
 function handleUserPromoted(id) {
@@ -383,7 +400,11 @@ function handleUserDemoted(id) {
     }
 }
 
-function handleUserDeleted(id) {
-    usersList.value = usersList.value.filter(user => user.id !== id);
+function handleAccountStatusChanged({ id, disabled }) {
+    const user = usersList.value.find(user => user.id === id);
+
+    if (user) {
+        user.disabled = disabled;
+    }
 }
 </script>

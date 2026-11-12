@@ -118,6 +118,7 @@
             </ul>
         </div>
 
+
     </div>
 
 </template>
@@ -199,7 +200,7 @@ const svg_d = [
     { action: 'added_question', d: 'M12 4.5v15m7.5-7.5h-15'},
     { action: 'promoted_user', d: 'M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22m0 0-5.94-2.28m5.94 2.28-2.28 5.941'},
     { action: 'demoted_user', d: 'M2.25 6 9 12.75l4.306-4.306a11.95 11.95 0 0 1 5.814 5.518l2.74 1.22m0 0-5.94 2.28m5.94-2.28-2.28-5.941'},
-    { action: 'deleted_user', d: 'M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm5.25 3.375h3'},
+    { action: 'disabled_user', d: 'M22 10.5h-6m-2.25-4.125a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0ZM4 19.235v-.11a6.375 6.375 0 0 1 12.75 0v.109A12.318 12.318 0 0 1 10.374 21c-2.331 0-4.512-.645-6.374-1.766Z'},
     { action: 'added_module', d: 'M12 4.5v15m7.5-7.5h-15' },
     { action: 'edited_module', d: 'm16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125' },
     { action: 'deleted_module', d: 'm14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0' },
@@ -220,7 +221,7 @@ const icon_style = [
     { action: 'added_question', badge: 'sharedStatePassed sharedStateTint sharedStateText'},
     { action: 'promoted_user', badge: 'sharedStateOpen sharedStateTint sharedStateText'},
     { action: 'demoted_user', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
-    { action: 'deleted_user', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
+    { action: 'disabled_user', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
     { action: 'added_module', badge: 'sharedStatePassed sharedStateTint sharedStateText' },
     { action: 'edited_module', badge: 'sharedStateWarning sharedStateTint sharedStateText' },
     { action: 'deleted_module', badge: 'sharedStateDanger sharedStateTint sharedStateText' },
@@ -251,7 +252,7 @@ function message(act){
 
         case 'promoted_user': return `promoted ${act.target} to`;
         case 'demoted_user': return `demoted ${act.target} to`;
-        case 'deleted_user': return `deleted ${act.target}'s account`;
+        case 'disabled_user': return `disabled ${act.target}'s account`;
 
         case 'added_topic': return 'added a new topic';
         case 'edited_topic': return 'edited a topic';

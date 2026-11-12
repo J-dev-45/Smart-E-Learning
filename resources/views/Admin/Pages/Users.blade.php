@@ -47,7 +47,7 @@
                         </svg>
                     </div>
                     <div class="flex flex-col justify-center min-w-0">
-                        <span class="text-xl sm:text-2xl font-bold leading-tight tabular-nums">{{ $users->count() }}</span>
+                        <span class="text-xl sm:text-2xl font-bold leading-tight tabular-nums">{{ $users->count() + 1 }}</span>
                         <span class="text-[10px] sm:text-xs font-medium sharedTXTMuted leading-tight break-words">Total users</span>
                     </div>
                 </div>

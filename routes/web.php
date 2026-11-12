@@ -239,7 +239,6 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/code-quiz/{question}/check', [CodeQuizController::class, 'check'])
         ->middleware('throttle:10,1');
 
-    // CODE QUIZ TEST PAGE (local environment only, never registered in production)
     if (app()->environment('local')) {
         Route::get('/test/code-quiz/{question}', function (Questions $question) {
             return view('test.code-quiz', [
@@ -296,7 +295,7 @@ Route::middleware(['auth','Admin'])->group(function(){
     // ===========================================================
     // ===========================================================
     Route::get('/users', function(){
-        $users = User::select('id','id_number', 'name', 'email','role', 'status','profile_color', 'profile_picture', 'profile_avatar')
+        $users = User::where('id', '!=', auth()->id())->select('id','id_number', 'name', 'email','role', 'status','profile_color', 'profile_picture', 'profile_avatar', 'disabled')
             ->orderBy('id', 'ASC')
             ->get();
         return view('Admin.Pages.Users', compact(
@@ -370,7 +369,8 @@ Route::middleware(['auth','Admin'])->group(function(){
     // USERS
     Route::put('/promoteUser', [UserController::class, 'promoteUser']);
     Route::put('/demoteUser', [UserController::class, 'demoteUser']);
-    Route::delete('/deleteUser', [UserController::class, 'deleteUser']);
+    Route::patch('/disableAccount', [UserController::class, 'disableAccount']);
+    Route::patch('/enableAccount', [UserController::class, 'enableAccount']);
 
     // FEEDBACKS
     Route::post('/sendReply', [FeedbackController::class, 'sendFeedbackReply']);

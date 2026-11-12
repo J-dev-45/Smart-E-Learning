@@ -10,7 +10,6 @@
 </head>
 <body class="w-screen h-screen overflow-hidden">
     @vite(['resources/js/app.js'])
-    {{-- @include('Global.Skeleton_Loading.Client_Navigation') --}}
     
     <div id="app" class="w-screen h-screen relative">
 

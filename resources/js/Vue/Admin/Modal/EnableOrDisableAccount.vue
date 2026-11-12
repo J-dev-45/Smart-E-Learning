@@ -2,12 +2,12 @@
 <template>
     <Transition name="modal-fade">
         <div
-            v-if="showDeleteUser"
+            v-if="showDisableAccount"
             class="fixed inset-0 w-screen h-screen bg-black/60 backdrop-blur-sm z-[99] flex items-center justify-center p-4"
         >
             <Transition name="modal-scale" appear>
                 <form
-                    @submit.prevent="deleteUserForm(userData.id)"
+                    @submit.prevent="disableAccountForm(userData.id)"
                     class="relative w-[30%] min-w-[380px] max-w-lg bg-white rounded-xl shadow-2xl shadow-black/30 flex flex-col p-6 gap-5"
                 >
                     <button
@@ -30,11 +30,13 @@
 
                         <div class="flex flex-col gap-0.5 pt-1">
                             <span class="text-lg font-semibold text-gray-900">
-                                Delete Account?
+                                {{ userData.disabled ? 'Enable Account?' : 'Disable Account?' }}
                             </span>
 
                             <span class="text-sm text-gray-500">
-                                This action cannot be undone.
+                                {{ userData.disabled
+                                    ? 'Are you sure you want to enable this account?'
+                                    : 'Are you sure you want to disable this account?' }}
                             </span>
                         </div>
                     </div>
@@ -83,14 +85,19 @@
                         <button
                             type="submit"
                             :disabled="isSubmitting"
-                            class="w-2/3 py-2.5 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 active:bg-red-700 transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            class="w-2/3 py-2.5 rounded-md text-sm font-medium text-white transition-colors cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                            :class="userData.disabled
+                                ? 'bg-emerald-500 hover:bg-emerald-600 active:bg-emerald-700'
+                                : 'bg-red-500 hover:bg-red-600 active:bg-red-700'"
                         >
                             <svg v-if="isSubmitting" class="animate-spin size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                                 <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 0 1 8-8V0C5.373 0 0 5.373 0 12h4Z"></path>
                             </svg>
 
-                            {{ isSubmitting ? 'Deleting...' : 'Yes, Delete' }}
+                            {{ isSubmitting
+                                ? (userData.disabled ? 'Enabling...' : 'Disabling...')
+                                : (userData.disabled ? 'Yes, Enable' : 'Yes, Disable') }}
                         </button>
                     </div>
                 </form>
@@ -113,10 +120,10 @@ const showToast = ref(false);
 const message = ref('');
 const isSubmitting = ref(false);
 
-const emit = defineEmits(['close-delete', 'user-deleted']);
+const emit = defineEmits(['close-delete', 'account-status-changed']);
 
 const props = defineProps({
-    showDeleteUser: {
+    showDisableAccount: {
         type: Boolean,
         default: false
     },
@@ -126,43 +133,54 @@ const props = defineProps({
     }
 });
 
-async function deleteUserForm(id) {
+async function disableAccountForm(id) {
     if (isSubmitting.value) return;
 
     isSubmitting.value = true;
 
+    const isDisabled = Boolean(props.userData.disabled);
+
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
 
     try {
-        const response = await fetch('/deleteUser', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': csrfToken,
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify({
-                user_id: id
-            })
-        });
+        const response = await fetch(
+            isDisabled ? '/enableAccount' : '/disableAccount',
+            {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': csrfToken,
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    user_id: id
+                })
+            }
+        );
 
         const data = await response.json();
 
         if (response.ok && data.success) {
-            showToast.value = true;
             message.value = data.message;
+            showToast.value = true;
 
-            emit('user-deleted', id);
+            emit('account-status-changed', {
+                id: id,
+                disabled: data.disabled
+            });
+
             emit('close-delete');
         } else {
-            message.value = data.message || 'Failed to delete user.';
+            message.value = data.message || 'Failed to update account status.';
             showToast.value = true;
         }
-    } catch (error) {
-        console.error('Error deleting user:', error);
 
-        message.value = 'Something went wrong while deleting the user.';
+    } catch (error) {
+        console.error('Error updating account status:', error);
+
+        message.value = 'Something went wrong while updating the account.';
         showToast.value = true;
+
     } finally {
         isSubmitting.value = false;
     }

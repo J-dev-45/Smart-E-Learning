@@ -30,7 +30,8 @@ class User extends Authenticatable
         'last_seen',
         'status',
         'profile_color',
-        'profile_picture'
+        'profile_picture',
+        'disabled'
     ];
 
     /**

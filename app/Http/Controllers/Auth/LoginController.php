@@ -75,6 +75,14 @@ class LoginController extends Controller
             ]);
         }
 
+        if($user->disabled){
+            Auth::logout();
+            return response()->json([
+                'success' => false,
+                'message' => 'Your account has been disabled. Please contact the administrator for assistance.'
+            ], 403);
+        }
+
         if ($user->role === 'Admin') {
             return response()->json([
                 'success' => true,
