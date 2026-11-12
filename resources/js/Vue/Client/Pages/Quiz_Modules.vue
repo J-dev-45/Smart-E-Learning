@@ -109,7 +109,7 @@
                 </div>
             </li>
 
-            <!-- COMPREHENSIVE EXAM: OPEN -->
+            <!-- Summative EXAM: OPEN -->
             <li v-if="examOpen && !examPassed" class="relative flex items-start md:items-center gap-3 sm:gap-4 z-10">
                 <div class="relative size-10 sm:size-14 shrink-0 flex items-center justify-center rounded-full sharedStateExam sharedDeepBG border-2 border-dashed sharedStateBorder">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-6 sharedStateText">
@@ -119,8 +119,8 @@
 
                 <div class="group flex-1 min-w-0 flex flex-col md:flex-row md:items-center justify-between gap-3 p-4 sm:p-5 rounded-2xl border border-dashed sharedStateExam sharedStateBox shadow-lg sharedShadow transition-all duration-200">
                     <div class="min-w-0">
-                        <span class="text-[10px] font-bold uppercase tracking-widest sharedStateText">Final Assessment</span>
-                        <h3 class="text-sm sm:text-base font-bold leading-snug break-words">Comprehensive Exam</h3>
+                        <span class="text-[10px] font-bold uppercase tracking-widest sharedStateText">End-of-Course Assessment</span>
+                        <h3 class="text-sm sm:text-base font-bold leading-snug break-words">Summative Exam</h3>
                         <p class="text-xs sm:text-sm font-medium sharedTXTMuted mt-0.5">Covers all modules in this subject.</p>
                     </div>
 
@@ -133,7 +133,7 @@
                 </div>
             </li>
 
-            <!-- COMPREHENSIVE EXAM: PASSED -->
+            <!-- Summative EXAM: PASSED -->
             <li v-else-if="examOpen && examPassed" class="relative flex items-start md:items-center gap-3 sm:gap-4 z-10">
                 <div class="relative size-10 sm:size-14 shrink-0 flex items-center justify-center rounded-full sharedStatePassed sharedDeepBG border-2 sharedStateBorder">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 sm:size-6 sharedStateText">
@@ -149,9 +149,9 @@
                     </div>
 
                     <div class="min-w-0 pr-8 md:pr-0">
-                        <span class="text-[10px] font-bold uppercase tracking-widest sharedStateText">Final Assessment</span>
-                        <h3 class="text-sm sm:text-base font-bold leading-snug break-words">Comprehensive Exam</h3>
-                        <p class="text-xs sm:text-sm font-medium sharedTXTMuted mt-0.5">You passed the final assessment for this subject.</p>
+                        <span class="text-[10px] font-bold uppercase tracking-widest sharedStateText">End-of-Course Assessment</span>
+                        <h3 class="text-sm sm:text-base font-bold leading-snug break-words">Summative Exam</h3>
+                        <p class="text-xs sm:text-sm font-medium sharedTXTMuted mt-0.5">You passed the End-of-Course Assessment for this subject.</p>
                     </div>
 
                     <!-- <div class="flex flex-wrap gap-2 md:justify-end md:shrink-0">
@@ -163,7 +163,7 @@
                 </div>
             </li>
 
-            <!-- COMPREHENSIVE EXAM: LOCKED -->
+            <!-- Summative EXAM: LOCKED -->
             <li v-else class="relative flex items-start md:items-center gap-3 sm:gap-4 z-10">
                 <div class="relative size-10 sm:size-14 shrink-0 flex items-center justify-center rounded-full sharedDeepBG border border-dashed sharedBorder">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sm:size-5 sharedTXTMuted">
@@ -173,8 +173,8 @@
 
                 <div class="flex-1 min-w-0 flex flex-col md:flex-row md:items-center justify-between gap-3 p-4 sm:p-5 rounded-2xl border border-dashed sharedBorder sharedSurfaceBG">
                     <div class="min-w-0">
-                        <span class="text-[10px] font-bold uppercase tracking-widest sharedTXTMuted">Final Assessment</span>
-                        <h3 class="text-sm sm:text-base font-bold leading-snug sharedTXTMuted break-words">Comprehensive Exam</h3>
+                        <span class="text-[10px] font-bold uppercase tracking-widest sharedTXTMuted">End-of-Course Assessment</span>
+                        <h3 class="text-sm sm:text-base font-bold leading-snug sharedTXTMuted break-words">Summative Exam</h3>
                         <p class="text-xs sm:text-sm font-medium sharedTXTMuted mt-0.5">Pass every module to unlock the exam.</p>
                     </div>
 
