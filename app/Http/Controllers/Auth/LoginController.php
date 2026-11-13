@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\StudentRecord;
+use App\Models\User;
 use App\Services\MailerService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -14,7 +15,32 @@ class LoginController extends Controller
 {
     public function login(Request $request, MailerService $mailerService)
     {
-        $credentials = $request->only('email', 'password');
+        $loginInput = trim((string) $request->input('email'));
+        $password = (string) $request->input('password');
+
+        if ($loginInput === '' || $password === '') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Please enter your email and password.'
+            ], 422);
+        }
+
+        // Check if the user has registered yet
+        $user = User::where('email', $loginInput)
+            ->orWhere('id_number', $loginInput)
+            ->first();
+
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'You have not registered yet. Please register first.'
+            ], 422);
+        }
+
+        $credentials = [
+            'email'    => $user->email,
+            'password' => $password,
+        ];
         $remember = $request->boolean('remember');
 
         if (!Auth::attempt($credentials, $remember)) {
