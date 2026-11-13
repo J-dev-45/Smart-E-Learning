@@ -1,13 +1,9 @@
+
 <template>
     <form v-if="timeLeft === 0" method="POST" action="/submit-unanswered" class="w-full max-w-2xl mb-[50px] sharedLightBG rounded-2xl shadow-xl sharedShadow border sharedLightBorder flex flex-col gap-5 p-6">
         <input type="hidden" name="_token" :value="csrfToken">
         <input type="hidden" name="subject_id" :value="subjectId">
-        <input
-            v-if="assessmentType === 'quiz'"
-            type="hidden"
-            name="module_id"
-            :value="moduleId"
-        >
+        <input v-if="assessmentType === 'quiz'" type="hidden" name="module_id" :value="moduleId">
         <input type="hidden" name="type_of_assessment" :value="assessmentType">
         <input v-for="q in available_questions" :key="q.id" type="hidden" name="question_ids[]" :value="q.id">
 
@@ -23,8 +19,7 @@
                 <span class="text-sm sharedTXTLightMuted leading-relaxed">Your time for this {{ assessmentType }} has ended. You can now view your result.</span>
             </div>
 
-            <button type="submit"
-                class="flex items-center justify-center min-w-[160px] px-5 py-2 rounded-lg text-sm font-semibold sharedBtn transition-all shadow-sm cursor-pointer">
+            <button type="submit" class="flex items-center justify-center min-w-[160px] px-5 py-2 rounded-lg text-sm font-semibold sharedBtn transition-all shadow-sm cursor-pointer">
                 Go to Result
             </button>
         </div>
@@ -38,6 +33,7 @@
                         Question <span class="sharedTXTBrand">{{ question_number + answered_count }}</span>
                         <span class="sharedTXTLightFaint font-normal">/ {{ questionsData.length + answered_count }}</span>
                     </span>
+
                     <span class="inline-flex items-center gap-1.5 text-xs font-medium sharedTXTBrand sharedBrandTint px-2.5 py-1 rounded-full tabular-nums">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -47,9 +43,7 @@
                 </div>
 
                 <div class="w-full h-1.5 sharedLightLineBG rounded-full overflow-hidden">
-                    <div class="h-full sharedBGSolid rounded-full transition-all duration-1000 ease-linear"
-                        :style="{ width: `${Math.min((timeLeft / TOTAL_SECONDS) * 100, 100)}%` }">
-                    </div>
+                    <div class="h-full sharedBGSolid rounded-full transition-all duration-1000 ease-linear" :style="{ width: `${Math.min((timeLeft / TOTAL_SECONDS) * 100, 100)}%` }"></div>
                 </div>
             </div>
 
@@ -59,14 +53,8 @@
                     {{ question.question_type === 'multipleChoice' ? 'Multiple Choice' : question.question_type === 'TorF' ? 'True or False' : question.question_type === 'identification' ? 'Identification' : '' }}
                 </span>
 
-                <!-- FEEDBACK BUTTON -->
-                <button
-                    type="button"
-                    @click="openFeedback"
-                    aria-label="Send feedback about this question"
-                    title="Send feedback about this question"
-                    class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border sharedLightBorder sharedTXTBrand sharedBrandTint hover:opacity-80 active:scale-[0.98] focus:outline-none focus:ring-4 transition-all shadow-sm cursor-pointer"
-                >
+                <button type="button" @click="openFeedback" aria-label="Send feedback about this question" title="Send feedback about this question"
+                    class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold border sharedLightBorder sharedTXTBrand sharedBrandTint hover:opacity-80 active:scale-[0.98] focus:outline-none focus:ring-4 transition-all shadow-sm cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 shrink-0">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
                     </svg>
@@ -74,14 +62,8 @@
                 </button>
             </div>
 
-            <!-- @copy.prevent
-                    @cut.prevent
-                    @contextmenu.prevent -->
-
             <div class="sharedLightFieldBG border sharedLightBorder p-4 rounded-xl">
-                <span
-                    
-                    class="sharedTXTOnLight leading-relaxed">{{ question.question }}</span>
+                <span class="sharedTXTOnLight leading-relaxed">{{ question.question }}</span>
             </div>
 
             <div v-if="question.question_type === 'multipleChoice'" class="flex flex-col gap-2.5">
@@ -97,30 +79,24 @@
                                     : 'sharedLightBorder opacity-60'
                     ]">
                     <div class="flex items-center gap-3">
-                        <input v-model="selected_answer" :value="choice" type="radio" name="answer"
-                            :disabled="showExplanation" class="w-4 h-4 sharedCheckAccent">
+                        <input v-model="selected_answer" :value="choice" type="radio" name="answer" :disabled="showExplanation" class="w-4 h-4 sharedCheckAccent">
                         <span class="text-sm"
                             :class="showExplanation && (choiceState(choice) === 'selected-correct' || choiceState(choice) === 'correct-unselected') ? 'sharedTXTLightSuccess font-medium' : showExplanation && choiceState(choice) === 'selected-wrong' ? 'sharedTXTDanger font-medium' : 'sharedTXTOnLight'">
                             {{ choice }}
                         </span>
                     </div>
 
-                    <svg v-if="showExplanation && choiceState(choice) !== 'unselected'"
-                        xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none"
-                        viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+                    <svg v-if="showExplanation && choiceState(choice) !== 'unselected'" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
                         :class="choiceState(choice) === 'selected-wrong' ? 'sharedTXTDanger' : 'sharedTXTLightSuccess'">
-                        <path v-if="choiceState(choice) !== 'selected-wrong'" stroke-linecap="round"
-                            stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                        <path v-else stroke-linecap="round" stroke-linejoin="round"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path v-if="choiceState(choice) !== 'selected-wrong'" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        <path v-else stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </label>
             </div>
 
             <div v-if="question.question_type === 'identification'" class="flex flex-col gap-2">
                 <div class="relative">
-                    <input v-model="selected_answer" type="text" id="identification-answer"
-                        name="identification-answer" placeholder="Enter your answer here" autocomplete="off"
+                    <input v-model="selected_answer" type="text" id="identification-answer" name="identification-answer" placeholder="Enter your answer here" autocomplete="off"
                         :disabled="showExplanation"
                         :class="[
                             'w-full px-4 py-3 rounded-xl text-sm border-[1.5px] outline-none transition-colors duration-150',
@@ -131,14 +107,10 @@
                                 : 'sharedInput sharedInputHover focus:ring-4'
                         ]">
 
-                    <svg v-if="showExplanation" xmlns="http://www.w3.org/2000/svg"
-                        class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2" fill="none"
-                        viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+                    <svg v-if="showExplanation" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 absolute right-3 top-1/2 -translate-y-1/2" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
                         :class="isCorrect ? 'sharedTXTLightSuccess' : 'sharedTXTDanger'">
-                        <path v-if="isCorrect" stroke-linecap="round" stroke-linejoin="round"
-                            d="M4.5 12.75l6 6 9-13.5" />
-                        <path v-else stroke-linecap="round" stroke-linejoin="round"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path v-if="isCorrect" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        <path v-else stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </div>
             </div>
@@ -156,46 +128,32 @@
                                     : 'sharedLightBorder opacity-60'
                     ]">
                     <div class="flex items-center gap-3">
-                        <input type="radio" v-model="selected_answer" name="answer" :value="opt.value"
-                            :disabled="showExplanation" class="w-4 h-4 sharedCheckAccent">
+                        <input type="radio" v-model="selected_answer" name="answer" :value="opt.value" :disabled="showExplanation" class="w-4 h-4 sharedCheckAccent">
                         <span class="text-sm"
                             :class="showExplanation && (choiceState(opt.value) === 'selected-correct' || choiceState(opt.value) === 'correct-unselected') ? 'sharedTXTLightSuccess font-medium' : showExplanation && choiceState(opt.value) === 'selected-wrong' ? 'sharedTXTDanger font-medium' : 'sharedTXTOnLight'">
                             {{ opt.label }}
                         </span>
                     </div>
 
-                    <svg v-if="showExplanation && choiceState(opt.value) !== 'unselected'"
-                        xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none"
-                        viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
+                    <svg v-if="showExplanation && choiceState(opt.value) !== 'unselected'" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"
                         :class="choiceState(opt.value) === 'selected-wrong' ? 'sharedTXTDanger' : 'sharedTXTLightSuccess'">
-                        <path v-if="choiceState(opt.value) !== 'selected-wrong'" stroke-linecap="round"
-                            stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                        <path v-else stroke-linecap="round" stroke-linejoin="round"
-                            d="M6 18L18 6M6 6l12 12" />
+                        <path v-if="choiceState(opt.value) !== 'selected-wrong'" stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                        <path v-else stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </label>
             </div>
 
-            <transition enter-active-class="transition duration-200 ease-out"
-                enter-from-class="opacity-0 -translate-y-1" enter-to-class="opacity-100 translate-y-0">
+            <transition enter-active-class="transition duration-200 ease-out" enter-from-class="opacity-0 -translate-y-1" enter-to-class="opacity-100 translate-y-0">
                 <div v-if="showExplanation" class="flex gap-3 p-4 rounded-xl border-[1.5px] sharedStateBorderSoft sharedStateTint"
                     :class="isCorrect ? 'sharedStateLightPassed shadow-sm' : 'sharedStateLightFailed'">
 
-                    <div class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5"
-                        :class="isCorrect ? 'sharedStateSolid' : 'sharedStateTint'">
-
-                        <svg v-if="isCorrect" xmlns="http://www.w3.org/2000/svg"
-                            class="w-4 h-4 sharedTXT" fill="none" viewBox="0 0 24 24"
-                            stroke-width="2.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M4.5 12.75l6 6 9-13.5" />
+                    <div class="flex-shrink-0 w-7 h-7 rounded-full flex items-center justify-center mt-0.5" :class="isCorrect ? 'sharedStateSolid' : 'sharedStateTint'">
+                        <svg v-if="isCorrect" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sharedTXT" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                         </svg>
 
-                        <svg v-else xmlns="http://www.w3.org/2000/svg"
-                            class="w-4 h-4 sharedStateText" fill="none" viewBox="0 0 24 24"
-                            stroke-width="2.5" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M6 18L18 6M6 6l12 12" />
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 sharedStateText" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
                     </div>
 
@@ -204,8 +162,7 @@
                             {{ isCorrect ? 'Correct!' : 'Incorrect' }}
                         </span>
 
-                        <span v-if="!isCorrect && question.question_type === 'identification' && correctAnswer"
-                            class="text-md font-semibold sharedTXTOnLight">
+                        <span v-if="!isCorrect && question.question_type === 'identification' && correctAnswer" class="text-md font-semibold sharedTXTOnLight">
                             Answer: <span class="sharedTXTLightSuccess">{{ question.answer }}</span>
                         </span>
 
@@ -216,8 +173,7 @@
                 </div>
             </transition>
 
-            <div v-if="!showExplanation"
-                class="flex items-center justify-end pt-4 border-t sharedLightBorder mt-1">
+            <div v-if="!showExplanation" class="flex items-center justify-end pt-4 border-t sharedLightBorder mt-1">
                 <button type="submit" :disabled="!selected_answer || isSubmitting"
                     class="flex items-center justify-center gap-2 min-w-[140px] px-5 py-2 rounded-lg text-sm font-semibold sharedBtn disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-sm cursor-pointer">
                     <svg v-if="isSubmitting" class="animate-spin w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -229,13 +185,11 @@
             </div>
 
             <div v-else class="flex items-center justify-end pt-4 border-t sharedLightBorder mt-1">
-                <button v-if="available_questions.length != 0" type="button" @click="nextQuestion"
-                    class="px-5 py-2 rounded-lg text-sm font-semibold sharedBtn transition-all shadow-sm">
+                <button v-if="available_questions.length != 0" type="button" @click="nextQuestion" class="px-5 py-2 rounded-lg text-sm font-semibold sharedBtn transition-all shadow-sm">
                     Next Question
                 </button>
 
-                <a v-else :href="`/result/${assessmentType}/question_type/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}`"
-                    class="px-5 py-2 rounded-lg text-sm font-semibold sharedBtn transition-all shadow-sm">
+                <a v-else :href="`/result/${assessmentType}/question_type/${url(subjectName)}/${subjectId}/${url(moduleName)}/${moduleId}`" class="px-5 py-2 rounded-lg text-sm font-semibold sharedBtn transition-all shadow-sm">
                     Finish
                 </a>
             </div>
@@ -246,7 +200,6 @@
         </div>
     </form>
 
-    <!-- SHARED FEEDBACK MODAL -->
     <Feedback_Form
         :show-feedback="showFeedback"
         :user-id="userId"
@@ -260,8 +213,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import Feedback_Form from '../Modals/Feedback_Form.vue'; // <- adjust the path if this file lives elsewhere
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue';
+import Feedback_Form from '../Modals/Feedback_Form.vue';
 
 const props = defineProps({
     questionsData: { type: Array, required: true },
@@ -275,14 +228,11 @@ const props = defineProps({
     score: { type: Number, default: 0 },
     remainingSeconds: { type: Number, required: true },
     totalSeconds: { type: Number, default: 60 * 60 },
-    assessmentType: { type: String, required:true},
-
-    // Needed by the feedback modal
-    userId: { type: Number, default: null },
+    assessmentType: { type: String, required: true },
+    userId: { type: [Number,String], default: null },
     userName: { type: String, default: '' },
     userEmail: { type: String, default: '' }
 })
-
 
 function url(url_name) {
     return url_name.replace(/\s+/g, "_");
@@ -293,9 +243,11 @@ const question_number = ref(1)
 const selected_answer = ref('')
 const score = ref(props.score)
 const isSubmitting = ref(false)
+
 const answered_questions = ref(
     props.answeredQuestions.map(q => typeof q === 'object' ? q.question_id : q)
 )
+
 const question = ref(null)
 const correct = ref('yes')
 const answered_count = ref(props.answeredCount)
@@ -305,6 +257,7 @@ const passing_score = 75
 const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
 
 // ===== Feedback modal =====
+
 const showFeedback = ref(false)
 const feedbackQuestionId = ref(null)
 const feedbackQuestionLabel = ref('')
@@ -313,7 +266,6 @@ const feedbackQuestionText = ref('')
 function openFeedback() {
     if (!question.value) return
 
-    // The modal's questionId prop is a String
     feedbackQuestionId.value = String(question.value.id)
     feedbackQuestionLabel.value = `Question ${question_number.value + answered_count.value}`
     feedbackQuestionText.value = question.value.question
@@ -323,9 +275,11 @@ function openFeedback() {
 function closeFeedback() {
     showFeedback.value = false
 }
+
 // ===== End Feedback modal =====
 
 // ===== Timer =====
+
 const TOTAL_SECONDS = props.totalSeconds
 const timeLeft = ref(Math.max(0, Math.floor(props.remainingSeconds)))
 const deadline = Date.now() + timeLeft.value * 1000
@@ -348,6 +302,7 @@ onMounted(() => {
 })
 
 onUnmounted(() => clearInterval(timerId))
+
 // ===== End Timer =====
 
 const percentage = computed(() => {
@@ -400,6 +355,58 @@ function getRandomQuestion() {
 
 question.value = getRandomQuestion()
 
+// ===== Sound toggle =====
+
+const muted = ref(true)
+
+function stopSpeech() {
+    window.speechSynthesis.cancel()
+}
+
+function readQuestion() {
+    if (muted.value || !question.value || showExplanation.value) {
+        return
+    }
+
+    stopSpeech()
+
+    const speech = new SpeechSynthesisUtterance(question.value.question)
+
+    speech.lang = 'en-US'
+    speech.rate = 0.9
+    speech.pitch = 1
+    speech.volume = 1
+
+    window.speechSynthesis.speak(speech)
+}
+
+function handleSoundToggle(event) {
+    muted.value = event.detail.muted
+
+    if (muted.value) {
+        stopSpeech()
+    } else {
+        readQuestion()
+    }
+}
+
+onMounted(() => {
+    window.addEventListener('assessment-sound-toggle', handleSoundToggle)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('assessment-sound-toggle', handleSoundToggle)
+    stopSpeech()
+})
+
+watch(question, () => {
+    if (!muted.value) {
+        readQuestion()
+    }
+})
+
+// ===== End Sound toggle =====
+
 const choiceData = computed(() => {
     if (!question.value) {
         return null
@@ -420,10 +427,13 @@ async function submitAnswer(id) {
         return
     }
 
+    stopSpeech()
+
     isSubmitting.value = true
 
     try {
         const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content')
+
         const response = await fetch('/submitAnswer', {
             method: "POST",
             headers: {
@@ -436,7 +446,7 @@ async function submitAnswer(id) {
                 student_answer: selected_answer.value.toLowerCase().trim(),
                 subject_id: props.subjectId,
                 module_id: props.moduleId,
-                type_of_assessment : props.assessmentType
+                type_of_assessment: props.assessmentType
             })
         })
 
