@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\StudentRecord;
 use App\Models\User;
 use App\Services\MailerService;
 use Carbon\Carbon;
@@ -18,6 +19,12 @@ class RegisterController extends Controller
     public function register(Request $request, MailerService $mailerService)
     {
         $validated_data = $request->validate([
+            'id_number' => [
+                'required',
+                'string',
+                'max:50',
+                Rule::unique('users', 'id_number'),
+            ],
             'name' => [
                 'required',
                 'string',
@@ -26,9 +33,32 @@ class RegisterController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:8|confirmed'
         ], [
+            'id_number.required' => 'Student ID number is required.',
+            'id_number.unique' => 'This ID number is already registered to an account.',
             'name.unique' => 'This name is already taken. Please choose a different name.',
             'email.unique' => 'This email already exists. Please try logging in instead.',
         ]);
+
+        // Verify the ID number exists in the pre-approved student records and is not disabled
+        $studentRecord = StudentRecord::where('id_number', $validated_data['id_number'])->first();
+
+        if (!$studentRecord) {
+            return response()->json([
+                'success' => false,
+                'errors'  => [
+                    'id_number' => ['This ID number is not found in the student records. Please contact your administrator.'],
+                ],
+            ], 422);
+        }
+
+        if ($studentRecord->is_disabled) {
+            return response()->json([
+                'success' => false,
+                'errors'  => [
+                    'id_number' => ['This student ID number has been disabled. Please contact your administrator.'],
+                ],
+            ], 422);
+        }
 
         $profile_colors = [
             'bg-green-600 text-white',
@@ -37,10 +67,9 @@ class RegisterController extends Controller
         ];
 
         $otp_code = rand(100000, 999999);
-        $id_number = random_int(100000000, 999999999);
 
         $user = User::create([
-            'id_number' => $id_number,
+            'id_number' => $validated_data['id_number'],
             'name' => $validated_data['name'],
             'email' => $validated_data['email'],
             'password' => Hash::make($validated_data['password']),

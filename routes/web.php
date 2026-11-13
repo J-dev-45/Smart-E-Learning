@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\LessonContentController;
 use App\Http\Controllers\Admin\ModuleController;
 use App\Http\Controllers\Admin\QuestionController;
 use App\Http\Controllers\Admin\QuestionImportController;
+use App\Http\Controllers\Admin\StudentRecordController;
 use App\Http\Controllers\Admin\SubjectController;
 use App\Http\Controllers\Admin\TopicController;
 use App\Http\Controllers\Admin\UserController;
@@ -371,6 +372,20 @@ Route::middleware(['auth','Admin'])->group(function(){
     Route::put('/demoteUser', [UserController::class, 'demoteUser']);
     Route::patch('/disableAccount', [UserController::class, 'disableAccount']);
     Route::patch('/enableAccount', [UserController::class, 'enableAccount']);
+
+    // STUDENT RECORDS
+    Route::get('/student-records', function () {
+        $records = \App\Models\StudentRecord::with('user:id,id_number,name,email,disabled')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        $totalRecords = $records->count();
+        $totalActive = $records->where('is_disabled', false)->count();
+        $totalDisabled = $records->where('is_disabled', true)->count();
+        return view('Admin.Pages.Student_Records', compact('records', 'totalRecords', 'totalActive', 'totalDisabled'));
+    })->name('student_records_page');
+    Route::post('/student-records', [StudentRecordController::class, 'store']);
+    Route::patch('/student-records/toggle-disable', [StudentRecordController::class, 'toggleDisable']);
+    Route::delete('/student-records', [StudentRecordController::class, 'destroy']);
 
     // FEEDBACKS
     Route::post('/sendReply', [FeedbackController::class, 'sendFeedbackReply']);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\StudentRecord;
 use App\Services\MailerService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -75,12 +76,38 @@ class LoginController extends Controller
             ]);
         }
 
-        if($user->disabled){
+        if ($user->disabled) {
             Auth::logout();
             return response()->json([
                 'success' => false,
                 'message' => 'Your account has been disabled. Please contact the administrator for assistance.'
             ], 403);
+        }
+
+        if ($user->role === 'Student') {
+            $studentRecord = StudentRecord::where('id_number', $user->id_number)->first();
+
+            if (!$studentRecord) {
+                $user->disabled = true;
+                $user->save();
+                Auth::logout();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your student ID number has been removed from the records. You are unable to log in. Please contact the administrator for assistance.'
+                ], 403);
+            }
+
+            if ($studentRecord->is_disabled) {
+                $user->disabled = true;
+                $user->save();
+                Auth::logout();
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Your student account has been disabled. Please contact the administrator for assistance.'
+                ], 403);
+            }
         }
 
         if ($user->role === 'Admin') {

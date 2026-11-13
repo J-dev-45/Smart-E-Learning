@@ -212,6 +212,12 @@ const svg_d = [
     { action: 'deleted_subject', d: 'm14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0'},
     { action: 'replied_feedback', d: 'M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.032 2.76 3.24a49.109 49.109 0 0 0 3.65.325'},
     { action: 'deleted_feedback', d: 'm14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0'},
+    { action: 'added_student_record', d: 'M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z' },
+    { action: 'added_student_records', d: 'M15 9h3.75M15 12h3.75M15 15h3.75M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Zm6-10.125a1.875 1.875 0 1 1-3.75 0 1.875 1.875 0 0 1 3.75 0Zm1.294 6.336a6.721 6.721 0 0 1-3.17.789 6.721 6.721 0 0 1-3.168-.789 3.376 3.376 0 0 1 6.338 0Z' },
+    { action: 'disabled_student_record', d: 'M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z' },
+    { action: 'enabled_student_record', d: 'M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z' },
+    { action: 'deleted_student_record', d: 'm14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0' },
+    { action: 'enabled_user', d: 'M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z' },
 ]
 
 
@@ -233,6 +239,12 @@ const icon_style = [
     { action: 'deleted_subject', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
     { action: 'replied_feedback', badge: 'sharedStateExam sharedStateTint sharedStateText'},
     { action: 'deleted_feedback', badge: 'sharedStateDanger sharedStateTint sharedStateText'},
+    { action: 'added_student_record', badge: 'sharedStatePassed sharedStateTint sharedStateText' },
+    { action: 'added_student_records', badge: 'sharedStatePassed sharedStateTint sharedStateText' },
+    { action: 'disabled_student_record', badge: 'sharedStateDanger sharedStateTint sharedStateText' },
+    { action: 'enabled_student_record', badge: 'sharedStateOpen sharedStateTint sharedStateText' },
+    { action: 'deleted_student_record', badge: 'sharedStateDanger sharedStateTint sharedStateText' },
+    { action: 'enabled_user', badge: 'sharedStateOpen sharedStateTint sharedStateText' },
 ]
 
 function activity_svg(action){
@@ -268,6 +280,13 @@ function message(act){
 
         case 'replied_feedback': return `replied to ${act.target}'s feedback`;
         case 'deleted_feedback': return `deleted ${act.target}'s feedback`;
+
+        case 'added_student_record': return 'added a student ID';
+        case 'added_student_records': return 'added student IDs';
+        case 'disabled_student_record': return 'disabled a student ID';
+        case 'enabled_student_record': return 'enabled a student ID';
+        case 'deleted_student_record': return 'deleted a student ID';
+        case 'enabled_user': return `enabled ${act.target}'s account`;
         default: return '';
     }
 }
@@ -290,6 +309,12 @@ function pillLeft(act){
         case 'promoted_user':
         case 'demoted_user':
             return act.from_role;
+        case 'added_student_record':
+        case 'added_student_records':
+        case 'disabled_student_record':
+        case 'enabled_student_record':
+        case 'deleted_student_record':
+            return act.target;
         default:
             return null;
     }
@@ -325,8 +350,14 @@ function pillRight(act){
 }
 
 function pillLeftStyle(act){
-    if (act.action === 'deleted_feedback') {
-        return 'sharedStateDanger sharedStatePill line-through'
+    if (act.action === 'deleted_feedback' || act.action === 'deleted_student_record') {
+        return 'sharedStateDanger sharedStatePill line-through font-mono'
+    }
+    if (act.action === 'disabled_student_record') {
+        return 'sharedStateDanger sharedStatePill font-mono'
+    }
+    if (act.action === 'enabled_student_record' || act.action === 'added_student_record' || act.action === 'added_student_records') {
+        return 'sharedStateOpen sharedStatePill font-mono'
     }
     return 'sharedTile sharedTXTBody'
 }

@@ -70,6 +70,20 @@
 
                 <div class="flex flex-col gap-[clamp(0.5rem,1.8vh,0.9rem)]">
 
+                    <!-- STUDENT ID NUMBER -->
+                    <div class="flex flex-col gap-1.5">
+                        <label for="register-id-number" class="ps-2 font-semibold sharedTXTOnLight text-sm">
+                            Student ID Number
+                        </label>
+                        <input id="register-id-number" type="text" name="id_number"
+                            placeholder="e.g. 2023-00001"
+                            v-model="id_number"
+                            autocomplete="off"
+                            required
+                            class="sharedInput border-[1.5px] rounded-full px-5 outline-none text-base md:text-sm w-full transition-all duration-200"
+                            style="height:clamp(44px,5.5vh,56px)">
+                    </div>
+
                     <!-- FULL NAME -->
                     <div class="flex flex-col gap-1.5">
                         <label for="register-name" class="ps-2 font-semibold sharedTXTOnLight text-sm">
@@ -246,6 +260,7 @@ const name = ref('');
 const email = ref('');
 const password = ref('');
 const password_confirmation = ref('');
+const id_number = ref('');
 
 const isSubmitting = ref(false);
 const showLoadingScreen = ref(false);
@@ -267,10 +282,10 @@ async function registerForm(event) {
     const formEmail = String(formData.get('email') || email.value).trim();
     const formPassword = String(formData.get('password') || password.value);
     const formConfirmation = String(formData.get('password_confirmation') || password_confirmation.value);
+    const formIdNumber = String(formData.get('id_number') || id_number.value).trim();
 
-    if (!formName || !formEmail || !formPassword || !formConfirmation) {
-        registerErrors.value = ['Please complete all fields.'];
-        return;
+    if (!formIdNumber || !formName || !formEmail || !formPassword || !formConfirmation) {
+        registerErrors.value = ['Please complete all fields.'];        return;
     }
 
     if (formPassword.length < 8) {
@@ -295,6 +310,7 @@ async function registerForm(event) {
                 'Accept': 'application/json'
             },
             body: JSON.stringify({
+                id_number: formIdNumber,
                 name: formName,
                 email: formEmail,
                 password: formPassword,

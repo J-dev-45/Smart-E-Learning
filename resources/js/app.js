@@ -46,6 +46,7 @@ import Subjects_Cards_Admin from './Vue/Admin/Pages/Subjects_Cards_Admin.vue';
 import Admin_Header from './Vue/Admin/components/Admin_Header.vue';
 import Questions_Bank from './Vue/Admin/Pages/Questions_Bank.vue';
 import Lesson_Management from './Vue/Admin/Pages/Lesson_Management.vue';
+import Student_Records from './Vue/Admin/Pages/Student_Records.vue';
 
 app.component('dashboard-cards', Dashboard_Cards);
 app.component('overview', Overview);
@@ -58,6 +59,7 @@ app.component('feedbacks-page', Feedbacks);
 app.component('modules', Modules);
 app.component('questions-bank', Questions_Bank);
 app.component('lesson-management', Lesson_Management);
+app.component('student-records-page', Student_Records);
 app.component('admin-header', Admin_Header);
 
 // ===================================================================================================|CLIENT
