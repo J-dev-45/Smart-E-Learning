@@ -186,7 +186,6 @@
                     ? 'border-rose-300 bg-rose-50/40 focus-within:border-rose-400'
                     : 'border-gray-200 bg-gray-50/50 hover:border-gray-300 focus-within:border-[#8B5CF6]/50'"
             >
-                <!-- The button sits beside the label (not inside it) so clicking it doesn't focus the input -->
                 <div class="flex items-start gap-3">
                     <label
                         :for="`question-${quest.id}`"
@@ -198,7 +197,7 @@
                         <span class="pt-0.5">{{ quest.question }}</span>
                     </label>
 
-                    <!-- FEEDBACK BUTTON (text question) -->
+                    <!-- FEEDBACK BUTTON -->
                     <button
                         type="button"
                         @click="openFeedback(quest.id, `Question ${index + 1}`, quest.question)"
@@ -292,7 +291,6 @@
         </div>
     </div>
 
-    <!-- ONE SHARED FEEDBACK MODAL (opened by any question's button) -->
     <Feedback_Form
         :show-feedback="showFeedback"
         :user-id="userId"
@@ -320,7 +318,6 @@ const props = defineProps({
     answeredQuestions: { type: Array, default: () => []},
     score: { type: Number, default: 0 },
 
-    // Needed by the feedback modal
     userId: { type: Number, default: null },
     userName: { type: String, default: '' },
     userEmail: { type: String, default: '' }
@@ -338,7 +335,6 @@ const score = ref(props.score)
 const answers = reactive({})
 const showErrors = ref(false)
 
-// Feedback modal state
 const showFeedback = ref(false)
 const feedbackQuestionId = ref(null)
 const feedbackQuestionLabel = ref('')
@@ -387,7 +383,6 @@ function questionText(questionId) {
 }
 
 function openFeedback(questionId, label, text = '') {
-    // The modal's questionId prop is a String
     feedbackQuestionId.value = String(questionId)
     feedbackQuestionLabel.value = label
     feedbackQuestionText.value = text

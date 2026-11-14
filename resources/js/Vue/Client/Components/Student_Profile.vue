@@ -1,7 +1,6 @@
 <template>
     <div class="relative w-40 h-40" :aria-busy="showSkeleton">
 
-        <!-- Skeleton: shows while the page, parent data, or the image is loading -->
         <div
             v-if="showSkeleton"
             class="absolute inset-0 rounded-full ring-4 sharedRingSoft skeleton-shimmer"
@@ -43,24 +42,9 @@
             @click="showModal = true"
             class="absolute bottom-2 right-2 flex items-center justify-center w-8 h-8 rounded-full sharedBtn hover:scale-105 ring-2 sharedRingBG shadow-lg sharedShadow cursor-pointer transition duration-200 outline-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 sharedFocus"
         >
-            <svg
-                class="w-4 h-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                stroke-width="1.5"
-                aria-hidden="true"
-            >
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z"
-                />
-                <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z"
-                />
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true" >
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
             </svg>
         </button>
 
@@ -98,12 +82,10 @@ const props = defineProps({
         type: String,
         default: 'Student Name'
     },
-    // Set to true from the parent while profile data is still being fetched
     loading: {
         type: Boolean,
         default: false
     },
-    // Replaces the ten avatar1..avatar10 props. Pass your own array to override.
     avatars: {
         type: Array,
         default: () => Array.from(
@@ -121,7 +103,6 @@ const currentProfileImage = ref(
 );
 const imageLoading = ref(!!currentProfileImage.value);
 
-// True once the browser has finished loading the page
 const pageReady = ref(typeof document === 'undefined' || document.readyState === 'complete');
 
 const showSkeleton = computed(() =>
@@ -130,7 +111,6 @@ const showSkeleton = computed(() =>
     (!!currentProfileImage.value && imageLoading.value)
 );
 
-// Builds { avatar1: '...', avatar2: '...' } so the modal's props stay the same
 const avatarProps = computed(() =>
     Object.fromEntries(
         props.avatars.map((src, i) => [`avatar${i + 1}`, src])
@@ -147,7 +127,6 @@ const userInitials = computed(() =>
         .toUpperCase()
 );
 
-// Keep in sync if the parent changes the picture or avatar later
 watch(
     () => [props.profilePicture, props.profileAvatar],
     ([picture, avatar]) => {
@@ -155,12 +134,10 @@ watch(
     }
 );
 
-// Show the skeleton again whenever the image source changes
 watch(currentProfileImage, (val) => {
     imageLoading.value = !!val;
 });
 
-// Handle cached images that finish loading before the @load listener attaches
 onMounted(() => {
     if (!pageReady.value) {
         window.addEventListener('load', () => { pageReady.value = true; }, { once: true });
@@ -171,7 +148,6 @@ onMounted(() => {
     }
 });
 
-// Broken URL: fall back to the initials avatar instead of an endless skeleton
 function onImageError() {
     imageLoading.value = false;
     currentProfileImage.value = '';

@@ -35,7 +35,6 @@
 
         <!-- TITLE & TOPIC -->
         <div class="sharedTXT px-5 sm:px-7 pt-4 pb-1 flex flex-col gap-3">
-            <!-- ROW 1: SUBJECT + MODULE (left) | COUNT + ADD BUTTON (right) -->
             <div class="w-full flex items-center justify-between gap-3 flex-wrap">
                 <div class="flex items-center gap-3 min-w-0 flex-wrap">
                     <!-- SUBJECT NAME -->
@@ -71,7 +70,6 @@
                 </div>
             </div>
 
-            <!-- ROW 2: FILTER (left) + SEARCH (right, takes all remaining space) -->
             <div class="w-full flex flex-col sm:flex-row sm:items-stretch gap-3">
                 <!-- QUESTION TYPE FILTER -->
                 <div
@@ -388,7 +386,6 @@ function findChoicesFor(questionId) {
 
 const searchQuery = ref('');
 
-// Question type filter tabs -> the question_type value stored on each question
 const typeTabs = ['All', 'Multiple Choice', 'True or False', 'Identification'];
 const tabTypes = {
     'Multiple Choice': 'multipleChoice',
@@ -436,8 +433,7 @@ function questionsAdded(newQuestions, newChoices = []) {
 
     localQuestions.value.push(...questionsToAdd);
 
-    // Keep the choices for every new question, even if it is hidden by the
-    // current module filter, so it is correct if the filter changes later.
+
     if (Array.isArray(newChoices) && newChoices.length) {
         const existingChoiceIds = new Set(
             localChoices.value.map(c => String(c.question_id))

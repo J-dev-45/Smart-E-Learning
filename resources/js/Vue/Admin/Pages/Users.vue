@@ -53,7 +53,6 @@
                    md:flex-1 md:min-h-0 md:flex md:flex-col"
         >
 
-            <!-- Column header: table layout only from lg (1024px) up -->
             <div
                 class="hidden lg:grid shrink-0 gap-3 px-4 py-2.5 border-b sharedBorder text-xs font-medium sharedTXTMuted"
                 :class="gridCols"
@@ -109,7 +108,6 @@
                             </span>
                         </div>
 
-                        <!-- Role badge inside the name cell until the dedicated Role column appears (xl) -->
                         <span
                             class="xl:hidden shrink-0 inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-medium"
                             :class="roleBadge(user.role)"
@@ -190,7 +188,7 @@
                                 <path
                                     v-if="user.disabled" stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
 
-                                <!-- Disable: no-symbol (circle with slash) -->
+                                <!-- Disable: no-symbol -->
                                 <path
                                     v-else stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 0 0 5.636 5.636m12.728 12.728A9 9 0 0 1 5.636 5.636m12.728 12.728L5.636 5.636" />
                             </svg>

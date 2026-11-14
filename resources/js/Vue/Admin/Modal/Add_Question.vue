@@ -818,7 +818,6 @@ function cancelModuleChange() {
   }
 }
 
-// Forwards questions (and their choices, if any) from the upload preview
 function handleQuestionsAdded(newQuestions, newChoices = []) {
   emit('questions-added', newQuestions, newChoices);
 }
@@ -1073,7 +1072,6 @@ async function addQuestionForm(Mname, Sname) {
     showToast.value = true;
 
     if (Array.isArray(data.new_questions)) {
-      // Send the choices along so View / Edit work without a page refresh
       emit(
         'questions-added',
         data.new_questions,

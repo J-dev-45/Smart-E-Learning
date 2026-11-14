@@ -4,25 +4,23 @@ import axios from 'axios'
 
 const props = defineProps({
   questionId: { type: [Number, String], required: true },
-  code: { type: String, required: true },          // the student's code from the editor
-  inputs: { type: Array, default: () => [] },      // lines the student typed in the Output box
-  ready: { type: Boolean, default: true },         // true once the student has run the code
+  code: { type: String, required: true },          
+  inputs: { type: Array, default: () => [] },      
+  ready: { type: Boolean, default: true },         
 })
 
 const quiz = ref(null)
 const result = ref(null)
-const submittedInputs = ref([])                    // what the student typed when they pressed SUBMIT
+const submittedInputs = ref([])                    
 const checking = ref(false)
 const errorMsg = ref('')
 const loadError = ref('')
 
-// Null-safe views of the server data, so a bad response can never crash the render
 const tests = computed(() => (Array.isArray(quiz.value?.tests) ? quiz.value.tests : []))
 const total = computed(() => Number(quiz.value?.total ?? tests.value.length))
 const hiddenCount = computed(() => Math.max(0, total.value - tests.value.length))
 const results = computed(() => (Array.isArray(result.value?.results) ? result.value.results : []))
 
-// "17\n5\n" -> "17, 5"
 function formatInput(value) {
   const parts = String(value ?? '')
     .split(/\r?\n/)

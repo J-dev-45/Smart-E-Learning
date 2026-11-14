@@ -273,8 +273,6 @@ async function registerForm(event) {
 
     registerErrors.value = [];
 
-    // Read directly from the form too, so browser autofill is less likely
-    // to leave the Vue model values empty.
     const form = event?.target;
     const formData = new FormData(form);
 

@@ -203,7 +203,10 @@
         </div>
 
         <!-- DESKTOP LOADING SCREEN -->
-        <Loading_Screen v-if="showLoadingScreen" :message="'Logging you in...'"/>
+        <Loading_Screen 
+            v-if="showLoadingScreen" 
+            :message="'Logging you in...'"
+        />
     </div>
 </template>
 
@@ -227,7 +230,6 @@ const loginErrors = ref([]);
 async function login(event) {
     if (isSubmitting.value) return;
 
-    // Read the actual form values to support iOS autofill.
     const form = event.target;
     const emailValue = (form.elements['email']?.value || email.value || '').trim();
     const passwordValue = form.elements['password']?.value || password.value || '';
@@ -261,8 +263,7 @@ async function login(event) {
         const data = await response.json();
 
         if (response.ok && data.success) {
-            // Keep the original behavior: show the loading screen on desktop,
-            // while mobile redirects immediately as in the original component.
+           
             if (window.matchMedia('(min-width: 768px)').matches) {
                 showLoadingScreen.value = true;
             }

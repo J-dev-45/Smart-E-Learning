@@ -57,14 +57,12 @@
                 :aria-expanded="showUserMenu"
                 :aria-busy="showSkeleton"
             >
-                <!-- Skeleton: shows while the page or the image is loading -->
                 <span
                     v-if="showSkeleton"
                     class="block rounded-full w-8 h-8 skeleton-shimmer"
                     aria-hidden="true"
                 ></span>
 
-                <!-- v-show keeps the image in the DOM so it still loads while the skeleton is up -->
                 <img
                     v-if="currentProfileImage"
                     v-show="!showSkeleton"
@@ -121,11 +119,9 @@ const currentProfileImage = ref(
 )
 const imageLoading = ref(!!currentProfileImage.value)
 
-// True once the page has loaded and the minimum skeleton time has passed
 const pageReady = ref(false)
 
-// Keep the skeleton visible for at least this long since the page started loading,
-// so it doesn't vanish before the browser can paint it on fast loads
+
 const MIN_SKELETON_MS = 700
 
 const showSkeleton = computed(() =>
@@ -148,12 +144,10 @@ watch(
     }
 )
 
-// Show the skeleton again whenever the image source changes (e.g. after a new upload)
 watch(currentProfileImage, (val) => {
     imageLoading.value = !!val
 })
 
-// Broken URL: fall back to the initials instead of an endless skeleton
 function onImageError() {
     imageLoading.value = false
     currentProfileImage.value = ''
@@ -196,7 +190,6 @@ onMounted(() => {
         window.addEventListener('load', markReady, { once: true })
     }
 
-    // Handle cached images that finish loading before the @load listener attaches
     if (imgEl.value?.complete && imgEl.value.naturalWidth > 0) {
         imageLoading.value = false
     }
@@ -240,7 +233,6 @@ onUnmounted(() => {
     background-color: rgba(148, 163, 184, 0.25);
 }
 
-/* Animating transform is smoother than animating background-position */
 .skeleton-shimmer::after {
     content: '';
     position: absolute;

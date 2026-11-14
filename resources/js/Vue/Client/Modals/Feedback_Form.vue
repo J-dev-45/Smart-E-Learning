@@ -248,7 +248,6 @@ const props = defineProps({
         default: ''
     },
 
-    // Full text of the question the feedback is about
     questionText: {
         type: String,
         default: ''
@@ -330,7 +329,6 @@ async function sendFeedback() {
             },
             body: JSON.stringify({
                 feedback_message: feedback_message.value.trim(),
-                // Only set when the feedback is about a question
                 question_id: props.questionId || null,
                 question: props.questionId ? (props.questionText || null) : null
             })

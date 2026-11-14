@@ -213,7 +213,6 @@
                                     </button>
                                 </div>
 
-                                <!-- Confirm password match hint -->
                                 <p
                                     v-if="password_confirmation.length > 0"
                                     class="flex items-center gap-1.5 text-xs m-0 transition-all duration-200"

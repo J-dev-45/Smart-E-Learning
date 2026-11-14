@@ -207,8 +207,6 @@ function getCsrfToken() {
 |--------------------------------------------------------------------------
 | OTP INPUT HANDLING
 |--------------------------------------------------------------------------
-| Supports numeric input, automatic focus movement, pasting a code,
-| and moving backward when pressing Backspace on an empty input.
 */
 
 function handleOtpInput(event, index) {
@@ -402,7 +400,6 @@ async function resendOTP() {
         if (response.ok && data.success) {
             startCountdown(data.remaining ?? 60);
 
-            // Clear the previous OTP digits.
             otpInputRefs.value.forEach((input) => {
                 if (input) {
                     input.value = '';

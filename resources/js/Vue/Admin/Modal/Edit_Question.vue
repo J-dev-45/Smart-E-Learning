@@ -34,7 +34,7 @@
                         </svg>
                     </button>
 
-                    <!-- HEADER (fixed, matches View_Question.vue) -->
+                    <!-- HEADER  -->
                     <div class="w-full flex flex-col gap-1 px-6 pt-6 pb-4 pr-12 border-b sharedLightBorder">
                         <div class="flex items-center gap-3">
                             <div class="shrink-0 w-10 h-10 rounded-full sharedStateLightAccent sharedStateTint flex items-center justify-center">
