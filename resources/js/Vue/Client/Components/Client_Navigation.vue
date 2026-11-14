@@ -55,16 +55,29 @@
                 class="py-2"
                 aria-label="Toggle user menu"
                 :aria-expanded="showUserMenu"
+                :aria-busy="showSkeleton"
             >
+                <!-- Skeleton: shows while the page or the image is loading -->
+                <span
+                    v-if="showSkeleton"
+                    class="block rounded-full w-8 h-8 skeleton-shimmer"
+                    aria-hidden="true"
+                ></span>
+
+                <!-- v-show keeps the image in the DOM so it still loads while the skeleton is up -->
                 <img
                     v-if="currentProfileImage"
+                    v-show="!showSkeleton"
+                    ref="imgEl"
                     :src="currentProfileImage"
                     alt="Profile picture"
                     class="rounded-full w-8 h-8 cursor-pointer object-cover ring-1 sharedNavRing"
+                    @load="imageLoading = false"
+                    @error="onImageError"
                 >
 
                 <span
-                    v-else
+                    v-else-if="!showSkeleton"
                     class="rounded-full w-8 h-8 cursor-pointer flex items-center justify-center font-semibold text-md"
                     :class="profileColor"
                 >
@@ -87,7 +100,7 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import User_Menu from './User_Menu.vue'
 
 const props = defineProps({
@@ -101,12 +114,32 @@ const props = defineProps({
 
 const showUserMenu = ref(false)
 const activeSection = ref('hero')
+const imgEl = ref(null)
 
 const currentProfileImage = ref(
     props.profilePicture || props.profileAvatar || ''
 )
+const imageLoading = ref(!!currentProfileImage.value)
+
+// True once the page has loaded and the minimum skeleton time has passed
+const pageReady = ref(false)
+
+// Keep the skeleton visible for at least this long since the page started loading,
+// so it doesn't vanish before the browser can paint it on fast loads
+const MIN_SKELETON_MS = 700
+
+const showSkeleton = computed(() =>
+    !pageReady.value ||
+    (!!currentProfileImage.value && imageLoading.value)
+)
 
 let sectionObserver = null
+let readyTimer = null
+
+function markReady() {
+    const remaining = Math.max(0, MIN_SKELETON_MS - performance.now())
+    readyTimer = setTimeout(() => { pageReady.value = true }, remaining)
+}
 
 watch(
     () => [props.profilePicture, props.profileAvatar],
@@ -114,6 +147,17 @@ watch(
         currentProfileImage.value = picture || avatar || ''
     }
 )
+
+// Show the skeleton again whenever the image source changes (e.g. after a new upload)
+watch(currentProfileImage, (val) => {
+    imageLoading.value = !!val
+})
+
+// Broken URL: fall back to the initials instead of an endless skeleton
+function onImageError() {
+    imageLoading.value = false
+    currentProfileImage.value = ''
+}
 
 function initials(name) {
     return String(name ?? '')
@@ -146,6 +190,17 @@ function handleProfileUpdate(event) {
 onMounted(() => {
     window.addEventListener('profile-updated', handleProfileUpdate)
 
+    if (document.readyState === 'complete') {
+        markReady()
+    } else {
+        window.addEventListener('load', markReady, { once: true })
+    }
+
+    // Handle cached images that finish loading before the @load listener attaches
+    if (imgEl.value?.complete && imgEl.value.naturalWidth > 0) {
+        imageLoading.value = false
+    }
+
     const sections = document.querySelectorAll('main section[id]')
 
     sectionObserver = new IntersectionObserver(
@@ -169,9 +224,44 @@ onMounted(() => {
 
 onUnmounted(() => {
     window.removeEventListener('profile-updated', handleProfileUpdate)
+    window.removeEventListener('load', markReady)
+    clearTimeout(readyTimer)
 
     if (sectionObserver) {
         sectionObserver.disconnect()
     }
 })
 </script>
+
+<style scoped>
+.skeleton-shimmer {
+    position: relative;
+    overflow: hidden;
+    background-color: rgba(148, 163, 184, 0.25);
+}
+
+/* Animating transform is smoother than animating background-position */
+.skeleton-shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(
+        100deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.45) 50%,
+        transparent 80%
+    );
+    transform: translateX(-100%);
+    animation: shimmer 1.4s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+    to { transform: translateX(100%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-shimmer::after {
+        animation: none;
+    }
+}
+</style>
