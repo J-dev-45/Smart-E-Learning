@@ -25,7 +25,16 @@
         </div>
     </form>
 
-    <form v-else @submit.prevent="submitAnswer(question?.id)" class="w-full max-w-2xl mb-[50px] sharedLightBG rounded-2xl shadow-xl sharedShadow border sharedLightBorder flex flex-col gap-5 p-6">
+    <form
+        v-else
+        @submit.prevent="submitAnswer(question?.id)"
+        @copy.prevent
+        @cut.prevent
+        @paste.prevent
+        @contextmenu.prevent
+        @selectstart.prevent
+        class="no-copy w-full max-w-2xl mb-[50px] sharedLightBG rounded-2xl shadow-xl sharedShadow border sharedLightBorder flex flex-col gap-5 p-6"
+    >
         <div v-if="question" class="w-full flex flex-col gap-5">
             <div class="w-full flex flex-col gap-2 pb-4 border-b sharedLightBorder">
                 <div class="flex items-center justify-between">
@@ -303,6 +312,23 @@ onMounted(() => {
 
 onUnmounted(() => clearInterval(timerId))
 
+
+function preventCopyShortcuts(e) {
+    if (
+        (e.ctrlKey || e.metaKey) &&
+        ['c', 'x', 'a'].includes(e.key.toLowerCase())
+    ) {
+        e.preventDefault();
+    }
+}
+
+onMounted(() => {
+    document.addEventListener('keydown', preventCopyShortcuts);
+});
+
+onUnmounted(() => {
+    document.removeEventListener('keydown', preventCopyShortcuts);
+});
 // ===== End Timer =====
 
 const percentage = computed(() => {

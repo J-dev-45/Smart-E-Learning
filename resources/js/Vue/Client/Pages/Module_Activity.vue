@@ -2,7 +2,12 @@
     <!-- RESULT -->
     <div
         v-if="hasPassed || failed"
-        class="flex flex-col mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-clip"
+        @copy.prevent
+        @cut.prevent
+        @paste.prevent
+        @contextmenu.prevent
+        @selectstart.prevent
+        class="no-copy flex flex-col mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-clip"
     >
         <div
             class="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r to-white"
@@ -163,7 +168,12 @@
     <form
         v-else-if="textQuestions.length || !codingQuestions.length"
         @submit.prevent="submitAnswers"
-        class="flex flex-col mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
+        @copy.prevent
+        @cut.prevent
+        @paste.prevent
+        @contextmenu.prevent
+        @selectstart.prevent
+        class="no-copy flex flex-col mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
     >
         <div class="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-violet-50/70 to-white">
             <span class="shrink-0 flex items-center justify-center w-9 h-9 rounded-lg bg-[#8B5CF6]/10 text-[#8B5CF6]">
@@ -517,3 +527,12 @@ async function retakeActivity() {
     }
 }
 </script>
+
+<style scoped>
+.no-copy {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+</style>
