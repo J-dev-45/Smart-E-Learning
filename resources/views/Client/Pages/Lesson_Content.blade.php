@@ -70,19 +70,26 @@
 
 
                 <div class="w-full max-w-5xl mx-auto">
-                        <module-activity 
-                        :questions='@json($activity_questions)'
-                        :module-progress='@json($module_progress)'
-                        :module='@json($module)'
-                        :failed='@json($failed)'
-                        :answered-module-questions='@json($answered_module_questions)'
-                        :answered-questions='@json($answered_questions)'
-                        :score='@json($score)'
 
-                        user-id="{{auth()->id()}}"
-                        user-name="{{auth()->user()->name}}"
-                        user-email="{{auth()->user()->email}}"
-                    ></module-activity>
+                    <div class="w-full flex justify-center">
+                        <a
+                            href="{{ route('learning.activity', [
+                                'subject_name' => $subject->subject_name,
+                                'subject_id' => $subject->id,
+                                'module_name' => $module->module_name,
+                                'module_id' => $module->id
+                            ]) }}"
+                            class="inline-flex items-center justify-center gap-2 text-sm font-bold sharedBtn rounded-xl py-3 px-8 transition-all duration-300"
+                        >
+                            Take Module Activity
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
 
                         {{-- Warning --}}
                     <div class="flex items-start gap-3 mt-10 p-4 rounded-xl border sharedBorderWarningSoft border-l-4 sharedBorderLWarning sharedBGWarningTint">

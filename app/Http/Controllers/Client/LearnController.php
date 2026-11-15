@@ -399,6 +399,121 @@ class LearnController extends Controller
         return view('Client.Pages.Lesson_Content', $viewData);
     }
 
+
+
+
+    public function moduleActivity(Request $request)
+    {
+        $subject = Subjects::where('id', $request->subject_id)->firstOrFail();
+
+        if ($subject->pre_requisite) {
+            $pre_req_has_passed = SubjectProgress::where('user_id', auth()->id())
+                ->where('subject_id', $subject->pre_requisite)
+                ->where('progress', '>=', 100)
+                ->where('has_passed', true)
+                ->exists();
+
+            if (!$pre_req_has_passed) {
+                return redirect()->route('home');
+            }
+        }
+
+        $module = Modules::where('id', $request->module_id)->firstOrFail();
+
+        $module_progress = ModuleProgress::where('user_id', auth()->id())
+            ->where('subject_id', $subject->id)
+            ->where('module_id', $module->id)
+            ->firstOrFail();
+
+        $module_quiz = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $subject->id)
+            ->where('module_id', $module->id)
+            ->firstOrFail();
+
+        $has_unpassed_previous_module = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $subject->id)
+            ->where('id', '<', $module_quiz->id)
+            ->where('has_passed', false)
+            ->exists();
+
+        if ($has_unpassed_previous_module) {
+            return redirect()->route('home');
+        }
+
+        $topics = Topics::where('module_id', $module->id)
+            ->with('lessonContent')
+            ->orderBy('order', 'ASC')
+            ->get();
+
+        $activity_questions = Questions::where('module_id', $module->id)
+            ->where('question_type', 'identification')
+            ->inRandomOrder()
+            ->limit(10)
+            ->get();
+
+        $answered_module_questions = AnsweredModuleQuestions::where('user_id', auth()->id())
+            ->where('module_id', $module->id)
+            ->get();
+
+        $score = 0;
+        $passing_percent = 80;
+        $total_questions = $answered_module_questions->count();
+        $failed = false;
+
+        $answered_questions = Questions::whereIn(
+            'id',
+            $answered_module_questions->pluck('question_id')
+        )->get();
+
+        if ($answered_module_questions->isNotEmpty()) {
+
+            foreach ($answered_module_questions as $answered) {
+
+                if (AnswerNormalizer::isCorrect(
+                    $answered->user_answer,
+                    $answered->correct_answer
+                )) {
+
+                    $score++;
+
+                    if ($answered->is_correct !== true) {
+                        $answered->is_correct = true;
+                        $answered->save();
+                    }
+
+                } else {
+
+                    if ($answered->is_correct !== false) {
+                        $answered->is_correct = false;
+                        $answered->save();
+                    }
+
+                }
+            }
+
+            $passing_score = (int) ceil(
+                $total_questions * ($passing_percent / 100)
+            );
+
+            if ($score < $passing_score) {
+                $failed = true;
+            }
+        }
+
+        return view('Client.Pages.Module_Activity', compact(
+            'module',
+            'topics',
+            'subject',
+            'module_progress',
+            'activity_questions',
+            'answered_questions',
+            'failed',
+            'score',
+            'answered_module_questions'
+        ));
+    }
+
+
     // =================================================================================================
     // 
     //  ███████╗ ██████╗██████╗  ██████╗ ██╗     ██╗         ██████╗ ██████╗  ██████╗  ██████╗ ██████╗ ███████╗███████╗███████╗

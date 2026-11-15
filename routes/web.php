@@ -230,10 +230,11 @@ Route::middleware(['auth'])->group(function(){
 
     Route::post('/submitAnswer', [AssessmentController::class, 'submitAnswer']);
     Route::post('/submitCode', [CodePretestController::class, 'submitCodeAnswer']);
-
-    // CODE RUNNER (moved inside auth so only logged-in students can use your compiler quota)
     Route::post('/run-code', [CodeRunnerController::class, 'run'])
         ->middleware('throttle:20,1');
+
+    Route::get('/learning/{subject_name}/{subject_id}/{module_name}/{module_id}/activity', [LearnController::class, 'moduleActivity'])
+        ->name('learning.activity');
 
     // CODE QUIZ
     Route::get('/code-quiz/{question}', [CodeQuizController::class, 'show']);
