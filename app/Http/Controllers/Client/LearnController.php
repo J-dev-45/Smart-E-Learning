@@ -402,6 +402,7 @@ class LearnController extends Controller
 
 
 
+    
     public function moduleActivity(Request $request)
     {
         $subject = Subjects::where('id', $request->subject_id)->firstOrFail();
@@ -439,6 +440,11 @@ class LearnController extends Controller
         if ($has_unpassed_previous_module) {
             return redirect()->route('home');
         }
+
+        $next_module = Modules::where('subject_id', $subject->id)
+            ->where('order', '>', $module->order)
+            ->orderBy('order', 'ASC')
+            ->first();
 
         $topics = Topics::where('module_id', $module->id)
             ->with('lessonContent')
@@ -505,6 +511,8 @@ class LearnController extends Controller
             'topics',
             'subject',
             'module_progress',
+            'module_quiz',
+            'next_module',
             'activity_questions',
             'answered_questions',
             'failed',
@@ -512,6 +520,7 @@ class LearnController extends Controller
             'answered_module_questions'
         ));
     }
+
 
 
     // =================================================================================================

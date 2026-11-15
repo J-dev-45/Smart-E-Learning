@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -58,9 +57,12 @@
                     <div class="mb-5">
                         <a
                             href="{{ url('/learning/' . urlencode($subject->subject_name) . '/' . $subject->id . '/' . urlencode($module->module_name) . '/' . $module->id) }}"
-                            class="text-sm sharedTXTMuted hover:underline"
+                            class="group inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold text-[#6D28D9] bg-white border border-[#8B5CF6]/40 shadow-sm hover:bg-[#8B5CF6] hover:text-white hover:border-[#8B5CF6] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/25 transition-all duration-200"
                         >
-                            ← Back to Learning Module
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-200 group-hover:-translate-x-0.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                            </svg>
+                            Back to Learning Module
                         </a>
 
                         <h4 class="text-2xl font-bold pt-5">
@@ -84,6 +86,14 @@
                         user-name="{{ auth()->user()->name }}"
                         user-email="{{ auth()->user()->email }}"
                     ></module-activity>
+
+                    <module-quiz-buttons
+                        :subject='@json($subject)'
+                        :module='@json($module)'
+                        :module-progress='@json($module_progress)'
+                        :module-quiz='@json($module_quiz)'
+                        :next-module='@json($next_module)'
+                    ></module-quiz-buttons>
 
                 </div>
 
