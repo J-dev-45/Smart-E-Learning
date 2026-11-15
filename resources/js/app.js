@@ -82,6 +82,9 @@ import Module_Quiz_Buttons from './Vue/Client/Components/Module_Quiz_Buttons.vue
 import Feedback_Form from './Vue/Client/Modals/Feedback_Form.vue';
 import Student_Profile from './Vue/Client/Components/Student_Profile.vue';
 import Lesson_Content from './Vue/Client/Pages/Lesson_Content.vue';
+import Take_Module_Activity from './Vue/Client/Components/Take_Module_Activity.vue';
+
+app.component('take-module-activity', Take_Module_Activity)
 
 app.component('subjects-card', Subjects_Cards);
 app.component('assessment-form', Assessment_Form);
