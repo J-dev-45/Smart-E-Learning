@@ -1,3 +1,4 @@
+
 <template>
     <div class="w-full max-w-5xl mx-auto min-w-0">
 
@@ -81,8 +82,6 @@ const formattedDescription = (t_id) => {
 };
 </script>
 
-
-
 <style scoped>
 :deep(.lesson-content h3:not(:has(p))) {
     color: #FFFFFF !important;
@@ -121,7 +120,12 @@ const formattedDescription = (t_id) => {
     color: #FFFFFF !important;
 }
 
-/* ---------- Table overflow fix (Word paste) ---------- */
+:deep(.lesson-content b),
+:deep(.lesson-content strong) {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}
+
 
 :deep(.lesson-content) {
     min-width: 0;
