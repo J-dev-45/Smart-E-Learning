@@ -210,6 +210,7 @@
     </div>
 </template>
 
+
 <script setup>
 import { ref } from 'vue';
 import Loading_Screen from '../Global/Loading_Screen.vue';
@@ -262,8 +263,13 @@ async function login(event) {
 
         const data = await response.json();
 
+        if (data.csrf_token) {
+            document.querySelector('meta[name="csrf-token"]')
+                ?.setAttribute('content', data.csrf_token);
+        }
+
         if (response.ok && data.success) {
-           
+
             if (window.matchMedia('(min-width: 768px)').matches) {
                 showLoadingScreen.value = true;
             }
@@ -281,6 +287,7 @@ async function login(event) {
     }
 }
 </script>
+
 
 <style scoped>
 .auth-input {

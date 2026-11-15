@@ -39,7 +39,6 @@ class RegisterController extends Controller
             'email.unique' => 'This email already exists. Please try logging in instead.',
         ]);
 
-        // Verify the ID number exists in the pre-approved student records and is not disabled
         $studentRecord = StudentRecord::where('id_number', $validated_data['id_number'])->first();
 
         if (!$studentRecord) {
