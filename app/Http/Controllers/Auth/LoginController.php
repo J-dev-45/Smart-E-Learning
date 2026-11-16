@@ -25,7 +25,6 @@ class LoginController extends Controller
             ], 422);
         }
 
-        // Check if the user has registered yet
         $user = User::where('email', $loginInput)
             ->orWhere('id_number', $loginInput)
             ->first();
@@ -41,6 +40,7 @@ class LoginController extends Controller
             'email'    => $user->email,
             'password' => $password,
         ];
+
         $remember = $request->boolean('remember');
 
         if (!Auth::attempt($credentials, $remember)) {
@@ -87,6 +87,7 @@ class LoginController extends Controller
                 return response()->json([
                     'success' => false,
                     'message' => 'We could not send your verification code. Please try logging in again.',
+                    'csrf_token' => csrf_token()
                 ], 500);
             }
 
@@ -104,9 +105,11 @@ class LoginController extends Controller
 
         if ($user->disabled) {
             Auth::logout();
+
             return response()->json([
                 'success' => false,
-                'message' => 'Your account has been disabled. Please contact the administrator for assistance.'
+                'message' => 'Your account has been disabled. Please contact the administrator for assistance.',
+                'csrf_token' => csrf_token()
             ], 403);
         }
 
@@ -117,22 +120,26 @@ class LoginController extends Controller
             if (!$studentRecord) {
                 $user->disabled = true;
                 $user->save();
+
                 Auth::logout();
 
                 return response()->json([
                     'success' => false,
-                    'message' => 'Your student ID number has been removed from the records. You are unable to log in. Please contact the administrator for assistance.'
+                    'message' => 'Your student ID number has been removed from the records. You are unable to log in. Please contact the administrator for assistance.',
+                    'csrf_token' => csrf_token()
                 ], 403);
             }
 
             if ($studentRecord->is_disabled) {
                 $user->disabled = true;
                 $user->save();
+
                 Auth::logout();
 
                 return response()->json([
                     'success' => false,
-                    'message' => 'Your student account has been disabled. Please contact the administrator for assistance.'
+                    'message' => 'Your student account has been disabled. Please contact the administrator for assistance.',
+                    'csrf_token' => csrf_token()
                 ], 403);
             }
         }

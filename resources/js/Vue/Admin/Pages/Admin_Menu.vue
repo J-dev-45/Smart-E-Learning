@@ -160,11 +160,8 @@ function openChangePassword() {
 function handleOutsideClick(event) {
     if (!props.showAdminMenu) return
 
-    // Ignore clicks inside the menu itself.
     if (adminMenuRef.value?.contains(event.target)) return
 
-    // The header's avatar/role buttons use @click.stop,
-    // so this listener never receives those clicks.
     closeMenu()
 }
 

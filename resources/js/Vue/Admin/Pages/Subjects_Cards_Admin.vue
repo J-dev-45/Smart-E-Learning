@@ -137,10 +137,8 @@ const props = defineProps({
     }
 })
 
-// Shared reactive subject list
 const localSubjects = ref([...props.subjectsData])
 
-// Sync when parent provides updated subjects
 watch(
     () => props.subjectsData,
     (newSubjects) => {
@@ -149,14 +147,11 @@ watch(
     { deep: true }
 )
 
-// ADD SUBJECT STATE
 const addSubject = ref(false)
 
-// EDIT SUBJECT STATE
 const showEditSubject = ref(false)
 const selectedEditSubject = ref(null)
 
-// DELETE SUBJECT STATE
 const showDeleteSubject = ref(false)
 const selectedDeleteSubject_id = ref(null)
 const selectedDeleteSubject_name = ref('')

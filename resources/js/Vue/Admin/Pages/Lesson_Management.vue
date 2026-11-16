@@ -1,3 +1,4 @@
+
 <template>
     <div class="w-full h-full flex flex-col overflow-hidden">
 
@@ -550,8 +551,6 @@ export default {
             }
         },
 
-        // PUT /editTopic with { topic_id, module_id, new_topic_name, new_description }
-        // -> { updated_topic: { topic_name, description, ... } }
         async saveTopicDetails() {
             const name = this.topicTitle.trim();
 
@@ -1014,7 +1013,7 @@ export default {
 
 .lesson-editor b,
 .lesson-editor strong {
-    color: var(--text-main);
+    color: #ffffff;
     font-weight: 700;
 }
 

@@ -182,12 +182,8 @@ function openChangePassword() {
 function handleOutsideClick(event) {
     if (!props.showUserMenu) return
 
-    // The parent container includes both the profile button and menu.
-    // Ignore clicks inside the menu itself.
     if (userMenuRef.value?.contains(event.target)) return
 
-    // The parent profile button is handled by the parent component.
-    // Its click uses @click.stop, so this listener won't receive that click.
     closeMenu()
 }
 

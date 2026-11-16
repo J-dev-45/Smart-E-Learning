@@ -430,7 +430,6 @@ const activeTab = ref('All');
 const searchQuery = ref('');
 const recordsList = ref([...props.records]);
 
-// --- TOAST ---
 const showToast    = ref(false);
 const toastMessage = ref('');
 const toastIsError = ref(false);
@@ -441,7 +440,6 @@ function triggerToast(msg, isError = false) {
     showToast.value    = true;
 }
 
-// --- ADD (Single or Multiple) ---
 const showAddModal = ref(false);
 const newIdNumber  = ref('');
 const addError     = ref('');
@@ -502,7 +500,6 @@ async function submitAdd() {
     }
 }
 
-// --- TOGGLE DISABLE / ENABLE ---
 const showDisableModal = ref(false);
 const recordToToggle   = ref(null);
 const disableError     = ref('');
@@ -617,7 +614,6 @@ const filteredRecords = computed(() => {
     const q = searchQuery.value.trim().toLowerCase();
 
     return recordsList.value.filter(record => {
-        // Tab filter
         const matchesTab =
             activeTab.value === 'All' ||
             (activeTab.value === 'Active' && !record.is_disabled) ||
@@ -625,7 +621,6 @@ const filteredRecords = computed(() => {
 
         if (!matchesTab) return false;
 
-        // Search query
         if (!q) return true;
 
         const idNum = String(record.id_number ?? '').toLowerCase();

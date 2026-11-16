@@ -1,3 +1,4 @@
+
 <template>
     <div class="w-full max-w-5xl mx-auto min-w-0">
 
@@ -64,8 +65,6 @@ function getLesson(topic) {
     return topic.lesson_content || null
 }
 
-// Wraps every table in a scrollable container so wide tables
-// (e.g. pasted from Word) scroll inside the card instead of overflowing it.
 function getLessonHtml(topic) {
     const html = getLesson(topic)?.content || ''
     return html
@@ -82,8 +81,6 @@ const formattedDescription = (t_id) => {
         .replace(/\\\r\\\n|\\\n|\\\r/g, '\n');
 };
 </script>
-
-
 
 <style scoped>
 :deep(.lesson-content h3:not(:has(p))) {
@@ -123,15 +120,18 @@ const formattedDescription = (t_id) => {
     color: #FFFFFF !important;
 }
 
-/* ---------- Table overflow fix (Word paste) ---------- */
+:deep(.lesson-content b),
+:deep(.lesson-content strong) {
+    color: #FFFFFF !important;
+    font-weight: 700 !important;
+}
 
-/* Lets the content shrink inside flex/grid parents and never push the card wider */
+
 :deep(.lesson-content) {
     min-width: 0;
     max-width: 100%;
 }
 
-/* Scroll wrapper added by getLessonHtml() */
 :deep(.table-scroll) {
     width: 100%;
     max-width: 100%;
@@ -140,7 +140,6 @@ const formattedDescription = (t_id) => {
     margin: 1rem 0;
 }
 
-/* Override Word's fixed inline widths (width="600", style="width:...") */
 :deep(.table-scroll table) {
     width: auto !important;
     min-width: 100%;
@@ -163,7 +162,6 @@ const formattedDescription = (t_id) => {
     vertical-align: top;
 }
 
-/* Word wraps cell text in <p> with its own margins */
 :deep(.table-scroll th p),
 :deep(.table-scroll td p) {
     margin: 0 !important;

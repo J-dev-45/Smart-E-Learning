@@ -672,7 +672,6 @@ onUnmounted(() => {
 });
 </script>
 
-<!-- Layout-only styles. All colors come from the shared classes in app.css. -->
 <style scoped>
 .auth-input {
     width: 100%;

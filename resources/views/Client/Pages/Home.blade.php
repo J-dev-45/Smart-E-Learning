@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth sk-active">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +7,45 @@
     <title>Smart E-Learning</title>
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
     @vite(['resources/css/app.css'])
+
+    {{-- PAGE SKELETON STYLES --}}
+    <style>
+        /* While html has .sk-active, the skeleton twins show and the real content is hidden.
+           The script at the end of <body> removes the class after load + a minimum delay. */
+        .sk-active .sk-real { display: none !important; }
+        html:not(.sk-active) .sk-twin { display: none !important; }
+
+        .sk-shimmer {
+            position: relative;
+            overflow: hidden;
+            background-color: rgba(148, 163, 184, 0.25);
+        }
+        .sk-shimmer::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: linear-gradient(
+                100deg,
+                transparent 20%,
+                rgba(255, 255, 255, 0.45) 50%,
+                transparent 80%
+            );
+            transform: translateX(-100%);
+            animation: sk-shimmer 1.4s ease-in-out infinite;
+        }
+        @keyframes sk-shimmer {
+            to { transform: translateX(100%); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .sk-shimmer::after { animation: none; }
+        }
+    </style>
 </head>
 <body class="w-screen h-screen overflow-hidden">
     @vite(['resources/js/app.js'])
-    
+
     <div id="app" class="w-screen h-screen relative">
 
-     
-
-        
         <client-navigation
             :user-id="{{ auth()->user()->id }}"
             user-name="{{ auth()->user()->name }}"
@@ -31,7 +61,7 @@
 
                 {{-- HERO SECTION --}}
                 <section id="hero" class="w-full flex items-center justify-center flex-col gap-8 scroll-mt-24 ">
-                    
+
                     <div class="flex flex-col items-center justify-center gap-4">
 
                         <student-profile
@@ -39,19 +69,17 @@
                             profile-color="{{ auth()->user()->profile_color ?? '' }}"
                             profile-picture="{{ auth()->user()->profile_picture && str_starts_with(auth()->user()->profile_picture, 'profiles/') ? rtrim(config('services.supabase.url'), '/') . '/storage/v1/object/public/' . config('services.supabase.avatar_bucket', 'pictures') . '/' . auth()->user()->profile_picture : auth()->user()->profile_picture }}"
                             profile-avatar="{{ auth()->user()->profile_avatar ? asset(ltrim(auth()->user()->profile_avatar, '/')) : '' }}"
-                            avatar1="{{ asset('/images/Profile_Avatars/Avatar_1.jpg') }}"
-                            avatar2="{{ asset('/images/Profile_Avatars/Avatar_2.jpg') }}"
-                            avatar3="{{ asset('/images/Profile_Avatars/Avatar_3.jpg') }}"
-                            avatar4="{{ asset('/images/Profile_Avatars/Avatar_4.jpg') }}"
-                            avatar5="{{ asset('/images/Profile_Avatars/Avatar_5.jpg') }}"
-                            avatar6="{{ asset('/images/Profile_Avatars/Avatar_6.jpg') }}"
-                            avatar7="{{ asset('/images/Profile_Avatars/Avatar_7.jpg') }}"
-                            avatar8="{{ asset('/images/Profile_Avatars/Avatar_8.jpg') }}"
-                            avatar9="{{ asset('/images/Profile_Avatars/Avatar_9.jpg') }}"
-                            avatar10="{{ asset('/images/Profile_Avatars/Avatar_10.jpg') }}"
+                            :avatars='@json(collect(range(1, 10))->map(fn ($i) => asset("images/Profile_Avatars/Avatar_{$i}.jpg"))->values())'
                         ></student-profile>
 
-                        <div class="flex flex-col items-center justify-center gap-2">
+                        {{-- Skeleton: name, ID, role --}}
+                        <div class="sk-twin flex flex-col items-center justify-center gap-2" aria-hidden="true">
+                            <div class="h-8 w-48 rounded-lg sk-shimmer"></div>
+                            <div class="h-8 w-36 rounded-lg sk-shimmer"></div>
+                            <div class="h-6 w-20 rounded-full sk-shimmer"></div>
+                        </div>
+
+                        <div class="sk-real flex flex-col items-center justify-center gap-2">
                             <span class="text-2xl font-semibold tracking-tight">{{ auth()->user()->name }}</span>
                             <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg sharedTile">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 sharedTXTAccent">
@@ -64,8 +92,25 @@
                         </div>
                     </div>
 
+                    {{-- Skeleton: performance summary --}}
+                    <div class="sk-twin w-full flex flex-col items-center gap-5 pt-2" aria-hidden="true">
+                        <div class="h-5 w-36 rounded-full sk-shimmer"></div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 w-full lg:w-[62%] sm:w-[85%]">
+                            @for ($i = 0; $i < 3; $i++)
+                                <div class="flex items-center gap-4 p-5 rounded-2xl sharedSurface shadow-lg sharedShadow">
+                                    <div class="w-11 h-11 rounded-xl sk-shimmer shrink-0"></div>
+                                    <div class="flex flex-col gap-2 flex-1">
+                                        <div class="h-6 w-16 rounded-lg sk-shimmer"></div>
+                                        <div class="h-3 w-24 rounded-full sk-shimmer"></div>
+                                    </div>
+                                </div>
+                            @endfor
+                        </div>
+                    </div>
+
                     {{-- PERFORMANCE SUMMARY --}}
-                    <div class="w-full flex flex-col items-center gap-5 pt-2">
+                    <div class="sk-real w-full flex flex-col items-center gap-5 pt-2">
                         <p class="text-sm font-medium sharedTXTMuted">Performance summary</p>
 
                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 md:gap-5 w-full lg:w-[62%] sm:w-[85%]">
@@ -181,7 +226,27 @@
         </div>
     </div>
 
-    
+    {{-- Remove the skeleton once the page has loaded, but never before MIN ms have passed --}}
+    <script>
+        (function () {
+            var MIN = 700;
+            var root = document.documentElement;
+
+            function reveal() {
+                var wait = Math.max(0, MIN - performance.now());
+                setTimeout(function () { root.classList.remove('sk-active'); }, wait);
+            }
+
+            if (document.readyState === 'complete') {
+                reveal();
+            } else {
+                window.addEventListener('load', reveal, { once: true });
+            }
+
+            // Safety net: never leave the skeleton up forever if something stalls
+            setTimeout(function () { root.classList.remove('sk-active'); }, 10000);
+        })();
+    </script>
 
 </body>
 </html>

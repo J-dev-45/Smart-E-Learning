@@ -152,7 +152,6 @@ defineProps({
         type: Boolean,
         default: false
     },
-    // Existing subjects, used as the prerequisite options
     subjects: { type: Array, default: () => []}
 })
 

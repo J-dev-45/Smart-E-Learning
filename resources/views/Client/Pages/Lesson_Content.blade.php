@@ -70,19 +70,18 @@
 
 
                 <div class="w-full max-w-5xl mx-auto">
-                        <module-activity 
-                        :questions='@json($activity_questions)'
-                        :module-progress='@json($module_progress)'
-                        :module='@json($module)'
-                        :failed='@json($failed)'
-                        :answered-module-questions='@json($answered_module_questions)'
-                        :answered-questions='@json($answered_questions)'
-                        :score='@json($score)'
 
-                        user-id="{{auth()->id()}}"
-                        user-name="{{auth()->user()->name}}"
-                        user-email="{{auth()->user()->email}}"
-                    ></module-activity>
+                    <take-module-activity
+                        activity-url="{{ route('learning.activity', [
+                            'subject_name' => $subject->subject_name,
+                            'subject_id' => $subject->id,
+                            'module_name' => $module->module_name,
+                            'module_id' => $module->id
+                        ]) }}"
+                        :module-progress='@json($module_progress)'
+                        :failed='@json($failed)'
+                    ></take-module-activity>
+
 
                         {{-- Warning --}}
                     <div class="flex items-start gap-3 mt-10 p-4 rounded-xl border sharedBorderWarningSoft border-l-4 sharedBorderLWarning sharedBGWarningTint">

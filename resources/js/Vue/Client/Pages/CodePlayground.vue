@@ -1,5 +1,4 @@
 <template>
-    <!-- w-full is required: parents like the home page use flex + items-center, which would shrink this wrapper -->
     <div class="w-full min-w-0">
     <div
         ref="root"
@@ -134,7 +133,6 @@
         </div>
     </div>
 
-    <!-- ── Code quiz: Expected Output + Submit + test case results ── -->
     <Code_Quiz_Panel
         v-if="questionId"
         :question-id="questionId"
@@ -151,7 +149,6 @@ import { ref, computed, nextTick, onMounted, onBeforeUnmount } from 'vue';
 import axios from 'axios';
 import Code_Quiz_Panel from '../Components/Code_Quiz.vue';
 
-// Pass :question-id="..." from the parent page to enable the quiz panel
 const props = defineProps({
     questionId: { type: [Number, String], default: null },
 });
@@ -176,7 +173,6 @@ public class Main {
 const code    = ref(STARTER);
 const running = ref(false);
 
-// output state: 'idle' | 'waiting' (needs input) | 'success' | 'error'
 const status     = ref('idle');
 const stdoutText = ref('');
 const stderrText = ref('');
@@ -235,7 +231,6 @@ const PAIRS   = { '(': ')', '[': ']', '{': '}', '"': '"', "'": "'" };
 const CLOSERS = new Set([')', ']', '}', '"', "'"]);
 const INDENT  = '    ';
 
-// execCommand keeps the browser's native undo stack; setRangeText is the fallback
 function replaceRange(start, end, text, caret = start + text.length) {
     const ta = editor.value;
     ta.focus();
@@ -258,7 +253,6 @@ function onKeydown(e) {
     const next = value[end];
     const key  = e.key;
 
-    // Enter: keep indentation, expand {} / () / [] onto separate lines
     if (key === 'Enter') {
         e.preventDefault();
         const lineStart = value.lastIndexOf('\n', start - 1) + 1;
@@ -276,14 +270,12 @@ function onKeydown(e) {
         return;
     }
 
-    // Backspace between an empty pair deletes both characters
     if (key === 'Backspace' && start === end && prev && PAIRS[prev] === next) {
         e.preventDefault();
         replaceRange(start - 1, start + 1, '');
         return;
     }
 
-    // Typing a closer when the same one is next: just move past it
     if (CLOSERS.has(key) && start === end && next === key) {
         e.preventDefault();
         ta.setSelectionRange(start + 1, start + 1);
@@ -291,7 +283,6 @@ function onKeydown(e) {
         return;
     }
 
-    // Typing "}" on a whitespace-only line: dedent one level
     if (key === '}' && start === end) {
         const lineStart = value.lastIndexOf('\n', start - 1) + 1;
         const before    = value.slice(lineStart, start);
@@ -302,14 +293,11 @@ function onKeydown(e) {
         }
     }
 
-    // Opening bracket / quote: auto-close (or wrap the selection)
     if (key in PAIRS) {
         const isQuote = key === '"' || key === "'";
         const hasSelection = start !== end;
 
-        // don't auto-close quotes after a word character (e.g. don't)
         if (isQuote && !hasSelection && /\w/.test(prev ?? '')) return;
-        // don't auto-close in front of a word character
         if (!hasSelection && /\w/.test(next ?? '')) return;
 
         e.preventDefault();
@@ -353,17 +341,13 @@ function stopDrag(e) {
     e.currentTarget.releasePointerCapture?.(e.pointerId);
 }
 
-// ── Interactive input ────────────────────────────────────────────────────────
-// The backend runs a program once and returns. When the program stalls on a
-// Scanner read, we show an inline field, then re-run with everything typed so far.
-const inputs      = ref([]);   // lines the user has typed
-const stalls      = ref([]);   // stdout offsets where each input was requested
+const inputs      = ref([]);   
+const stalls      = ref([]);   
 const liveInput   = ref('');
 const inlineInput = ref(null);
 
 const NEEDS_INPUT_RE = /NoSuchElementException[\s\S]*java\.util\.Scanner/;
 
-// stdout with the typed lines echoed in at the point they were requested
 const transcript = computed(() => {
     const text = stdoutText.value;
     let out  = '';
@@ -462,13 +446,11 @@ async function copyOutput() {
             transcript.value + (stderrText.value ? '\n' + stderrText.value : '')
         );
     } catch {
-        /* clipboard unavailable */
     }
 }
 </script>
 
 <style scoped>
-/* line-height stays 22px at every size: the line numbers and the active-line band depend on it */
 .code-font {
     font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
     font-size: 13px;
@@ -482,7 +464,6 @@ async function copyOutput() {
     }
 }
 
-/* v-html content isn't scoped, so use :deep */
 :deep(.tok-kw) { color: #c000c0; }
 :deep(.tok-cn) { color: #f2a33a; }
 :deep(.tok-st) { color: #e5384a; }
