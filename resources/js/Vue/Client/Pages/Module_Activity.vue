@@ -7,10 +7,11 @@
         @paste.prevent
         @contextmenu.prevent
         @selectstart.prevent
-        class="no-copy flex flex-col mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-clip"
+        class="no-copy flex flex-col w-full min-w-0 mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-clip"
     >
+        <!-- Header -->
         <div
-            class="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r to-white"
+            class="flex items-center gap-3 px-4 sm:px-6 py-4 border-b border-gray-100 bg-gradient-to-r to-white"
             :class="hasPassed ? 'from-emerald-50/70' : 'from-rose-50/70'"
         >
             <span
@@ -24,39 +25,47 @@
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
                 </svg>
             </span>
-            <div class="flex flex-col">
+
+            <div class="flex flex-col flex-1 min-w-0">
                 <span class="text-base font-semibold text-gray-900 leading-tight">Activity</span>
-                <span class="text-xs text-gray-500">
+                <span class="text-xs text-gray-500 break-words">
                     {{ hasPassed ? 'You passed. Review your answers below.' : "You didn't pass this time. Review your answers below." }}
                 </span>
             </div>
 
             <span
                 v-if="results.length"
-                class="ml-auto inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ring-1"
+                class="shrink-0 whitespace-nowrap inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold ring-1"
                 :class="hasPassed ? 'bg-emerald-50 text-emerald-700 ring-emerald-200' : 'bg-rose-50 text-rose-700 ring-rose-200'"
             >
                 Score: {{ score }} / {{ results.length }}
             </span>
         </div>
 
-        <div class="flex flex-col gap-4 px-6 py-5">
+        <!-- Results list -->
+        <div class="flex flex-col gap-3 sm:gap-4 px-3 sm:px-6 py-4 sm:py-5">
             <div
                 v-for="(item, index) in results"
                 :key="item.question_id"
-                class="flex flex-col gap-3 p-4 rounded-xl border-2"
+                class="flex flex-col gap-3 p-3 sm:p-4 rounded-xl border-2 min-w-0"
                 :class="item.is_correct ? 'border-emerald-200 bg-emerald-50/40' : 'border-rose-300 bg-rose-50 shadow-sm shadow-rose-500/10'"
             >
-                <div class="flex items-start gap-3 text-sm font-medium text-gray-800 leading-relaxed">
+                <!-- Question row: wraps on mobile (question text gets its own full-width line) -->
+                <div class="flex flex-wrap sm:flex-nowrap items-start gap-x-3 gap-y-2 text-sm font-medium text-gray-800 leading-relaxed">
                     <span
                         class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold text-white"
                         :class="item.is_correct ? 'bg-emerald-500' : 'bg-rose-500'"
                     >
                         {{ index + 1 }}
                     </span>
-                    <span class="pt-0.5 flex-1">{{ questionText(item.question_id) }}</span>
+
+                    <!-- Question text: last + full width on mobile, inline on sm+ -->
+                    <span class="order-last basis-full sm:order-none sm:basis-0 sm:flex-1 min-w-0 pt-0.5 break-words">
+                        {{ questionText(item.question_id) }}
+                    </span>
+
                     <span
-                        class="shrink-0 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide"
+                        class="ml-auto sm:ml-0 shrink-0 whitespace-nowrap inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wide"
                         :class="item.is_correct ? 'bg-emerald-100 text-emerald-700' : 'bg-rose-500 text-white'"
                     >
                         <svg v-if="item.is_correct" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="3" stroke="currentColor" class="size-3">
@@ -74,7 +83,7 @@
                         @click="openFeedback(item.question_id, `Question ${index + 1}`, questionText(item.question_id))"
                         :aria-label="`Send feedback about question ${index + 1}`"
                         title="Send feedback about this question"
-                        class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
+                        class="shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
@@ -83,27 +92,26 @@
                     </button>
                 </div>
 
-                <div class="flex flex-col gap-1 w-full sm:ml-9 sm:max-w-[calc(100%-2.25rem)]">
+                <!-- Your answer (div instead of input so long answers wrap instead of being cut off) -->
+                <div class="flex flex-col gap-1 w-full min-w-0 sm:ml-9 sm:max-w-[calc(100%-2.25rem)]">
                     <span
                         class="text-xs font-semibold uppercase tracking-wider"
                         :class="item.is_correct ? 'text-emerald-700' : 'text-rose-700'"
                     >
                         Your answer
                     </span>
-                    <input
-                        type="text"
-                        readonly
-                        tabindex="-1"
-                        :value="item.user_answer"
-                        class="w-full border-2 rounded-lg px-3.5 py-2.5 text-sm font-semibold outline-none cursor-default"
+                    <div
+                        class="w-full min-w-0 min-h-[2.75rem] border-2 rounded-lg px-3.5 py-2.5 text-sm font-semibold break-words cursor-default"
                         :class="item.is_correct ? 'border-emerald-300 bg-white text-emerald-800' : 'border-rose-400 bg-white text-rose-700'"
                     >
+                        {{ item.user_answer }}
+                    </div>
                 </div>
 
-                <div class="flex flex-col gap-2 w-full sm:ml-9 sm:max-w-[calc(100%-2.25rem)]">
+                <div class="flex flex-col gap-2 w-full min-w-0 sm:ml-9 sm:max-w-[calc(100%-2.25rem)]">
                     <div class="flex flex-col gap-0.5 rounded-lg border border-emerald-300 bg-emerald-50 px-3.5 py-2.5">
                         <span class="text-xs font-semibold uppercase tracking-wider text-emerald-700">Correct answer</span>
-                        <span class="text-sm font-semibold text-emerald-900">{{ item.correct_answer }}</span>
+                        <span class="text-sm font-semibold text-emerald-900 break-words">{{ item.correct_answer }}</span>
                     </div>
 
                     <div
@@ -111,14 +119,14 @@
                         class="flex flex-col gap-0.5 rounded-lg border border-gray-200 bg-white px-3.5 py-2.5"
                     >
                         <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Explanation</span>
-                        <span class="text-sm text-gray-600 leading-relaxed">{{ item.explanation }}</span>
+                        <span class="text-sm text-gray-600 leading-relaxed break-words">{{ item.explanation }}</span>
                     </div>
                 </div>
             </div>
 
             <div
                 v-if="!results.length"
-                class="flex flex-col items-center justify-center gap-2 py-10 rounded-xl border border-dashed border-gray-300 bg-gray-50/50"
+                class="flex flex-col items-center justify-center gap-2 py-10 px-4 text-center rounded-xl border border-dashed border-gray-300 bg-gray-50/50"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-gray-300">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
@@ -127,14 +135,15 @@
             </div>
         </div>
 
+        <!-- Sticky footer -->
         <form
             @submit.prevent="retakeActivity"
-            class="sticky bottom-0 z-10 flex items-center justify-between gap-3 px-6 py-3.5 border-t border-gray-200 bg-white/90 backdrop-blur-md shadow-[0_-6px_16px_-8px_rgba(0,0,0,0.12)]"
+            class="sticky bottom-0 z-10 flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-3.5 border-t border-gray-200 bg-white/90 backdrop-blur-md shadow-[0_-6px_16px_-8px_rgba(0,0,0,0.12)]"
         >
-            <div v-if="results.length" class="flex items-center gap-3">
+            <div v-if="results.length" class="flex items-center gap-2 sm:gap-3 min-w-0">
                 <span class="text-xs font-semibold uppercase tracking-wider text-gray-500">Score</span>
                 <span
-                    class="text-xl font-bold leading-none"
+                    class="text-xl font-bold leading-none whitespace-nowrap"
                     :class="hasPassed ? 'text-emerald-600' : 'text-rose-600'"
                 >
                     {{ score }}<span class="text-sm font-semibold text-gray-400"> / {{ results.length }}</span>
@@ -144,7 +153,7 @@
 
             <span
                 v-if="hasPassed"
-                class="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-emerald-700 bg-emerald-50 ring-1 ring-emerald-200 select-none cursor-default"
+                class="shrink-0 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold text-emerald-700 bg-emerald-50 ring-1 ring-emerald-200 select-none cursor-default"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
@@ -155,7 +164,8 @@
             <button
                 v-else
                 type="submit"
-                class="group inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold text-white bg-rose-500 shadow-sm shadow-rose-500/30 hover:bg-rose-600 active:bg-rose-700 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-rose-500/25 transition-all duration-200 cursor-pointer"
+                :disabled="isSubmitting"
+                class="group shrink-0 inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 rounded-lg text-sm font-semibold text-white bg-rose-500 shadow-sm shadow-rose-500/30 hover:bg-rose-600 active:bg-rose-700 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-rose-500/25 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-200 group-hover:-rotate-90">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
@@ -165,6 +175,7 @@
         </form>
     </div>
 
+    <!-- ANSWER FORM -->
     <form
         v-else-if="textQuestions.length || !codingQuestions.length"
         @submit.prevent="submitAnswers"
@@ -173,38 +184,39 @@
         @paste.prevent
         @contextmenu.prevent
         @selectstart.prevent
-        class="no-copy flex flex-col mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
+        class="no-copy flex flex-col w-full min-w-0 mt-5 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
     >
-        <div class="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-violet-50/70 to-white">
+        <div class="flex items-center gap-3 px-4 sm:px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-violet-50/70 to-white">
             <span class="shrink-0 flex items-center justify-center w-9 h-9 rounded-lg bg-[#8B5CF6]/10 text-[#8B5CF6]">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                 </svg>
             </span>
-            <div class="flex flex-col">
+            <div class="flex flex-col min-w-0">
                 <span class="text-base font-semibold text-gray-900 leading-tight">Activity</span>
-                <span class="text-xs text-gray-500">Answer the questions below, then submit.</span>
+                <span class="text-xs text-gray-500 break-words">Answer the questions below, then submit.</span>
             </div>
         </div>
 
-        <div class="flex flex-col gap-4 px-6 py-5">
+        <div class="flex flex-col gap-3 sm:gap-4 px-3 sm:px-6 py-4 sm:py-5">
             <div
                 v-for="(quest, index) in textQuestions"
                 :key="quest.id"
-                class="group flex flex-col gap-3 p-4 rounded-xl border transition-all duration-200 focus-within:bg-white focus-within:shadow-sm"
+                class="group flex flex-col gap-3 p-3 sm:p-4 rounded-xl border min-w-0 transition-all duration-200 focus-within:bg-white focus-within:shadow-sm"
                 :class="showErrors && isEmpty(quest.id)
                     ? 'border-rose-300 bg-rose-50/40 focus-within:border-rose-400'
                     : 'border-gray-200 bg-gray-50/50 hover:border-gray-300 focus-within:border-[#8B5CF6]/50'"
             >
-                <div class="flex items-start gap-3">
+                <!-- Question row: wraps on mobile -->
+                <div class="flex flex-wrap sm:flex-nowrap items-start gap-x-3 gap-y-2">
                     <label
                         :for="`question-${quest.id}`"
-                        class="flex flex-1 items-start gap-3 text-sm font-medium text-gray-800 leading-relaxed cursor-pointer"
+                        class="flex basis-full sm:basis-0 sm:flex-1 min-w-0 items-start gap-3 text-sm font-medium text-gray-800 leading-relaxed cursor-pointer"
                     >
                         <span class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold transition-colors duration-200 group-focus-within:bg-[#8B5CF6] group-focus-within:text-white">
                             {{ index + 1 }}
                         </span>
-                        <span class="pt-0.5">{{ quest.question }}</span>
+                        <span class="pt-0.5 min-w-0 break-words">{{ quest.question }}</span>
                     </label>
 
                     <!-- FEEDBACK BUTTON -->
@@ -213,7 +225,7 @@
                         @click="openFeedback(quest.id, `Question ${index + 1}`, quest.question)"
                         :aria-label="`Send feedback about question ${index + 1}`"
                         title="Send feedback about this question"
-                        class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
+                        class="ml-auto sm:ml-0 shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
@@ -222,12 +234,13 @@
                     </button>
                 </div>
 
+                <!-- text-base on mobile prevents iOS auto-zoom on focus -->
                 <input
                     :id="`question-${quest.id}`"
                     type="text"
                     v-model="answers[quest.id]"
                     placeholder="Type your answer"
-                    class="w-full sm:ml-9 sm:max-w-[calc(100%-2.25rem)] border rounded-lg px-3.5 py-2.5 text-sm text-gray-800 bg-white outline-none placeholder:text-gray-400 transition-all duration-200"
+                    class="w-full min-w-0 sm:ml-9 sm:max-w-[calc(100%-2.25rem)] border rounded-lg px-3.5 py-2.5 text-base sm:text-sm text-gray-800 bg-white outline-none placeholder:text-gray-400 transition-all duration-200"
                     :class="showErrors && isEmpty(quest.id)
                         ? 'border-rose-400 hover:border-rose-500 focus:border-rose-500 focus:ring-4 focus:ring-rose-500/15'
                         : 'border-gray-300 hover:border-gray-400 focus:border-[#8B5CF6] focus:ring-4 focus:ring-[#8B5CF6]/15'"
@@ -242,7 +255,7 @@
 
             <div
                 v-if="!textQuestions.length"
-                class="flex flex-col items-center justify-center gap-2 py-10 rounded-xl border border-dashed border-gray-300 bg-gray-50/50"
+                class="flex flex-col items-center justify-center gap-2 py-10 px-4 text-center rounded-xl border border-dashed border-gray-300 bg-gray-50/50"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-gray-300">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
@@ -251,11 +264,12 @@
             </div>
         </div>
 
-        <div class="flex items-center justify-end px-6 py-4 border-t border-gray-100 bg-gray-50/60">
+        <!-- Submit footer: full-width button on mobile -->
+        <div class="flex items-center justify-end px-4 sm:px-6 py-3 sm:py-4 border-t border-gray-100 bg-gray-50/60">
             <button
                 type="submit"
                 :disabled="isSubmitting || !textQuestions.length"
-                class="group inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold text-white bg-[#8B5CF6] shadow-sm shadow-[#8B5CF6]/30 hover:bg-[#7C3AED] active:bg-[#6D28D9] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/25 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                class="group w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold text-white bg-[#8B5CF6] shadow-sm shadow-[#8B5CF6]/30 hover:bg-[#7C3AED] active:bg-[#6D28D9] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/25 transition-all duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {{ isSubmitting ? 'Submitting...' : 'Submit' }}
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="size-4 shrink-0 transition-transform duration-200 group-hover:translate-x-0.5">
@@ -265,19 +279,22 @@
         </div>
     </form>
 
-    <div v-if="codingQuestions.length" class="flex flex-col gap-5 mt-5">
+    <!-- CODING QUESTIONS -->
+    <div v-if="codingQuestions.length" class="flex flex-col gap-4 sm:gap-5 mt-5 w-full min-w-0">
         <div
             v-for="(quest, index) in codingQuestions"
             :key="quest.id"
-            class="flex flex-col bg-white text-gray-800 rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
+            class="flex flex-col w-full min-w-0 bg-white text-gray-800 rounded-2xl border border-gray-200 shadow-sm overflow-hidden"
         >
-            <div class="flex items-start gap-3 px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-violet-50/70 to-white">
+            <!-- Coding header: wraps on mobile -->
+            <div class="flex flex-wrap sm:flex-nowrap items-start gap-x-3 gap-y-2 px-4 sm:px-6 py-4 border-b border-gray-100 bg-gradient-to-r from-violet-50/70 to-white">
                 <span class="shrink-0 flex items-center justify-center w-6 h-6 rounded-full bg-[#8B5CF6]/10 text-[#8B5CF6] text-xs font-bold">
                     {{ textQuestions.length + index + 1 }}
                 </span>
-                <div class="flex flex-1 flex-col gap-0.5">
+
+                <div class="order-last basis-full sm:order-none sm:basis-0 sm:flex-1 min-w-0 flex flex-col gap-0.5">
                     <span class="text-xs font-semibold uppercase tracking-wider text-[#8B5CF6]">Coding</span>
-                    <span class="text-sm font-medium text-gray-800 leading-relaxed whitespace-pre-line">{{ quest.question }}</span>
+                    <span class="text-sm font-medium text-gray-800 leading-relaxed whitespace-pre-line break-words">{{ quest.question }}</span>
                 </div>
 
                 <!-- FEEDBACK BUTTON (coding question) -->
@@ -286,7 +303,7 @@
                     @click="openFeedback(quest.id, `Question ${textQuestions.length + index + 1}`, quest.question)"
                     :aria-label="`Send feedback about question ${textQuestions.length + index + 1}`"
                     title="Send feedback about this question"
-                    class="shrink-0 inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
+                    class="ml-auto sm:ml-0 shrink-0 whitespace-nowrap inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#6D28D9] bg-[#8B5CF6]/10 border border-[#8B5CF6]/30 shadow-sm hover:bg-[#8B5CF6]/20 hover:border-[#8B5CF6]/50 active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-[#8B5CF6]/20 transition-all duration-200 cursor-pointer"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
@@ -295,7 +312,7 @@
                 </button>
             </div>
 
-            <div class="px-6 py-5">
+            <div class="px-3 sm:px-6 py-4 sm:py-5 min-w-0 overflow-x-auto">
                 <CodePlayground :question-id="quest.id" />
             </div>
         </div>
