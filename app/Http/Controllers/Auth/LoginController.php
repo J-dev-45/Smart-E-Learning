@@ -110,6 +110,7 @@ class LoginController extends Controller
             ], 403);
         }
 
+        /*
         if ($user->role === 'Student') {
             $studentRecord = StudentRecord::where('id_number', $user->id_number)->first();
 
@@ -135,6 +136,7 @@ class LoginController extends Controller
                 ], 403);
             }
         }
+        */
 
         if ($user->role === 'Admin') {
             return response()->json([
