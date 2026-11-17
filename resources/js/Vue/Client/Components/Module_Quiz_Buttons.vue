@@ -65,10 +65,30 @@
         </div>
 
         <template v-if="!nextModule">
-            <a :href="`/assessment/exam/question_type/${url(subject.subject_name)}/${subject.id}/none/0`"
+            <!-- Passed -->
+            <span v-if="examPassed"
+                class="inline-flex w-full md:w-auto items-center justify-center gap-2 text-xs sm:text-sm font-bold text-green-700 bg-green-100 border-[1.5px] border-green-300 rounded-xl py-2.5 px-4 sm:px-6 whitespace-nowrap select-none">
+                Passed
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-4 shrink-0">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                </svg>
+            </span>
+
+            <!-- Open: take exam -->
+            <a v-else-if="examOpen"
+                :href="`/assessment/exam/question_type/${url(subject.subject_name)}/${subject.id}/none/0`"
                 class="w-full md:w-auto text-center text-xs sm:text-sm font-bold sharedBtnInfo rounded-xl py-2.5 px-4 sm:px-6 transition-colors duration-200 whitespace-nowrap">
                 Take Exam
             </a>
+
+            <!-- Locked -->
+            <span v-else aria-disabled="true"
+                class="inline-flex w-full md:w-auto items-center justify-center gap-2 text-xs sm:text-sm font-bold sharedTXTMuted border-[1.5px] sharedBorder sharedSurfaceBG rounded-xl py-2.5 px-4 sm:px-6 whitespace-nowrap cursor-not-allowed select-none">
+                Take Exam
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4 shrink-0">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+                </svg>
+            </span>
         </template>
         
          <template v-else>
@@ -106,15 +126,11 @@ const props = defineProps({
         type: Object,
         required: true
     },
-    moduleProgress: {
-        type: Object,
-        required: true
-    },
-    moduleQuiz: {
-        type: Object,
-        required: true
-    },
-    nextModule: { type: Object, default: () => []}
+    moduleProgress: { type: Object, required: true },
+    moduleQuiz: { type: Object, required: true },
+    nextModule: { type: Object, default: () => []},
+    examOpen: { type: Boolean, default: false},
+    examPassed: { type: Boolean, default: false},
 })
 
 const activityPassedLocally = ref(false)

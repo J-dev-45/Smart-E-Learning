@@ -262,6 +262,17 @@ class AssessmentController extends Controller
                 ->where('type_of_assessment', 'exam')
                 ->get();
 
+            $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
+                ->where('subject_id', $subject->id)
+                ->get();
+
+            $exam_open = $module_quizzes->isNotEmpty()
+                && $module_quizzes->every(fn($quiz) => $quiz->has_passed === true);
+
+            if(!$exam_open){
+                return redirect()->route('home');
+            }
+
             $answered_question_ids = $answered_questions_data->pluck('question_id');
 
             $answered_count = $answered_questions_data

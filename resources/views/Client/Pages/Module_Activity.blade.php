@@ -93,6 +93,8 @@
                         :module-progress='@json($module_progress)'
                         :module-quiz='@json($module_quiz)'
                         :next-module='@json($next_module)'
+                        :exam-open='@json($exam_open)'
+                        :exam-passed='@json($exam_passed)'
                     ></module-quiz-buttons>
 
                 </div>

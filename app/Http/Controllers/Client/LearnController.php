@@ -347,6 +347,29 @@ class LearnController extends Controller
             $next_module = null;
         }
 
+        $module_quizzes = ModuleQuiz::where('user_id', auth()->id())
+            ->where('subject_id', $subject->id)
+            ->get();
+
+        $exam_open = $module_quizzes->isNotEmpty()
+            && $module_quizzes->every(fn($quiz) => $quiz->has_passed === true);
+
+        $answered_assessment_questions_exam = AnsweredAssessmentQuestions::where('user_id', auth()->id())
+            ->where('subject_id', $subject->id)
+            ->where('module_id', null)
+            ->where('type_of_assessment', 'exam')
+            ->get();
+
+        $exam_passed = false;
+        if($answered_assessment_questions_exam->count() === 40 ){
+            $exam_score = $answered_assessment_questions_exam->where('is_correct', true)->count();
+            if($exam_score >= 30){
+                $exam_passed = true;
+            }else{
+                $exam_passed = false;
+            }
+        }
+
         if ($answered_module_questions->isNotEmpty()) {
 
         foreach ($answered_module_questions as $answered) {
@@ -394,6 +417,8 @@ class LearnController extends Controller
             'score',
             'answered_module_questions',
             'next_module',
+            'exam_open',
+            'exam_passed'
         );
 
         return view('Client.Pages.Lesson_Content', $viewData);
