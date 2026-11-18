@@ -7,6 +7,7 @@
     <title>Smart E-Learning</title>
     @vite(['resources/css/app.css'])
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
+    @include('Global.Pwa_Meta')
 </head>
 <body class="w-screen sharedBG overflow-x-hidden">
     @vite(['resources/js/app.js'])

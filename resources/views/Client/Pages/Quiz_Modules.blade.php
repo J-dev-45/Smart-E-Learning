@@ -6,6 +6,7 @@
     <title>Select Module to Learn — Discrete Mathematics</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
+    @include('Global.Pwa_Meta')
     @vite(['resources/css/app.css'])
 </head>
 <body class="w-full h-screen sharedBG overflow-hidden sharedTXT">

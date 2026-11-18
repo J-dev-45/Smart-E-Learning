@@ -12,6 +12,7 @@
         href="{{ asset('images/Components/Favicon.png') }}"
         type="image/x-icon"
     >
+    @include('Global.Pwa_Meta')
 
     @vite('resources/css/app.css')
 

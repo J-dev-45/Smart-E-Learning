@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Smart E-Learning</title>
     <link rel="shortcut icon" href="{{ asset('images/Components/Favicon.png') }}" type="image/x-icon">
+    @include('Global.Pwa_Meta')
     @vite(['resources/css/app.css'])
 </head>
 <body class="w-screen overflow-x-hidden">
